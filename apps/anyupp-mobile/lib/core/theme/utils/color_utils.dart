@@ -53,6 +53,28 @@ ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
   );
 }
 
+ThemeChainData generateTheme(Color primary, Color secondary) {
+  var secondary64 = _col(secondary, 64);
+  var secondary40 = _col(secondary, 40);
+  var secondary16 = _col(secondary, 16);
+  var secondary12 = _col(secondary, 7);
+  var secondary0 = _col(secondary, 0);
+  return ThemeChainData(
+    secondary0: secondary0,
+    secondary12: secondary12,
+    secondary: secondary,
+    primary: primary,
+    secondary64: secondary64,
+    secondary16: secondary16,
+    secondary40: secondary40,
+    button: primary,
+    buttonText: secondary,
+    icon: primary,
+    highlight: primary,
+    light: secondary0.isLight,
+  );
+}
+
 ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
   log.d('***** unitThemeToThemeChainData().unit=${unit.style.colors}');
   try {

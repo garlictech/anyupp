@@ -69,4 +69,95 @@ class Fonts {
         decorationStyle: decorationStyle,
         decorationThickness: decorationThickness);
   }
+
+  static TextStyle hH1({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w700,
+      fontStyle: FontStyle.normal,
+      fontSize: 24.0,
+      fontFeatures: [
+        FontFeature('wght', 700),
+      ],
+      color: color);
+
+  static TextStyle hH2({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w900,
+      fontStyle: FontStyle.normal,
+      fontSize: 21.0,
+      color: color);
+
+  static TextStyle hH3({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w700,
+      fontStyle: FontStyle.normal,
+      fontSize: 19.0,
+      color: color);
+
+  static TextStyle hH4Bigcap({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w700,
+      fontStyle: FontStyle.normal,
+      fontSize: 17.0,
+      color: color);
+
+  static TextStyle hH4({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w700,
+      fontStyle: FontStyle.normal,
+      fontSize: 17.0,
+      color: color);
+
+  static TextStyle pP1Bold({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w700,
+      fontStyle: FontStyle.normal,
+      fontSize: 15.0,
+      color: color);
+
+  static TextStyle hH5({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w500,
+      fontStyle: FontStyle.normal,
+      fontSize: 15.0,
+      color: color);
+
+  static TextStyle pP1({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+      fontSize: 15.0,
+      color: color);
+
+  static TextStyle pP2({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+      fontSize: 13.0,
+      letterSpacing: 0.2,
+      color: color);
+
+  static TextStyle pP2Bold({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w700,
+      fontStyle: FontStyle.normal,
+      fontSize: 13.0,
+      color: color);
+
+  static TextStyle pP2Regular({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w500,
+      fontStyle: FontStyle.normal,
+      fontSize: 13.0,
+      letterSpacing: 0.2,
+      color: color);
+
+  static TextStyle hH6({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w500,
+      fontStyle: FontStyle.normal,
+      fontSize: 13.0,
+      color: color);
+
+  static TextStyle pP3({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+      fontSize: 13.0,
+      letterSpacing: 0.2,
+      color: color);
+
+  static TextStyle pP3Bold({Color? color}) => _satoshi.getFont(
+      fontWeight: FontWeight.w700,
+      fontStyle: FontStyle.normal,
+      fontSize: 13.0,
+      letterSpacing: 0.2,
+      color: color);
 }

@@ -3,19 +3,16 @@ import 'package:fa_prev/models.dart';
 
 abstract class FavoritesState extends Equatable {
   const FavoritesState();
+  @override
+  List<Object?> get props => [];
 }
 
 class FavoritesNotLoaded extends FavoritesState {
   const FavoritesNotLoaded();
-
-  @override
-  List<Object?> get props => [];
 }
 
 class FavoritesLoading extends FavoritesState {
   const FavoritesLoading();
-  @override
-  List<Object?> get props => [];
 }
 
 class ProductIsFavorite extends FavoritesState {
@@ -29,6 +26,13 @@ class ProductIsFavorite extends FavoritesState {
 class FavoriteListLoaded extends FavoritesState {
   final List<FavoriteProduct>? favorites;
   const FavoriteListLoaded(this.favorites);
+  @override
+  List<Object?> get props => [favorites];
+}
+
+class FavorteAddedOrRemoved extends FavoritesState {
+  final List<FavoriteProduct>? favorites;
+  const FavorteAddedOrRemoved(this.favorites);
   @override
   List<Object?> get props => [favorites];
 }

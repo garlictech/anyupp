@@ -27,8 +27,14 @@ class GeoUnit {
   final SoldOutVisibilityPolicy? soldOutVisibilityPolicy;
   final Location? location;
   final bool? adBannersEnabled;
-  final List<AdBanner>? adBanners;
+  final List<ImageAsset>? adBanners;
   final bool? canRequestVatInvoice;
+  final LocalizedItem? description;
+  final String? email;
+  final String? phone;
+  final bool? coverBannersEnabled;
+  final List<ImageAsset>? coverBanners;
+  final bool? canCallWaiter;
 
   GeoUnit({
     required this.id,
@@ -54,6 +60,12 @@ class GeoUnit {
     this.adBannersEnabled,
     this.adBanners,
     this.canRequestVatInvoice,
+    this.description,
+    this.email,
+    this.phone,
+    this.coverBannersEnabled,
+    this.coverBanners,
+    this.canCallWaiter,
   });
 
   GeoUnit copyWith({
@@ -78,8 +90,14 @@ class GeoUnit {
     SoldOutVisibilityPolicy? soldOutVisibilityPolicy,
     Location? location,
     bool? adBannersEnabled,
-    List<AdBanner>? adBanners,
+    List<ImageAsset>? adBanners,
     bool? canRequestVatInvoice,
+    LocalizedItem? description,
+    String? email,
+    String? phone,
+    bool? coverBannersEnabled,
+    List<ImageAsset>? coverBanners,
+    bool? canCallWaiter,
   }) {
     return GeoUnit(
       id: id ?? this.id,
@@ -108,6 +126,12 @@ class GeoUnit {
       adBanners: adBanners ?? this.adBanners,
       canRequestVatInvoice:
           canRequestVatInvoice ?? this.canRequestVatInvoice ?? true,
+      description: description ?? this.description,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      coverBannersEnabled: coverBannersEnabled ?? this.coverBannersEnabled,
+      coverBanners: coverBanners ?? this.coverBanners,
+      canCallWaiter: canCallWaiter ?? this.canCallWaiter,
     );
   }
 
@@ -138,6 +162,12 @@ class GeoUnit {
       'adBannersEnabled': adBannersEnabled,
       'adBanners': adBanners?.map((x) => x.toJson()).toList(),
       'canRequestVatInvoice': canRequestVatInvoice,
+      'description': description?.toJson(),
+      'email': email,
+      'phone': phone,
+      'coverBannersEnabled': coverBannersEnabled,
+      'coverBanners': coverBanners?.map((x) => x.toJson()).toList(),
+      'canCallWaiter': canCallWaiter,
     };
   }
 
@@ -190,10 +220,21 @@ class GeoUnit {
           map['location'] != null ? Location.fromJson(map['location']) : null,
       adBannersEnabled: map['unit']?['adBannersEnabled'] ?? false,
       adBanners: map['unit']?['adBanners'] != null
-          ? List<AdBanner>.from(
-              map['unit']?['adBanners']?.map((x) => AdBanner.fromJson(x)))
+          ? List<ImageAsset>.from(
+              map['unit']?['adBanners']?.map((x) => ImageAsset.fromJson(x)))
           : null,
       canRequestVatInvoice: map['unit']?['canRequestVatInvoice'] ?? true,
+      description: map['unit']?['description'] != null
+          ? LocalizedItem.fromJson(map['unit']?['description'])
+          : null,
+      phone: map['unit']?['phone'],
+      email: map['unit']?['email'],
+      coverBannersEnabled: map['unit']?['coverBannersEnabled'] ?? false,
+      coverBanners: map['unit']?['coverBanners'] != null
+          ? List<ImageAsset>.from(
+              map['unit']?['coverBanners']?.map((x) => ImageAsset.fromJson(x)))
+          : null,
+      canCallWaiter: map['unit']?['canCallWaiter'] ?? false,
     );
   }
 
@@ -229,7 +270,13 @@ class GeoUnit {
         other.location == location &&
         other.adBannersEnabled == adBannersEnabled &&
         listEquals(other.adBanners, adBanners) &&
-        other.canRequestVatInvoice == canRequestVatInvoice;
+        other.canRequestVatInvoice == canRequestVatInvoice &&
+        other.description == description &&
+        other.phone == phone &&
+        other.email == email &&
+        other.coverBannersEnabled == coverBannersEnabled &&
+        listEquals(other.coverBanners, coverBanners) &&
+        other.canCallWaiter == canCallWaiter;
   }
 
   @override
@@ -255,6 +302,12 @@ class GeoUnit {
         location.hashCode ^
         adBannersEnabled.hashCode ^
         adBanners.hashCode ^
-        canRequestVatInvoice.hashCode;
+        canRequestVatInvoice.hashCode ^
+        description.hashCode ^
+        phone.hashCode ^
+        email.hashCode ^
+        coverBannersEnabled.hashCode ^
+        coverBanners.hashCode ^
+        canCallWaiter.hashCode;
   }
 }

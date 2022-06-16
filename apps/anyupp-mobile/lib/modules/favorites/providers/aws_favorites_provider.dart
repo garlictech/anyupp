@@ -111,16 +111,19 @@ class AwsFavoritesProvider implements IFavoritesProvider {
   Future<PageResponse<FavoriteProduct>> _getNextPage(
       String userId, String unitId, String? nextToken) async {
     log.d(
-        'AwsFavoritesProvider.getFavoritesList().userId=$userId, unitId=$unitId');
+        'AwsFavoritesProvider.getFavoritesList().userId=$userId, unitId=$unitId, nextToken=$nextToken');
     var result = await GQL.amplify.execute(
       ListFavoriteProductsQuery(
-          variables: ListFavoriteProductsArguments(
-        userId: userId,
-        unitId: unitId,
-        nextToken: nextToken,
-      )),
+        variables: ListFavoriteProductsArguments(
+          userId: userId,
+          unitId: unitId,
+          nextToken: nextToken,
+        ),
+      ),
       fetchPolicy: FetchPolicy.networkOnly,
     );
+    log.i(
+        'AwsFavoritesProvider.getFavoritesList()=${result.data?.searchFavoriteProducts}');
 
     if (result.hasErrors) {
       throw GraphQLException.fromGraphQLError(
@@ -139,7 +142,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
     for (int i = 0; i < items.length; i++) {
       favorites.add(FavoriteProduct.fromJson(items[i]!.toJson()));
     }
-    log.d('***** getFavoritesList().favorites=$favorites');
+    log.d('***** getFavoritesList().favorites=${favorites.length}');
     return PageResponse(
       data: favorites,
       totalCount: count,

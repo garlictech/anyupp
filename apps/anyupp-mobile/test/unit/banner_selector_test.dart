@@ -3,10 +3,10 @@ import 'package:fa_prev/modules/adbanner/adbanner.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  List<AdBanner> _generateBanners(int count) {
-    List<AdBanner> banners = [];
+  List<ImageAsset> _generateBanners(int count) {
+    List<ImageAsset> banners = [];
     for (int i = 0; i < count; i++) {
-      banners.add(AdBanner(
+      banners.add(ImageAsset(
         imageUrl: 'https://picsum.photos/100/100?random=$i',
       ));
     }

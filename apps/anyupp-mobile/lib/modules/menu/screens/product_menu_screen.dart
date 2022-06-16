@@ -1,495 +1,408 @@
-import 'package:fa_prev/app-config.dart';
+import 'package:anchor_scroll_controller/anchor_scroll_controller.dart';
+import 'package:anchor_scroll_controller/anchor_scroll_wrapper.dart';
 import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/modules/selectunit/widgets/flutter_qr_code_scanner.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/navigator.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
-import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/shared/widgets/tooltip/simple_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Menu extends StatefulWidget {
-  @override
-  State<Menu> createState() => _MenuState();
+class _CategoryMenuWidgets {
+  // final List<Widget> widgets;
+  final List<ProductCategory> productCategories;
+  final bool hasFavorites;
+  final Map<String, List<Widget>> mainCategoryWidgets;
+  final Map<String, List<Widget>>? subCategoryWidgets;
+
+  _CategoryMenuWidgets({
+    // required this.widgets,
+    required this.productCategories,
+    required this.hasFavorites,
+    required this.mainCategoryWidgets,
+    this.subCategoryWidgets,
+  });
 }
 
-class _MenuState extends State<Menu> with TickerProviderStateMixin {
+class MenuScreen extends StatefulWidget {
+  @override
+  State<MenuScreen> createState() => _MenuScreenState();
+}
+
+class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (BuildContext context) {
+        var bloc = getIt<ProductListBloc>();
+        bloc.add(LoadAllProductList(
+          unitId: currentUnit!.id,
+        ));
+        return bloc;
+      },
+      child: MenuScreenInner(),
+    );
+  }
+}
+
+class MenuScreenInner extends StatefulWidget {
+  @override
+  State<MenuScreenInner> createState() => _MenuScreenInnerState();
+}
+
+class _MenuScreenInnerState extends State<MenuScreenInner>
+    with TickerProviderStateMixin {
   TabController? _tabController;
-  bool _showTooltip = false;
+  TabController? _subTabController;
+  late final RefreshController _refreshController;
+  late final AnchorScrollController _scrollController;
+  final ProductListWidgetGenerator _generator = ProductListWidgetGenerator();
+
   int _selectedTab = 0;
-  int? _cachedFromIdx;
-  int? _cachedToIdx;
+  int _selectedSubTab = 0;
+  int _favoritesIndex = 0;
+  // final List<int> _listIndexMap = [];
+  // final List<int> _tabIndexMap = [];
 
   @override
   void initState() {
     super.initState();
+
+    _refreshController = RefreshController(initialRefresh: false);
+    _scrollController = AnchorScrollController(
+        // Majd ha lesz subcategory, akkor ezt kell beállítani
+        //   onIndexChanged: (index, useScroll) {
+        // bool isScrollingDown = _scrollController.position.userScrollDirection ==
+        //     ScrollDirection.reverse;
+        // int scrollPosition = isScrollingDown
+        //     ? _listIndexMap[min(index + 5, _listIndexMap.length - 1)]
+        //     : _listIndexMap[index];
+        // _tabController?.animateTo(scrollPosition);
+        // },
+        );
   }
 
   @override
   void dispose() {
     _tabController?.dispose();
+    _subTabController?.dispose();
+    _scrollController.dispose();
+    _refreshController.dispose();
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _checkNeedToShowTooltip();
+  void _onRefresh() async {
+    BlocProvider.of<ProductListBloc>(context)
+        .add(LoadAllProductList(unitId: currentUnit!.id));
+    _refreshController.refreshCompleted();
   }
 
-  Future<void> _checkNeedToShowTooltip() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    GeoUnit? unit = currentUnit;
-    if (unit != null) {
-      bool? showed = preferences.getBool('TOOLTIP_${unit.id}');
-      // log.d('_checkNeedToShowTooltip.showed=$showed');
-      if (showed == null || showed == false) {
-        setState(() {
-          _showTooltip = true;
-        });
-        // ignore: unawaited_futures
-        Future.delayed(Duration(seconds: 3)).then((_) {
-          if (mounted) {
-            setState(() {
-              _showTooltip = false;
-            });
-          }
-        });
-
-        await preferences.setBool('TOOLTIP_${unit.id}', true);
-      } else {
-        _showTooltip = false;
-      }
-    } else {
-      setState(() {
-        _showTooltip = false;
-        // log.d('_checkNeedToShowTooltip._showTooltip=$_showTooltip');
-      });
-    }
+  void _onAddRemoveFavorites(List<FavoriteProduct>? favorites) async {
+    BlocProvider.of<ProductListBloc>(context).add(RefreshFavoritesInProductList(
+      favorites: favorites,
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => getIt<ProductCategoriesBloc>(),
-      child: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-        builder: (context, UnitSelectState unitState) {
-          if (unitState is UnitSelected) {
-            return BlocBuilder<ProductCategoriesBloc, ProductCategoriesState>(
-                builder: (context, state) {
-              // log.d('Menu.ProductCategoriesBloc.state=$state');
-              if (state is ProductCategoriesLoaded) {
-                // log.d('Menu.ProductCategoriesBloc.categories=${state.productCategories}');
-                if (state.productCategories != null &&
-                    state.productCategories!.isNotEmpty) {
-                  return _buildTabBar(
-                      context, unitState.unit, state.productCategories!);
-                } else {
-                  return _noCategoriesWidget(context);
-                }
-              }
-              return _buildLoadingWidget(context);
-            });
+    GeoUnit? unit = currentUnit;
+    assert(unit != null);
+    return Scaffold(
+      appBar: ProductMenuAppBar(
+        supportedServiceModeCount: unit?.supportedServingModes.length ?? 0,
+      ),
+      backgroundColor: theme.secondary0,
+      body: BlocListener<FavoritesBloc, FavoritesState>(
+        listener: (context, state) {
+          if (state is FavorteAddedOrRemoved) {
+            _onAddRemoveFavorites(state.favorites);
           }
-
-          return _buildLoadingWidget(context);
         },
+        child: BlocBuilder<ProductListBloc, ProductListState>(
+            builder: (context, state) {
+          if (state is ProductListLoaded) {
+            if (state.productCategories != null &&
+                state.productCategories?.isNotEmpty == true) {
+              return _buildMainMenu(
+                context,
+                unit!,
+                state.productCategories!,
+                state.products,
+                state.favorites,
+              );
+            } else {
+              return const NoProductCategoriesWidget();
+            }
+          }
+          return const UnitMenuLoadingWidget();
+        }),
       ),
     );
   }
 
-  Widget _buildLoadingWidget(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
-      // appBar: _createAppBar(context, []),
-      backgroundColor: theme.secondary12,
-      body: CenterLoadingWidget(),
-    ));
-  }
-
-  Widget _buildTabBar(BuildContext context, GeoUnit unit,
-      List<ProductCategory> productCategories) {
-    _selectedTab = _tabController == null
-        ? productCategories.isEmpty
-            ? 0
-            : 1
-        : _tabController!.index;
-    _tabController = TabController(
-      length: productCategories.length + 1,
-      vsync: this,
-      initialIndex: _selectedTab,
+  Widget _buildMainMenu(
+    BuildContext context,
+    GeoUnit unit,
+    List<ProductCategory> productCategories,
+    List<GeneratedProduct> products,
+    List<FavoriteProduct>? favorites,
+  ) {
+    var menu = _buildProductList(
+      context: context,
+      unit: unit,
+      productCategories: productCategories,
+      products: products,
+      favorites: favorites,
     );
-    _tabController?.addListener(() {
-      if (_tabController?.indexIsChanging == false) {
-        if (_showTooltip) {
-          _checkNeedToShowTooltip();
-        }
-        _selectedTab = _tabController!.index;
-      }
-    });
+    // log.e('_listIndexMap=${_listIndexMap}');
+    // log.e('_tabIndexMap=${_tabIndexMap}');
 
-    return SafeArea(
-      child: Scaffold(
-        appBar: _createAppBar(context, productCategories),
-        backgroundColor: theme.secondary12,
+    return SmartRefresher(
+      enablePullDown: true,
+      header: MaterialClassicHeader(),
+      controller: _refreshController,
+      onRefresh: _onRefresh,
+      child: NestedScrollView(
+        // controller: _scrollController,
+        physics: BouncingScrollPhysics(),
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          // Animated Unit info
+          return <Widget>[
+            SliverAppBar(
+              backgroundColor: theme.secondary0,
+              expandedHeight: 270.0,
+              flexibleSpace: FlexibleSpaceBar(
+                background: UnitInfoHeaderWidget(
+                  unit: unit,
+                ),
+              ),
+            ),
+            // Sticky Category header
+            // Main and SubCategory
+            SliverPersistentHeader(
+              pinned: true,
+              floating: true,
+              delegate: SliverAppBarDelegate(
+                minHeight:
+                    58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
+                maxHeight:
+                    58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
+                child: Material(
+                  elevation: 1.0,
+                  shadowColor: theme.secondary12,
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                    // margin: const EdgeInsets.only(top: 4.0, bottom: 8.0),
+                    color: theme.secondary0,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        // Main category tabbar
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(32.0),
+                            bottomLeft: Radius.circular(32.0),
+                            // bottomRight: Radius.circular(32.0),
+                            // topRight: Radius.circular(32.0),
+                          ),
+                          child: ProductCategoryTabWidget(
+                            tabController: _tabController!,
+                            addFavorites: menu.hasFavorites,
+                            productCategories: menu.productCategories,
+                            onTap: (index) => _handleTabTap(context, index),
+                          ),
+                        ),
+                        // Subcategory tabbar
+                        if (menu.subCategoryWidgets != null)
+                          IndexedStack(
+                            index: 0,
+                            children: menu.productCategories
+                                .map(
+                                  (e) => DefaultTabController(
+                                    length: menu.productCategories.length,
+                                    initialIndex: 0,
+                                    child: SubCategoryTabBarWidget(
+                                      // controller: _subTabController!,
+                                      // controller: ,
+                                      productCategories: menu.productCategories,
+                                      onTap: (index) => log.i('onTap $index'),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ];
+        },
+        // Menu list
         body: TabBarView(
           controller: _tabController,
           physics: BouncingScrollPhysics(),
-          children: _getTabBarPages(unit, productCategories),
+          children: [
+            ...menu.mainCategoryWidgets.entries
+                .map(
+                  (entry) => SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: menu.mainCategoryWidgets[entry.key] ?? [],
+                    ),
+                  ),
+                )
+                .toList(),
+          ],
         ),
       ),
     );
   }
 
-  PreferredSize _createAppBar(
-      BuildContext context, List<ProductCategory> productCategories) {
-    return PreferredSize(
-      preferredSize: Size.fromHeight(115.0), // here the desired height
-      child: AppBar(
-        elevation: 0.0,
-        backgroundColor: theme.secondary0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(right: 4.0),
-                  child: TooltipWidget(
-                    show: _showTooltip && _supportedServiceModeCount > 1,
-                    text: trans('main.tooltip'),
-                    tooltipDirection: TooltipDirection.down,
-                    child: BlocBuilder<TakeAwayBloc, TakeAwayState>(
-                        builder: (context, state) {
-                      if (state is ServingModeSelectedState) {
-                        return AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 500),
-                          transitionBuilder:
-                              (Widget child, Animation<double> animation) {
-                            return FadeTransition(
-                              child: child,
-                              opacity: animation,
-                              // scale: animation,
-                            );
-                          },
-                          child: BorderedWidget(
-                            key: ValueKey<ServingMode>(state.servingMode),
-                            width: 40.0,
-                            child: state.servingMode == ServingMode.takeAway
-                                ? SvgPicture.asset(
-                                    "assets/icons/bag.svg",
-                                    color: theme.secondary,
-                                    height: 20.0,
-                                  )
-                                : Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: SvgPicture.asset(
-                                      'assets/icons/restaurant_menu_black.svg',
-                                      height: 20.0,
-                                      color: theme.secondary,
-                                    ),
-                                  ),
-                            onPressed: () =>
-                                _selectServingMode(context, state.servingMode),
-                          ),
-                        );
-                      }
-                      return Container();
-                    }),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 4.0),
-                  child: BorderedWidget(
-                    onPressed: () {
-                      if (_showTooltip == true) {
-                        setState(() {
-                          _showTooltip = false;
-                        });
-                      }
-                      showModalBottomSheet(
-                        context: context,
-                        isDismissible: true,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(16.0),
-                            topRight: Radius.circular(16.0),
-                          ),
-                        ),
-                        enableDrag: true,
-                        isScrollControlled: true,
-                        elevation: 4.0,
-                        backgroundColor: Colors.transparent,
-                        builder: (context) {
-                          return QRCodeScannerWidget(
-                            navigateToCart: true,
-                            loadUnits: true,
-                          );
-                        },
-                      );
-                    },
+  _CategoryMenuWidgets _buildProductList({
+    required BuildContext context,
+    required GeoUnit unit,
+    required List<ProductCategory> productCategories,
+    required List<GeneratedProduct> products,
+    List<FavoriteProduct>? favorites,
+  }) {
+    _favoritesIndex = favorites?.isNotEmpty == true ? 1 : 0;
 
-                    width: 40.0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: SvgPicture.asset(
-                        'assets/icons/qr_code_scanner_2.svg',
-                        height: 20.0,
-                        color: theme.secondary,
-                      ),
-                    ),
-                    // child: Icon(
-                    //   Icons.link,
-                    //   color: theme.secondary,
-                    //   size: 20.0,
-                    // ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-        centerTitle: false,
-        title: Container(
-          margin: const EdgeInsets.only(
-            top: 8.0,
-            bottom: 8.0,
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              BackButtonWidget(
-                showBorder: false,
-                color: theme.secondary,
-                icon: Icons.chevron_left,
-                onPressed: () => _resetPlaceAndGoToUnitSelection(currentUnit),
-              ),
-              // if (theme.images?.header != null)
-              ImageWidget(
-                //width: 200,
-                height: 30,
-                url: theme.images?.header != null
-                    ? theme.images?.header
-                    : 'https://${AppConfig.S3BucketName}.s3-${AppConfig.Region}.amazonaws.com/public/chains/kajahu-logo.svg',
-                errorWidget: Container(),
-                fit: BoxFit.fitHeight,
-              ),
-            ],
-          ),
-        ),
+    _selectedTab = _favoritesIndex;
+    _selectedSubTab = 0;
+    var menu = _generator.generateMenu(
+      context: context,
+      unit: unit,
+      productCategories: productCategories,
+      products: products,
+      servingMode: currentServingMode,
+      favorites: favorites,
+    );
+    // log.d('Menu generated=${menu}');
 
-        // centerTitle: true,
-        bottom: productCategories.isNotEmpty
-            ? PreferredSize(
-                preferredSize: const Size.fromHeight(40.0),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    width: double.infinity,
-                    child: ColoredTabBar(
-                      color: theme.secondary0,
-                      tabBar: TabBar(
-                        physics: BouncingScrollPhysics(),
-                        controller: _tabController,
-                        isScrollable: true, // productCategories.length > 2,
-                        // indicatorColor: Colors.red,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        // indicatorWeight: 2.0,
-                        // automaticIndicatorColorAdjustment: true,
-                        // enableFeedback: true,
-                        indicator: BoxDecoration(
-                          borderRadius: BorderRadius.circular(
-                            56.0,
-                          ),
-                          color: theme.button,
-                        ),
-                        labelColor: theme.buttonText,
-                        labelStyle: Fonts.satoshi(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        labelPadding: EdgeInsets.only(
-                          left: 4,
-                          right: 4,
-                          top: 6.0,
-                          bottom: 6.0,
-                        ),
-                        indicatorPadding: EdgeInsets.only(
-                          bottom: 15.0,
-                          top: 13.0,
-                        ),
-                        unselectedLabelColor: theme.secondary,
-                        unselectedLabelStyle: Fonts.satoshi(
-                          fontSize: 14.0,
-                        ),
-                        tabs: _getTabBarTitles(context, productCategories),
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            : null,
-      ),
+    _tabController = TabController(
+      length: menu.categories.length + _favoritesIndex,
+      vsync: this,
+      initialIndex: _selectedTab,
+    );
+
+    _subTabController = TabController(
+      length: menu.categories.length,
+      vsync: this,
+      initialIndex: _selectedSubTab,
+    );
+    var servingMode = currentServingMode;
+
+    Map<String, List<Widget>>? mainCategoryWidgets;
+    Map<String, List<Widget>>? subCategoryWidgets;
+    mainCategoryWidgets = {};
+
+    // Add favorites tab
+    if (_favoritesIndex > 0) {
+      var items = _getWidgetsFromMenuItems(
+        menu.mainCategoryMenuItems!['favorites']!,
+        unit,
+        servingMode,
+      );
+      mainCategoryWidgets['favorites'] = items;
+    }
+
+    if (!menu.hasSubCategories) {
+      // Build main menu widgets without subcategories
+      for (int i = 0; i < menu.categories.length; i++) {
+        var category = menu.categories[i];
+        var items = _getWidgetsFromMenuItems(
+          menu.mainCategoryMenuItems![category.id]!,
+          unit,
+          servingMode,
+        );
+        mainCategoryWidgets[category.id] = items;
+      }
+    } else {
+      subCategoryWidgets = {};
+      menu.subMenu!.entries.forEach((element) {
+        var categoryId = element.key;
+        var items = _getWidgetsFromMenuItems(
+          element.value.menuItems,
+          unit,
+          servingMode,
+        );
+        subCategoryWidgets?[categoryId] = items;
+      });
+    }
+
+    return _CategoryMenuWidgets(
+      productCategories: menu.categories,
+      hasFavorites: _favoritesIndex == 1,
+      mainCategoryWidgets: mainCategoryWidgets,
+      subCategoryWidgets: subCategoryWidgets,
     );
   }
 
-  List<Widget> _getTabBarPages(
+  _handleTabTap(BuildContext context, int index) {
+    // int itemIndex = _tabIndexMap[index];
+    // log.w('_handleTabTap[$index]=itemInMap:$itemIndex map:$_tabIndexMap');
+    _scrollController.scrollToIndex(index: index, scrollSpeed: 3.0);
+    // _tabController?.animateTo(index);
+  }
+
+  List<Widget> _getWidgetsFromMenuItems(
+    List<MenuListItem> menuItems,
     GeoUnit unit,
-    List<ProductCategory> productCategories,
+    ServingMode servingMode,
   ) {
-    List<Widget> results = [FavoritesScreen()];
-    results.addAll(productCategories
-        .asMap()
-        .entries
-        .map((entry) => ProductMenuTabScreenTemp(
-              unit: unit,
-              categoryId: entry.value.id!,
-              tabPosition: entry.key,
-            ))
-        .toList());
-    return results;
-  }
-
-  List<Widget> _getTabBarTitles(
-    BuildContext context,
-    List<ProductCategory> productCategories,
-  ) {
-    List<Widget> results = [_getTab(trans('main.menu.favorites'), 0)];
-
-    for (int i = 0; i < productCategories.length; i++) {
-      results.add(
-          _getTab(getLocalizedText(context, productCategories[i].name), i + 1));
-    }
-
-    return results;
-  }
-
-  Widget _getTab(String title, int index) {
-    return Tab(
-      // height: 16,
-      child: AnimatedBuilder(
-        animation: _tabController!.animation as Listenable,
-        builder: (ctx, snapshot) {
-          final forward = _tabController!.offset > 0;
-          final backward = _tabController!.offset < 0;
-          int _fromIndex;
-          int _toIndex;
-          double progress;
-
-          // This value is true during the [animateTo] animation that's triggered when the user taps a [TabBar] tab.
-          // It is false when [offset] is changing as a consequence of the user dragging the [TabBarView].
-          if (_tabController!.indexIsChanging) {
-            _fromIndex = _tabController!.previousIndex;
-            _toIndex = _tabController!.index;
-            _cachedFromIdx = _tabController!.previousIndex;
-            _cachedToIdx = _tabController!.index;
-            progress = (_tabController!.animation!.value - _fromIndex).abs() /
-                (_toIndex - _fromIndex).abs();
-          } else {
-            if (_cachedFromIdx == _tabController!.previousIndex &&
-                _cachedToIdx == _tabController!.index) {
-              // When user tap on a tab bar and the animation is completed, it will execute this block
-              // This block will not be called when user draging the TabBarView
-              _fromIndex = _cachedFromIdx!;
-              _toIndex = _cachedToIdx!;
-              progress = 1;
-              _cachedToIdx = null;
-              _cachedFromIdx = null;
-            } else {
-              _cachedToIdx = null;
-              _cachedFromIdx = null;
-              _fromIndex = _tabController!.index;
-              _toIndex = forward
-                  ? _fromIndex + 1
-                  : backward
-                      ? _fromIndex - 1
-                      : _fromIndex;
-              progress = (_tabController!.animation!.value - _fromIndex).abs();
-            }
-          }
-          return Container(
-            // height: 48.0,
-            padding:
-                const EdgeInsets.only(left: 16, right: 16, top: 6, bottom: 7),
-            decoration: BoxDecoration(
-              color: index == _fromIndex
-                  ? Color.lerp(theme.button, theme.secondary12, progress)
-                  : index == _toIndex
-                      ? Color.lerp(theme.secondary12, theme.button, progress)
-                      : Color.lerp(
-                          theme.secondary12, theme.secondary12, progress),
-              borderRadius: BorderRadius.circular(32),
-            ),
-            child: Text(title,
-                style: Fonts.satoshi(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w500,
-                  // color: theme.buttonText
-                )),
-          );
-          // return Tab(
-          //   text: title,
-          // );
-        },
-      ),
-    );
-  }
-
-  Widget _noCategoriesWidget(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: _createAppBar(context, []),
-        backgroundColor: theme.secondary0,
-        body: Center(
-          child: Container(
-            margin: EdgeInsets.symmetric(horizontal: 8.0),
-            child: EmptyWidget(
-              messageKey: 'main.noCategories',
-              background: Colors.transparent,
+    List<Widget> results = [];
+    for (int i = 0; i < menuItems.length; i++) {
+      var item = menuItems[i];
+      if (item is MenuItemHeader) {
+        results.add(
+          AnchorItemWrapper(
+            index: item.position,
+            controller: _scrollController,
+            child: ProductCategoryHeaderWidget(
+              name: item.title,
+              // key: _tabKeys[cIndex],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  int get _supportedServiceModeCount {
-    return currentUnit?.supportedServingModes.length ?? 0;
-  }
-
-  void _selectServingMode(BuildContext context, ServingMode current) async {
-    log.d('_selectServingMode.current=$current');
-    Cart? cart = getIt.get<CartRepository>().cart;
-    log.d('_selectServingMode.cart=$cart');
-
-    setState(() {
-      _showTooltip = false;
-    });
-    if (_supportedServiceModeCount < 2) {
-      return;
+        );
+        continue;
+      } else if (item is MenuItemFavorite) {
+        results.add(AnchorItemWrapper(
+          index: item.position,
+          controller: _scrollController,
+          child: ProductMenuItemWidget(
+            displayState: item.displayState,
+            unit: unit,
+            item: item.product,
+            servingMode: servingMode,
+          ),
+        ));
+        continue;
+      } else if (item is MenuItemProduct) {
+        //
+        results.add(AnchorItemWrapper(
+          index: item.position,
+          controller: _scrollController,
+          child: ProductMenuItemWidget(
+            displayState: item.displayState,
+            unit: unit,
+            item: item.product,
+            servingMode: servingMode,
+          ),
+        ));
+        continue;
+      } else if (item is MenuItemAdBanner) {
+        results.add(Container());
+        continue;
+      }
+      throw Exception('Unknown item type');
     }
-    await showSelectServingModeSheetWithDeleteConfirm(
-      context,
-      cart,
-      current,
-      initialPosition: current == ServingMode.inPlace ? 0 : 1,
-    );
-  }
-
-  void _resetPlaceAndGoToUnitSelection(GeoUnit? unit) {
-    if (unit != null) {
-      getIt<CartBloc>().add(ClearPlaceInCart(unit));
-    }
-    Nav.reset(OnBoarding());
+    return results;
   }
 }

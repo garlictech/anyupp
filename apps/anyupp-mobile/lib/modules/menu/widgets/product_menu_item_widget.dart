@@ -9,7 +9,7 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/shared/nav.dart';
 
 // Representing each sandwich in menu list (Menu page)
-class ProductMenuItem extends StatelessWidget {
+class ProductMenuItemWidget extends StatelessWidget {
   final GeoUnit unit;
   final GeneratedProduct item;
   final ProductItemDisplayState displayState;
@@ -17,7 +17,7 @@ class ProductMenuItem extends StatelessWidget {
 
   final double _disabled_opacity = 0.5;
 
-  const ProductMenuItem({
+  const ProductMenuItemWidget({
     required this.item,
     required this.unit,
     required this.displayState,
@@ -27,127 +27,130 @@ class ProductMenuItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // log.d('ProductMenuItem.servingMode=$servingMode');
-    final double heightContainer = 130;
-    final double widthContainer = 130;
+    final double heightContainer = 80;
+    final double widthContainer = 80;
+    if (displayState == ProductItemDisplayState.HIDDEN) {
+      return Container();
+    }
 
-    return InkWell(
-      focusColor: theme.highlight,
-      highlightColor: theme.secondary40,
-      onTap: () {
-        Nav.to(
-          ProductDetailsScreen(
-            unit: unit,
-            item: item,
-            displayState: displayState,
-            servingMode: servingMode,
-          ),
-          duration: Duration(milliseconds: 400),
-          animationType: NavAnim.SLIDEIN_DOWN,
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.only(
-          top: 8.0,
-          bottom: 8.0,
-          left: 12.0,
-          right: 12.0,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(
-            14.0,
-          ),
-          border: Border.all(
-            width: 1,
-            color: isDisabled
-                ? theme.secondary0.withOpacity(_disabled_opacity)
-                : theme.secondary0,
-          ),
-          color: isDisabled
-              ? theme.secondary0.withOpacity(_disabled_opacity)
-              : theme.secondary0,
-        ),
-        child: Container(
-          padding: EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  8.0,
-                ),
-                child: isDisabled
-                    ? ColorFiltered(
-                        colorFilter: ColorFilter.mode(
-                            Colors.black.withOpacity(_disabled_opacity),
-                            BlendMode.dstIn),
-                        child: ProductImageWidget(
-                          url: item.image!,
-                          width: widthContainer,
-                          height: heightContainer,
-                        ),
-                      )
-                    : ProductImageWidget(
-                        url: item.image!,
-                        width: widthContainer,
-                        height: heightContainer,
-                      ),
+    return Column(
+      children: [
+        InkWell(
+          focusColor: theme.highlight,
+          highlightColor: theme.secondary40,
+          onTap: () {
+            Nav.to(
+              ProductDetailsScreen(
+                unit: unit,
+                item: item,
+                displayState: displayState,
+                servingMode: servingMode,
               ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.only(left: 8, top: 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 3.0,
-                        ),
-                        child: Text(
-                          getLocalizedText(context, item.name),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: Fonts.satoshi(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w700,
-                            color: displayState ==
-                                    ProductItemDisplayState.DISABLED
-                                ? theme.secondary.withOpacity(_disabled_opacity)
-                                : theme.secondary,
+              duration: Duration(milliseconds: 400),
+              animationType: NavAnim.SLIDEIN_DOWN,
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+              left: 8.0,
+              right: 8.0,
+            ),
+            decoration: BoxDecoration(
+              color: isDisabled
+                  ? theme.secondary0.withOpacity(_disabled_opacity)
+                  : theme.secondary0,
+            ),
+            child: Container(
+              padding: EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(right: 12, top: 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 0.0,
+                            ),
+                            child: Text(
+                              getLocalizedText(context, item.name),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: Fonts.hH4(
+                                color: displayState ==
+                                        ProductItemDisplayState.DISABLED
+                                    ? theme.secondary
+                                        .withOpacity(_disabled_opacity)
+                                    : theme.secondary,
+                              ),
+                            ),
                           ),
-                        ),
+                          Text(
+                            item.description == null
+                                ? ''
+                                : getLocalizedText(context, item.description!),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Fonts.pP2(
+                              color: isDisabled
+                                  ? theme.secondary
+                                      .withOpacity(_disabled_opacity)
+                                  : theme.secondary,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              top: 8.0,
+                            ),
+                            child: isDisabled
+                                ? _buildNotAvailableInfo(context)
+                                : _buildVariantsInfo(context, theme,
+                                    item.variants, unit.currency),
+                          ),
+                        ],
                       ),
-                      Text(
-                        item.description == null
-                            ? ''
-                            : getLocalizedText(context, item.description!),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Fonts.satoshi(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400,
-                          color: isDisabled
-                              ? theme.secondary.withOpacity(_disabled_opacity)
-                              : theme.secondary,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20.0,
-                        ),
-                        child: isDisabled
-                            ? _buildNotAvailableInfo(context)
-                            : _buildVariantsInfo(
-                                context, theme, item.variants, unit.currency),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                      8.0,
+                    ),
+                    child: isDisabled
+                        ? ColorFiltered(
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(_disabled_opacity),
+                                BlendMode.dstIn),
+                            child: ProductImageWidget(
+                              url: item.image!,
+                              width: widthContainer,
+                              height: heightContainer,
+                            ),
+                          )
+                        : ProductImageWidget(
+                            url: item.image!,
+                            width: widthContainer,
+                            height: heightContainer,
+                          ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Divider(
+            height: 1.0,
+            color: theme.secondary12,
+          ),
+        ),
+      ],
     );
   }
 
@@ -165,9 +168,7 @@ class ProductMenuItem extends StatelessWidget {
 
     return Text(
       desc,
-      style: Fonts.satoshi(
-        fontSize: 14.0,
-        fontWeight: FontWeight.w700,
+      style: Fonts.hH5(
         color: isDisabled
             ? theme.highlight.withOpacity(_disabled_opacity)
             : theme.highlight,
@@ -183,9 +184,7 @@ class ProductMenuItem extends StatelessWidget {
     if (prices.first == prices.last) {
       return Text(
         formatCurrency(prices.first, currency),
-        style: Fonts.satoshi(
-          fontSize: 14.0,
-          fontWeight: FontWeight.w700,
+        style: Fonts.hH5(
           color: isDisabled
               ? theme.highlight.withOpacity(_disabled_opacity)
               : theme.highlight,
@@ -194,9 +193,7 @@ class ProductMenuItem extends StatelessWidget {
     } else {
       return Text(
         '${formatCurrency(prices.first, currency)} - ${formatCurrency(prices.last, currency)}',
-        style: Fonts.satoshi(
-          fontSize: 14.0,
-          fontWeight: FontWeight.w700,
+        style: Fonts.hH5(
           color: isDisabled
               ? theme.highlight.withOpacity(_disabled_opacity)
               : theme.highlight,

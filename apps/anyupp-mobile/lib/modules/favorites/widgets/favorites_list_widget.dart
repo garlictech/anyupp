@@ -94,7 +94,7 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
               child: SlideAnimation(
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
-                  child: ProductMenuItem(
+                  child: ProductMenuItemWidget(
                     displayState: displayState,
                     unit: unit,
                     item: list[position].product,

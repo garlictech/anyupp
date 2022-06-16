@@ -203,16 +203,17 @@ class ProductDetailsWidget extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          color: theme.secondary12,
-          child: AddToCartPanelWidget(
-            displayState: displayState,
-            servingMode: servingMode,
-            serviceFeePolicy: unit.serviceFeePolicy,
-            onAddToCartPressed: (state, quantity) =>
-                _addOrderItemToCart(context, state, quantity),
-          ),
-        )
+        if (unit.canOrder)
+          Container(
+            color: theme.secondary12,
+            child: AddToCartPanelWidget(
+              displayState: displayState,
+              servingMode: servingMode,
+              serviceFeePolicy: unit.serviceFeePolicy,
+              onAddToCartPressed: (state, quantity) =>
+                  _addOrderItemToCart(context, state, quantity),
+            ),
+          )
       ],
     );
   }

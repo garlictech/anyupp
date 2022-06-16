@@ -1,505 +1,408 @@
+import 'package:custom_map_markers/custom_map_markers.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/shared/connectivity.dart';
+import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/location.dart';
-import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/shared/widgets/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class SelectUnitByLocationScreen extends StatefulWidget {
+class SelectUnitMapScreen extends StatefulWidget {
   @override
-  _SelectUnitByLocationScreenState createState() =>
-      _SelectUnitByLocationScreenState();
+  _SelectUnitMapScreenState createState() => _SelectUnitMapScreenState();
 }
 
-class _SelectUnitByLocationScreenState
-    extends State<SelectUnitByLocationScreen> {
+class _SelectUnitMapScreenState extends State<SelectUnitMapScreen> {
+  RefreshController _refreshController = RefreshController(
+    initialRefresh: false,
+  );
   late GoogleMapController _mapController;
-  Map<MarkerId, Marker> _unitMarkers = <MarkerId, Marker>{};
-  Marker _userMarker = Marker(markerId: MarkerId('USER'));
+  MarkerData? _userMarker;
 
   final LatLng _center = const LatLng(47.4744579, 19.0754983);
+  final theme = ThemeAnyUpp();
 
   @override
   void initState() {
     super.initState();
-    setToolbarThemeV1(ThemeAnyUpp());
+  }
+
+  @override
+  void dispose() {
+    _mapController.dispose();
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+  void _onRefresh() async {
+    getIt<CartBloc>().add(ResetCartInMemory());
+    getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+    _refreshController.refreshCompleted();
   }
 
   @override
   Widget build(BuildContext context) {
-    return NetworkConnectionWrapperWidget(
-      child: BlocListener<UnitsBloc, UnitsState>(
-        listener: (BuildContext context, UnitsState state) {
-          if (state is UnitsLoaded) {
-            _createUnitsMarker(state.units);
-          }
-        },
-        child: Scaffold(
-          backgroundColor: Colors.white,
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarIconBrightness: Brightness.dark,
-              statusBarBrightness: Brightness.light,
-            ),
-            // Custom Back Button
-            leading: Container(
-              padding: EdgeInsets.only(
-                left: 8.0,
-                top: 4.0,
-                bottom: 4.0,
-              ),
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(
-                    width: 1,
-                    color: Color(0xFF30BF60).withOpacity(
-                        0.2), //theme.primary.withOpacity(0.2), // Color(0x33857C18),
-                  ),
-                  color: Colors.white, // theme.secondary0, // Colors.white,
-                ),
-                child: BackButton(
-                  color: Color(0xFF30BF60), // theme.primary,
-                ),
-              ),
-            ),
-            elevation: 0.0,
-            iconTheme: IconThemeData(
-              color:
-                  Color(0xFF30BF60), // theme.primary, //change your color here
-            ),
-            backgroundColor: Colors.transparent,
-          ),
-          body: _buildContent(theme),
-        ),
-      ),
-    );
-  }
+    return Scaffold(
+      backgroundColor: theme.secondary12,
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          BlocBuilder<UnitsBloc, UnitsState>(
+            builder: (context, state) {
+              // log.e('SelectUnitMapScreen.UnitsBloc.state=$state');
+              if (state is UnitsNoNearUnit) {
+                return _getRefreshableMessage('selectUnitMap.noNearUnits');
+              }
 
-  Stack _buildContent(ThemeChainData theme) {
-    return Stack(
-      children: [
-        // --- GOOGLE MAPS
-        GoogleMap(
-          onMapCreated: _onMapCreated,
-          initialCameraPosition: CameraPosition(
-            target: _center,
-            zoom: 11.0,
-          ),
-          markers: Set<Marker>.of([..._unitMarkers.values, _userMarker]),
-        ),
+              if (state is UnitsNotLoaded) {
+                return _getRefreshableMessage('selectUnitMap.notLoaded');
+              }
 
-        // --- BOTTOM SHEET
-        DraggableScrollableSheet(
-          initialChildSize: 0.25,
-          minChildSize: 0.25,
-          maxChildSize: 0.9,
-          builder: (BuildContext context, ScrollController scrollController) {
-            return Stack(
-                clipBehavior: Clip.none,
-                fit: StackFit.expand,
-                children: [
-                  Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20.0),
-                          topRight: Radius.circular(20.0),
-                        ),
-                        color: Colors.white, // theme.secondary0,
-                      ),
-                      child: _buildUnitList(scrollController)),
-                  Positioned(
-                    top: 15,
-                    right: 15,
-                    child: Container(
-                      width: 44.0,
-                      height: 44.0,
-                      child: FittedBox(
-                        child: FloatingActionButton(
-                          onPressed: () {
-                            _determineUserPositionAndLoadUnits();
-                          },
-                          child: Icon(
-                            Icons.my_location,
-                            size: 32.0,
-                            color: Color(0xFF30BF60),
+              if (state is UnitsLoaded) {
+                if (state.units.isNotEmpty != true) {
+                  return _getRefreshableMessage('selectUnitMap.noNearUnits');
+                }
+
+                var units = state.units;
+                var markers =
+                    _createMarkers(units, state.userLocation).values.toList();
+                if (_userMarker != null) {
+                  markers.add(_userMarker!);
+                }
+
+                return Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // --- GOOGLE MAPS
+                    CustomGoogleMapMarkerBuilder(
+                        customMarkers: markers,
+                        builder: (BuildContext context, Set<Marker>? m) {
+                          if (m == null) {
+                            return CenterLoadingWidget(
+                              strokeWidth: 2,
+                            );
+                          }
+
+                          return GoogleMap(
+                            onMapCreated: (controller) =>
+                                _mapController = controller,
+                            compassEnabled: true,
+                            myLocationButtonEnabled: true,
+                            mapToolbarEnabled: true,
+                            mapType: MapType.normal,
+                            zoomControlsEnabled: false,
+                            initialCameraPosition: CameraPosition(
+                              target: state.userLocation ?? _center,
+                              // target: LatLng(47.4737, 19.0750),
+                              zoom: 11.0,
+                            ),
+                            markers: m,
+                          );
+                        }),
+
+                    // Unit list
+                    Positioned(
+                      bottom: 25.0,
+                      left: 0.0,
+                      right: 0.0,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // _buildUnitList(units, markers.toList()),
+                          _MapUnitListWidget(
+                            units: units,
+                            markers: markers.toList(),
+                            onPageChanged: (index) => _zoomToUnit(
+                                units[index], markers[index].marker.markerId),
                           ),
-                          foregroundColor:
-                              Color(0xFF30BF60), //Color(0xFF857C18),
-                          backgroundColor: Color(0xFFFFFFFF).withOpacity(0.7),
-                          shape: CircleBorder(
-                            side: BorderSide(
-                              color: Color(0xFFFFFFFF)
-                                  .withOpacity(0.2), //Color(0xFFE7E5D0),
-                              width: 1.0,
+                          Container(
+                            // height: 100,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: theme.secondary12,
+                                  offset: Offset(0.0, 6.0),
+                                  blurRadius: 8.0,
+                                ),
+                              ],
+                              color: Colors.transparent,
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  ),
-                ]);
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildUnitList(ScrollController scrollController) {
-    return Stack(
-      children: [
-        // Bottom sheet top 'icon'
-        Container(
-          padding: EdgeInsets.only(
-            top: 8.0,
-          ),
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: SizedBox(
-              width: 60.0,
-              height: 8.0,
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(3.0),
-                  ),
-                  color: Color(0xFFD0D0D0),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.only(
-            top: 20.0,
-          ),
-          child: Align(
-            alignment: Alignment.topCenter,
-            // UNITS_BLOC
-            child:
-                BlocBuilder<UnitsBloc, UnitsState>(builder: (context, state) {
-              if (state is UnitsNoNearUnit) {
-                return Text(trans('selectUnitMap.noNearUnits'));
-              }
-              if (state is UnitsNotLoaded) {
-                return Text(trans('selectUnitMap.notLoaded'));
-              }
-              if (state is UnitsLoaded) {
-                return ListView.builder(
-                  padding: EdgeInsets.all(0.0),
-                  itemCount: state.units.length,
-                  physics: BouncingScrollPhysics(),
-                  controller: scrollController,
-                  itemBuilder: (context, index) {
-                    return _buildUnitCardItem(
-                        context, state.units[index], index == 0);
-                  },
+                  ],
                 );
               }
+
               return CenterLoadingWidget(
+                backgroundColor: theme.secondary0,
+                color: theme.primary,
+              );
+            },
+          ),
+          // Takeaway mode switcher,
+          Positioned(
+            top: kToolbarHeight + 16.0,
+            // alignment: Alignment.topCenter,
+            child: BlocBuilder<TakeAwayBloc, TakeAwayState>(builder: (
+              context,
+              state,
+            ) {
+              var mode = ServingMode.inPlace;
+              if (state is ServingModeSelectedState) {
+                mode = state.servingMode;
+              }
+              return TakeAwayToggle(
+                inPlace: mode == ServingMode.takeAway,
+                showText: true,
+                height: 40.0,
                 backgroundColor: Colors.white,
-                color: Color(0xFF857C18),
+                // colorTheme: theme,
+                onToggle: (bool isLeft) {
+                  var servingMode =
+                      isLeft ? ServingMode.takeAway : ServingMode.inPlace;
+                  getIt<TakeAwayBloc>().add(
+                    SetServingMode(servingMode),
+                  );
+                  getIt<UnitsBloc>().add(
+                    FilterUnits(servingMode: servingMode),
+                  );
+                  return true;
+                },
               );
             }),
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildUnitCardItem(
-      BuildContext context, GeoUnit unit, bool highlight) {
-    return InkWell(
-      onTap: () => selectUnitAndGoToMenuScreen(
-        context,
-        unit,
-        deletePlace: true,
-      ),
-      child: Container(
-        margin: EdgeInsets.only(
-          left: 14.0,
-          right: 14.0,
-          bottom: 5.0,
-          top: 5.0,
-        ),
-        padding: EdgeInsets.only(
-          left: 20.0,
-          right: 20.0,
-          top: 20.0,
-          bottom: 20.0,
-        ),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(14.0),
-          border: Border.all(
-            width: 1.5,
-            color: const Color(0xFFE7E5D0),
-          ),
-        ),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(children: [
-                  if (unit.style.images?.logo != null)
-                    Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: ImageWidget(
-                        width: 32,
-                        height: 40,
-                        url: unit.style.images!.logo,
-                        placeholder: CircularProgressIndicator(),
-                        errorWidget: Icon(Icons.error),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        unit.name,
-                        style: Fonts.satoshi(
-                          fontSize: 18,
-                          color: const Color(0xFF303030),
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      Text(
-                        GeoUnitUtils.isClosed(unit)
-                            ? GeoUnitUtils.getClosedText(
-                                unit,
-                                transEx(context, "selectUnit.closed"),
-                                transEx(context, "selectUnit.opens"),
-                                transEx(context,
-                                    "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
-                              )
-                            : transEx(context, "selectUnit.opened") +
-                                ": " +
-                                transEx(
-                                    context,
-                                    GeoUnitUtils.getOpenedHour(unit)!
-                                        .getOpenRangeString()!),
-                        style: Fonts.satoshi(
-                          fontSize: 14,
-                          color: const Color(0xFF303030),
-                        ),
-                      ),
-                    ],
-                  ),
-                ]),
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 18.0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(
-                          top: 4.0,
-                          bottom: 4.0,
-                          left: 8.0,
-                          right: 8.0,
-                        ),
-                        height: 28.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6.0),
-                          color: highlight
-                              ? Color(0xFF30BF60)
-                              : Color(
-                                  0xFF30BF60), //const Color(0xFF1E6F4A) : const Color(0xff857c18),
-                        ),
-                        child: Center(
-                          child: Text(
-                            (unit.distance / 1000).toStringAsFixed(3) + ' km',
-                            style: Fonts.satoshi(
-                              fontSize: 14,
-                              color:
-                                  Color(0xFFFFFFFF), //const Color(0xffffffff),
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                      Text(
-                        // unit.openingHours ??
-                        '',
-                        style: Fonts.satoshi(
-                          fontSize: 14,
-                          color: Color(0xFF303030), //const Color(0xff3c2f2f),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            // Takeaway buttons
-            Positioned(
-              bottom: 0,
-              right: 0,
-              child: Row(
-                children: [
-                  if (unit.supportedServingModes.contains(ServingMode.inPlace))
-                    BorderedWidget(
-                        width: 32.0,
-                        height: 32.0,
-                        borderColor: Color(0xFFF0F0F0),
-                        color: Color(0xFFFFFFFF),
-                        child: Padding(
-                          padding: const EdgeInsets.all(6.0),
-                          child: SvgPicture.asset(
-                            'assets/icons/restaurant_menu_black.svg',
-                          ),
-                        )),
-                  if (unit.supportedServingModes.contains(ServingMode.takeAway))
-                    SizedBox(
-                      width: 4.0,
-                    ),
-                  if (unit.supportedServingModes.contains(ServingMode.takeAway))
-                    BorderedWidget(
-                        width: 32.0,
-                        height: 32.0,
-                        borderColor: Color(0xFFF0F0F0),
-                        color: Color(0xFFFFFFFF),
-                        child: SvgPicture.asset(
-                          "assets/icons/bag.svg",
-                          color: Color(0xFF303030),
-                          width: 18.0,
-                          height: 18.0,
-                        )),
-                ],
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
 
-  void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
-    // getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
-    _determineUserPositionAndLoadUnits();
+  Widget _getRefreshableMessage(String titleKey) {
+    return SmartRefresher(
+      enablePullDown: true,
+      header: MaterialClassicHeader(),
+      controller: _refreshController,
+      onRefresh: _onRefresh,
+      child: UnitLoadInfoWidget(
+        titleKey: titleKey,
+      ),
+    );
   }
 
-  void _determineUserPositionAndLoadUnits() async {
-    try {
-      LatLng? userLocation =
-          await getIt<LocationRepository>().getUserCurrentLocation();
-      log.d('_determineUserPositionAndLoadUnits().location=$userLocation');
-      if (userLocation != null) {
-        await _animateMapToLocation(userLocation);
-        _loadNearUnits(userLocation);
-      }
-    } on Exception {
-      await _showLocationPermissionRejectedAlertDialog(context);
-    }
+  Future<void> _zoomToUnit(GeoUnit unit, MarkerId markerId) async {
+    log.d('_zoomToUnit()=${unit.loc}');
+    return _animateMapToLocation(
+      LatLng(
+        unit.loc.lat,
+        unit.loc.lng,
+      ),
+      markerId,
+    );
   }
 
-  Future<void> _animateMapToLocation(LatLng userCurrentLocation) async {
+  Future<void> _animateMapToLocation(LatLng location, MarkerId markerId) async {
     var position = CameraPosition(
         // bearing: 192.8334901395799,
-        target: userCurrentLocation,
+        target: location,
         // tilt: 59.440717697143555,
         zoom: 14.0);
 
     if (mounted) {
-      _createUserMarker(
-        userCurrentLocation,
-        trans('selectUnitMap.userMarker.title'),
-        trans('selectUnitMap.userMarker.description'),
-      );
-    }
-    if (mounted) {
       await _mapController
           .animateCamera(CameraUpdate.newCameraPosition(position));
+      // await _mapController.showMarkerInfoWindow(markerId);
     }
   }
 
-  void _loadNearUnits(LatLng userCurrentLocation) {
-    getIt<UnitsBloc>().add(LoadUnitsNearLocation(userCurrentLocation));
-  }
-
-  void _createUserMarker(LatLng location, String title, String snippets) {
-    final MarkerId markerId = MarkerId('USER');
-    final Marker marker = Marker(
-      markerId: markerId,
-      position: location,
-      infoWindow: InfoWindow(title: title, snippet: snippets),
-    );
-
-    setState(() {
-      // adding a new marker to map
-      _userMarker = marker;
-    });
-  }
-
-  void _createUnitsMarker(List<GeoUnit> units) {
-    Map<MarkerId, Marker> unitMarkers = <MarkerId, Marker>{};
+  Map<MarkerId, MarkerData> _createMarkers(
+      List<GeoUnit> units, LatLng? userLocation) {
+    Map<MarkerId, MarkerData> unitMarkers = <MarkerId, MarkerData>{};
+    if (userLocation != null) {
+      var userMarker = MarkerData(
+        marker: Marker(
+          markerId: const MarkerId('USER'),
+          position: userLocation, // LatLng(47.4737, 19.0750)
+        ),
+        child: _MarkerWidget(
+          title: trans('selectUnit.you'),
+          backgroundColor: Color(0xFFE74C3C),
+          iconUrl: 'assets/icons/user_location_on_map.svg',
+          iconBckgroundColor: theme.secondary0,
+          iconColor: theme.secondary,
+          textColor: theme.secondary0,
+        ),
+      );
+      unitMarkers[userMarker.marker.markerId] = userMarker;
+    }
     for (GeoUnit unit in units) {
       final MarkerId markerId = MarkerId(unit.id);
 
-      unitMarkers[markerId] = Marker(
-        markerId: markerId,
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
-        position: LatLng(unit.loc.lat, unit.loc.lng),
-        infoWindow: InfoWindow(
-          title: unit.name,
-          snippet:
-              '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
-          onTap: () {
-            selectUnitAndGoToMenuScreen(
-              context,
-              unit,
-              deletePlace: true,
-            );
-          },
+      unitMarkers[markerId] = MarkerData(
+        child: _MarkerWidget(
+          title: unit.name.toTitleCase(),
+          backgroundColor: theme.primary,
+          iconBckgroundColor: theme.secondary0,
+          iconUrl: 'assets/icons/restaurant_menu_black.svg',
+          iconColor: theme.secondary,
+          textColor: theme.secondary0,
+        ),
+        marker: Marker(
+          markerId: markerId,
+          position: LatLng(
+            unit.loc.lat,
+            unit.loc.lng,
+          ),
+          onTap: () => selectUnitAndGoToMenuScreen(
+            context,
+            unit,
+            deletePlace: true,
+            useTheme: false,
+            showSelectServingMode: false,
+          ),
         ),
       );
     }
 
-    setState(() {
-      // adding a new marker to map
-      _unitMarkers = unitMarkers;
-    });
+    // log.e('UnitMapWidget._createUnitsMarker().length=${unitMarkers.length}');
+    return unitMarkers;
   }
+}
 
-  Future<void> _showLocationPermissionRejectedAlertDialog(
-      BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return PlatformAlertDialog(
-          title: trans('selectUnitMap.permission.title'),
-          description: trans('selectUnitMap.permission.description'),
-          cancelButtonText: trans('selectUnitMap.permission.closeApp'),
-          okButtonText: trans('selectUnitMap.permission.backToMap'),
-          onOkPressed: () {
-            Nav.pop();
-            _determineUserPositionAndLoadUnits();
-          },
-          onCancelPressed: () {
-            // Close this dialog
-            Nav.pop();
-            // Exit application
-            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-          },
-        );
-      },
+class _MarkerWidget extends StatelessWidget {
+  final String title;
+  final Color backgroundColor;
+  final Color textColor;
+  final Color iconColor;
+  final Color iconBckgroundColor;
+  final String iconUrl;
+
+  const _MarkerWidget({
+    Key? key,
+    required this.title,
+    required this.backgroundColor,
+    required this.textColor,
+    required this.iconColor,
+    required this.iconBckgroundColor,
+    required this.iconUrl,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          padding: const EdgeInsets.only(
+            top: 5.0,
+            bottom: 5.0,
+            left: 5.0,
+            right: 8.0,
+          ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(
+              30.0,
+            ),
+            color: backgroundColor,
+          ),
+          child: Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(
+                    14.0,
+                  ),
+                  color: iconBckgroundColor,
+                ),
+                child: SvgPicture.asset(
+                  iconUrl,
+                  color: iconColor,
+                  width: 20.0,
+                  height: 20.0,
+                ),
+              ),
+              SizedBox(
+                width: 4.0,
+              ),
+              Text(
+                title,
+                style: Fonts.hH5(
+                  color: textColor,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SvgPicture.asset(
+          'assets/icons/black_triangle.svg',
+          color: backgroundColor,
+          width: 16.0,
+          height: 8.0,
+        )
+      ],
+    );
+  }
+}
+
+class _MapUnitListWidget extends StatelessWidget {
+  final List<GeoUnit> units;
+  final List<MarkerData> markers;
+  final ValueChanged<int> onPageChanged;
+  const _MapUnitListWidget({
+    Key? key,
+    required this.units,
+    required this.markers,
+    required this.onPageChanged,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      // you may want to use an aspect ratio here for tablet support
+      height: 120.0,
+      child: PageView.builder(
+        controller: PageController(viewportFraction: 0.88),
+        physics: BouncingScrollPhysics(),
+        onPageChanged: (index) => onPageChanged(index),
+        itemCount: units.length,
+        itemBuilder: (BuildContext context, int index) {
+          var unit = units[index];
+          return Padding(
+            padding: const EdgeInsets.only(
+              left: 6.0,
+              right: 6.0,
+            ),
+            child: UnitMapCardWidget(
+              closeTime: getOpeningText(context, unit),
+              height: 120.0,
+              distance: '${(unit.distance / 1000).toStringAsFixed(0)}m',
+              image: unit.hasBanner ? unit.coverBanners?.first.imageUrl : null,
+              // isFavorite: false,
+              // unitFoodType: 'Casual',
+              unitName: unit.name,
+              // unitPriceType: '\$\$',
+              // discount: 20,
+              // rating: 4.8,
+              onTap: () => selectUnitAndGoToMenuScreen(
+                context,
+                unit,
+                deletePlace: true,
+                useTheme: false,
+                showSelectServingMode: false,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

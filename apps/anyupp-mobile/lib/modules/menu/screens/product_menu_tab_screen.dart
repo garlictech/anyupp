@@ -9,14 +9,14 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class ProductMenuTabScreenTemp extends StatelessWidget {
+@deprecated
+class ProductMenuTabScreenExtern extends StatelessWidget {
   final GeoUnit unit;
   final String categoryId;
   final int tabPosition;
 
-  const ProductMenuTabScreenTemp({
+  const ProductMenuTabScreenExtern({
     Key? key,
     required this.unit,
     required this.categoryId,
@@ -59,13 +59,11 @@ class ProductMenuTabScreen extends StatefulWidget {
 
 class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
     with AutomaticKeepAliveClientMixin<ProductMenuTabScreen> {
-  String? _nextToken;
-  late int _pageSize;
-  RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
   @override
   bool get wantKeepAlive => true;
+
+  String? _nextToken;
+  late int _pageSize;
 
   bool _adBannerHidden = false;
 
@@ -73,17 +71,6 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
   void initState() {
     super.initState();
     _pageSize = getIt<AppConstants>().paginationSize;
-  }
-
-  void _onRefresh() async {
-    BlocProvider.of<ProductListBloc>(context).add(LoadProductList(
-        unitId: widget.unit.id,
-        categoryId: widget.categoryId,
-        nextToken: _nextToken));
-    _refreshController.refreshCompleted();
-    setState(() {
-      _adBannerHidden = false;
-    });
   }
 
   @override
@@ -101,9 +88,9 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
           }
 
           if (state is ProductListLoaded) {
-            var items = state.products.data;
-            _nextToken = state.products.nextToken;
-            if (items == null || items.isEmpty) {
+            var items = state.products;
+            // _nextToken = state.products.nextToken;
+            if (items.isEmpty) {
               return const ProductEmptyListWidget();
             }
             return BlocBuilder<TakeAwayBloc, TakeAwayState>(
@@ -123,7 +110,7 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
 
               // Banner rendering
               bool hasAdBanner = widget.unit.adBannersEnabled == true;
-              AdBanner? banner;
+              ImageAsset? banner;
               int bannerIndex = -1;
               if (hasAdBanner) {
                 banner = getRandomBanner(
@@ -137,104 +124,89 @@ class _ProductMenuTabScreenState extends State<ProductMenuTabScreen>
                 hasAdBanner = false;
                 itemCount = items.length;
               }
+              if (!hasItems) {
+                return const ProductEmptyListWidget();
+              }
 
               return AnimationLimiter(
-                  child: SmartRefresher(
-                enablePullDown: true,
-                header: const MaterialClassicHeader(),
-                onRefresh: _onRefresh,
-                controller: _refreshController,
-                child: !hasItems
-                    ? EmptyWidget(
-                        icon: 'assets/icons/empty-category.png',
-                        messageKey: mode == ServingMode.takeAway
-                            ? 'main.category.emptyTakeaway'
-                            : 'main.category.emptyInPlace',
-                        descriptionKey: 'main.category.emptyHint',
-                        textFontSize: 18.0,
-                        descriptionFontSize: 14.0,
-                        horizontalPadding: 32.0,
-                        iconSize: 32.0,
-                        background: Colors.transparent,
-                      )
-                    : ListView.builder(
-                        itemCount: itemCount,
-                        scrollDirection: Axis.vertical,
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, position) {
-                          if (hasAdBanner &&
-                              banner != null &&
-                              position == bannerIndex) {
-                            return AnimationConfiguration.staggeredList(
-                              position: position,
-                              duration: const Duration(milliseconds: 200),
-                              child: SlideAnimation(
-                                verticalOffset: 50.0,
-                                child: FadeInAnimation(
-                                  child: AdBannerCardWidget(
-                                      banner: banner,
-                                      animated: true,
-                                      onClosed: () {
-                                        setState(() {
-                                          _adBannerHidden = true;
-                                        });
-                                      }),
-                                ),
-                              ),
-                            );
-                          }
-
-                          int pos = position;
-                          if (hasAdBanner && position > bannerIndex) {
-                            pos--;
-                          }
-                          var product = items[pos];
-
-                          bool isAvailableInThisServingMode =
-                              product.isAvailableInServingMode(mode);
-                          bool isSoldOut = product.isSoldOut;
-                          bool isHidden = isSoldOut &&
-                              widget.unit.soldOutVisibilityPolicy ==
-                                  SoldOutVisibilityPolicy.invisible;
-                          ProductItemDisplayState displayState =
-                              ProductItemDisplayState.NORMAL;
-                          if (isSoldOut) {
-                            displayState = ProductItemDisplayState.SOLDOUT;
-                          } else if (!isAvailableInThisServingMode) {
-                            displayState = ProductItemDisplayState.DISABLED;
-                          }
-
-                          if (isHidden) {
-                            return Container();
-                          }
-
-                          if (pos == itemCount &&
-                              itemCount % _pageSize == 0 &&
-                              _nextToken != null) {
-                            getIt<ProductListBloc>().add(LoadProductList(
-                              unitId: widget.unit.id,
-                              categoryId: widget.categoryId,
-                              nextToken: _nextToken,
-                            ));
-                          }
-
-                          return AnimationConfiguration.staggeredList(
-                            position: pos,
-                            duration: const Duration(milliseconds: 200),
-                            child: SlideAnimation(
-                              verticalOffset: 50.0,
-                              child: FadeInAnimation(
-                                child: ProductMenuItem(
-                                  displayState: displayState,
-                                  unit: widget.unit,
-                                  item: product,
-                                  servingMode: mode ?? ServingMode.inPlace,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
+                  child: ListView.builder(
+                itemCount: itemCount,
+                scrollDirection: Axis.vertical,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemBuilder: (context, position) {
+                  if (hasAdBanner &&
+                      banner != null &&
+                      position == bannerIndex) {
+                    return AnimationConfiguration.staggeredList(
+                      position: position,
+                      duration: const Duration(milliseconds: 200),
+                      child: SlideAnimation(
+                        verticalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: AdBannerCardWidget(
+                              banner: banner,
+                              animated: true,
+                              onClosed: () {
+                                setState(() {
+                                  _adBannerHidden = true;
+                                });
+                              }),
+                        ),
                       ),
+                    );
+                  }
+
+                  int pos = position;
+                  if (hasAdBanner && position > bannerIndex) {
+                    pos--;
+                  }
+                  var product = items[pos];
+
+                  bool isAvailableInThisServingMode =
+                      product.isAvailableInServingMode(mode);
+                  bool isSoldOut = product.isSoldOut;
+                  bool isHidden = isSoldOut &&
+                      widget.unit.soldOutVisibilityPolicy ==
+                          SoldOutVisibilityPolicy.invisible;
+                  ProductItemDisplayState displayState =
+                      ProductItemDisplayState.NORMAL;
+                  if (isSoldOut) {
+                    displayState = ProductItemDisplayState.SOLDOUT;
+                  } else if (!isAvailableInThisServingMode) {
+                    displayState = ProductItemDisplayState.DISABLED;
+                  }
+
+                  if (isHidden) {
+                    return Container();
+                  }
+
+                  if (pos == itemCount &&
+                      itemCount % _pageSize == 0 &&
+                      _nextToken != null) {
+                    getIt<ProductListBloc>().add(LoadProductList(
+                      unitId: widget.unit.id,
+                      categoryId: widget.categoryId,
+                      nextToken: _nextToken,
+                    ));
+                  }
+
+                  return AnimationConfiguration.staggeredList(
+                    position: pos,
+                    duration: const Duration(milliseconds: 200),
+                    child: SlideAnimation(
+                      verticalOffset: 50.0,
+                      child: FadeInAnimation(
+                        child: ProductMenuItemWidget(
+                          displayState: displayState,
+                          unit: widget.unit,
+                          item: product,
+                          servingMode: mode ?? ServingMode.inPlace,
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ));
             });
           }

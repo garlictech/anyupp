@@ -116,4 +116,58 @@ class AwsProductProvider implements IProductProvider {
       rethrow;
     }
   }
+
+  @override
+  Future<PageResponse<GeneratedProduct>> getAllProductList(String unitId,
+      [String? nextToken]) async {
+    try {
+      var result = await GQL.amplify.execute(ListAllProductsQuery(
+        variables: ListAllProductsArguments(
+          unitId: unitId,
+          nextToken: nextToken,
+        ),
+      ));
+
+      if (result.hasErrors) {
+        throw GraphQLException.fromGraphQLError(
+            GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+      }
+
+      if (result.data == null || result.data?.searchGeneratedProducts == null) {
+        log.d('***** getAllProductList().empty results');
+        return PageResponse(data: null);
+      }
+
+      int count = result.data?.searchGeneratedProducts?.total ?? 0;
+      String? token = result.data?.searchGeneratedProducts?.nextToken;
+      var items = result.data?.searchGeneratedProducts?.items;
+      List<GeneratedProduct> results = [];
+      if (items != null) {
+        for (int i = 0; i < items.length; i++) {
+          GeneratedProduct product =
+              GeneratedProduct.fromJson(items[i]!.toJson());
+          product.variants.sort((v1, v2) => v1.position.compareTo(v2.position));
+          product.configSets
+              ?.sort((c1, c2) => c1.position?.compareTo(c2.position ?? 0) ?? 0);
+          product.configSets?.forEach(
+            (configSet) => configSet.items.sort(
+                (i1, i2) => i1.position?.compareTo(i2.position ?? 0) ?? 0),
+          );
+          results.add(product);
+        }
+      }
+      results.sort((a, b) => a.position.compareTo(b.position));
+      // results.groupBy((c) => c.productCategoryId);
+      log.d('***** getAllProductList().items.length=${results.length}');
+
+      return PageResponse(
+        data: results,
+        totalCount: count,
+        nextToken: token,
+      );
+    } on Exception catch (e) {
+      log.e('***** getAllProductList().error=$e');
+      rethrow;
+    }
+  }
 }

@@ -195,62 +195,66 @@ class _ProductConfigModifiersWidgetState
         },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    getLocalizedText(context, item.name),
-                    style: Fonts.satoshi(
-                      color: theme.secondary,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        (item.price > 0 ? '+' : '') +
-                            formatCurrency(item.price * serviceFeeMul,
-                                widget.unit.currency),
+              child: ClipRect(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        getLocalizedText(context, item.name),
                         style: Fonts.satoshi(
-                          color: theme.highlight,
+                          color: theme.secondary,
                           fontSize: 16.0,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
-                      Radio<String>(
-                        groupValue: _selectedModifier[productSetId],
-                        value: value,
-                        activeColor: theme.highlight,
-                        fillColor: MaterialStateColor.resolveWith((states) {
-                          if (states.isEmpty) {
-                            return theme.secondary16;
-                          }
-                          var state = states.first;
-                          switch (state) {
-                            case MaterialState.selected:
-                              return theme.highlight;
-                            default:
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          (item.price > 0 ? '+' : '') +
+                              formatCurrency(item.price * serviceFeeMul,
+                                  widget.unit.currency),
+                          style: Fonts.satoshi(
+                            color: theme.highlight,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Radio<String>(
+                          groupValue: _selectedModifier[productSetId],
+                          value: value,
+                          activeColor: theme.highlight,
+                          fillColor: MaterialStateColor.resolveWith((states) {
+                            if (states.isEmpty) {
                               return theme.secondary16;
-                          }
-                        }),
-                        onChanged: (String? value) {
-                          if (value != null) {
-                            setState(() {
-                              _selectedModifier[productSetId] = value;
-                            });
-                            widget.onModifiersSelected(_selectedModifier);
-                            _expandableModifierController[productSetId]
-                                ?.toggle();
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ],
+                            }
+                            var state = states.first;
+                            switch (state) {
+                              case MaterialState.selected:
+                                return theme.highlight;
+                              default:
+                                return theme.secondary16;
+                            }
+                          }),
+                          onChanged: (String? value) {
+                            if (value != null) {
+                              setState(() {
+                                _selectedModifier[productSetId] = value;
+                              });
+                              widget.onModifiersSelected(_selectedModifier);
+                              _expandableModifierController[productSetId]
+                                  ?.toggle();
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             if (!last)

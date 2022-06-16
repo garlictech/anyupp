@@ -16,9 +16,12 @@ class ProductListLoading extends ProductListState {
 }
 
 class ProductListLoaded extends ProductListState {
-  final PageResponse<GeneratedProduct> products;
-  const ProductListLoaded(this.products);
+  final List<GeneratedProduct> products;
+  final List<ProductCategory>? productCategories;
+  final List<FavoriteProduct>? favorites;
+  const ProductListLoaded(
+      {required this.products, this.productCategories, this.favorites});
 
   @override
-  List<Object?> get props => [products];
+  List<Object?> get props => [products, productCategories, favorites];
 }

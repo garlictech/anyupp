@@ -11,8 +11,8 @@ class LogScreenOutput extends LogOutput {
 
 var log = Logger(
   printer: SimplePrinter(
-    printTime: true,
+    printTime: false,
     colors: true,
   ),
-  output: LogScreenOutput(),
+  // output: LogScreenOutput(),
 );
