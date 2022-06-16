@@ -99,6 +99,9 @@ export const createBuildProject = (
           CI: 'ci',
         },
       },
+      cache: {
+        paths: ['/node_modules/', '/root/.npm/**/*'],
+      },
     }),
     cache,
     environment: {
@@ -208,6 +211,7 @@ export const createPipeline = (
 ) => {
   const sourceOutput = new codepipeline.Artifact();
   const buildOutput = new codepipeline.Artifact('buildOutput');
+
   const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
   const build = utils.createBuildProject(
     scope,
