@@ -99,6 +99,9 @@ export const createBuildProject = (
           CI: 'ci',
         },
       },
+      cache: {
+        paths: ['/node_modules/', '/root/.npm/**/*'],
+      },
     }),
     cache,
     environment: {
@@ -128,23 +131,28 @@ export const configurePipelineNotifications = (
   chatbot: chatbot.SlackChannelConfiguration,
   stage: string,
 ): void => {
-  new codestarnotifications.CfnNotificationRule(stack, 'BuildNotification', {
-    detailType: 'FULL',
-    eventTypeIds: [
-      'codepipeline-pipeline-action-execution-failed',
-      'codepipeline-pipeline-action-execution-succeeded',
-      'codepipeline-pipeline-action-execution-started',
-      'codepipeline-pipeline-action-execution-canceled',
-    ],
-    name: `AnyUppBuildNotification${stage}`,
-    resource: resourceArn,
-    targets: [
-      {
-        targetAddress: chatbot.slackChannelConfigurationArn,
-        targetType: 'AWSChatbotSlack',
-      },
-    ],
-  });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const notification = new codestarnotifications.CfnNotificationRule(
+    stack,
+    'BuildNotification',
+    {
+      detailType: 'FULL',
+      eventTypeIds: [
+        'codepipeline-pipeline-action-execution-failed',
+        'codepipeline-pipeline-action-execution-succeeded',
+        'codepipeline-pipeline-action-execution-started',
+        'codepipeline-pipeline-action-execution-canceled',
+      ],
+      name: `AnyUppBuildNotification${stage}`,
+      resource: resourceArn,
+      targets: [
+        {
+          targetAddress: chatbot.slackChannelConfigurationArn,
+          targetType: 'AWSChatbotSlack',
+        },
+      ],
+    },
+  );
 };
 
 export const configurePRNotifications = (
@@ -153,22 +161,27 @@ export const configurePRNotifications = (
   chatbot: chatbot.SlackChannelConfiguration,
   stage: string,
 ): void => {
-  new codestarnotifications.CfnNotificationRule(stack, 'BuildNotification', {
-    detailType: 'FULL',
-    eventTypeIds: [
-      'codebuild-project-build-state-in-progress',
-      'codebuild-project-build-state-failed',
-      'codebuild-project-build-state-succeeded',
-    ],
-    name: `AnyUppPRNotification${stage}`,
-    resource: resourceArn,
-    targets: [
-      {
-        targetAddress: chatbot.slackChannelConfigurationArn,
-        targetType: 'AWSChatbotSlack',
-      },
-    ],
-  });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const notification = new codestarnotifications.CfnNotificationRule(
+    stack,
+    'BuildNotification',
+    {
+      detailType: 'FULL',
+      eventTypeIds: [
+        'codebuild-project-build-state-in-progress',
+        'codebuild-project-build-state-failed',
+        'codebuild-project-build-state-succeeded',
+      ],
+      name: `AnyUppPRNotification${stage}`,
+      resource: resourceArn,
+      targets: [
+        {
+          targetAddress: chatbot.slackChannelConfigurationArn,
+          targetType: 'AWSChatbotSlack',
+        },
+      ],
+    },
+  );
 };
 
 export const copyParameter = (
@@ -187,7 +200,8 @@ export const copyParameter = (
     },
   ).stringValue;
 
-  new ssm.StringParameter(stack, paramNameParam, {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const parameter = new ssm.StringParameter(stack, paramNameParam, {
     allowedPattern: '.*',
     description: 'A project parameter',
     parameterName: `${projectPrefix(toStage)}-${paramName}`,
@@ -208,6 +222,7 @@ export const createPipeline = (
 ) => {
   const sourceOutput = new codepipeline.Artifact();
   const buildOutput = new codepipeline.Artifact('buildOutput');
+
   const cache = codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM);
   const build = utils.createBuildProject(
     scope,
