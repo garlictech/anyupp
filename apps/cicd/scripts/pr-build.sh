@@ -17,7 +17,7 @@ echo "*******************"
 du -sh /tmp/nx
 echo "*******************"
 export DEBUG=*
-yarn nx affected:lint --base=dev ${excludes}
+yarn nx affected:lint --base=dev ${excludes} --skip-nx-cache
 echo "*******************"
 du -sh /tmp/nx
 echo "*******************"
