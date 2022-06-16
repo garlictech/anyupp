@@ -9,6 +9,7 @@ excludes="--exclude=anyupp-mobile"
 yarn nx synth anyupp-backend --env=${ENVNAME}
 yarn nx synth common-backend --env=dev
 yarn nx format:check --affected
+export DEBUG=*
 yarn nx affected:lint --base=dev ${excludes}
 yarn nx affected:test --base=dev ${excludes} \
   --exclude="integration-tests-angular" \
