@@ -32,7 +32,12 @@
         "command": "../../tools/build-schema-mobile-api.sh {args.env} {args.mode}",
         "cwd": "apps/crud-backend"
       },
-      "outputs": ["apps/anyupp-mobile/graphql/"]
+      "outputs": [
+        "apps/anyupp-mobile/graphql/crud-api-schema.graphql",
+        "apps/anyupp-mobile/lib/awsconfiguration.dart",
+        "apps/anyupp-mobile/lib/graphql/generated",
+        "apps/anyupp-mobile/test/graphql/generated"
+      ]
     },
     "pub-get": {
       "executor": "@nrwl/workspace:run-commands",
