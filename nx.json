@@ -4,6 +4,7 @@
     "defaultBase": "dev"
   },
   "implicitDependencies": {
+    "package.json": "*",
     "angular.json": "*",
     "tsconfig.base.json": "*",
     "nx.json": "*",
