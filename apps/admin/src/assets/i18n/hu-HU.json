@@ -392,6 +392,7 @@
     "merchantId": "Stripe kereskedői azonosító",
     "canRequestVatInvoice": "ÁFA-s számla igényelhető",
     "canCallWaiter": "Pincér hívható",
+    "isVisibleInApp": "App-ban látható",
     "adBanner": "Reklám banner",
     "coverBanner": "Fejléc banner",
     "showBanners": "Bannerek megjelenítése",

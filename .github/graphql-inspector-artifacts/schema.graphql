@@ -902,6 +902,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   location: LocationLatLon
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
+  isVisibleInApp: Boolean
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1273,6 +1274,7 @@ input CreateUnitInput {
   location: LocationLatLonInput!
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
+  isVisibleInApp: Boolean
 }
 
 input UpdateUnitInput {
@@ -1312,6 +1314,7 @@ input UpdateUnitInput {
   location: LocationLatLonInput
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
+  isVisibleInApp: Boolean
 }
 
 type CreateAnonymUserOutput {
@@ -2826,6 +2829,7 @@ input ModelUnitFilterInput {
   orderPaymentPolicy: ModelOrderPaymentPolicyInput
   canRequestVatInvoice: ModelBooleanInput
   canCallWaiter: ModelBooleanInput
+  isVisibleInApp: ModelBooleanInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2853,6 +2857,7 @@ input ModelUnitConditionInput {
   orderPaymentPolicy: ModelOrderPaymentPolicyInput
   canRequestVatInvoice: ModelBooleanInput
   canCallWaiter: ModelBooleanInput
+  isVisibleInApp: ModelBooleanInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput
@@ -4019,6 +4024,7 @@ input SearchableUnitFilterInput {
   packagingTaxPercentage: SearchableFloatFilterInput
   canRequestVatInvoice: SearchableBooleanFilterInput
   canCallWaiter: SearchableBooleanFilterInput
+  isVisibleInApp: SearchableBooleanFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
@@ -4049,6 +4055,7 @@ enum SearchableUnitSortableFields {
   packagingTaxPercentage
   canRequestVatInvoice
   canCallWaiter
+  isVisibleInApp
   createdAt
   updatedAt
 }
@@ -4081,6 +4088,7 @@ enum SearchableUnitAggregateField {
   orderPaymentPolicy
   canRequestVatInvoice
   canCallWaiter
+  isVisibleInApp
   createdAt
   updatedAt
 }

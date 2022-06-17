@@ -524,6 +524,7 @@ export interface CreateUnitInput {
   id?: InputMaybe<Scalars['ID']>;
   isAcceptingOrders: Scalars['Boolean'];
   isActive: Scalars['Boolean'];
+  isVisibleInApp?: InputMaybe<Scalars['Boolean']>;
   lanes?: InputMaybe<Array<InputMaybe<LaneInput>>>;
   lastOrderNum?: InputMaybe<Scalars['Int']>;
   location: LocationLatLonInput;
@@ -1729,6 +1730,7 @@ export interface ModelUnitConditionInput {
   groupId?: InputMaybe<ModelIdInput>;
   isAcceptingOrders?: InputMaybe<ModelBooleanInput>;
   isActive?: InputMaybe<ModelBooleanInput>;
+  isVisibleInApp?: InputMaybe<ModelBooleanInput>;
   lastOrderNum?: InputMaybe<ModelIntInput>;
   merchantId?: InputMaybe<ModelStringInput>;
   name?: InputMaybe<ModelStringInput>;
@@ -1762,6 +1764,7 @@ export interface ModelUnitFilterInput {
   id?: InputMaybe<ModelIdInput>;
   isAcceptingOrders?: InputMaybe<ModelBooleanInput>;
   isActive?: InputMaybe<ModelBooleanInput>;
+  isVisibleInApp?: InputMaybe<ModelBooleanInput>;
   lastOrderNum?: InputMaybe<ModelIntInput>;
   merchantId?: InputMaybe<ModelStringInput>;
   name?: InputMaybe<ModelStringInput>;
@@ -4346,6 +4349,7 @@ export enum SearchableUnitAggregateField {
   id = 'id',
   isacceptingorders = 'isAcceptingOrders',
   isactive = 'isActive',
+  isvisibleinapp = 'isVisibleInApp',
   lastordernum = 'lastOrderNum',
   merchantid = 'merchantId',
   name = 'name',
@@ -4387,6 +4391,7 @@ export interface SearchableUnitFilterInput {
   id?: InputMaybe<SearchableIdFilterInput>;
   isAcceptingOrders?: InputMaybe<SearchableBooleanFilterInput>;
   isActive?: InputMaybe<SearchableBooleanFilterInput>;
+  isVisibleInApp?: InputMaybe<SearchableBooleanFilterInput>;
   lastOrderNum?: InputMaybe<SearchableIntFilterInput>;
   merchantId?: InputMaybe<SearchableStringFilterInput>;
   name?: InputMaybe<SearchableStringFilterInput>;
@@ -4495,6 +4500,7 @@ export enum SearchableUnitSortableFields {
   id = 'id',
   isacceptingorders = 'isAcceptingOrders',
   isactive = 'isActive',
+  isvisibleinapp = 'isVisibleInApp',
   lastordernum = 'lastOrderNum',
   merchantid = 'merchantId',
   name = 'name',
@@ -4854,6 +4860,7 @@ export interface Unit {
   id: Scalars['ID'];
   isAcceptingOrders: Scalars['Boolean'];
   isActive: Scalars['Boolean'];
+  isVisibleInApp?: Maybe<Scalars['Boolean']>;
   lanes?: Maybe<Array<Maybe<Lane>>>;
   lastOrderNum?: Maybe<Scalars['Int']>;
   location?: Maybe<LocationLatLon>;
@@ -5177,6 +5184,7 @@ export interface UpdateUnitInput {
   id: Scalars['ID'];
   isAcceptingOrders?: InputMaybe<Scalars['Boolean']>;
   isActive?: InputMaybe<Scalars['Boolean']>;
+  isVisibleInApp?: InputMaybe<Scalars['Boolean']>;
   lanes?: InputMaybe<Array<InputMaybe<LaneInput>>>;
   lastOrderNum?: InputMaybe<Scalars['Int']>;
   location?: InputMaybe<LocationLatLonInput>;
@@ -5281,26 +5289,176 @@ export interface WeeklyScheduleInput {
   wed?: InputMaybe<DateIntervalInput>;
 }
 
+export type GetGroupCurrencyQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetGroupCurrencyQuery = { getGroup?: { currency: string } | null };
+
+export type SearchReportOrdersQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableOrderFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableOrderSortInput>> | InputMaybe<SearchableOrderSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchReportOrdersQuery = { searchOrders?: { nextToken?: string | null, items: Array<{ createdAt: string, userId: string, sumPriceShown: { currency: string, priceSum: number } } | null> } | null };
+
+export type SearchChainIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableChainFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableChainSortInput>> | InputMaybe<SearchableChainSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchChainIdsQuery = { searchChains?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchGroupIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableGroupFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableGroupSortInput>> | InputMaybe<SearchableGroupSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchGroupIdsQuery = { searchGroups?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchUnitIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableUnitFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableUnitSortInput>> | InputMaybe<SearchableUnitSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchUnitIdsQuery = { searchUnits?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchChainProductIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableChainProductFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableChainProductSortInput>> | InputMaybe<SearchableChainProductSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchChainProductIdsQuery = { searchChainProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchGroupProductIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableGroupProductFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableGroupProductSortInput>> | InputMaybe<SearchableGroupProductSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchGroupProductIdsQuery = { searchGroupProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchUnitProductIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableUnitProductFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableUnitProductSortInput>> | InputMaybe<SearchableUnitProductSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchUnitProductIdsQuery = { searchUnitProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchGeneratedProductIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableGeneratedProductFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductSortInput>> | InputMaybe<SearchableGeneratedProductSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchGeneratedProductIdsQuery = { searchGeneratedProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchProductCategoryIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableProductCategoryFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableProductCategorySortInput>> | InputMaybe<SearchableProductCategorySortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchProductCategoryIdsQuery = { searchProductCategories?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchProductComponentIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableProductComponentFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableProductComponentSortInput>> | InputMaybe<SearchableProductComponentSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchProductComponentIdsQuery = { searchProductComponents?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchProductComponentSetIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableProductComponentSetFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableProductComponentSetSortInput>> | InputMaybe<SearchableProductComponentSetSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchProductComponentSetIdsQuery = { searchProductComponentSets?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchAdminUserIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableAdminUserFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableAdminUserSortInput>> | InputMaybe<SearchableAdminUserSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchAdminUserIdsQuery = { searchAdminUsers?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
+export type SearchOrderIdsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableOrderFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableOrderSortInput>> | InputMaybe<SearchableOrderSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+}>;
+
+
+export type SearchOrderIdsQuery = { searchOrders?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
+
 export type CreateUnitMutationVariables = Exact<{
   input: CreateUnitInput;
 }>;
 
 
-export type CreateUnitMutation = { createUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
+export type CreateUnitMutation = { createUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
 
 export type UpdateUnitMutationVariables = Exact<{
   input: UpdateUnitInput;
 }>;
 
 
-export type UpdateUnitMutation = { updateUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
+export type UpdateUnitMutation = { updateUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
 
 export type UpdateUnitRKeeperDataMutationVariables = Exact<{
   input: UpdateRKeeperDataInput;
 }>;
 
 
-export type UpdateUnitRKeeperDataMutation = { updateUnitRKeeperData?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
+export type UpdateUnitRKeeperDataMutation = { updateUnitRKeeperData?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
 
 export type CreateAdminUserMutationVariables = Exact<{
   input: CreateAdminUserInput;
@@ -5678,7 +5836,7 @@ export type DeleteUnitMutationVariables = Exact<{
 }>;
 
 
-export type DeleteUnitMutation = { deleteUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
+export type DeleteUnitMutation = { deleteUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
 
 export type CreateUserMutationVariables = Exact<{
   input: CreateUserInput;
@@ -5810,7 +5968,7 @@ export type GetUnitsNearLocationQueryVariables = Exact<{
 }>;
 
 
-export type GetUnitsNearLocationQuery = { getUnitsNearLocation?: { items?: Array<{ id: string, groupId: string, chainId: string, name: string, distance: number, currency: string, isAcceptingOrders: boolean, openingHours?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, createdAt: string, updatedAt: string, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, openingHoursNext7: Array<{ date: string, closed: boolean, from?: number | null, to?: number | null }>, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, unit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null, chain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null, group?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null } | null> | null } | null };
+export type GetUnitsNearLocationQuery = { getUnitsNearLocation?: { items?: Array<{ id: string, groupId: string, chainId: string, name: string, distance: number, currency: string, isAcceptingOrders: boolean, openingHours?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, createdAt: string, updatedAt: string, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, openingHoursNext7: Array<{ date: string, closed: boolean, from?: number | null, to?: number | null }>, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, unit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null, chain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null, group?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null } | null> | null } | null };
 
 export type SearchByRadiusQueryVariables = Exact<{
   input: SearchByRadiusInput;
@@ -6188,7 +6346,7 @@ export type GetUnitQueryVariables = Exact<{
 }>;
 
 
-export type GetUnitQuery = { getUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
+export type GetUnitQuery = { getUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
 
 export type ListUnitsQueryVariables = Exact<{
   filter?: InputMaybe<ModelUnitFilterInput>;
@@ -6197,7 +6355,7 @@ export type ListUnitsQueryVariables = Exact<{
 }>;
 
 
-export type ListUnitsQuery = { listUnits?: { nextToken?: string | null, items: Array<{ id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null> } | null };
+export type ListUnitsQuery = { listUnits?: { nextToken?: string | null, items: Array<{ id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null> } | null };
 
 export type SearchUnitsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableUnitFilterInput>;
@@ -6209,7 +6367,7 @@ export type SearchUnitsQueryVariables = Exact<{
 }>;
 
 
-export type SearchUnitsQuery = { searchUnits?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchUnitsQuery = { searchUnits?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetUserQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6380,7 +6538,7 @@ export type OnUnitsChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnUnitsChangeSubscription = { onUnitsChange?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
+export type OnUnitsChangeSubscription = { onUnitsChange?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
 
 export type OnProductCategoriesChangeSubscriptionVariables = Exact<{
   chainId: Scalars['ID'];
@@ -6648,7 +6806,7 @@ export type OnDeleteFavoriteProductSubscription = { onDeleteFavoriteProduct?: { 
 export type OnDeleteUnitSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteUnitSubscription = { onDeleteUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
+export type OnDeleteUnitSubscription = { onDeleteUnit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null };
 
 export type OnCreateUserSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -6725,157 +6883,227 @@ export type OnDeleteReceiptSubscriptionVariables = Exact<{ [key: string]: never;
 
 export type OnDeleteReceiptSubscription = { onDeleteReceipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null };
 
-export type GetGroupCurrencyQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
 
-
-export type GetGroupCurrencyQuery = { getGroup?: { currency: string } | null };
-
-export type SearchReportOrdersQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableOrderFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableOrderSortInput>> | InputMaybe<SearchableOrderSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchReportOrdersQuery = { searchOrders?: { nextToken?: string | null, items: Array<{ createdAt: string, userId: string, sumPriceShown: { currency: string, priceSum: number } } | null> } | null };
-
-export type SearchChainIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableChainFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableChainSortInput>> | InputMaybe<SearchableChainSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchChainIdsQuery = { searchChains?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchGroupIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGroupFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGroupSortInput>> | InputMaybe<SearchableGroupSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchGroupIdsQuery = { searchGroups?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchUnitIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableUnitFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableUnitSortInput>> | InputMaybe<SearchableUnitSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchUnitIdsQuery = { searchUnits?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchChainProductIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableChainProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableChainProductSortInput>> | InputMaybe<SearchableChainProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchChainProductIdsQuery = { searchChainProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchGroupProductIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGroupProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGroupProductSortInput>> | InputMaybe<SearchableGroupProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchGroupProductIdsQuery = { searchGroupProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchUnitProductIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableUnitProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableUnitProductSortInput>> | InputMaybe<SearchableUnitProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchUnitProductIdsQuery = { searchUnitProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchGeneratedProductIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGeneratedProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductSortInput>> | InputMaybe<SearchableGeneratedProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchGeneratedProductIdsQuery = { searchGeneratedProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchProductCategoryIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableProductCategoryFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableProductCategorySortInput>> | InputMaybe<SearchableProductCategorySortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchProductCategoryIdsQuery = { searchProductCategories?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchProductComponentIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableProductComponentFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableProductComponentSortInput>> | InputMaybe<SearchableProductComponentSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchProductComponentIdsQuery = { searchProductComponents?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchProductComponentSetIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableProductComponentSetFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableProductComponentSetSortInput>> | InputMaybe<SearchableProductComponentSetSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchProductComponentSetIdsQuery = { searchProductComponentSets?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchAdminUserIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableAdminUserFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableAdminUserSortInput>> | InputMaybe<SearchableAdminUserSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchAdminUserIdsQuery = { searchAdminUsers?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchOrderIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableOrderFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableOrderSortInput>> | InputMaybe<SearchableOrderSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchOrderIdsQuery = { searchOrders?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-
+export const GetGroupCurrencyDocument = gql`
+    query GetGroupCurrency($id: ID!) {
+  getGroup(id: $id) {
+    currency
+  }
+}
+    `;
+export const SearchReportOrdersDocument = gql`
+    query SearchReportOrders($filter: SearchableOrderFilterInput, $sort: [SearchableOrderSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchOrders(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      createdAt
+      userId
+      sumPriceShown {
+        currency
+        priceSum
+      }
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchChainIdsDocument = gql`
+    query SearchChainIds($filter: SearchableChainFilterInput, $sort: [SearchableChainSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchChains(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchGroupIdsDocument = gql`
+    query SearchGroupIds($filter: SearchableGroupFilterInput, $sort: [SearchableGroupSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchGroups(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchUnitIdsDocument = gql`
+    query SearchUnitIds($filter: SearchableUnitFilterInput, $sort: [SearchableUnitSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchUnits(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchChainProductIdsDocument = gql`
+    query SearchChainProductIds($filter: SearchableChainProductFilterInput, $sort: [SearchableChainProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchChainProducts(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchGroupProductIdsDocument = gql`
+    query SearchGroupProductIds($filter: SearchableGroupProductFilterInput, $sort: [SearchableGroupProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchGroupProducts(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchUnitProductIdsDocument = gql`
+    query SearchUnitProductIds($filter: SearchableUnitProductFilterInput, $sort: [SearchableUnitProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchUnitProducts(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchGeneratedProductIdsDocument = gql`
+    query SearchGeneratedProductIds($filter: SearchableGeneratedProductFilterInput, $sort: [SearchableGeneratedProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchGeneratedProducts(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchProductCategoryIdsDocument = gql`
+    query SearchProductCategoryIds($filter: SearchableProductCategoryFilterInput, $sort: [SearchableProductCategorySortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchProductCategories(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchProductComponentIdsDocument = gql`
+    query SearchProductComponentIds($filter: SearchableProductComponentFilterInput, $sort: [SearchableProductComponentSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchProductComponents(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchProductComponentSetIdsDocument = gql`
+    query SearchProductComponentSetIds($filter: SearchableProductComponentSetFilterInput, $sort: [SearchableProductComponentSetSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchProductComponentSets(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchAdminUserIdsDocument = gql`
+    query SearchAdminUserIds($filter: SearchableAdminUserFilterInput, $sort: [SearchableAdminUserSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchAdminUsers(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchOrderIdsDocument = gql`
+    query SearchOrderIds($filter: SearchableOrderFilterInput, $sort: [SearchableOrderSortInput], $limit: Int, $nextToken: String, $from: Int) {
+  searchOrders(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+  ) {
+    items {
+      id
+    }
+    nextToken
+  }
+}
+    `;
 export const CreateUnitDocument = gql`
     mutation CreateUnit($input: CreateUnitInput!) {
   createUnit(input: $input) {
@@ -7043,6 +7271,7 @@ export const CreateUnitDocument = gql`
     }
     canRequestVatInvoice
     canCallWaiter
+    isVisibleInApp
     createdAt
     updatedAt
   }
@@ -7215,6 +7444,7 @@ export const UpdateUnitDocument = gql`
     }
     canRequestVatInvoice
     canCallWaiter
+    isVisibleInApp
     createdAt
     updatedAt
   }
@@ -7387,6 +7617,7 @@ export const UpdateUnitRKeeperDataDocument = gql`
     }
     canRequestVatInvoice
     canCallWaiter
+    isVisibleInApp
     createdAt
     updatedAt
   }
@@ -10192,6 +10423,7 @@ export const DeleteUnitDocument = gql`
     }
     canRequestVatInvoice
     canCallWaiter
+    isVisibleInApp
     createdAt
     updatedAt
   }
@@ -11164,6 +11396,7 @@ export const GetUnitsNearLocationDocument = gql`
         }
         canRequestVatInvoice
         canCallWaiter
+        isVisibleInApp
         createdAt
         updatedAt
       }
@@ -14299,6 +14532,7 @@ export const GetUnitDocument = gql`
     }
     canRequestVatInvoice
     canCallWaiter
+    isVisibleInApp
     createdAt
     updatedAt
   }
@@ -14472,6 +14706,7 @@ export const ListUnitsDocument = gql`
       }
       canRequestVatInvoice
       canCallWaiter
+      isVisibleInApp
       createdAt
       updatedAt
     }
@@ -14654,6 +14889,7 @@ export const SearchUnitsDocument = gql`
       }
       canRequestVatInvoice
       canCallWaiter
+      isVisibleInApp
       createdAt
       updatedAt
     }
@@ -15773,6 +16009,7 @@ export const OnUnitsChangeDocument = gql`
     }
     canRequestVatInvoice
     canCallWaiter
+    isVisibleInApp
     createdAt
     updatedAt
   }
@@ -19710,6 +19947,7 @@ export const OnDeleteUnitDocument = gql`
     }
     canRequestVatInvoice
     canCallWaiter
+    isVisibleInApp
     createdAt
     updatedAt
   }
@@ -20381,229 +20619,51 @@ export const OnDeleteReceiptDocument = gql`
   }
 }
     `;
-export const GetGroupCurrencyDocument = gql`
-    query GetGroupCurrency($id: ID!) {
-  getGroup(id: $id) {
-    currency
-  }
-}
-    `;
-export const SearchReportOrdersDocument = gql`
-    query SearchReportOrders($filter: SearchableOrderFilterInput, $sort: [SearchableOrderSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchOrders(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      createdAt
-      userId
-      sumPriceShown {
-        currency
-        priceSum
-      }
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchChainIdsDocument = gql`
-    query SearchChainIds($filter: SearchableChainFilterInput, $sort: [SearchableChainSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchChains(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGroupIdsDocument = gql`
-    query SearchGroupIds($filter: SearchableGroupFilterInput, $sort: [SearchableGroupSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchGroups(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchUnitIdsDocument = gql`
-    query SearchUnitIds($filter: SearchableUnitFilterInput, $sort: [SearchableUnitSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchUnits(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchChainProductIdsDocument = gql`
-    query SearchChainProductIds($filter: SearchableChainProductFilterInput, $sort: [SearchableChainProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchChainProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGroupProductIdsDocument = gql`
-    query SearchGroupProductIds($filter: SearchableGroupProductFilterInput, $sort: [SearchableGroupProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchGroupProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchUnitProductIdsDocument = gql`
-    query SearchUnitProductIds($filter: SearchableUnitProductFilterInput, $sort: [SearchableUnitProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchUnitProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGeneratedProductIdsDocument = gql`
-    query SearchGeneratedProductIds($filter: SearchableGeneratedProductFilterInput, $sort: [SearchableGeneratedProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchGeneratedProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchProductCategoryIdsDocument = gql`
-    query SearchProductCategoryIds($filter: SearchableProductCategoryFilterInput, $sort: [SearchableProductCategorySortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchProductCategories(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchProductComponentIdsDocument = gql`
-    query SearchProductComponentIds($filter: SearchableProductComponentFilterInput, $sort: [SearchableProductComponentSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchProductComponents(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchProductComponentSetIdsDocument = gql`
-    query SearchProductComponentSetIds($filter: SearchableProductComponentSetFilterInput, $sort: [SearchableProductComponentSetSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchProductComponentSets(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchAdminUserIdsDocument = gql`
-    query SearchAdminUserIds($filter: SearchableAdminUserFilterInput, $sort: [SearchableAdminUserSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchAdminUsers(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchOrderIdsDocument = gql`
-    query SearchOrderIds($filter: SearchableOrderFilterInput, $sort: [SearchableOrderSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchOrders(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> & Observable<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
+    GetGroupCurrency(variables: GetGroupCurrencyQueryVariables, options?: C): Promise<GetGroupCurrencyQuery> {
+      return requester<GetGroupCurrencyQuery, GetGroupCurrencyQueryVariables>(GetGroupCurrencyDocument, variables, options);
+    },
+    SearchReportOrders(variables?: SearchReportOrdersQueryVariables, options?: C): Promise<SearchReportOrdersQuery> {
+      return requester<SearchReportOrdersQuery, SearchReportOrdersQueryVariables>(SearchReportOrdersDocument, variables, options);
+    },
+    SearchChainIds(variables?: SearchChainIdsQueryVariables, options?: C): Promise<SearchChainIdsQuery> {
+      return requester<SearchChainIdsQuery, SearchChainIdsQueryVariables>(SearchChainIdsDocument, variables, options);
+    },
+    SearchGroupIds(variables?: SearchGroupIdsQueryVariables, options?: C): Promise<SearchGroupIdsQuery> {
+      return requester<SearchGroupIdsQuery, SearchGroupIdsQueryVariables>(SearchGroupIdsDocument, variables, options);
+    },
+    SearchUnitIds(variables?: SearchUnitIdsQueryVariables, options?: C): Promise<SearchUnitIdsQuery> {
+      return requester<SearchUnitIdsQuery, SearchUnitIdsQueryVariables>(SearchUnitIdsDocument, variables, options);
+    },
+    SearchChainProductIds(variables?: SearchChainProductIdsQueryVariables, options?: C): Promise<SearchChainProductIdsQuery> {
+      return requester<SearchChainProductIdsQuery, SearchChainProductIdsQueryVariables>(SearchChainProductIdsDocument, variables, options);
+    },
+    SearchGroupProductIds(variables?: SearchGroupProductIdsQueryVariables, options?: C): Promise<SearchGroupProductIdsQuery> {
+      return requester<SearchGroupProductIdsQuery, SearchGroupProductIdsQueryVariables>(SearchGroupProductIdsDocument, variables, options);
+    },
+    SearchUnitProductIds(variables?: SearchUnitProductIdsQueryVariables, options?: C): Promise<SearchUnitProductIdsQuery> {
+      return requester<SearchUnitProductIdsQuery, SearchUnitProductIdsQueryVariables>(SearchUnitProductIdsDocument, variables, options);
+    },
+    SearchGeneratedProductIds(variables?: SearchGeneratedProductIdsQueryVariables, options?: C): Promise<SearchGeneratedProductIdsQuery> {
+      return requester<SearchGeneratedProductIdsQuery, SearchGeneratedProductIdsQueryVariables>(SearchGeneratedProductIdsDocument, variables, options);
+    },
+    SearchProductCategoryIds(variables?: SearchProductCategoryIdsQueryVariables, options?: C): Promise<SearchProductCategoryIdsQuery> {
+      return requester<SearchProductCategoryIdsQuery, SearchProductCategoryIdsQueryVariables>(SearchProductCategoryIdsDocument, variables, options);
+    },
+    SearchProductComponentIds(variables?: SearchProductComponentIdsQueryVariables, options?: C): Promise<SearchProductComponentIdsQuery> {
+      return requester<SearchProductComponentIdsQuery, SearchProductComponentIdsQueryVariables>(SearchProductComponentIdsDocument, variables, options);
+    },
+    SearchProductComponentSetIds(variables?: SearchProductComponentSetIdsQueryVariables, options?: C): Promise<SearchProductComponentSetIdsQuery> {
+      return requester<SearchProductComponentSetIdsQuery, SearchProductComponentSetIdsQueryVariables>(SearchProductComponentSetIdsDocument, variables, options);
+    },
+    SearchAdminUserIds(variables?: SearchAdminUserIdsQueryVariables, options?: C): Promise<SearchAdminUserIdsQuery> {
+      return requester<SearchAdminUserIdsQuery, SearchAdminUserIdsQueryVariables>(SearchAdminUserIdsDocument, variables, options);
+    },
+    SearchOrderIds(variables?: SearchOrderIdsQueryVariables, options?: C): Promise<SearchOrderIdsQuery> {
+      return requester<SearchOrderIdsQuery, SearchOrderIdsQueryVariables>(SearchOrderIdsDocument, variables, options);
+    },
     CreateUnit(variables: CreateUnitMutationVariables, options?: C): Promise<CreateUnitMutation> {
       return requester<CreateUnitMutation, CreateUnitMutationVariables>(CreateUnitDocument, variables, options);
     },
@@ -21191,48 +21251,6 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     OnDeleteReceipt(variables?: OnDeleteReceiptSubscriptionVariables, options?: C): Observable<OnDeleteReceiptSubscription> {
       return requester<OnDeleteReceiptSubscription, OnDeleteReceiptSubscriptionVariables>(OnDeleteReceiptDocument, variables, options);
-    },
-    GetGroupCurrency(variables: GetGroupCurrencyQueryVariables, options?: C): Promise<GetGroupCurrencyQuery> {
-      return requester<GetGroupCurrencyQuery, GetGroupCurrencyQueryVariables>(GetGroupCurrencyDocument, variables, options);
-    },
-    SearchReportOrders(variables?: SearchReportOrdersQueryVariables, options?: C): Promise<SearchReportOrdersQuery> {
-      return requester<SearchReportOrdersQuery, SearchReportOrdersQueryVariables>(SearchReportOrdersDocument, variables, options);
-    },
-    SearchChainIds(variables?: SearchChainIdsQueryVariables, options?: C): Promise<SearchChainIdsQuery> {
-      return requester<SearchChainIdsQuery, SearchChainIdsQueryVariables>(SearchChainIdsDocument, variables, options);
-    },
-    SearchGroupIds(variables?: SearchGroupIdsQueryVariables, options?: C): Promise<SearchGroupIdsQuery> {
-      return requester<SearchGroupIdsQuery, SearchGroupIdsQueryVariables>(SearchGroupIdsDocument, variables, options);
-    },
-    SearchUnitIds(variables?: SearchUnitIdsQueryVariables, options?: C): Promise<SearchUnitIdsQuery> {
-      return requester<SearchUnitIdsQuery, SearchUnitIdsQueryVariables>(SearchUnitIdsDocument, variables, options);
-    },
-    SearchChainProductIds(variables?: SearchChainProductIdsQueryVariables, options?: C): Promise<SearchChainProductIdsQuery> {
-      return requester<SearchChainProductIdsQuery, SearchChainProductIdsQueryVariables>(SearchChainProductIdsDocument, variables, options);
-    },
-    SearchGroupProductIds(variables?: SearchGroupProductIdsQueryVariables, options?: C): Promise<SearchGroupProductIdsQuery> {
-      return requester<SearchGroupProductIdsQuery, SearchGroupProductIdsQueryVariables>(SearchGroupProductIdsDocument, variables, options);
-    },
-    SearchUnitProductIds(variables?: SearchUnitProductIdsQueryVariables, options?: C): Promise<SearchUnitProductIdsQuery> {
-      return requester<SearchUnitProductIdsQuery, SearchUnitProductIdsQueryVariables>(SearchUnitProductIdsDocument, variables, options);
-    },
-    SearchGeneratedProductIds(variables?: SearchGeneratedProductIdsQueryVariables, options?: C): Promise<SearchGeneratedProductIdsQuery> {
-      return requester<SearchGeneratedProductIdsQuery, SearchGeneratedProductIdsQueryVariables>(SearchGeneratedProductIdsDocument, variables, options);
-    },
-    SearchProductCategoryIds(variables?: SearchProductCategoryIdsQueryVariables, options?: C): Promise<SearchProductCategoryIdsQuery> {
-      return requester<SearchProductCategoryIdsQuery, SearchProductCategoryIdsQueryVariables>(SearchProductCategoryIdsDocument, variables, options);
-    },
-    SearchProductComponentIds(variables?: SearchProductComponentIdsQueryVariables, options?: C): Promise<SearchProductComponentIdsQuery> {
-      return requester<SearchProductComponentIdsQuery, SearchProductComponentIdsQueryVariables>(SearchProductComponentIdsDocument, variables, options);
-    },
-    SearchProductComponentSetIds(variables?: SearchProductComponentSetIdsQueryVariables, options?: C): Promise<SearchProductComponentSetIdsQuery> {
-      return requester<SearchProductComponentSetIdsQuery, SearchProductComponentSetIdsQueryVariables>(SearchProductComponentSetIdsDocument, variables, options);
-    },
-    SearchAdminUserIds(variables?: SearchAdminUserIdsQueryVariables, options?: C): Promise<SearchAdminUserIdsQuery> {
-      return requester<SearchAdminUserIdsQuery, SearchAdminUserIdsQueryVariables>(SearchAdminUserIdsDocument, variables, options);
-    },
-    SearchOrderIds(variables?: SearchOrderIdsQueryVariables, options?: C): Promise<SearchOrderIdsQuery> {
-      return requester<SearchOrderIdsQuery, SearchOrderIdsQueryVariables>(SearchOrderIdsDocument, variables, options);
     }
   };
 }

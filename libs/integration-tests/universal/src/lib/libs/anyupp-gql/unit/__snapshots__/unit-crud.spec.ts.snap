@@ -40,6 +40,7 @@ Object {
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",
@@ -180,6 +181,7 @@ Object {
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",
@@ -322,6 +324,7 @@ Object {
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",
@@ -462,6 +465,7 @@ Object {
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",
@@ -602,6 +606,7 @@ Object {
   "id": "test_unit_1_id",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",
@@ -733,6 +738,7 @@ Object {
   "id": "test_unit_1_id",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",
@@ -866,6 +872,7 @@ Object {
   "id": "test_unit_1_id",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",
@@ -997,6 +1004,7 @@ Object {
   "id": "test_unit_1_id",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",
@@ -1228,6 +1236,7 @@ Object {
   "id": "test_unit_1_id",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",
@@ -1361,6 +1370,7 @@ Object {
   "id": "test_unit_1_id",
   "isAcceptingOrders": true,
   "isActive": true,
+  "isVisibleInApp": null,
   "lanes": Array [
     Object {
       "color": "#e72222",

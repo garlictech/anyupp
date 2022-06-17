@@ -183,11 +183,19 @@
           ></bgap-form-checkbox>
         </div>
 
-        <div class="col-md-3 pt-4">
+        <div class="col-md-2 pt-4">
           <bgap-form-checkbox
             caption="units.canCallWaiter"
             [control]="dialogForm?.get('canCallWaiter') | asFormControl"
             inputId="canCallWaiter"
+          ></bgap-form-checkbox>
+        </div>
+
+        <div class="col-md-2 pt-4">
+          <bgap-form-checkbox
+            caption="units.isVisibleInApp"
+            [control]="dialogForm?.get('isVisibleInApp') | asFormControl"
+            inputId="isVisibleInApp"
           ></bgap-form-checkbox>
         </div>
       </div>

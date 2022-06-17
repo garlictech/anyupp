@@ -926,6 +926,7 @@ type Unit
   location: LocationLatLon
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
+  isVisibleInApp: Boolean
 }
 
 type DateIntervalOpen {
@@ -1306,6 +1307,7 @@ input CreateUnitInput {
   location: LocationLatLonInput!
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
+  isVisibleInApp: Boolean
 }
 
 input UpdateUnitInput {
@@ -1345,6 +1347,7 @@ input UpdateUnitInput {
   location: LocationLatLonInput
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
+  isVisibleInApp: Boolean
 }
 
 type CreateAnonymUserOutput {

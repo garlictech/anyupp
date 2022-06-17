@@ -392,6 +392,7 @@
     "merchantId": "Stripe Merchant ID",
     "canRequestVatInvoice": "Can request VAT invoice",
     "canCallWaiter": "Can call a waiter",
+    "isVisibleInApp": "Is visible in app",
     "adBanner": "Advertisement banner",
     "coverBanner": "Cover image banner",
     "showBanners": "Show banners",

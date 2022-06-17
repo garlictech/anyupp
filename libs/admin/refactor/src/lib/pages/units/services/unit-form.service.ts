@@ -92,6 +92,7 @@ export class UnitFormService {
       packagingTaxPercentage: [''],
       canRequestVatInvoice: [true],
       canCallWaiter: [false],
+      isVisibleInApp: [true],
       ratingPolicies: this._formBuilder.array([]),
       tipPolicy: this._formsService.createTipPolicyFormGroup(),
       serviceFeePolicy: this._formsService.createServiceFeePolicyFormGroup(),
