@@ -15,8 +15,8 @@ yarn nx integration-test-ci anyupp-mobile
 yarn deleteAllTableData
 yarn seed
 #yarn nx e2e-remote admin-e2e --headless --baseUrl=$ADMIN_SITE_URL
-yarn deleteAllTableData
-# Reports are not generated. The next three lines are depending on the e2e test execution
+# Reports are not generated. The next four lines are depending on the e2e test execution
+#yarn deleteAllTableData
 #yarn seed
 #yarn cucumber:report
 #yarn cypress:generate:html:report
