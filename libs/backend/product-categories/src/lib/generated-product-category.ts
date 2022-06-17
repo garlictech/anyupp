@@ -1,20 +1,22 @@
-import { getAllPaginatedData } from '@bgap/gql-sdk';
-
-import { tableConfig } from '@bgap/crud-gql/backend';
-import {
-  filterNullishElements,
-  filterNullishGraphqlListWithDefault,
-} from '@bgap/shared/utils';
 import { iif, Observable, of } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
+
 import { createItems, deleteItems } from '@bgap/anyupp-backend-lib';
-import { ProductCategoryResolverDeps } from './utils';
+import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   CreateGeneratedProductCategoryInput,
   CreateGeneratedProductInput,
   GeneratedProductCategory,
   SearchGeneratedProductCategoriesQueryVariables,
 } from '@bgap/domain';
+import { getAllPaginatedData } from '@bgap/gql-sdk';
+import { RequiredId } from '@bgap/shared/types';
+import {
+  filterNullishElements,
+  filterNullishGraphqlListWithDefault,
+} from '@bgap/shared/utils';
+
+import { ProductCategoryResolverDeps } from './utils';
 
 interface ProductCategoryMap {
   [key: string]: number;
@@ -38,6 +40,19 @@ export const reGenerateActiveProductCategoriesForAUnit =
           of(generatedProducts).pipe(
             map(getProductNumberMap),
             map(productCategoryMap => ({ productCategoryMap, unitId })),
+            switchMap(({ unitId, productCategoryMap }) =>
+              deps.crudSdk.GetUnit({ id: unitId }).pipe(
+                map(unit => unit?.chainId),
+                switchMap(chainId =>
+                  deps.crudSdk.GetChain({ id: chainId || '' }),
+                ),
+                map(chain => ({
+                  productCategoryMap,
+                  unitId,
+                  categoryOrders: chain?.categoryOrders || [],
+                })),
+              ),
+            ),
             map(fromProductCategoryMapToGeneratedProductCategoryInput),
             switchMap(createGeneratedProductCategoriesInDb),
             map(() => generatedProducts.map(prop => prop.id)),
@@ -52,15 +67,18 @@ export const reGenerateActiveProductCategoriesForAUnit =
 const fromProductCategoryMapToGeneratedProductCategoryInput = ({
   unitId,
   productCategoryMap,
+  categoryOrders,
 }: {
   unitId: string;
   productCategoryMap: ProductCategoryMap;
+  categoryOrders: (string | null)[];
 }): Array<CreateGeneratedProductCategoryInput> =>
   Object.entries(productCategoryMap).map(([productCategoryId, productNum]) => ({
     id: `${unitId}__${productCategoryId}`,
     unitId,
     productCategoryId,
     productNum,
+    position: categoryOrders.indexOf(productCategoryId),
   }));
 
 export const getProductNumberMap = (
@@ -92,7 +110,7 @@ export const deleteGeneratedProductCategoriesForAUnit =
     );
   };
 const deleteGeneratedProductCategoryItemsFromDb = (
-  items: Required<GeneratedProductCategory>[],
+  items: RequiredId<GeneratedProductCategory>[],
 ) => deleteItems(TABLE_NAME)(items);
 
 export const createGeneratedProductCategoriesInDb = (

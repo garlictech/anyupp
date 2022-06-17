@@ -1,12 +1,6 @@
 import * as fp from 'lodash/fp';
 
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ProductCategory } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
 
@@ -22,7 +16,6 @@ export class ProductCategoryListItemComponent {
   @Input() productCategory!: ProductCategory;
   @Input() isFirst?: boolean;
   @Input() isLast?: boolean;
-  @Output() positionChange = new EventEmitter();
 
   constructor(private _nbDialogService: NbDialogService) {}
 
@@ -32,19 +25,5 @@ export class ProductCategoryListItemComponent {
     dialog.componentRef.instance.productCategory = fp.cloneDeep(
       this.productCategory,
     );
-  }
-
-  public moveUp() {
-    this.positionChange.emit({
-      change: -1,
-      productCategoryId: this.productCategory.id,
-    });
-  }
-
-  public moveDown() {
-    this.positionChange.emit({
-      change: 1,
-      productCategoryId: this.productCategory.id,
-    });
   }
 }

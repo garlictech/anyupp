@@ -19,11 +19,51 @@ import {
   CreateGeneratedProductInput,
   CreateProductCategoryInput,
 } from '@bgap/domain';
+import { createTestUnit } from '../../../seeds/unit';
+import { createTestChain } from '../../../seeds/chain';
 
 const DYNAMODB_OPERATION_DELAY = 3000;
 const TEST_NAME = 'GEN_PRODUCT_CAT';
 
 const unitId = `${testIdPrefix}${TEST_NAME}_UNIT_ID`;
+const chainId = `${testIdPrefix}${TEST_NAME}_CHAIN_ID`;
+
+const mockUnit = {
+  id: unitId,
+  name: 'Test Unit',
+  address: {
+    address: 'Ág u. 1.',
+    city: 'Budapest',
+    country: 'Magyarország',
+    title: 'HQ',
+    postalCode: '1021',
+    location: {
+      lat: 47,
+      lng: 19,
+    },
+  },
+  chainId,
+  groupId: 'groupId',
+  isAcceptingOrders: true,
+  location: {
+    lat: 47,
+    lon: 19,
+  },
+  isActive: true,
+};
+
+const mockChain = {
+  id: chainId,
+  name: 'Test Chain',
+  style: {
+    colors: {},
+  },
+  categoryOrders: [
+    `${testIdPrefix}${TEST_NAME}_04`,
+    `${testIdPrefix}${TEST_NAME}_02`,
+    `${testIdPrefix}${TEST_NAME}_01`,
+  ],
+};
 
 const productCategory_01: RequiredId<CreateProductCategoryInput> = {
   ...productCategoryFixture.productCategoryBase,
@@ -139,6 +179,16 @@ describe('GenerateProductCategory tests', () => {
             input: { id: productCategory_04.id },
           }),
         ),
+        switchMap(() =>
+          deps.crudSdk.DeleteUnit({
+            input: { id: unitId },
+          }),
+        ),
+        switchMap(() =>
+          deps.crudSdk.DeleteChain({
+            input: { id: chainId },
+          }),
+        ),
       );
 
     beforeEach(async () => {
@@ -172,6 +222,8 @@ describe('GenerateProductCategory tests', () => {
               input: generatedProductCategory_03_wont_be_regenerated,
             }),
           ),
+          switchMap(() => createTestUnit(mockUnit, deps.crudSdk)),
+          switchMap(() => createTestChain(mockChain, deps.crudSdk)),
           delay(DYNAMODB_OPERATION_DELAY),
         )
         .toPromise();
@@ -264,9 +316,9 @@ describe('GenerateProductCategory tests', () => {
             done();
           },
           error(err) {
-            console.error(`${TEST_NAME}Test ERROR`, err);
+            console.error(`${TEST_NAME}_Test ERROR`, err);
           },
         });
-    }, 60000);
+    }, 100000);
   });
 });

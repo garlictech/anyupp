@@ -1,4 +1,4 @@
-import { DayInterval, KeyValueObject } from '@bgap/shared/types';
+import { KeyValueObject, RequiredId } from '@bgap/shared/types';
 import { missingParametersError } from './errors';
 
 export const customNumberCompare =
@@ -13,6 +13,10 @@ export const customNumberCompare =
 
     return 0;
   };
+
+export const externalIdArrayCompare =
+  (idArray: string[]) => (a: RequiredId<unknown>, b: RequiredId<unknown>) =>
+    idArray.indexOf(a.id) - idArray.indexOf(b.id);
 
 export const customDateCompare =
   (field: string, desc = false) =>
@@ -59,19 +63,6 @@ export const objectToArray = (obj: KeyValueObject | unknown, idKey = '_id') => {
 
 export const zeroFill = (value: number): string => {
   return ('0' + value).slice(-2);
-};
-
-export const dayInterval = (value: string): DayInterval => {
-  const start = new Date(value);
-  start.setHours(0, 0, 0, 0);
-
-  const end = new Date(value);
-  end.setHours(23, 59, 59, 999);
-
-  return {
-    start: start.getTime(),
-    end: end.getTime(),
-  };
 };
 
 export const reducer = (accumulator: number, currentValue: number): number =>

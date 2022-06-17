@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Custom compare fns customDateCompare 1`] = `
+Array [
+  Object {
+    "dateField": "2022-01-01",
+    "id": "1",
+  },
+  Object {
+    "dateField": "2022-02-01",
+    "id": "2",
+  },
+  Object {
+    "dateField": "2022-03-01",
+    "id": "3",
+  },
+]
+`;
+
+exports[`Custom compare fns customDateCompare 2`] = `
+Array [
+  Object {
+    "dateField": "2022-03-01",
+    "id": "3",
+  },
+  Object {
+    "dateField": "2022-02-01",
+    "id": "2",
+  },
+  Object {
+    "dateField": "2022-01-01",
+    "id": "1",
+  },
+]
+`;
+
+exports[`Custom compare fns customNumberCompare 1`] = `
+Array [
+  Object {
+    "id": "1",
+    "numField": 1,
+  },
+  Object {
+    "id": "2",
+    "numField": 2,
+  },
+  Object {
+    "id": "3",
+    "numField": 3,
+  },
+]
+`;
+
+exports[`Custom compare fns customNumberCompare 2`] = `
+Array [
+  Object {
+    "id": "3",
+    "numField": 3,
+  },
+  Object {
+    "id": "2",
+    "numField": 2,
+  },
+  Object {
+    "id": "1",
+    "numField": 1,
+  },
+]
+`;
+
+exports[`Custom compare fns customStringCompare 1`] = `
+Array [
+  Object {
+    "id": "1",
+    "stringField": "alpha",
+  },
+  Object {
+    "id": "2",
+    "stringField": "bravo",
+  },
+  Object {
+    "id": "3",
+    "stringField": "charlie",
+  },
+]
+`;
+
+exports[`Custom compare fns customStringCompare 2`] = `
+Array [
+  Object {
+    "id": "3",
+    "stringField": "charlie",
+  },
+  Object {
+    "id": "2",
+    "stringField": "bravo",
+  },
+  Object {
+    "id": "1",
+    "stringField": "alpha",
+  },
+]
+`;
+
+exports[`Custom compare fns externalIdArrayCompare 1`] = `
+Array [
+  Object {
+    "id": "3",
+    "name": "third",
+  },
+  Object {
+    "id": "1",
+    "name": "first",
+  },
+  Object {
+    "id": "2",
+    "name": "second",
+  },
+]
+`;

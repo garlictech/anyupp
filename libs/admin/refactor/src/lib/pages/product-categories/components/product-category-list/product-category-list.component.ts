@@ -1,20 +1,17 @@
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ViewChild,
-} from '@angular/core';
-import { ProductCategory } from '@bgap/domain';
-import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
-import { customNumberCompare } from '@bgap/shared/utils';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import { Chain, ProductCategory } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { externalIdArrayCompare } from '@bgap/shared/utils';
+import { Store } from '@ngrx/store';
 import { visibleLinesOnViewport } from '../../../../shared/utils';
+import { chainsSelectors } from '../../../../store/chains';
 import { ProductCategoryCollectionService } from '../../../../store/product-categories';
 import { ProductCategoryListService } from '../../services/product-category-list.service';
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
@@ -30,35 +27,39 @@ export class ProductCategoryListComponent {
   dataVSVP?: CdkVirtualScrollViewport;
 
   public productCategories$: Observable<ProductCategory[]>;
-  private _sortedProductCategoryIds: string[] = [];
+  public sortedProductCategoryIds: string[] = [];
+
+  private _selectedChainId?: string;
+  public chain?: Chain;
 
   constructor(
+    private _store: Store,
     private _nbDialogService: NbDialogService,
-    private _changeDetectorRef: ChangeDetectorRef,
     private _productCategoryListService: ProductCategoryListService,
     private _productCategoryCollectionService: ProductCategoryCollectionService,
   ) {
-    this.productCategories$ =
-      this._productCategoryCollectionService.filteredEntities$.pipe(
-        map((products): ProductCategory[] =>
-          products.sort(customNumberCompare('position')),
+    this.productCategories$ = combineLatest([
+      this._store.select(chainsSelectors.getSelectedChain),
+      this._productCategoryCollectionService.filteredEntities$,
+    ]).pipe(
+      tap(([chain]) => {
+        this._selectedChainId = chain?.id;
+        this.chain = chain;
+      }),
+      map(([chain, productCategories]): ProductCategory[] => [
+        ...productCategories.sort(
+          externalIdArrayCompare((chain?.categoryOrders || []) as string[]),
         ),
-        tap(productCategories => {
-          this._sortedProductCategoryIds = productCategories.map(p => p.id);
-        }),
-      );
+      ]),
+      tap(productCategories => {
+        this.sortedProductCategoryIds = productCategories.map(p => p.id);
+      }),
+      untilDestroyed(this),
+    );
   }
 
   public addProductCategory() {
     this._nbDialogService.open(ProductCategoryFormComponent);
-  }
-
-  public positionChange($event: ProductCategoryOrderChangeEvent) {
-    this._productCategoryListService
-      .positionChange($event, this._sortedProductCategoryIds)
-      .subscribe();
-
-    this._changeDetectorRef.detectChanges();
   }
 
   public loadNextPaginatedData(count: number, itemCount: number) {
@@ -68,5 +69,21 @@ export class ProductCategoryListComponent {
     ) {
       this._productCategoryListService.loadNextPaginatedData();
     }
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    const element = this.sortedProductCategoryIds.splice(
+      event.previousIndex,
+      1,
+    )[0];
+
+    this.sortedProductCategoryIds.splice(event.currentIndex, 0, element);
+
+    this._productCategoryListService
+      .updateProductCategoryOrders$(
+        this._selectedChainId || '',
+        this.sortedProductCategoryIds,
+      )
+      .subscribe();
   }
 }

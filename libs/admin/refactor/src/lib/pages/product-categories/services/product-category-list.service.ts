@@ -8,8 +8,11 @@ import { loggedUserSelectors } from '../../../store/logged-user';
 import { ProductCategoryCollectionService } from '../../../store/product-categories';
 import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { Store } from '@ngrx/store';
+import { ChainCollectionService } from '../../../store/chains';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class ProductCategoryListService {
   private _nextToken?: string;
   private _working = false;
@@ -18,6 +21,7 @@ export class ProductCategoryListService {
   constructor(
     private _store: Store,
     private _productCategoryCollectionService: ProductCategoryCollectionService,
+    private _chainCollectionService: ChainCollectionService,
   ) {
     this._store
       .select(loggedUserSelectors.getSelectedChainId)
@@ -57,6 +61,18 @@ export class ProductCategoryListService {
       .update$({
         id,
         position,
+      })
+      .pipe(catchGqlError(this._store), take(1));
+  }
+
+  public updateProductCategoryOrders$(
+    chainId: string,
+    categoryOrders: string[],
+  ) {
+    return this._chainCollectionService
+      .update$({
+        id: chainId,
+        categoryOrders,
       })
       .pipe(catchGqlError(this._store), take(1));
   }

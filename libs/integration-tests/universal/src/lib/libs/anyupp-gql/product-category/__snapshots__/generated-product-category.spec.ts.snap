@@ -4,6 +4,7 @@ exports[`GenerateProductCategory tests complex tests should generate the given p
 Object {
   "createdAt": Any<String>,
   "id": "test_GEN_PRODUCT_CAT_UNIT_ID__test_GEN_PRODUCT_CAT_01",
+  "position": 2,
   "productCategory": Object {
     "chainId": "seeded_chain_1_id",
     "createdAt": Any<String>,
@@ -19,6 +20,7 @@ Object {
       "en": "PRODUCT_CATEGORY",
       "hu": null,
     },
+    "parentId": null,
     "position": 0,
     "updatedAt": Any<String>,
   },

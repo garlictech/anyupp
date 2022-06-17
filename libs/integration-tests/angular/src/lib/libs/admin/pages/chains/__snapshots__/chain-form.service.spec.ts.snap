@@ -14,6 +14,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
+    "categoryOrders": null,
     "createdAt": Any<String>,
     "description": Object {
       "de": null,
@@ -97,6 +98,7 @@ Object {
       "postalCode": "1021",
       "title": "HQ",
     },
+    "categoryOrders": null,
     "createdAt": Any<String>,
     "description": Object {
       "de": null,
@@ -146,6 +148,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "categoryOrders": null,
   "createdAt": Any<String>,
   "description": Object {
     "de": null,
@@ -196,6 +199,7 @@ Object {
     "postalCode": "1021",
     "title": "HQ",
   },
+  "categoryOrders": null,
   "createdAt": Any<String>,
   "description": Object {
     "de": null,

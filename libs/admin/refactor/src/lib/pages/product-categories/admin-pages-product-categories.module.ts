@@ -23,6 +23,7 @@ import { ProductCategoryListItemComponent } from './components/product-category-
 import { ProductCategoryListComponent } from './components/product-category-list/product-category-list.component';
 import { ProductCategoryListService } from './services/product-category-list.service';
 import { AdminSharedComponentsModule } from '../../shared/components';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -52,6 +53,7 @@ const NB_MODULES = [
     ScrollingModule,
     ReactiveFormsModule,
     AdminSharedPipesModule,
+    DragDropModule,
     RouterModule.forChild([
       {
         component: ProductCategoryListComponent,

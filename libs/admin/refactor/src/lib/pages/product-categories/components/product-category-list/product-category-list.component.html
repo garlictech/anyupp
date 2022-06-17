@@ -28,18 +28,19 @@
       "
       #dataVSVP
     >
-      <nb-list>
+      <nb-list cdkDropList (cdkDropListDropped)="drop($event)">
         <nb-list-item
           *cdkVirtualFor="
             let productCategory of productCategories;
             first as isFirst;
             last as isLast
           "
+          [cdkDragData]="productCategory.id"
+          cdkDrag
         >
           <bgap-product-category-list-item
             class="w-100"
             [productCategory]="productCategory"
-            (positionChange)="positionChange($event)"
             [isFirst]="isFirst"
             [isLast]="isLast"
           ></bgap-product-category-list-item>

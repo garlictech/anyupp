@@ -426,6 +426,7 @@ type Chain
   address: Address
   email: String
   phone: String
+  categoryOrders: [ID]
 }
 
 type Group
@@ -710,7 +711,8 @@ type ProductCategory
   description: LocalizedItem
   image: String
   name: LocalizedItem!
-  position: Int!
+  position: Int! # deprecated!! use chain.categoryOrders
+  parentId: ID
 }
 
 type ProductComponent
@@ -775,6 +777,7 @@ type GeneratedProductCategory
   productNum: Int!
   productCategoryId: ID!
   productCategory: ProductCategory! @hasOne(fields: ["productCategoryId"])
+  position: Int # use this instead of the connected ProductCategory.position
 }
 
 type GeneratedProduct

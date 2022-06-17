@@ -18,26 +18,3 @@
   <nb-icon icon="edit" pack="material-icons"></nb-icon>
   {{ 'common.edit' | translate }}
 </button>
-
-<button
-  [hidden]="isLast"
-  nbButton
-  shape="round"
-  size="tiny"
-  class="float-right ms-2"
-  [title]="'common.moveDown' | translate"
-  (click)="moveDown()"
->
-  <nb-icon icon="chevron-down"></nb-icon>
-</button>
-<button
-  [hidden]="isFirst"
-  nbButton
-  shape="round"
-  size="tiny"
-  class="float-right"
-  [title]="'common.moveUp' | translate"
-  (click)="moveUp()"
->
-  <nb-icon icon="chevron-up"></nb-icon>
-</button>
