@@ -3,7 +3,7 @@ import 'package:fa_prev/models/Transaction.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/pdf_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class TransactionInfoWidget extends StatelessWidget {
   final Transaction transactionItem;
@@ -43,7 +43,7 @@ class TransactionInfoWidget extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () => isInvoice
-                ? launch(transactionItem.invoice!.pdfUrl!) //Nav.to(PdfWebView(transactionItem.invoice!.pdfUrl!))
+                ? launchUrlString(transactionItem.invoice!.pdfUrl!)
                 : createAndOpenPdf(transactionItem.receipt?.pdfData),
             child: Text(
               trans(context, 'payment.paymentInfo.invoicing.show'),
@@ -58,4 +58,3 @@ class TransactionInfoWidget extends StatelessWidget {
     );
   }
 }
-

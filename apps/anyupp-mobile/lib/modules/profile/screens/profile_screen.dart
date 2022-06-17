@@ -11,7 +11,7 @@ import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class Profile extends StatelessWidget {
   Profile({Key? key});
@@ -175,7 +175,8 @@ class Profile extends StatelessWidget {
                     titleKey: 'profile.menu.privacy',
                     border: ProfileBorder.NONE,
                     separator: true,
-                    onTap: () => launch('https://www.anyupp.com/privacy/'),
+                    onTap: () =>
+                        launchUrlString('https://www.anyupp.com/privacy/'),
                   ),
                   ProfileListItemWidget(
                     icon: Icons.info,

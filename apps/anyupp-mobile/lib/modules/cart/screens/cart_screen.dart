@@ -231,7 +231,7 @@ class CartScreen extends StatelessWidget {
               controller: _controller,
               thumbColor: theme.secondary.withOpacity(0.2),
               radius: Radius.circular(20),
-              isAlwaysShown: true,
+              thumbVisibility: true,
               thickness: 4,
               child: ListView.separated(
                 separatorBuilder: (context, index) => Divider(

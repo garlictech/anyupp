@@ -1,5 +1,4 @@
 import 'package:anchor_scroll_controller/anchor_scroll_controller.dart';
-import 'package:anchor_scroll_controller/anchor_scroll_wrapper.dart';
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';

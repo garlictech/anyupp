@@ -11,7 +11,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen();
@@ -128,7 +128,7 @@ class _LoginScreenState extends State<LoginScreen>
         builder: (BuildContext context, LoginState state) {
           if (state is NeedAccountLinking) {
             // Need schedulerBinding to handle dialog popup
-            SchedulerBinding.instance?.addPostFrameCallback((_) {
+            SchedulerBinding.instance.addPostFrameCallback((_) {
               showSelectAccountToLinkDialog(context, state);
             });
             return _buildLoadingScreen();
@@ -504,7 +504,8 @@ class _LoginScreenState extends State<LoginScreen>
                                   ),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      launch('https://www.anyupp.com/privacy/');
+                                      launchUrlString(
+                                          'https://www.anyupp.com/privacy/');
                                     },
                                 ),
                               ],

@@ -19,13 +19,13 @@ class _MeasuredWidgetState extends State<MeasuredWidget> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback(_postFrameCallback);
+    WidgetsBinding.instance.addPostFrameCallback(_postFrameCallback);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance?.addPostFrameCallback(_postFrameCallback);
+    WidgetsBinding.instance.addPostFrameCallback(_postFrameCallback);
     return Container(
       key: widgetKey,
       child: widget.child,

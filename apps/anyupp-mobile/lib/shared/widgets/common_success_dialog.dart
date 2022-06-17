@@ -12,7 +12,7 @@ showSuccessDialog({
   VoidCallback? onClose,
 }) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
-  SchedulerBinding.instance?.addPostFrameCallback((_) {
+  SchedulerBinding.instance.addPostFrameCallback((_) {
     showModalBottomSheet(
         context: context,
         isDismissible: true,

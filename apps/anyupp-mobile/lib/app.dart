@@ -162,7 +162,13 @@ class _MyAppState extends State<MyApp> {
               // The first app page
               home: isProd
                   ? UpgradeAlert(
-                      showIgnore: false, showLater: false, child: OnBoarding())
+                      upgrader: Upgrader(
+                        canDismissDialog: false,
+                        showIgnore: false,
+                        showLater: false,
+                      ),
+                      child: OnBoarding(),
+                    )
                   : OnBoarding(),
 
               // To hide the debug mark (in debugging and development modes)

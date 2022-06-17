@@ -201,7 +201,7 @@ class _TipDialogWidgetState extends State<TipDialogWidget> {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _focusNode.requestFocus();
     });
     super.initState();

@@ -4,7 +4,7 @@ import 'email_login_password_or_link_widget.dart';
 
 class LoginWithEmailDialog {
   static void show(BuildContext context, {bool linkAccount = false}) {
-    SchedulerBinding.instance?.addPostFrameCallback((_) async {
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
       await showDialog(
         context: context,
         barrierDismissible: true,

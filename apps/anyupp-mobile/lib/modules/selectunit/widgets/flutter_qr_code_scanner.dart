@@ -57,7 +57,7 @@ class _QRCodeScannerWidgetState extends State<QRCodeScannerWidget>
     super.initState();
     setToolbarThemeV1(theme);
     if (widget.initialUri != null) {
-      WidgetsBinding.instance?.addPostFrameCallback(((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback(((timeStamp) {
         handleUri(widget.initialUri!);
       }));
     }

@@ -337,7 +337,7 @@ class _SelectUnitQRCardWidgetState extends State<SelectUnitQRCardWidget> {
   @override
   void initState() {
     if (widget.initialUri != null) {
-      WidgetsBinding.instance?.addPostFrameCallback((timeStamp) {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         showModal();
       });
     }

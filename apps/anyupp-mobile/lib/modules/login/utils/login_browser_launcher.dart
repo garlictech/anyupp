@@ -40,7 +40,8 @@ void launchURL(String provider) async {
       url: Uri.parse(url),
       options: ChromeSafariBrowserClassOptions(
         android: AndroidChromeCustomTabsOptions(
-          addDefaultShareMenuItem: false,
+          // addDefaultShareMenuItem: false,
+          shareState: CustomTabsShareState.SHARE_STATE_OFF,
           showTitle: false,
           // instantAppsEnabled: false,
           // packageName: 'net.cyberg.anyup',

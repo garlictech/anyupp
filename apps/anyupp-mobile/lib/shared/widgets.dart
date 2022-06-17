@@ -19,7 +19,6 @@ export 'widgets/options_menu.dart';
 export 'widgets/s3_image_widget.dart';
 export 'widgets/select_serving_mode/select_serving_mode_sheet.dart';
 export 'widgets/select_serving_mode/select_serving_mode_widget.dart';
-export 'widgets/success_animation_widget.dart';
 export 'widgets/swipe_detector_widget.dart';
 export 'widgets/tab_bar_widget.dart';
 export 'widgets/tooltip_widget.dart';

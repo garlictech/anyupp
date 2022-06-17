@@ -8,7 +8,7 @@ if (localPropertiesFile.exists()) {
 
 def flutterRoot = localProperties.getProperty('flutter.sdk')
 if (flutterRoot == null) {
-    throw new FileNotFoundException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
@@ -32,32 +32,35 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 31
-    ndkVersion "23.0.7196353"
+    compileSdkVersion 32
+    // ndkVersion "23.0.7196353"
+    // compileSdkVersion flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    // buildFeatures {
-    //     // Enables Jetpack Compose for this module
-    //     compose true
-    // }
-
-    // lintOptions {
-    //     disable 'InvalidPackage'
-    //     // checkReleaseBuilds false
-    // }
-
     defaultConfig {
         applicationId "net.cyberg.anyupp"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 32
+        // minSdkVersion flutter.minSdkVersion
+        // targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         // multiDexEnabled true
     }
-    
+
     signingConfigs {
        release {
            keyAlias keystoreProperties['keyAlias']
