@@ -29,7 +29,6 @@ export class AppsyncAppStack extends sst.Stack {
       'AppsyncLambda',
       {
         ...commonLambdaProps,
-        // It must be relative to the serverless.yml file
         functionName: `${scope.stage}-anyupp-graphql-resolvers`,
         handler: 'handler',
         entry: __dirname + '/../../lib/lambda/appsync-lambda/index.ts',

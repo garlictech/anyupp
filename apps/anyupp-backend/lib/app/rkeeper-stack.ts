@@ -131,7 +131,6 @@ export class RKeeperStack extends sst.Stack {
       'RKeeperWebhookLambda',
       {
         ...commonLambdaProps,
-        // It must be relative to the serverless.yml file
         memorySize: 512,
         timeout: Duration.seconds(20),
         handler: 'handler',
@@ -211,7 +210,6 @@ export class RKeeperStack extends sst.Stack {
       'RKeeperStuckOrderCleanupLambda',
       {
         ...commonLambdaProps,
-        // It must be relative to the serverless.yml file
         memorySize: 512,
         timeout: Duration.seconds(30),
         handler: 'handler',

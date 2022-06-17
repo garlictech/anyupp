@@ -31,7 +31,6 @@ export class StripeStack extends sst.Stack {
       'StripeWebhookLambda',
       {
         ...commonLambdaProps,
-        // It must be relative to the serverless.yml file
         timeout: Duration.seconds(30),
         memorySize: 512,
         handler: 'handler',

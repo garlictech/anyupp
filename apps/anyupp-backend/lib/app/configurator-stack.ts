@@ -3,6 +3,8 @@ import {
   aws_iam as iam,
   custom_resources as cr,
   Duration,
+  // We must follow this pattern! the aws_iam as iam form was inherited from
+  // CDK 1. See #3622
   aws_lambda_nodejs,
 } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
