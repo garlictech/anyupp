@@ -8877,7 +8877,7 @@
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.50.tgz#117540e026d64e1846093abbd5adc7e27fda7bcb"
   integrity sha512-VMhZMMQgV1zsR+lX/0IBfAk+8Eb7dPVMWiQGFAt3qjo5x7Ml6b77jUo0e1C3ToD+XRDXqtrfw+6AB0uUsPEr3Q==
 
-"@types/aws-lambda-fastify@^1.4.1":
+"@types/aws-lambda-fastify@1.4.1":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@types/aws-lambda-fastify/-/aws-lambda-fastify-1.4.1.tgz#377eb25ef7fe961edfc7ee765be45941c4d0892a"
   integrity sha512-eVBdLx6Vlr44Fpls9tYvBSwWQk9m8dp2NvD7J72lB4L2wt/Bt/KPQVnz7W9l6ZfOnavg8Rrl4GrJR4IxdDX4vA==
