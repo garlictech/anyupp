@@ -76,7 +76,7 @@
     "apollo-link-error": "1.1.13",
     "apollo-server-express": "3.7.0",
     "apollo-server-fastify": "3.7.0",
-    "aws-amplify": "4.3.24",
+    "aws-amplify": "4.3.25",
     "aws-appsync": "4.1.6",
     "aws-elasticsearch-js": "1.0.3",
     "aws-lambda": "1.0.7",
@@ -125,11 +125,11 @@
     "zone.js": "0.11.5"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "13.3.7",
+    "@angular-devkit/build-angular": "13.3.8",
     "@angular-eslint/eslint-plugin": "13.2.1",
     "@angular-eslint/eslint-plugin-template": "13.2.1",
     "@angular-eslint/template-parser": "13.2.1",
-    "@angular/cli": "13.3.7",
+    "@angular/cli": "13.3.8",
     "@angular/compiler-cli": "13.3.11",
     "@angular/language-service": "13.3.11",
     "@babel/core": "7.17.10",
