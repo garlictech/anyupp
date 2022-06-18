@@ -100,7 +100,7 @@
     "graphql": "15.8.0",
     "graphql-subscriptions": "2.0.0",
     "graphql-tag": "2.12.6",
-    "graphql-tools": "8.2.11",
+    "graphql-tools": "8.2.12",
     "isomorphic-fetch": "3.0.0",
     "jspdf": "2.5.1",
     "jszip": "3.9.1",
