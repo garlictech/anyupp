@@ -123,7 +123,7 @@
     "uuid": "8.3.2",
     "ws": "8.6.0",
     "xlsx": "0.18.5",
-    "zone.js": "0.11.5"
+    "zone.js": "0.11.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "13.3.8",
