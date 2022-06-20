@@ -6,11 +6,11 @@ COPY apps/anyupp-mobile anyupp-mobile
 
 #RUN cd anyupp-mobile \
 #  && flutter pub get \
-#  && flutter build apk \ 
+#  && flutter build apk \
 #  && cd .. \
 #  && rm -rf anyupp-mobile \
 
-RUN  sdkmanager "platform-tools" "platforms;android-28" "emulator" "system-images;android-28;default;x86" \
-  && echo "no" | avdmanager --verbose create avd --force --name "int_test" --package "system-images;android-28;default;x86" --tag "default" --abi "x86"
+RUN  sdkmanager "platform-tools" "platforms;android-29" "emulator" "system-images;android-29;default;x86" \
+  && echo "no" | avdmanager --verbose create avd --force --name "int_test" --package "system-images;android-29;default;x86" --tag "default" --abi "x86"
 
 
