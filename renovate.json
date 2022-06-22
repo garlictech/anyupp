@@ -2,7 +2,7 @@
   "extends": ["config:base"],
   "enabled": true,
   "major": {
-    "enabled": false
+    "enabled": true
   },
   "prConcurrentLimit": 5,
   "schedule": ["before 2am"]
