@@ -196,9 +196,7 @@ exports[`Test the rkeeper api basic functionality It shouls be able to search fo
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - not not existing unit 1`] = `[Error: Cannot find unit belonging to external unit id NOT EXISTING RESTAURANT]`;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler 1`] = `[InvalidBucketName: The specified bucket is not valid.]`;
-
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Chain products 1`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 1`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -240,7 +238,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Chain products 2`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 2`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -282,7 +280,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Chain products 3`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 3`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -324,7 +322,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Chain products 4`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 4`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -366,7 +364,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Chain products 5`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 5`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -408,7 +406,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Group products 1`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 1`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -444,7 +442,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Group products 2`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 2`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -480,7 +478,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Group products 3`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 3`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -516,7 +514,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Group products 4`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 4`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -552,7 +550,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Group products 5`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 5`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -588,7 +586,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Product component sets 1`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product component sets 1`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "createdAt": Any<String>,
@@ -616,7 +614,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Product component sets 2`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product component sets 2`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "createdAt": Any<String>,
@@ -641,7 +639,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Product components 1`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 1`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -661,7 +659,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Product components 2`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 2`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -681,7 +679,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Product components 3`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 3`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -701,7 +699,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Product components 4`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 4`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -721,7 +719,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Product components 5`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 5`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -741,7 +739,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Product components 6`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 6`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -761,7 +759,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Product components 7`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 7`] = `
 Object {
   "allergens": null,
   "chainId": "rkeeper-MASKED ID-chain",
@@ -781,7 +779,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Unit products 1`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 1`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -834,7 +832,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Unit products 2`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 2`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -887,7 +885,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Unit products 3`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 3`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": Array [
@@ -1009,7 +1007,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Unit products 4`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 4`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": Array [
@@ -1131,7 +1129,7 @@ Object {
 }
 `;
 
-exports[`Test the rkeeper api basic functionality Test the menusync handler: Unit products 5`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 5`] = `
 Object {
   "chainId": "rkeeper-MASKED ID-chain",
   "configSets": null,
@@ -1183,6 +1181,8 @@ Object {
   ],
 }
 `;
+
+exports[`Test the rkeeper api basic functionality Test the menusync handler 1`] = `[InvalidBucketName: The specified bucket is not valid.]`;
 
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category created 1`] = `true`;
 
