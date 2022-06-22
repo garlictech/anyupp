@@ -110,6 +110,7 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
         }
         phone
         email
+        isVisibleInApp
       }
     }
   }

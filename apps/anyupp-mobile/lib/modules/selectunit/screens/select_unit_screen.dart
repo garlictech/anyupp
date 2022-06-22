@@ -71,9 +71,10 @@ class _SelectUnitScreenState extends State<SelectUnitScreen> {
                   return _getRefreshableMessage('selectUnitMap.notLoaded');
                 }
                 if (state is UnitsLoaded) {
-                  if (state.units.isNotEmpty) {
-                    // return _UnitListWidget(units: state.units);
-                    return _buildList(state.units, mode);
+                  var units =
+                      state.units.where((unit) => unit.isVisibleInApp).toList();
+                  if (units.isNotEmpty) {
+                    return _buildList(units, mode);
                   }
                   return _getRefreshableMessage('selectUnitMap.noNearUnits');
                 }

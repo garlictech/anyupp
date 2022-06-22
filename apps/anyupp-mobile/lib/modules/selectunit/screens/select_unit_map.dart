@@ -66,11 +66,13 @@ class _SelectUnitMapScreenState extends State<SelectUnitMapScreen> {
               }
 
               if (state is UnitsLoaded) {
-                if (state.units.isNotEmpty != true) {
+                var units =
+                    state.units.where((unit) => unit.isVisibleInApp).toList();
+
+                if (units.isNotEmpty != true) {
                   return _getRefreshableMessage('selectUnitMap.noNearUnits');
                 }
 
-                var units = state.units;
                 var markers =
                     _createMarkers(units, state.userLocation).values.toList();
                 if (_userMarker != null) {

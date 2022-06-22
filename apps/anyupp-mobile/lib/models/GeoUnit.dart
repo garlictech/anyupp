@@ -35,6 +35,7 @@ class GeoUnit {
   final bool? coverBannersEnabled;
   final List<ImageAsset>? coverBanners;
   final bool? canCallWaiter;
+  final bool isVisibleInApp;
 
   GeoUnit({
     required this.id,
@@ -66,6 +67,7 @@ class GeoUnit {
     this.coverBannersEnabled,
     this.coverBanners,
     this.canCallWaiter,
+    this.isVisibleInApp = true,
   });
 
   GeoUnit copyWith({
@@ -98,6 +100,7 @@ class GeoUnit {
     bool? coverBannersEnabled,
     List<ImageAsset>? coverBanners,
     bool? canCallWaiter,
+    bool? isVisibleInApp,
   }) {
     return GeoUnit(
       id: id ?? this.id,
@@ -132,6 +135,7 @@ class GeoUnit {
       coverBannersEnabled: coverBannersEnabled ?? this.coverBannersEnabled,
       coverBanners: coverBanners ?? this.coverBanners,
       canCallWaiter: canCallWaiter ?? this.canCallWaiter,
+      isVisibleInApp: isVisibleInApp ?? this.isVisibleInApp,
     );
   }
 
@@ -168,6 +172,7 @@ class GeoUnit {
       'coverBannersEnabled': coverBannersEnabled,
       'coverBanners': coverBanners?.map((x) => x.toJson()).toList(),
       'canCallWaiter': canCallWaiter,
+      'isVisibleInApp': isVisibleInApp,
     };
   }
 
@@ -235,6 +240,7 @@ class GeoUnit {
               map['unit']?['coverBanners']?.map((x) => ImageAsset.fromJson(x)))
           : null,
       canCallWaiter: map['unit']?['canCallWaiter'] ?? false,
+      isVisibleInApp: map['unit']?['isVisibleInApp'] ?? true,
     );
   }
 
@@ -276,7 +282,8 @@ class GeoUnit {
         other.email == email &&
         other.coverBannersEnabled == coverBannersEnabled &&
         listEquals(other.coverBanners, coverBanners) &&
-        other.canCallWaiter == canCallWaiter;
+        other.canCallWaiter == canCallWaiter &&
+        other.isVisibleInApp == isVisibleInApp;
   }
 
   @override
@@ -308,6 +315,7 @@ class GeoUnit {
         email.hashCode ^
         coverBannersEnabled.hashCode ^
         coverBanners.hashCode ^
-        canCallWaiter.hashCode;
+        canCallWaiter.hashCode ^
+        isVisibleInApp.hashCode;
   }
 }
