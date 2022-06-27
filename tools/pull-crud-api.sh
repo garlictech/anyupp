@@ -116,6 +116,10 @@ OS_ENDPOINT=$(aws cloudformation list-exports | \
   jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainEndpoint\")" | \
   jq ".Value")
 
+OS_ARN=$(aws cloudformation list-exports | jq ".Exports[] | \
+  select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainArn\")" | \
+  jq ".Value")
+
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
 # ----------------------------------------------------------
@@ -130,6 +134,7 @@ export const CrudApiConfig = {
   appId: '${APPID}',
   appsyncApiId: '${API_ID}',
   openSearchEndpoint: ${OS_ENDPOINT}
+  openSearchArn: ${OS_ARN}
 }
 " > ${CRUD_CONFIG_FILE}
 
