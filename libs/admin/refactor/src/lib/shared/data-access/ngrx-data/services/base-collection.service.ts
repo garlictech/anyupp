@@ -34,22 +34,22 @@ export class BaseCollectionService<
     this.apiConf = getApiConf<ENTITY>(entityName, crudSdk);
   }
 
-  getAll() {
+  override getAll() {
     console.error('Do not call getAll, use paginated query instead.');
     return EMPTY;
   }
 
-  getByKey(key: string) {
+  override getByKey(key: string) {
     console.error('Do not call getByKey directly, use getByKey$ instead.', key);
     return EMPTY;
   }
 
-  add<T>(entity: T) {
+  override add<T>(entity: T) {
     console.error('Do not call add directly, use add$ instead.', entity);
     return EMPTY;
   }
 
-  update<T>(entity: T) {
+  override update<T>(entity: T) {
     console.error('Do not call add directly, use add$ instead.', entity);
     return EMPTY;
   }
@@ -215,7 +215,7 @@ export class BaseCollectionService<
   }
 
   // Override super method - override the whole filter object
-  setFilter(filters: Record<string, unknown>) {
+  override setFilter(filters: Record<string, unknown>) {
     this.filters = filters;
 
     super.setFilter(this.filters);

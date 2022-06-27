@@ -9,6 +9,7 @@ import { ProductCategoryCollectionService } from '../../../store/product-categor
 import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { Store } from '@ngrx/store';
 import { ChainCollectionService } from '../../../store/chains';
+import { NestedSortItem } from '@bgap/domain';
 
 @Injectable({
   providedIn: 'root',
@@ -67,7 +68,7 @@ export class ProductCategoryListService {
 
   public updateProductCategoryOrders$(
     chainId: string,
-    categoryOrders: string[],
+    categoryOrders: NestedSortItem[],
   ) {
     return this._chainCollectionService
       .update$({

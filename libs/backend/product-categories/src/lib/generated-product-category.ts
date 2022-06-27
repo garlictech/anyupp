@@ -49,7 +49,9 @@ export const reGenerateActiveProductCategoriesForAUnit =
                 map(chain => ({
                   productCategoryMap,
                   unitId,
-                  categoryOrders: chain?.categoryOrders || [],
+                  categoryOrders:
+                    chain?.categoryOrders?.map(item => item?.id as string) ||
+                    [],
                 })),
               ),
             ),
@@ -115,9 +117,7 @@ const deleteGeneratedProductCategoryItemsFromDb = (
 
 export const createGeneratedProductCategoriesInDb = (
   items: CreateGeneratedProductCategoryInput[],
-) => {
-  return createItems(TABLE_NAME)(items);
-};
+) => createItems(TABLE_NAME)(items);
 
 export const listGeneratedProductCategoriesForUnits =
   (deps: ProductCategoryResolverDeps) =>

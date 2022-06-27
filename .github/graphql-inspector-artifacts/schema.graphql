@@ -381,6 +381,11 @@ type AdminUserSettings @aws_iam @aws_cognito_user_pools {
   selectedHistoryDate: Int
 }
 
+type NestedSortItem @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  parentId: ID
+}
+
 input UpdateAdminUserInput {
   id: ID!
   name: String
@@ -417,7 +422,7 @@ type Chain @aws_iam @aws_cognito_user_pools {
   address: Address
   email: String
   phone: String
-  categoryOrders: [ID]
+  categoryOrders: [NestedSortItem]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -698,7 +703,6 @@ type ProductCategory @aws_iam @aws_cognito_user_pools {
   image: String
   name: LocalizedItem!
   position: Int!
-  parentId: ID
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2155,6 +2159,11 @@ input ChainStyleImagesInput {
   logo: String
 }
 
+input NestedSortItemInput {
+  id: ID
+  parentId: ID
+}
+
 type ModelChainConnection @aws_iam @aws_cognito_user_pools {
   items: [Chain]!
   nextToken: String
@@ -2166,7 +2175,6 @@ input ModelChainFilterInput {
   isActive: ModelBooleanInput
   email: ModelStringInput
   phone: ModelStringInput
-  categoryOrders: ModelIDInput
   and: [ModelChainFilterInput]
   or: [ModelChainFilterInput]
   not: ModelChainFilterInput
@@ -2177,7 +2185,6 @@ input ModelChainConditionInput {
   isActive: ModelBooleanInput
   email: ModelStringInput
   phone: ModelStringInput
-  categoryOrders: ModelIDInput
   and: [ModelChainConditionInput]
   or: [ModelChainConditionInput]
   not: ModelChainConditionInput
@@ -2192,7 +2199,7 @@ input CreateChainInput {
   address: AddressInput
   email: String
   phone: String
-  categoryOrders: [ID]
+  categoryOrders: [NestedSortItemInput]
 }
 
 input UpdateChainInput {
@@ -2204,7 +2211,7 @@ input UpdateChainInput {
   address: AddressInput
   email: String
   phone: String
-  categoryOrders: [ID]
+  categoryOrders: [NestedSortItemInput]
 }
 
 input DeleteChainInput {
@@ -2414,7 +2421,6 @@ input ModelProductCategoryFilterInput {
   chainId: ModelIDInput
   image: ModelStringInput
   position: ModelIntInput
-  parentId: ModelIDInput
   and: [ModelProductCategoryFilterInput]
   or: [ModelProductCategoryFilterInput]
   not: ModelProductCategoryFilterInput
@@ -2424,7 +2430,6 @@ input ModelProductCategoryConditionInput {
   chainId: ModelIDInput
   image: ModelStringInput
   position: ModelIntInput
-  parentId: ModelIDInput
   and: [ModelProductCategoryConditionInput]
   or: [ModelProductCategoryConditionInput]
   not: ModelProductCategoryConditionInput
@@ -2437,7 +2442,6 @@ input CreateProductCategoryInput {
   image: String
   name: LocalizedItemInput!
   position: Int!
-  parentId: ID
 }
 
 input UpdateProductCategoryInput {
@@ -2447,7 +2451,6 @@ input UpdateProductCategoryInput {
   image: String
   name: LocalizedItemInput
   position: Int
-  parentId: ID
 }
 
 input DeleteProductCategoryInput {
@@ -3537,7 +3540,6 @@ input SearchableChainFilterInput {
   isActive: SearchableBooleanFilterInput
   email: SearchableStringFilterInput
   phone: SearchableStringFilterInput
-  categoryOrders: SearchableIDFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   and: [SearchableChainFilterInput]
@@ -3551,7 +3553,6 @@ enum SearchableChainSortableFields {
   isActive
   email
   phone
-  categoryOrders
   createdAt
   updatedAt
 }
@@ -3567,7 +3568,6 @@ enum SearchableChainAggregateField {
   isActive
   email
   phone
-  categoryOrders
   createdAt
   updatedAt
 }
@@ -3714,7 +3714,6 @@ input SearchableProductCategoryFilterInput {
   chainId: SearchableIDFilterInput
   image: SearchableStringFilterInput
   position: SearchableIntFilterInput
-  parentId: SearchableIDFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   and: [SearchableProductCategoryFilterInput]
@@ -3727,7 +3726,6 @@ enum SearchableProductCategorySortableFields {
   chainId
   image
   position
-  parentId
   createdAt
   updatedAt
 }
@@ -3742,7 +3740,6 @@ enum SearchableProductCategoryAggregateField {
   chainId
   image
   position
-  parentId
   createdAt
   updatedAt
 }

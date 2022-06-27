@@ -20,7 +20,6 @@ Object {
       "en": "PRODUCT_CATEGORY",
       "hu": null,
     },
-    "parentId": null,
     "position": 0,
     "updatedAt": Any<String>,
   },

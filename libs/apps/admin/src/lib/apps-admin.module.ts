@@ -8,6 +8,8 @@ import { ButtonUIComponent } from './ui-widgets/button-ui/button-ui.component';
 import { NotificationToggleComponent } from './widgets/notification-toggle/notification-toggle.component';
 import { ToggleButtonUiComponent } from './ui-widgets/toggle-button-ui/toggle-button-ui.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DragNDropNestedListComponent } from './widgets/drag-n-drop-nested-list/drag-n-drop-nested-list.component';
 
 const componentDeclarations = [
   FileUploaderUIComponent,
@@ -16,10 +18,11 @@ const componentDeclarations = [
   ButtonUIComponent,
   NotificationToggleComponent,
   ToggleButtonUiComponent,
+  DragNDropNestedListComponent,
 ];
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, TranslateModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslateModule, DragDropModule],
   declarations: [...componentDeclarations],
   exports: [...componentDeclarations],
 })

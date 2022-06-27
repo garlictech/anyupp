@@ -3,6 +3,7 @@
     <div class="float-start">
       {{ 'productCategories.listTitle' | translate }}
     </div>
+
     <button
       nbButton
       type="button"
@@ -10,42 +11,39 @@
       size="small"
       class="float-right"
       (click)="addProductCategory()"
-      [title]="'productCategories.addProductCategory' | translate"
     >
       <nb-icon icon="add" pack="material-icons"></nb-icon>
       {{ 'common.add' | translate }}
+    </button>
+    <button
+      nbButton
+      type="button"
+      shape="round"
+      size="small"
+      class="float-right me-4"
+      (click)="saveSorting()"
+      [disabled]="!enableSaveSorting"
+    >
+      {{ 'productCategories.saveSorting' | translate }}
     </button>
   </nb-card-header>
   <nb-card-body
     class="p-2"
     *ngIf="productCategories$ | async as productCategories"
   >
-    <cdk-virtual-scroll-viewport
-      style="height: 100%"
-      itemSize="50"
-      (scrolledIndexChange)="
-        loadNextPaginatedData($event, productCategories.length)
-      "
-      #dataVSVP
+    <lib-admin-drag-n-drop-nested-list
+      [dataSource]="productCategories"
+      [nestConfig]="categoryOrders"
+      [listItemTemplate]="listItemTemplate"
+      (nodeChange)="onNodeDrop($event)"
     >
-      <nb-list cdkDropList (cdkDropListDropped)="drop($event)">
-        <nb-list-item
-          *cdkVirtualFor="
-            let productCategory of productCategories;
-            first as isFirst;
-            last as isLast
-          "
-          [cdkDragData]="productCategory.id"
-          cdkDrag
-        >
-          <bgap-product-category-list-item
-            class="w-100"
-            [productCategory]="productCategory"
-            [isFirst]="isFirst"
-            [isLast]="isLast"
-          ></bgap-product-category-list-item>
-        </nb-list-item>
-      </nb-list>
-    </cdk-virtual-scroll-viewport>
+    </lib-admin-drag-n-drop-nested-list>
+
+    <ng-template #listItemTemplate let-data="data">
+      <bgap-product-category-list-item
+        class="w-100"
+        [productCategory]="data"
+      ></bgap-product-category-list-item>
+    </ng-template>
   </nb-card-body>
 </nb-card>

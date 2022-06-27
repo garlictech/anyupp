@@ -298,7 +298,8 @@
     "addProductCategory": "Add product category",
     "listTitle": "Product categories (EN)",
     "editProductCategory": "Edit product category",
-    "newProductCategory": "New product category"
+    "newProductCategory": "New product category",
+    "saveSorting": "Save sorting"
   },
   "productComponents": {
     "editProductComponent": "Edit product component",

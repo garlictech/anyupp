@@ -180,7 +180,7 @@ export interface Cart {
 
 export interface Chain {
   address?: Maybe<Address>;
-  categoryOrders?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  categoryOrders?: Maybe<Array<Maybe<NestedSortItem>>>;
   createdAt: Scalars['AWSDateTime'];
   description?: Maybe<LocalizedItem>;
   email?: Maybe<Scalars['String']>;
@@ -306,7 +306,7 @@ export interface CreateCartInput {
 
 export interface CreateChainInput {
   address?: InputMaybe<AddressInput>;
-  categoryOrders?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  categoryOrders?: InputMaybe<Array<InputMaybe<NestedSortItemInput>>>;
   description?: InputMaybe<LocalizedItemInput>;
   email?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
@@ -450,7 +450,6 @@ export interface CreateProductCategoryInput {
   id?: InputMaybe<Scalars['ID']>;
   image?: InputMaybe<Scalars['String']>;
   name: LocalizedItemInput;
-  parentId?: InputMaybe<Scalars['ID']>;
   position: Scalars['Int'];
 }
 
@@ -1080,7 +1079,6 @@ export interface ModelCartFilterInput {
 
 export interface ModelChainConditionInput {
   and?: InputMaybe<Array<InputMaybe<ModelChainConditionInput>>>;
-  categoryOrders?: InputMaybe<ModelIdInput>;
   email?: InputMaybe<ModelStringInput>;
   isActive?: InputMaybe<ModelBooleanInput>;
   name?: InputMaybe<ModelStringInput>;
@@ -1096,7 +1094,6 @@ export interface ModelChainConnection {
 
 export interface ModelChainFilterInput {
   and?: InputMaybe<Array<InputMaybe<ModelChainFilterInput>>>;
-  categoryOrders?: InputMaybe<ModelIdInput>;
   email?: InputMaybe<ModelStringInput>;
   id?: InputMaybe<ModelIdInput>;
   isActive?: InputMaybe<ModelBooleanInput>;
@@ -1493,7 +1490,6 @@ export interface ModelProductCategoryConditionInput {
   image?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelProductCategoryConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductCategoryConditionInput>>>;
-  parentId?: InputMaybe<ModelIdInput>;
   position?: InputMaybe<ModelIntInput>;
 }
 
@@ -1509,7 +1505,6 @@ export interface ModelProductCategoryFilterInput {
   image?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelProductCategoryFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductCategoryFilterInput>>>;
-  parentId?: InputMaybe<ModelIdInput>;
   position?: InputMaybe<ModelIntInput>;
 }
 
@@ -2307,6 +2302,16 @@ export interface MutationUpdateUserArgs {
   input: UpdateUserInput;
 }
 
+export interface NestedSortItem {
+  id: Scalars['ID'];
+  parentId?: Maybe<Scalars['ID']>;
+}
+
+export interface NestedSortItemInput {
+  id?: InputMaybe<Scalars['ID']>;
+  parentId?: InputMaybe<Scalars['ID']>;
+}
+
 export interface OpeningHoursByDate {
   closed: Scalars['Boolean'];
   date: Scalars['String'];
@@ -2568,7 +2573,6 @@ export interface ProductCategory {
   id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
   name: LocalizedItem;
-  parentId?: Maybe<Scalars['ID']>;
   position: Scalars['Int'];
   updatedAt: Scalars['AWSDateTime'];
 }
@@ -3406,7 +3410,6 @@ export enum SearchableCartSortableFields {
 }
 
 export enum SearchableChainAggregateField {
-  categoryorders = 'categoryOrders',
   createdat = 'createdAt',
   email = 'email',
   id = 'id',
@@ -3431,7 +3434,6 @@ export interface SearchableChainConnection {
 
 export interface SearchableChainFilterInput {
   and?: InputMaybe<Array<InputMaybe<SearchableChainFilterInput>>>;
-  categoryOrders?: InputMaybe<SearchableIdFilterInput>;
   createdAt?: InputMaybe<SearchableStringFilterInput>;
   email?: InputMaybe<SearchableStringFilterInput>;
   id?: InputMaybe<SearchableIdFilterInput>;
@@ -3513,7 +3515,6 @@ export interface SearchableChainSortInput {
 }
 
 export enum SearchableChainSortableFields {
-  categoryorders = 'categoryOrders',
   createdat = 'createdAt',
   email = 'email',
   id = 'id',
@@ -4018,7 +4019,6 @@ export enum SearchableProductCategoryAggregateField {
   createdat = 'createdAt',
   id = 'id',
   image = 'image',
-  parentid = 'parentId',
   position = 'position',
   updatedat = 'updatedAt'
 }
@@ -4044,7 +4044,6 @@ export interface SearchableProductCategoryFilterInput {
   image?: InputMaybe<SearchableStringFilterInput>;
   not?: InputMaybe<SearchableProductCategoryFilterInput>;
   or?: InputMaybe<Array<InputMaybe<SearchableProductCategoryFilterInput>>>;
-  parentId?: InputMaybe<SearchableIdFilterInput>;
   position?: InputMaybe<SearchableIntFilterInput>;
   updatedAt?: InputMaybe<SearchableStringFilterInput>;
 }
@@ -4059,7 +4058,6 @@ export enum SearchableProductCategorySortableFields {
   createdat = 'createdAt',
   id = 'id',
   image = 'image',
-  parentid = 'parentId',
   position = 'position',
   updatedat = 'updatedAt'
 }
@@ -4954,7 +4952,7 @@ export interface UpdateCartInput {
 
 export interface UpdateChainInput {
   address?: InputMaybe<AddressInput>;
-  categoryOrders?: InputMaybe<Array<InputMaybe<Scalars['ID']>>>;
+  categoryOrders?: InputMaybe<Array<InputMaybe<NestedSortItemInput>>>;
   description?: InputMaybe<LocalizedItemInput>;
   email?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
@@ -5101,7 +5099,6 @@ export interface UpdateProductCategoryInput {
   id: Scalars['ID'];
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<LocalizedItemInput>;
-  parentId?: InputMaybe<Scalars['ID']>;
   position?: InputMaybe<Scalars['Int']>;
 }
 
@@ -5628,7 +5625,7 @@ export type CreateChainMutationVariables = Exact<{
 }>;
 
 
-export type CreateChainMutation = { createChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type CreateChainMutation = { createChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
 
 export type UpdateChainMutationVariables = Exact<{
   input: UpdateChainInput;
@@ -5636,7 +5633,7 @@ export type UpdateChainMutationVariables = Exact<{
 }>;
 
 
-export type UpdateChainMutation = { updateChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type UpdateChainMutation = { updateChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
 
 export type DeleteChainMutationVariables = Exact<{
   input: DeleteChainInput;
@@ -5644,7 +5641,7 @@ export type DeleteChainMutationVariables = Exact<{
 }>;
 
 
-export type DeleteChainMutation = { deleteChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type DeleteChainMutation = { deleteChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
 
 export type CreateGroupMutationVariables = Exact<{
   input: CreateGroupInput;
@@ -5692,7 +5689,7 @@ export type CreateProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductCategoryMutation = { createProductCategory?: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type CreateProductCategoryMutation = { createProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type UpdateProductCategoryMutationVariables = Exact<{
   input: UpdateProductCategoryInput;
@@ -5700,7 +5697,7 @@ export type UpdateProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProductCategoryMutation = { updateProductCategory?: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type UpdateProductCategoryMutation = { updateProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type DeleteProductCategoryMutationVariables = Exact<{
   input: DeleteProductCategoryInput;
@@ -5708,7 +5705,7 @@ export type DeleteProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type DeleteProductCategoryMutation = { deleteProductCategory?: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type DeleteProductCategoryMutation = { deleteProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type CreateProductComponentMutationVariables = Exact<{
   input: CreateProductComponentInput;
@@ -5764,7 +5761,7 @@ export type CreateGeneratedProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type CreateGeneratedProductCategoryMutation = { createGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
+export type CreateGeneratedProductCategoryMutation = { createGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
 
 export type UpdateGeneratedProductCategoryMutationVariables = Exact<{
   input: UpdateGeneratedProductCategoryInput;
@@ -5772,7 +5769,7 @@ export type UpdateGeneratedProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateGeneratedProductCategoryMutation = { updateGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
+export type UpdateGeneratedProductCategoryMutation = { updateGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
 
 export type DeleteGeneratedProductCategoryMutationVariables = Exact<{
   input: DeleteGeneratedProductCategoryInput;
@@ -5780,7 +5777,7 @@ export type DeleteGeneratedProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type DeleteGeneratedProductCategoryMutation = { deleteGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
+export type DeleteGeneratedProductCategoryMutation = { deleteGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
 
 export type CreateGeneratedProductMutationVariables = Exact<{
   input: CreateGeneratedProductInput;
@@ -5968,7 +5965,7 @@ export type GetUnitsNearLocationQueryVariables = Exact<{
 }>;
 
 
-export type GetUnitsNearLocationQuery = { getUnitsNearLocation?: { items?: Array<{ id: string, groupId: string, chainId: string, name: string, distance: number, currency: string, isAcceptingOrders: boolean, openingHours?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, createdAt: string, updatedAt: string, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, openingHoursNext7: Array<{ date: string, closed: boolean, from?: number | null, to?: number | null }>, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, unit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null, chain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null, group?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null } | null> | null } | null };
+export type GetUnitsNearLocationQuery = { getUnitsNearLocation?: { items?: Array<{ id: string, groupId: string, chainId: string, name: string, distance: number, currency: string, isAcceptingOrders: boolean, openingHours?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, createdAt: string, updatedAt: string, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, openingHoursNext7: Array<{ date: string, closed: boolean, from?: number | null, to?: number | null }>, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, unit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId: string, chainId: string, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null } | null, chain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null, group?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null } | null> | null } | null };
 
 export type SearchByRadiusQueryVariables = Exact<{
   input: SearchByRadiusInput;
@@ -6094,7 +6091,7 @@ export type GetChainQueryVariables = Exact<{
 }>;
 
 
-export type GetChainQuery = { getChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type GetChainQuery = { getChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
 
 export type ListChainsQueryVariables = Exact<{
   filter?: InputMaybe<ModelChainFilterInput>;
@@ -6103,7 +6100,7 @@ export type ListChainsQueryVariables = Exact<{
 }>;
 
 
-export type ListChainsQuery = { listChains?: { nextToken?: string | null, items: Array<{ id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null> } | null };
+export type ListChainsQuery = { listChains?: { nextToken?: string | null, items: Array<{ id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null> } | null };
 
 export type SearchChainsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableChainFilterInput>;
@@ -6115,7 +6112,7 @@ export type SearchChainsQueryVariables = Exact<{
 }>;
 
 
-export type SearchChainsQuery = { searchChains?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchChainsQuery = { searchChains?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetGroupQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6178,7 +6175,7 @@ export type GetProductCategoryQueryVariables = Exact<{
 }>;
 
 
-export type GetProductCategoryQuery = { getProductCategory?: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type GetProductCategoryQuery = { getProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type ListProductCategoriesQueryVariables = Exact<{
   filter?: InputMaybe<ModelProductCategoryFilterInput>;
@@ -6187,7 +6184,7 @@ export type ListProductCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type ListProductCategoriesQuery = { listProductCategories?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
+export type ListProductCategoriesQuery = { listProductCategories?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
 
 export type SearchProductCategoriesQueryVariables = Exact<{
   filter?: InputMaybe<SearchableProductCategoryFilterInput>;
@@ -6199,7 +6196,7 @@ export type SearchProductCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type SearchProductCategoriesQuery = { searchProductCategories?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchProductCategoriesQuery = { searchProductCategories?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetProductComponentQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6262,7 +6259,7 @@ export type GetGeneratedProductCategoryQueryVariables = Exact<{
 }>;
 
 
-export type GetGeneratedProductCategoryQuery = { getGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
+export type GetGeneratedProductCategoryQuery = { getGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
 
 export type ListGeneratedProductCategoriesQueryVariables = Exact<{
   filter?: InputMaybe<ModelGeneratedProductCategoryFilterInput>;
@@ -6271,7 +6268,7 @@ export type ListGeneratedProductCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type ListGeneratedProductCategoriesQuery = { listGeneratedProductCategories?: { nextToken?: string | null, items: Array<{ id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null> } | null };
+export type ListGeneratedProductCategoriesQuery = { listGeneratedProductCategories?: { nextToken?: string | null, items: Array<{ id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null> } | null };
 
 export type SearchGeneratedProductCategoriesQueryVariables = Exact<{
   filter?: InputMaybe<SearchableGeneratedProductCategoryFilterInput>;
@@ -6283,7 +6280,7 @@ export type SearchGeneratedProductCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type SearchGeneratedProductCategoriesQuery = { searchGeneratedProductCategories?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchGeneratedProductCategoriesQuery = { searchGeneratedProductCategories?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetGeneratedProductQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6524,7 +6521,7 @@ export type OnAdminUsersChangeSubscription = { onAdminUsersChange?: { id: string
 export type OnChainsChangeSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnChainsChangeSubscription = { onChainsChange?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type OnChainsChangeSubscription = { onChainsChange?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
 
 export type OnGroupsChangeSubscriptionVariables = Exact<{
   chainId: Scalars['ID'];
@@ -6545,7 +6542,7 @@ export type OnProductCategoriesChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnProductCategoriesChangeSubscription = { onProductCategoriesChange?: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnProductCategoriesChangeSubscription = { onProductCategoriesChange?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnProductComponentsChangeSubscriptionVariables = Exact<{
   chainId: Scalars['ID'];
@@ -6676,17 +6673,17 @@ export type OnUpdateAdminUserSubscription = { onUpdateAdminUser?: { id: string, 
 export type OnCreateChainSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateChainSubscription = { onCreateChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type OnCreateChainSubscription = { onCreateChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
 
 export type OnUpdateChainSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateChainSubscription = { onUpdateChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type OnUpdateChainSubscription = { onUpdateChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
 
 export type OnDeleteChainSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteChainSubscription = { onDeleteChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, categoryOrders?: Array<string | null> | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type OnDeleteChainSubscription = { onDeleteChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
 
 export type OnCreateGroupSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -6716,17 +6713,17 @@ export type OnDeleteOrderSubscription = { onDeleteOrder?: { id: string, version?
 export type OnCreateProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateProductCategorySubscription = { onCreateProductCategory?: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnCreateProductCategorySubscription = { onCreateProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnUpdateProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateProductCategorySubscription = { onUpdateProductCategory?: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnUpdateProductCategorySubscription = { onUpdateProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnDeleteProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteProductCategorySubscription = { onDeleteProductCategory?: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnDeleteProductCategorySubscription = { onDeleteProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnCreateProductComponentSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -6761,17 +6758,17 @@ export type OnDeleteProductComponentSetSubscription = { onDeleteProductComponent
 export type OnCreateGeneratedProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateGeneratedProductCategorySubscription = { onCreateGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
+export type OnCreateGeneratedProductCategorySubscription = { onCreateGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
 
 export type OnUpdateGeneratedProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateGeneratedProductCategorySubscription = { onUpdateGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
+export type OnUpdateGeneratedProductCategorySubscription = { onUpdateGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
 
 export type OnDeleteGeneratedProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteGeneratedProductCategorySubscription = { onDeleteGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, parentId?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
+export type OnDeleteGeneratedProductCategorySubscription = { onDeleteGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
 
 export type OnCreateGeneratedProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -8703,7 +8700,10 @@ export const CreateChainDocument = gql`
     }
     email
     phone
-    categoryOrders
+    categoryOrders {
+      id
+      parentId
+    }
     createdAt
     updatedAt
   }
@@ -8755,7 +8755,10 @@ export const UpdateChainDocument = gql`
     }
     email
     phone
-    categoryOrders
+    categoryOrders {
+      id
+      parentId
+    }
     createdAt
     updatedAt
   }
@@ -8807,7 +8810,10 @@ export const DeleteChainDocument = gql`
     }
     email
     phone
-    categoryOrders
+    categoryOrders {
+      id
+      parentId
+    }
     createdAt
     updatedAt
   }
@@ -9526,7 +9532,6 @@ export const CreateProductCategoryDocument = gql`
       hu
     }
     position
-    parentId
     createdAt
     updatedAt
   }
@@ -9549,7 +9554,6 @@ export const UpdateProductCategoryDocument = gql`
       hu
     }
     position
-    parentId
     createdAt
     updatedAt
   }
@@ -9572,7 +9576,6 @@ export const DeleteProductCategoryDocument = gql`
       hu
     }
     position
-    parentId
     createdAt
     updatedAt
   }
@@ -9732,7 +9735,6 @@ export const CreateGeneratedProductCategoryDocument = gql`
         hu
       }
       position
-      parentId
       createdAt
       updatedAt
     }
@@ -9764,7 +9766,6 @@ export const UpdateGeneratedProductCategoryDocument = gql`
         hu
       }
       position
-      parentId
       createdAt
       updatedAt
     }
@@ -9796,7 +9797,6 @@ export const DeleteGeneratedProductCategoryDocument = gql`
         hu
       }
       position
-      parentId
       createdAt
       updatedAt
     }
@@ -11444,7 +11444,10 @@ export const GetUnitsNearLocationDocument = gql`
         }
         email
         phone
-        categoryOrders
+        categoryOrders {
+          id
+          parentId
+        }
         createdAt
         updatedAt
       }
@@ -12253,7 +12256,10 @@ export const GetChainDocument = gql`
     }
     email
     phone
-    categoryOrders
+    categoryOrders {
+      id
+      parentId
+    }
     createdAt
     updatedAt
   }
@@ -12306,7 +12312,10 @@ export const ListChainsDocument = gql`
       }
       email
       phone
-      categoryOrders
+      categoryOrders {
+        id
+        parentId
+      }
       createdAt
       updatedAt
     }
@@ -12368,7 +12377,10 @@ export const SearchChainsDocument = gql`
       }
       email
       phone
-      categoryOrders
+      categoryOrders {
+        id
+        parentId
+      }
       createdAt
       updatedAt
     }
@@ -13463,7 +13475,6 @@ export const GetProductCategoryDocument = gql`
       hu
     }
     position
-    parentId
     createdAt
     updatedAt
   }
@@ -13487,7 +13498,6 @@ export const ListProductCategoriesDocument = gql`
         hu
       }
       position
-      parentId
       createdAt
       updatedAt
     }
@@ -13520,7 +13530,6 @@ export const SearchProductCategoriesDocument = gql`
         hu
       }
       position
-      parentId
       createdAt
       updatedAt
     }
@@ -13753,7 +13762,6 @@ export const GetGeneratedProductCategoryDocument = gql`
         hu
       }
       position
-      parentId
       createdAt
       updatedAt
     }
@@ -13790,7 +13798,6 @@ export const ListGeneratedProductCategoriesDocument = gql`
           hu
         }
         position
-        parentId
         createdAt
         updatedAt
       }
@@ -13832,7 +13839,6 @@ export const SearchGeneratedProductCategoriesDocument = gql`
           hu
         }
         position
-        parentId
         createdAt
         updatedAt
       }
@@ -15806,7 +15812,10 @@ export const OnChainsChangeDocument = gql`
     }
     email
     phone
-    categoryOrders
+    categoryOrders {
+      id
+      parentId
+    }
     createdAt
     updatedAt
   }
@@ -16032,7 +16041,6 @@ export const OnProductCategoriesChangeDocument = gql`
       hu
     }
     position
-    parentId
     createdAt
     updatedAt
   }
@@ -18227,7 +18235,10 @@ export const OnCreateChainDocument = gql`
     }
     email
     phone
-    categoryOrders
+    categoryOrders {
+      id
+      parentId
+    }
     createdAt
     updatedAt
   }
@@ -18279,7 +18290,10 @@ export const OnUpdateChainDocument = gql`
     }
     email
     phone
-    categoryOrders
+    categoryOrders {
+      id
+      parentId
+    }
     createdAt
     updatedAt
   }
@@ -18331,7 +18345,10 @@ export const OnDeleteChainDocument = gql`
     }
     email
     phone
-    categoryOrders
+    categoryOrders {
+      id
+      parentId
+    }
     createdAt
     updatedAt
   }
@@ -19050,7 +19067,6 @@ export const OnCreateProductCategoryDocument = gql`
       hu
     }
     position
-    parentId
     createdAt
     updatedAt
   }
@@ -19073,7 +19089,6 @@ export const OnUpdateProductCategoryDocument = gql`
       hu
     }
     position
-    parentId
     createdAt
     updatedAt
   }
@@ -19096,7 +19111,6 @@ export const OnDeleteProductCategoryDocument = gql`
       hu
     }
     position
-    parentId
     createdAt
     updatedAt
   }
@@ -19256,7 +19270,6 @@ export const OnCreateGeneratedProductCategoryDocument = gql`
         hu
       }
       position
-      parentId
       createdAt
       updatedAt
     }
@@ -19288,7 +19301,6 @@ export const OnUpdateGeneratedProductCategoryDocument = gql`
         hu
       }
       position
-      parentId
       createdAt
       updatedAt
     }
@@ -19320,7 +19332,6 @@ export const OnDeleteGeneratedProductCategoryDocument = gql`
         hu
       }
       position
-      parentId
       createdAt
       updatedAt
     }

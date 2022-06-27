@@ -1,0 +1,61 @@
+<ng-template #tmplNode let-node="node">
+  <div
+    class="node-item"
+    [attr.data-id]="node.data?.id"
+    [attr.id]="'node-' + node.data?.id"
+  >
+    <div
+      class="node-title"
+      (click)="node.isExpanded = !node.isExpanded"
+      *ngIf="listItemTemplate"
+    >
+      <ng-container
+        *ngTemplateOutlet="listItemTemplate; context: { data: node.data }"
+      ></ng-container>
+    </div>
+
+    <div
+      *ngIf="node.isExpanded && node.children.length"
+      class="node-children"
+      cdkDropList
+      [cdkDropListData]="node.children"
+      [id]="node.data.id"
+      [cdkDropListConnectedTo]="dropTargetIds"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListSortingDisabled]="true"
+    >
+      <div
+        *ngFor="let child of node.children"
+        cdkDrag
+        [cdkDragData]="child.data.id"
+        (cdkDragMoved)="dragMoved($event)"
+        class="node-container-bt"
+      >
+        <ng-container
+          *ngTemplateOutlet="tmplNode; context: { node: child }"
+        ></ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div
+  cdkDropList
+  [cdkDropListData]="nodes"
+  [id]="'main'"
+  [cdkDropListConnectedTo]="dropTargetIds"
+  (cdkDropListDropped)="drop($event)"
+  [cdkDropListSortingDisabled]="true"
+>
+  <div
+    *ngFor="let node of nodes"
+    cdkDrag
+    [cdkDragData]="node.data?.id"
+    (cdkDragMoved)="dragMoved($event)"
+    class="node-container-bb"
+  >
+    <ng-container
+      *ngTemplateOutlet="tmplNode; context: { node: node }"
+    ></ng-container>
+  </div>
+</div>

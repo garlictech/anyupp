@@ -298,7 +298,8 @@
     "addProductCategory": "Termék kategória hozzáadása",
     "listTitle": "Termék kategóriák",
     "editProductCategory": "Kategória szerkesztése",
-    "newProductCategory": "Új kategória"
+    "newProductCategory": "Új kategória",
+    "saveSorting": "Sorrend mentése"
   },
   "productComponents": {
     "addProductComponent": "Termék komponens hozzáadása",

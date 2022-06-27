@@ -59,9 +59,12 @@ const mockChain = {
     colors: {},
   },
   categoryOrders: [
-    `${testIdPrefix}${TEST_NAME}_04`,
-    `${testIdPrefix}${TEST_NAME}_02`,
-    `${testIdPrefix}${TEST_NAME}_01`,
+    { id: `${testIdPrefix}${TEST_NAME}_04` },
+    { id: `${testIdPrefix}${TEST_NAME}_02` },
+    {
+      id: `${testIdPrefix}${TEST_NAME}_01`,
+      parentId: `${testIdPrefix}${TEST_NAME}_02`,
+    },
   ],
 };
 

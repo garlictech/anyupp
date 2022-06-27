@@ -13,9 +13,7 @@ import { ProductCategoryFormComponent } from '../product-category-form/product-c
   styleUrls: ['./product-category-list-item.component.scss'],
 })
 export class ProductCategoryListItemComponent {
-  @Input() productCategory!: ProductCategory;
-  @Input() isFirst?: boolean;
-  @Input() isLast?: boolean;
+  @Input() productCategory?: ProductCategory;
 
   constructor(private _nbDialogService: NbDialogService) {}
 

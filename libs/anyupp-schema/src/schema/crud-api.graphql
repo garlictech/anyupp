@@ -387,6 +387,11 @@ type AdminUserSettings {
   selectedHistoryDate: Int
 }
 
+type NestedSortItem {
+  id: ID!
+  parentId: ID
+}
+
 input UpdateAdminUserInput {
   id: ID!
   name: String
@@ -426,7 +431,7 @@ type Chain
   address: Address
   email: String
   phone: String
-  categoryOrders: [ID]
+  categoryOrders: [NestedSortItem]
 }
 
 type Group
@@ -712,7 +717,6 @@ type ProductCategory
   image: String
   name: LocalizedItem!
   position: Int! # deprecated!! use chain.categoryOrders
-  parentId: ID
 }
 
 type ProductComponent

@@ -1198,7 +1198,6 @@ Object {
     "en": "Default category",
     "hu": "Alap kategória",
   },
-  "parentId": null,
   "position": -1,
   "updatedAt": Any<String>,
 }
