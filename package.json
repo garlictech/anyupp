@@ -185,7 +185,7 @@
     "@typescript-eslint/parser": "5.22.0",
     "@vvo/tzdb": "6.50.0",
     "builtin-modules": "3.2.0",
-    "cli-progress": "3.11.1",
+    "cli-progress": "3.11.2",
     "codelyzer": "6.0.2",
     "cowsay": "1.5.0",
     "cucumber-html-reporter": "5.5.0",
