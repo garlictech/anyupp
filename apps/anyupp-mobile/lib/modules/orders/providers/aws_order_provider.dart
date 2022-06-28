@@ -39,7 +39,6 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> startOrderListSubscription(
-    String unitId,
     StreamController<List<Order>?> controller,
   ) async {
     log.d('startOrderListSubscription().controller=$controller');
@@ -57,7 +56,6 @@ class AwsOrderProvider implements IOrdersProvider {
       );
     }
     _subOrderList = AwsOrderSubscription(
-      unitId: unitId,
       userId: user.id,
     );
     await _subOrderList!.startListSubscription(
@@ -74,14 +72,13 @@ class AwsOrderProvider implements IOrdersProvider {
 
   @override
   Future<void> startOrderHistoryListSubscription(
-      String unitId, StreamController<List<Order>?> controller) async {
+      StreamController<List<Order>?> controller) async {
     log.d('startOrderHistoryListSubscription()');
     if (_subOrderHistoryList != null) {
       await stopOrderHistoryListSubscription();
     }
     User? user = await _authProvider.getAuthenticatedUserProfile();
     _subOrderHistoryList = AwsOrderHistorySubscription(
-      unitId: unitId,
       userId: user!.id,
     );
     return _subOrderHistoryList!.startListSubscription(
@@ -168,7 +165,6 @@ class AwsOrderProvider implements IOrdersProvider {
       var result = await GQL.amplify.execute(SearchOrdersQuery(
           variables: SearchOrdersArguments(
         userId: user!.id,
-        unitId: unitId,
       )));
 
       if (result.hasErrors || result.data == null) {

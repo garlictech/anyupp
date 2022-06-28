@@ -122,7 +122,6 @@ class Locally {
         if (state is UnitSelected) {
           Nav.to(TransactionOrderDetailsScreen(
             orderId: payload.orderId,
-            unit: state.unit,
             key: UniqueKey(),
           ));
         } else {

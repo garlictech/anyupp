@@ -1,6 +1,5 @@
 import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/auth.dart';
 import 'package:fa_prev/shared/connectivity.dart';

@@ -85,7 +85,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
           backgroundColor: Colors.transparent,
           builder: (context) {
             return QRCodeScannerWidget(
-              popWhenClose: true,
+              popWhenClose: false,
               loadUnits: true,
             );
           },
@@ -129,81 +129,87 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
       backgroundColor: Colors.transparent,
       builder: (context) {
         return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16.0),
-                topRight: Radius.circular(16.0),
-              ),
-              color: theme.secondary0,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(16.0),
+              topRight: Radius.circular(16.0),
             ),
-            padding: EdgeInsets.only(
-              // top: 12.0,
-              // left: 16.0,
-              // right: 16.0,
-              // bottom: 16.0,
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            height: MediaQuery.of(context).size.height * .9,
-            child: Column(
-              children: [
-                Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0, top: 4.0),
-                        child: BackButtonWidget(
-                          // iconSize: 2,
-                          showBorder: false,
-                        ),
+            color: theme.secondary0,
+          ),
+          padding: EdgeInsets.only(
+            // top: 12.0,
+            // left: 16.0,
+            // right: 16.0,
+            // bottom: 16.0,
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          height: MediaQuery.of(context).size.height * .9,
+          child: Column(
+            children: [
+              Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8.0, top: 4.0),
+                      child: BackButtonWidget(
+                        // iconSize: 2,
+                        showBorder: false,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 12.0),
-                        child: Container(
-                          height: 4.0,
-                          width: 40.0,
-                          margin: const EdgeInsets.only(bottom: 32.0),
-                          decoration: BoxDecoration(
-                            color: theme.secondary16,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(8.0),
-                            ),
+                  ),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Container(
+                        height: 4.0,
+                        width: 40.0,
+                        margin: const EdgeInsets.only(bottom: 32.0),
+                        decoration: BoxDecoration(
+                          color: theme.secondary16,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(8.0),
                           ),
                         ),
                       ),
                     ),
-                  ],
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * .8,
-                  child: _orderCreationSuccess == true
-                      ? PaymentSuccessWidget(
-                          onPressed: () {
-                            _navigateAfterOrderStatusWidgetClosed();
-                            Nav.pop();
-                          },
-                        )
-                      : _orderCreationSuccess == false
-                          ? CommonErrorWidget(
-                              error: 'orders.sendOrderError.title',
-                              description: 'orders.sendOrderError.description',
-                              onPressed: () {
-                                _navigateAfterOrderStatusWidgetClosed();
-                                Nav.pop();
-                              },
-                            )
-                          : Container(),
-                )
-              ],
-            ));
+                  ),
+                ],
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * .8,
+                child: _orderCreationSuccess == true
+                    ? PaymentSuccessWidget(
+                        onPressed: () {
+                          _navigateAfterOrderStatusWidgetClosed();
+                          Nav.pop(); // Plus pop need to go back to main screen
+                          Nav.pop();
+                        },
+                      )
+                    : _orderCreationSuccess == false
+                        ? CommonErrorWidget(
+                            error: 'orders.sendOrderError.title',
+                            description: 'orders.sendOrderError.description',
+                            onPressed: () {
+                              _navigateAfterOrderStatusWidgetClosed();
+                              Nav.pop(); // Plus pop need to go back to main screen
+                              Nav.pop();
+                            },
+                          )
+                        : Container(),
+              )
+            ],
+          ),
+        );
       },
     );
   }
 
   void _navigateAfterOrderStatusWidgetClosed() {
+    // Reset Theme
+    getIt<ThemeBloc>().add(ResetTheme());
+    // Back to orders page in the main screen
     getIt<MainNavigationBloc>().add(DoMainNavigation(pageIndex: 2));
   }
 

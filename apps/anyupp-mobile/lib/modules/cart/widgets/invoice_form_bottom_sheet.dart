@@ -93,7 +93,7 @@ class _InvoiceFormBottomSheetWidgetState
         if (state is EmptyCartState) {
           // Navigate away in case of an empty cart. The cart gets deleted after the order has been created
           Nav.pop();
-          Nav.replace(MainNavigation(pageIndex: 2));
+          Nav.replace(HomeScreen(pageIndex: 2));
         } else if (state is CartErrorState) {
           Nav.pop();
         }

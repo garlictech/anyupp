@@ -104,7 +104,11 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       );
     } on Exception catch (e) {
       log.e('AwsFavoritesProvider.getFavoritesList.Exception: $e');
-      rethrow;
+      return PageResponse(
+        data: [],
+        totalCount: 0,
+        nextToken: null,
+      );
     }
   }
 
@@ -123,7 +127,7 @@ class AwsFavoritesProvider implements IFavoritesProvider {
       fetchPolicy: FetchPolicy.networkOnly,
     );
     log.i(
-        'AwsFavoritesProvider.getFavoritesList()=${result.data?.searchFavoriteProducts}');
+        'AwsFavoritesProvider.getFavoritesList()=${result.data?.searchFavoriteProducts?.items.length}');
 
     if (result.hasErrors) {
       throw GraphQLException.fromGraphQLError(

@@ -1,13 +1,21 @@
-import 'package:anchor_scroll_controller/anchor_scroll_controller.dart';
+import 'dart:io';
+
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/adbanner/adbanner.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/favorites/favorites.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:fa_prev/modules/selectunit/selectunit.dart';
+import 'package:fa_prev/shared/exception.dart';
+import 'package:fa_prev/shared/locale/locale.dart';
+import 'package:fa_prev/shared/nav.dart';
+import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
+// import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class _CategoryMenuWidgets {
   // final List<Widget> widgets;
@@ -30,7 +38,7 @@ class MenuScreen extends StatefulWidget {
   State<MenuScreen> createState() => _MenuScreenState();
 }
 
-class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
+class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -55,9 +63,10 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     with TickerProviderStateMixin {
   TabController? _tabController;
   TabController? _subTabController;
-  late final RefreshController _refreshController;
-  late final AnchorScrollController _scrollController;
   final ProductListWidgetGenerator _generator = ProductListWidgetGenerator();
+  bool _adBannerHidden = false;
+
+  // Cart? _cart;
 
   int _selectedTab = 0;
   int _selectedSubTab = 0;
@@ -68,34 +77,18 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   @override
   void initState() {
     super.initState();
-
-    _refreshController = RefreshController(initialRefresh: false);
-    _scrollController = AnchorScrollController(
-        // Majd ha lesz subcategory, akkor ezt kell beállítani
-        //   onIndexChanged: (index, useScroll) {
-        // bool isScrollingDown = _scrollController.position.userScrollDirection ==
-        //     ScrollDirection.reverse;
-        // int scrollPosition = isScrollingDown
-        //     ? _listIndexMap[min(index + 5, _listIndexMap.length - 1)]
-        //     : _listIndexMap[index];
-        // _tabController?.animateTo(scrollPosition);
-        // },
-        );
   }
 
   @override
   void dispose() {
     _tabController?.dispose();
     _subTabController?.dispose();
-    _scrollController.dispose();
-    _refreshController.dispose();
     super.dispose();
   }
 
   void _onRefresh() async {
     BlocProvider.of<ProductListBloc>(context)
         .add(LoadAllProductList(unitId: currentUnit!.id));
-    _refreshController.refreshCompleted();
   }
 
   void _onAddRemoveFavorites(List<FavoriteProduct>? favorites) async {
@@ -113,30 +106,118 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
         supportedServiceModeCount: unit?.supportedServingModes.length ?? 0,
       ),
       backgroundColor: theme.secondary0,
-      body: BlocListener<FavoritesBloc, FavoritesState>(
-        listener: (context, state) {
-          if (state is FavorteAddedOrRemoved) {
-            _onAddRemoveFavorites(state.favorites);
-          }
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: StreamBuilder<Cart?>(
+        stream: getIt<CartRepository>().getCurrentCartStream(unit!.id),
+        builder: (context, AsyncSnapshot<Cart?> snapshot) {
+          Cart? cart = snapshot.data;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  right: 16.0,
+                  bottom: Platform.isIOS ? 32.0 : 16.0,
+                ),
+                child: FloatingActionButton(
+                  backgroundColor: theme.button,
+                  child: Icon(
+                    Icons.qr_code_scanner,
+                    color: theme.secondary0,
+                  ),
+                  onPressed: () => showQRScannerModal(context, false),
+                ),
+              ),
+              cart != null
+                  ? Container(
+                      height: 56.0,
+                      // width: double.infinity,
+                      margin: EdgeInsets.only(
+                        bottom: 16.0,
+                        left: 16.0,
+                        right: 16.0,
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () => Nav.to(
+                          CartScreen(),
+                          animationType: NavAnim.SLIDEIN_DOWN,
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: theme.button,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Spacer(),
+                            Text(
+                              // trans("cart.addToCart").toUpperCase(),
+                              '${trans("cart.myCart")} (${formatCurrency(cart.totalPrice, cart.items[0].sumPriceShown.currency)})',
+                              style: Fonts.satoshi(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w700,
+                                color: theme.buttonText,
+                              ),
+                            ),
+                            Spacer(),
+                            Icon(
+                              Icons.arrow_forward,
+                              color: theme.buttonText,
+                            )
+                          ],
+                        ),
+                      ))
+                  : Container(),
+            ],
+          );
         },
+      ),
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<FavoritesBloc, FavoritesState>(
+            listener: (context, state) {
+              if (state is FavorteAddedOrRemoved) {
+                _onAddRemoveFavorites(state.favorites);
+              }
+            },
+          ),
+          BlocListener<ExceptionBloc, ExceptionState>(
+            listener: (BuildContext context, ExceptionState state) {
+              if (state is ExceptionShowState) {
+                log.d('Main.ExceptionState=$state');
+                // Future.delayed(Duration(seconds: 1)).then((_) =>
+                //     getIt<ExceptionBloc>().add(ShowException(state.exception)));
+                showExceptionDialog(
+                  context,
+                  state.exception,
+                  theme.primary,
+                );
+              }
+            },
+          ),
+        ],
         child: BlocBuilder<ProductListBloc, ProductListState>(
-            builder: (context, state) {
-          if (state is ProductListLoaded) {
-            if (state.productCategories != null &&
-                state.productCategories?.isNotEmpty == true) {
-              return _buildMainMenu(
-                context,
-                unit!,
-                state.productCategories!,
-                state.products,
-                state.favorites,
-              );
-            } else {
-              return const NoProductCategoriesWidget();
+          builder: (context, state) {
+            if (state is ProductListLoaded) {
+              if (state.productCategories != null &&
+                  state.productCategories?.isNotEmpty == true) {
+                return _buildMainMenu(
+                  context,
+                  unit,
+                  state.productCategories!,
+                  state.products,
+                  state.favorites,
+                );
+              } else {
+                return const NoProductCategoriesWidget();
+              }
             }
-          }
-          return const UnitMenuLoadingWidget();
-        }),
+            return const UnitMenuLoadingWidget();
+          },
+        ),
       ),
     );
   }
@@ -158,19 +239,17 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     // log.e('_listIndexMap=${_listIndexMap}');
     // log.e('_tabIndexMap=${_tabIndexMap}');
 
-    return SmartRefresher(
-      enablePullDown: true,
-      header: MaterialClassicHeader(),
-      controller: _refreshController,
-      onRefresh: _onRefresh,
+    return RefreshIndicator(
+      onRefresh: () async => _onRefresh(),
+      color: theme.button,
       child: NestedScrollView(
-        // controller: _scrollController,
         physics: BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           // Animated Unit info
           return <Widget>[
             SliverAppBar(
               backgroundColor: theme.secondary0,
+              automaticallyImplyLeading: false,
               expandedHeight: 270.0,
               flexibleSpace: FlexibleSpaceBar(
                 background: UnitInfoHeaderWidget(
@@ -201,19 +280,11 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         // Main category tabbar
-                        ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(32.0),
-                            bottomLeft: Radius.circular(32.0),
-                            // bottomRight: Radius.circular(32.0),
-                            // topRight: Radius.circular(32.0),
-                          ),
-                          child: ProductCategoryTabWidget(
-                            tabController: _tabController!,
-                            addFavorites: menu.hasFavorites,
-                            productCategories: menu.productCategories,
-                            onTap: (index) => _handleTabTap(context, index),
-                          ),
+                        ProductCategoryTabWidget(
+                          tabController: _tabController!,
+                          addFavorites: menu.hasFavorites,
+                          productCategories: menu.productCategories,
+                          onTap: (index) => _handleTabTap(context, index),
                         ),
                         // Subcategory tabbar
                         if (menu.subCategoryWidgets != null)
@@ -248,15 +319,15 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
           physics: BouncingScrollPhysics(),
           children: [
             ...menu.mainCategoryWidgets.entries
-                .map(
-                  (entry) => SingleChildScrollView(
-                    physics: BouncingScrollPhysics(),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: menu.mainCategoryWidgets[entry.key] ?? [],
-                    ),
-                  ),
-                )
+                .map((entry) => SingleChildScrollView(
+                      // controller: _scrollController,
+                      primary: true,
+                      // physics: BouncingScrollPhysics(),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: menu.mainCategoryWidgets[entry.key] ?? [],
+                      ),
+                    ))
                 .toList(),
           ],
         ),
@@ -347,7 +418,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   _handleTabTap(BuildContext context, int index) {
     // int itemIndex = _tabIndexMap[index];
     // log.w('_handleTabTap[$index]=itemInMap:$itemIndex map:$_tabIndexMap');
-    _scrollController.scrollToIndex(index: index, scrollSpeed: 3.0);
+    // _scrollController.scrollToIndex(index: index, scrollSpeed: 2.0);
     // _tabController?.animateTo(index);
   }
 
@@ -361,43 +432,43 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       var item = menuItems[i];
       if (item is MenuItemHeader) {
         results.add(
-          AnchorItemWrapper(
-            index: item.position,
-            controller: _scrollController,
-            child: ProductCategoryHeaderWidget(
-              name: item.title,
-              // key: _tabKeys[cIndex],
-            ),
+          ProductCategoryHeaderWidget(
+            name: item.title,
+            // key: _tabKeys[cIndex],
           ),
         );
         continue;
       } else if (item is MenuItemFavorite) {
-        results.add(AnchorItemWrapper(
-          index: item.position,
-          controller: _scrollController,
-          child: ProductMenuItemWidget(
-            displayState: item.displayState,
-            unit: unit,
-            item: item.product,
-            servingMode: servingMode,
-          ),
+        results.add(ProductMenuItemWidget(
+          displayState: item.displayState,
+          unit: unit,
+          item: item.product,
+          servingMode: servingMode,
         ));
         continue;
       } else if (item is MenuItemProduct) {
         //
-        results.add(AnchorItemWrapper(
-          index: item.position,
-          controller: _scrollController,
-          child: ProductMenuItemWidget(
-            displayState: item.displayState,
-            unit: unit,
-            item: item.product,
-            servingMode: servingMode,
-          ),
+        results.add(ProductMenuItemWidget(
+          displayState: item.displayState,
+          unit: unit,
+          item: item.product,
+          servingMode: servingMode,
         ));
         continue;
       } else if (item is MenuItemAdBanner) {
-        results.add(Container());
+        if (!_adBannerHidden) {
+          results.add(
+            AdBannerCardWidget(
+              banner: item.adBanner,
+              animated: true,
+              onClosed: () {
+                setState(() {
+                  _adBannerHidden = true;
+                });
+              },
+            ),
+          );
+        }
         continue;
       }
       throw Exception('Unknown item type');

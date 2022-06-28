@@ -171,6 +171,7 @@ void _initBlocs() {
   getIt.registerLazySingleton(() => OrderCounterBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => OrderRefreshBloc());
   getIt.registerLazySingleton(() => OrderHistoryBloc(getIt<OrderRepository>()));
+  getIt.registerLazySingleton(() => OrderDetailsBloc(getIt<OrderRepository>()));
   getIt.registerLazySingleton(() => MainNavigationBloc());
   getIt.registerLazySingleton(() => ConfigsetBloc());
   getIt.registerLazySingleton(

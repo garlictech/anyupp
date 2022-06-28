@@ -20,3 +20,4 @@ export 'widgets/current_order_card_widget.dart';
 export 'widgets/order_history_card_widget.dart';
 export 'widgets/order_simple_list_item_widget.dart';
 export 'widgets/order_status_footer.dart';
+export 'bloc/order_details_bloc.dart';

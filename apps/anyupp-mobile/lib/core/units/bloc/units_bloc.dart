@@ -36,10 +36,11 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
         event.location,
         radiusInMeter,
       );
-      if (_units == null || _units?.isEmpty == true) {
+      var filteredUnits = _filter(_units ?? [], event.filter);
+      if (filteredUnits.isEmpty) {
         emit(UnitsNoNearUnit());
       } else {
-        emit(UnitsLoaded(units: _units!, userLocation: _userLocation));
+        emit(UnitsLoaded(units: filteredUnits, userLocation: _userLocation));
       }
     } on PlatformException catch (e) {
       emit(UnitsNotLoaded(
@@ -72,13 +73,11 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
           _userLocation!,
           radiusInMeter,
         );
-        if (_units == null || _units?.isEmpty == true) {
+        var filteredUnits = _filter(_units ?? [], event.filter);
+        if (filteredUnits.isEmpty) {
           emit(UnitsNoNearUnit());
         } else {
-          emit(UnitsLoaded(
-            units: _units!,
-            userLocation: _userLocation,
-          ));
+          emit(UnitsLoaded(units: filteredUnits, userLocation: _userLocation));
         }
       }
     } on PlatformException catch (e) {
@@ -97,16 +96,29 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
   FutureOr<void> _onFilterUnits(
       FilterUnits event, Emitter<UnitsState> emit) async {
     emit(UnitsLoading());
-    var filteredUnits = _units
-            ?.where((unit) =>
-                unit.supportedServingModes.contains(event.servingMode))
-            .toList() ??
-        [];
+    var filteredUnits = _filter(_units ?? [], event.filter);
     await Future.delayed(Duration(milliseconds: 300));
-    log.d('_onFilterUnits=${_units?.length}, filtered=${filteredUnits.length}');
+    log.d(
+        '_onFilterUnits[${event.filter?.servingMode}]=${_units?.length}, filtered=${filteredUnits.length}');
     emit(UnitsLoaded(
       units: filteredUnits,
       userLocation: _userLocation,
     ));
+  }
+
+  List<GeoUnit> _filter(List<GeoUnit> units, UnitFilter? filter) {
+    if (filter == null) {
+      return units;
+    }
+
+    if (filter.servingMode != null) {
+      var filteredUnits = units
+          .where(
+              (unit) => unit.supportedServingModes.contains(filter.servingMode))
+          .toList();
+      return filteredUnits;
+    }
+
+    return units;
   }
 }

@@ -95,7 +95,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget>
           Icons.qr_code_scanner,
           color: theme.secondary0,
         ),
-        onPressed: () => showQRScannerModal(context),
+        onPressed: () => showQRScannerModal(context, true),
       ),
     );
   }

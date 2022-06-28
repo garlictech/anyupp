@@ -3,7 +3,6 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/widgets/allergen_grid_widget.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets/app_bar.dart';
-import 'package:fa_prev/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,13 +20,13 @@ class AllergenDetailsScreen extends StatelessWidget {
           if (state is UnitSelected) {
             return buildDetailsScreen(context, state.unit);
           }
-          return CenterLoadingWidget();
+          return buildDetailsScreen(context, null);
         },
       ),
     );
   }
 
-  Widget buildDetailsScreen(BuildContext context, GeoUnit unit) {
+  Widget buildDetailsScreen(BuildContext context, GeoUnit? unit) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 32.0),
       child: CustomScrollView(
@@ -81,7 +80,8 @@ class AllergenDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      trans(context, 'allergens.disclaimer', [unit.name]),
+                      trans(context, 'allergens.disclaimer',
+                          [unit?.name ?? 'AnyUpp']),
                       style: Fonts.satoshi(
                         fontSize: 16,
                         color: theme.secondary,

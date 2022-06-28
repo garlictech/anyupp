@@ -1,6 +1,5 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,13 +30,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
   }
 
   void _initScreen() {
-    var unit = currentUnit;
-    if (unit != null) {
-      getIt<OrderBloc>()
-          .add(StartGetOrderListSubscription(unit.chainId, unit.id));
-      getIt<OrderHistoryBloc>()
-          .add(StartGetOrderHistoryListSubscription(unit.id));
-    }
+    getIt<OrderBloc>().add(StartGetOrderListSubscription());
+    getIt<OrderHistoryBloc>().add(StartGetOrderHistoryListSubscription());
   }
 
   @override
@@ -59,10 +53,12 @@ class _OrdersScreenState extends State<OrdersScreen> {
           header: MaterialClassicHeader(),
           controller: _refreshController,
           onRefresh: _onRefresh,
+          physics: BouncingScrollPhysics(),
           child: MultiBlocListener(
             listeners: [
               BlocListener<OrderBloc, BaseOrderState>(
                 listener: (context, state) {
+                  // log.e('OrdersScreen OrderBloc.state: $state');
                   if (state is NoOrdersLoaded || state is OrdersLoadedState) {
                     setState(() {
                       _ordersLoaded = true;
@@ -79,6 +75,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),
               BlocListener<OrderHistoryBloc, BaseOrderHistoryState>(
                 listener: (context, state) {
+                  // log.e('OrdersScreen OrderHistoryBloc.state: $state');
                   if (state is NoOrderHistoryLoaded ||
                       state is OrderHistoryLoadedState) {
                     setState(() {
@@ -96,26 +93,15 @@ class _OrdersScreenState extends State<OrdersScreen> {
               ),
             ],
             child: _ordersLoaded && _orderHistoryLoaded
-                ? BlocBuilder<UnitSelectBloc, UnitSelectState>(
-                    builder: (context, state) {
-                      if (state is UnitSelected) {
-                        return SingleChildScrollView(
-                          physics: BouncingScrollPhysics(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              OrderStatusListWidget(
-                                unit: state.unit,
-                              ),
-                              OrderHistoryListWidget(
-                                unit: state.unit,
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                      return CenterLoadingWidget();
-                    },
+                ? SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        OrderStatusListWidget(),
+                        OrderHistoryListWidget(),
+                      ],
+                    ),
                   )
                 : _hasErrors
                     ? CommonErrorWidget(

@@ -40,7 +40,7 @@ Future<int?> showSelectServingModeSheet(BuildContext context,
 }
 
 class SelectServiceModeResult {
-  final int? selectedMode;
+  final ServingMode? selectedMode;
   final Cart? cart;
 
   SelectServiceModeResult(this.selectedMode, this.cart);
@@ -61,43 +61,11 @@ Future<SelectServiceModeResult?> showSelectServingModeSheetWithDeleteConfirm(
   bool pop = false,
   bool showSelectServingMode = true,
 }) async {
-  final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
   log.d(
-      'showSelectServingModeSheetWithDeleteConfirm().cart=${cart?.id}, current=$current');
+      'showSelectServingModeSheetWithDeleteConfirm().cart=${cart?.id}, servingMode=${cart?.servingMode} current=$current');
 
-  int selectedMethodPos = current == ServingMode.inPlace ? 0 : 1;
-
-  if (showSelectServingMode) {
-    selectedMethodPos = await showModalBottomSheet(
-      context: context,
-      isDismissible: dismissable,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16.0),
-          topRight: Radius.circular(16.0),
-        ),
-      ),
-      enableDrag: true,
-      // isScrollControlled: true,
-      elevation: 4.0,
-      backgroundColor: useTheme ? theme.secondary0 : Colors.white,
-      builder: (context) {
-        return SelectServingModeWidget(
-            initialPosition: initialPosition,
-            useTheme: useTheme,
-            onSelected: (pos) {
-              log.d('showSelectServingModeSheet.pos=$pos');
-            });
-      },
-    );
-  }
-
-  ServingMode mode =
-      selectedMethodPos == 0 ? ServingMode.inPlace : ServingMode.takeAway;
-
-  if (cart != null &&
-      (current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
-    bool? deleted = await _showdeleteCartConfirmation(context, mode);
+  if (cart != null && current != cart.servingMode) {
+    bool? deleted = await showdeleteCartConfirmation(context, current);
     log.d('showSelectServingModeSheetWithDeleteConfirm.deleted=$deleted');
     if (deleted == true && pop) {
       Nav.pop();
@@ -105,18 +73,15 @@ Future<SelectServiceModeResult?> showSelectServingModeSheetWithDeleteConfirm(
     if (deleted != true) {
       return null;
     }
+    getIt<TakeAwayBloc>().add(SetServingMode(current));
     return SelectServiceModeResult(
-      selectedMethodPos,
+      cart.servingMode,
       deleted == true ? null : cart,
     );
   }
 
-  if ((current == ServingMode.inPlace ? 0 : 1) != selectedMethodPos) {
-    log.d('showSelectServingModeSheetWithDeleteConfirm.mode=$mode');
-    getIt<TakeAwayBloc>().add(SetServingMode(mode));
-  }
   return SelectServiceModeResult(
-    selectedMethodPos,
+    current,
     cart,
   );
 }
@@ -149,7 +114,7 @@ Future<SelectServiceModeResult?> showSelectServingModeSheetWithDeleteConfirm(
 //   );
 // }
 
-Future<bool?> _showdeleteCartConfirmation(
+Future<bool?> showdeleteCartConfirmation(
     BuildContext context, ServingMode servingMode) async {
   log.d('_showdeleteCartConfirmation().start().mode=$servingMode');
   return showDialog<bool>(

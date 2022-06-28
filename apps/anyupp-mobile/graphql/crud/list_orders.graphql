@@ -1,15 +1,6 @@
-query SearchOrders(
-  $userId: ID!
-  $unitId: ID!
-  $limit: Int
-  $nextToken: String
-) {
+query SearchOrders($userId: ID!, $limit: Int, $nextToken: String) {
   searchOrders(
-    filter: {
-      userId: { eq: $userId }
-      unitId: { eq: $unitId }
-      archived: { eq: false }
-    }
+    filter: { userId: { eq: $userId }, archived: { eq: false } }
     limit: $limit
     sort: { direction: desc, field: createdAt }
     nextToken: $nextToken

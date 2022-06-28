@@ -1,4 +1,5 @@
 import 'package:fa_prev/core/context/app_context.dart';
+import 'package:fa_prev/core/logger.dart';
 import 'package:flutter/material.dart';
 
 enum NavAnim {
@@ -64,6 +65,13 @@ class Nav {
     if (AppContext.state?.canPop() == true) {
       AppContext.state?.pop(result);
     }
+  }
+
+  static void popUntil<T>([T? result]) {
+    AppContext.state?.popUntil((route) {
+      log.e('route.runtimeType=${route.runtimeType}');
+      return route.isFirst;
+    });
   }
 
   static Route<T> _createRoute<T>(

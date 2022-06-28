@@ -11,11 +11,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../../graphql/generated/crud-api.graphql.dart';
 
 class OrderStatusListWidget extends StatefulWidget {
-  final GeoUnit unit;
-
-  const OrderStatusListWidget({
-    required this.unit,
-  });
+  const OrderStatusListWidget();
 
   @override
   _OrderStatusListWidgetState createState() => _OrderStatusListWidgetState();
@@ -31,20 +27,19 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
       builder: (context, state) {
         // log.d('OrderStatusListWidget().state=$state');
         if (state is NoOrdersLoaded) {
-          return NoOrderWidget(orderPolicy: widget.unit.orderPolicy);
+          return NoOrderWidget(orderPolicy: OrderPolicy.full);
         }
 
         if (state is OrdersLoadedState) {
           // log.d('***** OrderStatusListWidget.bloc.state=OrdersLoadedState, length=${state.orders?.length}');
           if (state.orders == null ||
               (state.orders != null && state.orders!.isEmpty)) {
-            return NoOrderWidget(orderPolicy: widget.unit.orderPolicy);
+            return NoOrderWidget(orderPolicy: OrderPolicy.full);
           }
           _orderNotificationService.checkIfShowOrderStatusNotification(
               context, state.orders!);
           return OrderListWidget(
             list: state.orders!,
-            unit: widget.unit,
           );
         } else if (state is OrderLoadError) {
           return CommonErrorWidget(
@@ -64,12 +59,10 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
 
 class OrderListWidget extends StatelessWidget {
   final List<Order> list;
-  final GeoUnit unit;
 
   const OrderListWidget({
     Key? key,
     required this.list,
-    required this.unit,
   }) : super(key: key);
 
   @override
@@ -108,7 +101,6 @@ class OrderListWidget extends StatelessWidget {
                     child: FadeInAnimation(
                       child: CurrentOrderCardWidget(
                         order: list[position],
-                        unit: unit,
                       ),
                     ),
                   ),

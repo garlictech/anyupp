@@ -1,11 +1,12 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/core/theme/theme.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class UnitInfoHeaderWidget extends StatelessWidget {
@@ -63,7 +64,7 @@ class UnitInfoHeaderWidget extends StatelessWidget {
                         children: [
                           Icon(
                             Icons.description,
-                            color: theme.button,
+                            color: theme.icon,
                           ),
                           SizedBox(
                             width: 16.0,
@@ -128,6 +129,68 @@ class UnitInfoHeaderWidget extends StatelessWidget {
               ),
             ),
           ),
+        // Place
+        StreamBuilder<Cart?>(
+            stream: getIt<CartRepository>().getCurrentCartStream(unit.id),
+            builder: (context, AsyncSnapshot<Cart?> snapshot) {
+              Place? place = snapshot.data?.place;
+              // log.e('Header.place=$place');
+              if (place != null) {
+                return Positioned(
+                  right: 16.0,
+                  top: 104.0 - 20.0,
+                  child: Container(
+                    // height: 80,
+                    // width: 80,
+                    padding: const EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(44.0),
+                      ),
+                      border: Border.all(
+                        width: 1.5,
+                        color: theme.secondary16,
+                      ),
+                      color: theme.secondary0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset(
+                          'assets/icons/table-icon.svg',
+                          width: 20,
+                          height: 20,
+                          color: theme.icon,
+                        ),
+                        Text(
+                          ' ${snapshot.data?.place?.table ?? "-"}',
+                          style: Fonts.satoshi(
+                            color: theme.secondary,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SvgPicture.asset(
+                          'assets/icons/chair-icon.svg',
+                          width: 20,
+                          height: 20,
+                          color: theme.icon,
+                        ),
+                        Text(
+                          '${snapshot.data?.place?.seat ?? "-"}',
+                          style: Fonts.satoshi(
+                            color: theme.secondary,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            }),
       ],
     );
   }

@@ -1,7 +1,8 @@
 import 'package:fa_prev/modules/selectunit/widgets/flutter_qr_code_scanner.dart';
 import 'package:flutter/material.dart';
 
-void showQRScannerModal(BuildContext context, [Uri? initialUri]) {
+void showQRScannerModal(BuildContext context, bool navigateToCart,
+    [Uri? initialUri]) {
   showModalBottomSheet(
     context: context,
     isDismissible: true,
@@ -13,6 +14,7 @@ void showQRScannerModal(BuildContext context, [Uri? initialUri]) {
       return QRCodeScannerWidget(
         initialUri: initialUri,
         loadUnits: true,
+        navigateToCart: navigateToCart,
       );
     },
   );

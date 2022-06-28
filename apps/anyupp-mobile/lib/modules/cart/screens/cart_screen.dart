@@ -4,7 +4,6 @@ import 'package:fa_prev/core/units/units.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/main/main.dart';
 import 'package:fa_prev/modules/payment/payment.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
@@ -373,8 +372,10 @@ class CartScreen extends StatelessWidget {
             cancelButtonText: transEx(context, 'cart.deleteCartCancel'),
             okButtonText: transEx(context, 'cart.deleteCartAccept'),
             onOkPressed: () async {
-              Nav.reset(MainNavigation());
+              // Nav.reset(HomeScreen());
               getIt<CartBloc>().add(ClearCartAction());
+              Nav.pop();
+              Nav.pop();
             },
             onCancelPressed: () {
               Nav.pop();

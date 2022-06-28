@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../mock/mock_api_values.dart';
 import '../mock/mock_data_faker.dart';
+import 'mock/mock_unit_bloc.dart';
 import 'mock/mocks.dart';
 
 void main() {
@@ -26,6 +27,12 @@ void main() {
     getIt.registerSingleton(OrderRefreshBloc());
     getIt.registerSingleton<ThemeBloc>(themeBloc);
     getIt.registerSingleton<RatingBloc>(ratingBloc);
+    getIt.registerSingleton<UnitsBloc>(MockUnitsBloc(UnitsLoaded(units: [
+      MockGenerator.generateUnit(
+        name: 'TEST UNIT',
+        currency: 'HUF',
+      )
+    ])));
   });
 
   Widget _createBoilerPlateApp({required Widget child}) {
@@ -33,6 +40,7 @@ void main() {
       providers: [
         BlocProvider(create: (_) => getIt<OrderRefreshBloc>()),
         BlocProvider(create: (_) => getIt<RatingBloc>()),
+        BlocProvider(create: (_) => getIt<UnitsBloc>()),
       ],
       child: MaterialApp(
         themeMode: ThemeMode.light,
@@ -55,19 +63,6 @@ void main() {
   }
 
   group('Order Screen test', () {
-    late GeoUnit _unit;
-    setUp(() {
-      _unit = MockGenerator.generateUnit(
-        name: 'TEST UNIT',
-        currency: 'HUF',
-      );
-      getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_unit));
-    });
-
-    tearDown(() {
-      getIt.unregister<UnitSelectBloc>();
-    });
-
     testWidgets('Test Order details widget', (WidgetTester tester) async {
       await tester.runAsync(() async {
         Order order = MockGenerator.generateOrder(
@@ -82,7 +77,6 @@ void main() {
           _createBoilerPlateApp(
             child: OrderDetailsScreen(
               order: order,
-              unit: _unit,
             ),
           ),
         );
@@ -158,7 +152,6 @@ void main() {
           _createBoilerPlateApp(
             child: OrderDetailsScreen(
               order: order,
-              unit: _unit,
             ),
           ),
         );
@@ -211,7 +204,6 @@ void main() {
           _createBoilerPlateApp(
             child: OrderDetailsScreen(
               order: order,
-              unit: _unit,
             ),
           ),
         );
@@ -269,7 +261,6 @@ void main() {
           _createBoilerPlateApp(
             child: OrderDetailsScreen(
               order: order,
-              unit: _unit,
             ),
           ),
         );
@@ -334,7 +325,6 @@ void main() {
           _createBoilerPlateApp(
             child: OrderDetailsScreen(
               order: order,
-              unit: _unit,
             ),
           ),
         );
@@ -398,7 +388,6 @@ void main() {
           _createBoilerPlateApp(
             child: OrderDetailsScreen(
               order: order,
-              unit: _unit,
             ),
           ),
         );

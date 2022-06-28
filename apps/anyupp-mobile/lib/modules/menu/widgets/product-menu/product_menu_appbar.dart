@@ -3,7 +3,6 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -98,14 +97,11 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
                   text: trans('main.tooltip'),
                   tooltipDirection: TooltipDirection.down,
                   child: TakeAwayToggle(
-                    inPlace: state.servingMode == ServingMode.inPlace,
+                    initialMode: state.servingMode,
                     showText: true,
                     height: 40.0,
-                    onToggle: (bool isLeft) {
-                      var servingMode =
-                          isLeft ? ServingMode.takeAway : ServingMode.inPlace;
-                      _selectServingMode(context, servingMode);
-                      return true;
+                    onToggle: (ServingMode servingMode) async {
+                      return _selectServingMode(context, servingMode);
                     },
                   ),
                 );
@@ -120,23 +116,23 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
     if (unit != null) {
       getIt<CartBloc>().add(ClearPlaceInCart(unit));
     }
-    Nav.reset(OnBoarding());
+    getIt<ThemeBloc>().add(ResetTheme());
+    // Nav.reset(OnBoarding());
+    Nav.pop();
   }
 
-  void _selectServingMode(BuildContext context, ServingMode current) async {
+  Future<bool> _selectServingMode(
+      BuildContext context, ServingMode current) async {
     log.d('_selectServingMode.current=$current');
     Cart? cart = getIt.get<CartRepository>().cart;
-    log.d('_selectServingMode.cart=$cart');
-
-    if (widget.supportedServiceModeCount < 2) {
-      return;
-    }
+    log.d(
+        '_selectServingMode.cart=${cart?.id} servingMode=${cart?.servingMode}');
 
     var result = await showSelectServingModeSheetWithDeleteConfirm(
       context,
       cart,
       current,
-      initialPosition: current == ServingMode.inPlace ? 0 : 1,
+      // initialPosition: current == ServingMode.inPlace ? 0 : 1,
       showSelectServingMode: false,
     );
     log.d('_selectServingMode.result=$result');
@@ -149,6 +145,8 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
       // );
       BlocProvider.of<ProductListBloc>(context)
           .add(LoadAllProductList(unitId: currentUnit!.id));
+      return true;
     }
+    return false;
   }
 }

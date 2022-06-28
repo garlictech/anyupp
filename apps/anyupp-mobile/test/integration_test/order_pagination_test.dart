@@ -72,8 +72,8 @@ void main() {
     tlog.d('Waiting to backend to finish order creation');
     await Future.delayed(Duration(seconds: 5));
 
-    await _repository.startOrderListSubscription(unitId, _controller);
-    await _repository.startOrderHistoryListSubscription(unitId, _controller);
+    await _repository.startOrderListSubscription(_controller);
+    await _repository.startOrderHistoryListSubscription(_controller);
   });
   group('Order list pagination test...', () {
     void _checkOrdersSortOrder(List<Order> orders) {

@@ -2,7 +2,6 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
 import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/notifications/utils/notifications_utils.dart';
 import 'package:fa_prev/shared/nav.dart';
@@ -148,7 +147,7 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
                   Nav.pop<bool>(false);
                   return;
                 }
-                Nav.reset(SelectUnitChooseMethodScreen());
+                // Nav.reset(SelectUnitChooseMethodScreen());
               },
             ),
     );
@@ -277,18 +276,22 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
   Future<void> _continueToUnit() async {
     // --- Wait for animation finish
     // await Future.delayed(Duration(milliseconds: 1000));
+    // Nav.pop();
+    log.e('_continueToUnit().popWhenClose=${widget.popWhenClose}');
+    log.e('_continueToUnit().navigateToCart=${widget.navigateToCart}');
 
     if (widget.popWhenClose && widget.onQRChecked != null) {
+      // Nav.pop();
       widget.onQRChecked!(true);
       return;
     }
 
-    if (widget.navigateToCart) {
-      Nav.reset(MainNavigation());
-    } else {
-      await selectUnitAndGoToMenuScreen(context, _selectedUnit!,
-          dismissable: false);
+    log.e('_continueToUnit().onQRChecked=${widget.onQRChecked}');
+    if (widget.onQRChecked != null) {
+      widget.onQRChecked!(true);
     }
-    return;
+    Nav.pop();
+    await selectUnitAndGoToMenuScreen(context, _selectedUnit!,
+        dismissable: false, showSelectServingMode: widget.navigateToCart);
   }
 }

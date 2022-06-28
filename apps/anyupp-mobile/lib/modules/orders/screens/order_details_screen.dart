@@ -9,7 +9,6 @@ import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/pdf_utils.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,10 +17,9 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final Order order;
-  final GeoUnit unit;
+  // final GeoUnit unit;
 
-  const OrderDetailsScreen({Key? key, required this.order, required this.unit})
-      : super(key: key);
+  const OrderDetailsScreen({Key? key, required this.order}) : super(key: key);
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState(order);
@@ -54,9 +52,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           listener: (context, state) {
             // log.d('******* OrderDetailsScreen().listener.state=$state');
             if (state is RatingSuccess) {
-              GeoUnit unit = currentUnit!;
-              getIt<OrderBloc>()
-                  .add(StartGetOrderListSubscription(unit.chainId, unit.id));
+              getIt<OrderBloc>().add(StartGetOrderListSubscription());
               // Nav.pop();
             }
           },
@@ -99,7 +95,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
             physics: BouncingScrollPhysics(),
             child: Column(
               children: [
-                widget.unit.orderPolicy == OrderPolicy.full
+                widget.order.orderPolicy == OrderPolicy.full
                     ? Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: OrderStatusTimelineWidget(
@@ -110,12 +106,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     : Container(),
                 OrderDetailsInfoTextWidget(
                   order: _order,
-                  unit: widget.unit,
                 ),
                 OrderDetailsRatingAndTipWidget(order: _order),
                 OrderDetailsTipAndServingFeeWidget(
                   order: _order,
-                  unit: widget.unit,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -128,7 +122,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
                 OrderDetailsInfoTable(
                   order: _order,
-                  unit: widget.unit,
                 ),
               ],
             ),
@@ -141,12 +134,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
 class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
   final Order order;
-  final GeoUnit unit;
 
   const OrderDetailsServiceFeePriceWidget({
     Key? key,
     required this.order,
-    required this.unit,
   }) : super(key: key);
 
   @override
@@ -184,8 +175,8 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: formatCurrency(
-                    order.serviceFee?.grossPrice ?? 0, unit.currency),
+                text: formatCurrency(order.serviceFee?.grossPrice ?? 0,
+                    order.sumPriceShown.currency),
                 style: Fonts.satoshi(
                   color: theme.secondary,
                   fontSize: 14,
@@ -202,9 +193,10 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
 
 class OrderDetailsPackagingFeeWidget extends StatelessWidget {
   final Order order;
-  final GeoUnit unit;
-  OrderDetailsPackagingFeeWidget(
-      {Key? key, required this.order, required this.unit});
+  OrderDetailsPackagingFeeWidget({
+    Key? key,
+    required this.order,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -237,8 +229,8 @@ class OrderDetailsPackagingFeeWidget extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: formatCurrency(
-                    order.packagingSum?.totalPrice ?? 0, unit.currency),
+                text: formatCurrency(order.packagingSum?.totalPrice ?? 0,
+                    order.sumPriceShown.currency),
                 style: Fonts.satoshi(
                   color: theme.secondary,
                   fontSize: 14,
@@ -255,12 +247,10 @@ class OrderDetailsPackagingFeeWidget extends StatelessWidget {
 
 class OrderDetailsServiceFeeWidget extends StatelessWidget {
   final Order order;
-  final GeoUnit unit;
 
   const OrderDetailsServiceFeeWidget({
     Key? key,
     required this.order,
-    required this.unit,
   }) : super(key: key);
 
   @override
@@ -282,9 +272,7 @@ class OrderDetailsServiceFeeWidget extends StatelessWidget {
 
 class OrderDetailsTipAndServingFeeWidget extends StatelessWidget {
   final Order order;
-  final GeoUnit unit;
-  OrderDetailsTipAndServingFeeWidget(
-      {Key? key, required this.order, required this.unit});
+  OrderDetailsTipAndServingFeeWidget({Key? key, required this.order});
 
   @override
   Widget build(BuildContext context) {
@@ -341,7 +329,8 @@ class OrderDetailsTipAndServingFeeWidget extends StatelessWidget {
               Flexible(
                 flex: 7,
                 child: Text(
-                  formatCurrency(order.tip?.value ?? 0, unit.currency),
+                  formatCurrency(
+                      order.tip?.value ?? 0, order.sumPriceShown.currency),
                   style: Fonts.satoshi(
                     fontSize: 14,
                     color: theme.secondary64,
@@ -603,10 +592,8 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
 
 class OrderDetailsInfoTextWidget extends StatelessWidget {
   final Order order;
-  final GeoUnit unit;
 
-  const OrderDetailsInfoTextWidget(
-      {Key? key, required this.order, required this.unit})
+  const OrderDetailsInfoTextWidget({Key? key, required this.order})
       : super(key: key);
 
   @override
@@ -676,7 +663,6 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                                   OrderDetailsInfoTextItemWidget(
                                     order: order,
                                     item: order.items[index],
-                                    unit: unit,
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 16.0),
@@ -688,11 +674,9 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                                     child: isServiceFeeIncluded
                                         ? OrderDetailsServiceFeeWidget(
                                             order: order,
-                                            unit: unit,
                                           )
                                         : OrderDetailsServiceFeePriceWidget(
                                             order: order,
-                                            unit: unit,
                                           ),
                                   ),
                                 ],
@@ -706,14 +690,12 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                                       OrderDetailsInfoTextItemWidget(
                                         order: order,
                                         item: order.items[index],
-                                        unit: unit,
                                       ),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(top: 16.0),
                                         child: OrderDetailsPackagingFeeWidget(
                                           order: order,
-                                          unit: unit,
                                         ),
                                       ),
                                     ],
@@ -724,7 +706,6 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                                     child: OrderDetailsInfoTextItemWidget(
                                       order: order,
                                       item: order.items[index],
-                                      unit: unit,
                                     ),
                                   )
                         : Container(
@@ -732,7 +713,6 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                             child: OrderDetailsInfoTextItemWidget(
                               order: order,
                               item: order.items[index],
-                              unit: unit,
                             ),
                           );
                   },
@@ -786,11 +766,12 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
 class OrderDetailsInfoTextItemWidget extends StatelessWidget {
   final Order order;
   final OrderItem item;
-  final GeoUnit unit;
 
-  const OrderDetailsInfoTextItemWidget(
-      {Key? key, required this.order, required this.item, required this.unit})
-      : super(key: key);
+  const OrderDetailsInfoTextItemWidget({
+    Key? key,
+    required this.order,
+    required this.item,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -829,8 +810,8 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text: formatCurrency(
-                        item.getPrice(order.serviceFeePolicy), unit.currency),
+                    text: formatCurrency(item.getPrice(order.serviceFeePolicy),
+                        order.sumPriceShown.currency),
                     style: Fonts.satoshi(
                       color: theme.secondary,
                       fontSize: 14,
@@ -1261,12 +1242,10 @@ class OrderStatusTimelineItemWidget extends StatelessWidget {
 
 class OrderDetailsInfoTable extends StatelessWidget {
   final Order order;
-  final GeoUnit unit;
 
   const OrderDetailsInfoTable({
     Key? key,
     required this.order,
-    required this.unit,
   }) : super(key: key);
 
   @override
@@ -1296,7 +1275,6 @@ class OrderDetailsInfoTable extends StatelessWidget {
               return OrderDetailsInfoTableItem(
                 pos: index,
                 order: order,
-                unit: unit,
               );
             },
           )
@@ -1318,19 +1296,29 @@ class OrderDetailsInfoTableItemData {
 class OrderDetailsInfoTableItem extends StatelessWidget {
   final int pos;
   final Order order;
-  final GeoUnit unit;
 
-  const OrderDetailsInfoTableItem(
-      {Key? key, required this.pos, required this.order, required this.unit})
-      : super(key: key);
+  const OrderDetailsInfoTableItem({
+    Key? key,
+    required this.pos,
+    required this.order,
+  }) : super(key: key);
 
   OrderDetailsInfoTableItemData _generateItemData(BuildContext context) {
+    // List<GeoUnit>? units = getIt<UnitsBloc>().state;
+    GeoUnit? unit;
+    var state = getIt<UnitsBloc>().state;
+    if (state is UnitsLoaded) {
+      int index = state.units.indexWhere((unit) => unit.id == order.unitId);
+      if (index != -1) {
+        unit = state.units[index];
+      }
+    }
     switch (pos) {
       case 0:
         return OrderDetailsInfoTableItemData(
           icon: Icons.location_on_rounded,
           title: trans(context, 'orders.infos.titles.0'),
-          value: unit.name,
+          value: unit?.name ?? '-',
         );
       case 1:
         return OrderDetailsInfoTableItemData(

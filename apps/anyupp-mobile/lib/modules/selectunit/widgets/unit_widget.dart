@@ -48,48 +48,65 @@ class _UnitWidgetState extends State<UnitWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var images = widget.imageList?.map((image) {
+      return Container(
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(4.0)),
+              child: ImageWidget(
+                url: image,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 190.0,
+              ),
+            ),
+            if (_isFavorite != null)
+              Positioned(
+                top: 0,
+                right: 0,
+                child: IconButton(
+                  iconSize: 20,
+                  icon: Icon(
+                    _isFavorite! ? Icons.favorite : Icons.favorite_border,
+                    color: theme.secondary0,
+                  ),
+                  onPressed: () => setState(() {
+                    _isFavorite = !_isFavorite!;
+                  }),
+                ),
+              )
+          ],
+        ),
+      );
+    }).toList();
+    // log.e('images=${widget.imageList}');
+
     return GestureDetector(
       onTap: () => widget.onTap(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Stack(alignment: Alignment.bottomCenter, children: [
-            widget.imageList != null
-                ? Container(
-                    child: Stack(
-                      children: [
-                        Container(
-                          child: ClipRRect(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(4.0)),
-                            child: ImageWidget(
-                              url: widget.imageList!.first,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: 190.0,
-                            ),
-                          ),
-                        ),
-                        if (_isFavorite != null)
-                          Positioned(
-                            top: 0,
-                            right: 0,
-                            child: IconButton(
-                              iconSize: 20,
-                              icon: Icon(
-                                _isFavorite!
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: theme.secondary0,
-                              ),
-                              onPressed: () => setState(() {
-                                _isFavorite = !_isFavorite!;
-                              }),
-                            ),
-                          )
-                      ],
-                    ),
+            images != null
+                ? CarouselSlider(
+                    items: images,
+                    carouselController: _controller,
+                    options: CarouselOptions(
+                        autoPlay: false,
+                        viewportFraction: 1,
+                        aspectRatio: 1.81,
+                        onPageChanged: (index, reason) {
+                          setState(() {
+                            _current = index;
+                          });
+                        }),
                   )
                 : NoUnitImageWidget(
                     height: 190,
@@ -135,27 +152,32 @@ class _UnitWidgetState extends State<UnitWidget> {
                       ),
                     ),
                   )),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: (widget.imageList ?? []).asMap().entries.map((entry) {
-                  return GestureDetector(
-                    onTap: () => _controller.animateToPage(entry.key),
-                    child: Container(
-                      width: 4.0,
-                      height: 4.0,
-                      margin:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: theme.secondary40
-                              .withOpacity(_current == entry.key ? 0.9 : 0.4)),
-                    ),
-                  );
-                }).toList(),
+            if (images != null && images.length > 1)
+              Positioned(
+                bottom: 8.0,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:
+                        (widget.imageList ?? []).asMap().entries.map((entry) {
+                      return GestureDetector(
+                        onTap: () => _controller.animateToPage(entry.key),
+                        child: Container(
+                          width: 4.0,
+                          height: 4.0,
+                          margin: EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 4.0),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: theme.secondary40.withOpacity(
+                                  _current == entry.key ? 0.9 : 0.4)),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
               ),
-            ),
           ]),
           SizedBox(
             height: 8,

@@ -9,11 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TransactionOrderDetailsScreen extends StatefulWidget {
   final String orderId;
-  final GeoUnit unit;
   const TransactionOrderDetailsScreen({
     Key? key,
     required this.orderId,
-    required this.unit,
   }) : super(key: key);
 
   @override
@@ -28,7 +26,7 @@ class _TransactionOrderDetailsScreenState
   @override
   void initState() {
     super.initState();
-    getIt<OrderBloc>().add(LoadOrderDetail(
+    getIt<OrderDetailsBloc>().add(LoadOrderDetail(
       orderId: widget.orderId,
     ));
   }
@@ -40,13 +38,13 @@ class _TransactionOrderDetailsScreenState
         BlocListener<RatingBloc, RatingState>(
           listener: (context, state) {
             if (state is RatingSuccess) {
-              getIt<OrderBloc>().add(LoadOrderDetail(
+              getIt<OrderDetailsBloc>().add(LoadOrderDetail(
                 orderId: widget.orderId,
               ));
             }
           },
         ),
-        BlocListener<OrderBloc, BaseOrderState>(
+        BlocListener<OrderDetailsBloc, OrderDetailsState>(
           listener: (context, state) {
             if (state is OrderDetailLoadedState) {
               if (state.order == null) {
@@ -115,7 +113,6 @@ class _TransactionOrderDetailsScreenState
           if (_order != null) {
             return OrderDetailsScreen(
               key: UniqueKey(),
-              unit: widget.unit,
               order: _order!,
             );
           }

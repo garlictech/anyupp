@@ -10,13 +10,13 @@ import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
-Future<int?> selectUnitAndGoToMenuScreen(
+Future<ServingMode?> selectUnitAndGoToMenuScreen(
   BuildContext context,
   GeoUnit unit, {
   bool dismissable = true,
   bool deletePlace = false,
   bool useTheme = true,
-  bool showSelectServingMode = true,
+  bool showSelectServingMode = false,
 }) async {
   if (deletePlace) {
     await clearPlacePref(unit.id);
@@ -31,7 +31,7 @@ Future<int?> selectUnitAndGoToMenuScreen(
   log.d('selectUnitAndGoToMenuScreen().currentServingMode=$currentServingMode');
 
   if (!showSelectServingMode) {
-    _selectServingModeAndGo(
+    selectServingModeAndGo(
       cart,
       currentServingMode,
       unit,
@@ -41,7 +41,7 @@ Future<int?> selectUnitAndGoToMenuScreen(
   }
 
   if (unit.supportedServingModes.length == 1) {
-    _selectServingModeAndGo(
+    selectServingModeAndGo(
       cart,
       unit.supportedServingModes[0],
       unit,
@@ -69,9 +69,9 @@ Future<int?> selectUnitAndGoToMenuScreen(
   );
   log.d('_selectUnitAndGoToMenuScreen().selectedMethodPos=$response');
   if (response != null) {
-    _selectServingModeAndGo(
+    selectServingModeAndGo(
       response.cart,
-      response.selectedMode == 0 ? ServingMode.inPlace : ServingMode.takeAway,
+      response.selectedMode ?? ServingMode.inPlace,
       unit,
       deletePlace: deletePlace,
       cartDeleted: cart != null && response.cart == null,
@@ -83,7 +83,7 @@ Future<int?> selectUnitAndGoToMenuScreen(
   return response?.selectedMode;
 }
 
-void _selectServingModeAndGo(
+void selectServingModeAndGo(
   Cart? cart,
   ServingMode servingMode,
   GeoUnit unit, {
@@ -103,5 +103,5 @@ void _selectServingModeAndGo(
   if (cartDeleted) {
     await Future.delayed(Duration(seconds: 1));
   }
-  Nav.reset(MainNavigation());
+  Nav.to(MenuScreen());
 }

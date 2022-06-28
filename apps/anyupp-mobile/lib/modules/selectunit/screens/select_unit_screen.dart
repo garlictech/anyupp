@@ -5,12 +5,12 @@ import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/selectunit/selectunit.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 import 'package:fa_prev/shared/locale.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-// import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:shimmer/shimmer.dart';
 
 class SelectUnitScreen extends StatefulWidget {
@@ -22,7 +22,6 @@ class SelectUnitScreen extends StatefulWidget {
 }
 
 class _SelectUnitScreenState extends State<SelectUnitScreen> {
-  final theme = ThemeAnyUpp();
   RefreshController _refreshController = RefreshController(
     initialRefresh: false,
   );
@@ -31,7 +30,11 @@ class _SelectUnitScreenState extends State<SelectUnitScreen> {
   void initState() {
     super.initState();
     getIt<CartBloc>().add(ResetCartInMemory());
-    getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+    getIt<UnitsBloc>().add(DetectLocationAndLoadUnits(
+      filter: UnitFilter(
+        servingMode: ServingMode.inPlace,
+      ),
+    ));
     setToolbarThemeV1(theme);
   }
 
@@ -43,7 +46,11 @@ class _SelectUnitScreenState extends State<SelectUnitScreen> {
 
   void _onRefresh() async {
     getIt<CartBloc>().add(ResetCartInMemory());
-    getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
+    getIt<UnitsBloc>().add(DetectLocationAndLoadUnits(
+      filter: UnitFilter(
+        servingMode: ServingMode.inPlace,
+      ),
+    ));
     _refreshController.refreshCompleted();
   }
 
@@ -53,36 +60,105 @@ class _SelectUnitScreenState extends State<SelectUnitScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: BlocBuilder<TakeAwayBloc, TakeAwayState>(builder: (
-            context,
-            state,
-          ) {
-            var mode = ServingMode.inPlace;
-            if (state is ServingModeSelectedState) {
-              mode = state.servingMode;
-            }
-            return BlocBuilder<UnitsBloc, UnitsState>(
-              builder: (context, state) {
-                if (state is UnitsNoNearUnit) {
-                  return _getRefreshableMessage('selectUnitMap.noNearUnits');
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BlocBuilder<TakeAwayBloc, TakeAwayState>(builder: (
+                context,
+                state,
+              ) {
+                var mode = ServingMode.inPlace;
+                if (state is ServingModeSelectedState) {
+                  mode = state.servingMode;
                 }
+                return Column(
+                  children: [
+                    Center(
+                      child: TakeAwayToggle(
+                        initialMode: mode,
+                        showText: true,
+                        height: 40.0,
+                        // colorTheme: theme,
+                        onToggle: (ServingMode servingMode) async {
+                          getIt<TakeAwayBloc>().add(
+                            SetServingMode(servingMode),
+                          );
+                          getIt<UnitsBloc>().add(
+                            FilterUnits(
+                                filter: UnitFilter(
+                              servingMode: servingMode,
+                            )),
+                          );
+                          return true;
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
+                      child: AnimatedSwitcher(
+                        duration: Duration(milliseconds: 750),
+                        child: mode == ServingMode.inPlace
+                            ? Row(
+                                key: UniqueKey(),
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      trans('servingModeSheet.inPlace.title'),
+                                      style: Fonts.hH2(color: theme.secondary),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                key: UniqueKey(),
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      trans('servingModeSheet.takeAway.title'),
+                                      style: Fonts.hH2(color: theme.secondary),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    ),
+                  ],
+                );
+              }),
+              Expanded(
+                child: BlocBuilder<UnitsBloc, UnitsState>(
+                  builder: (context, state) {
+                    if (state is UnitsNoNearUnit) {
+                      return _getRefreshableMessage(
+                          'selectUnitMap.noNearUnits');
+                    }
 
-                if (state is UnitsNotLoaded) {
-                  return _getRefreshableMessage('selectUnitMap.notLoaded');
-                }
-                if (state is UnitsLoaded) {
-                  var units =
-                      state.units.where((unit) => unit.isVisibleInApp).toList();
-                  if (units.isNotEmpty) {
-                    return _buildList(units, mode);
-                  }
-                  return _getRefreshableMessage('selectUnitMap.noNearUnits');
-                }
+                    if (state is UnitsNotLoaded) {
+                      return _getRefreshableMessage('selectUnitMap.notLoaded');
+                    }
+                    if (state is UnitsLoaded) {
+                      if (state.units.isNotEmpty) {
+                        // return _UnitListWidget(units: state.units);
+                        return _buildList(state.units, currentServingMode);
+                      }
+                      return _getRefreshableMessage(
+                          'selectUnitMap.noNearUnits');
+                    }
 
-                return const _UnitListLoadingWidget();
-              },
-            );
-          }),
+                    return const _UnitListLoadingWidget();
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -92,54 +168,6 @@ class _SelectUnitScreenState extends State<SelectUnitScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Center(
-          child: TakeAwayToggle(
-            inPlace: mode == ServingMode.inPlace,
-            showText: true,
-            height: 40.0,
-            // colorTheme: theme,
-            onToggle: (bool isLeft) {
-              var servingMode =
-                  isLeft ? ServingMode.takeAway : ServingMode.inPlace;
-              getIt<TakeAwayBloc>().add(
-                SetServingMode(servingMode),
-              );
-              getIt<UnitsBloc>().add(
-                FilterUnits(servingMode: servingMode),
-              );
-              return true;
-            },
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 32.0, bottom: 16.0),
-          child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 750),
-            child: mode == ServingMode.inPlace
-                ? Row(
-                    key: UniqueKey(),
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        trans('servingModeSheet.inPlace.title'),
-                        style: Fonts.hH2(color: theme.secondary),
-                      ),
-                    ],
-                  )
-                : Row(
-                    key: UniqueKey(),
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        trans('servingModeSheet.takeAway.title'),
-                        style: Fonts.hH2(color: theme.secondary),
-                      ),
-                    ],
-                  ),
-          ),
-        ),
         Expanded(
           child: Stack(
             alignment: Alignment.bottomCenter,
@@ -181,7 +209,7 @@ class _StartQRCodeScanButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => showQRScannerModal(context),
+      onPressed: () => showQRScannerModal(context, true),
       style: ElevatedButton.styleFrom(
         primary: theme.button,
         minimumSize: Size(153, 56),

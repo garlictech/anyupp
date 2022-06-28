@@ -11,7 +11,7 @@ abstract class IOrdersProvider {
   // Stream<List<Order>> getCurrentOrders(String unitId);
 
   Future<void> startOrderListSubscription(
-      String unitId, StreamController<List<Order>?> controller);
+      StreamController<List<Order>?> controller);
 
   Future<void> stopOrderListSubscription();
 
@@ -30,7 +30,7 @@ abstract class IOrdersProvider {
   // Stream<List<Order>> getOrderHistory(String unitId);
 
   Future<void> startOrderHistoryListSubscription(
-      String unitId, StreamController<List<Order>?> controller);
+      StreamController<List<Order>?> controller);
 
   Future<void> stopOrderHistoryListSubscription();
 

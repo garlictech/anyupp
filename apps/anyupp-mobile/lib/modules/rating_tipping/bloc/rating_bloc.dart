@@ -105,10 +105,7 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
   void _refreshOrdersIfUnitSelected() {
     GeoUnit? unit = currentUnit;
     if (unit != null) {
-      getIt<OrderBloc>().add(StartGetOrderListSubscription(
-        unit.chainId,
-        unit.id,
-      ));
+      getIt<OrderBloc>().add(StartGetOrderListSubscription());
     }
   }
 }

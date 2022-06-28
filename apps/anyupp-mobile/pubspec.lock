@@ -28,7 +28,7 @@ packages:
       name: anchor_scroll_controller
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.0"
+    version: "0.4.1"
   animated_toggle_switch:
     dependency: "direct main"
     description:
@@ -113,6 +113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
+  bubble_box:
+    dependency: "direct main"
+    description:
+      name: bubble_box
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.2"
   build:
     dependency: transitive
     description:
@@ -407,6 +414,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.2"
+  cupertino_icons:
+    dependency: "direct main"
+    description:
+      name: cupertino_icons
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.5"
   custom_map_markers:
     dependency: "direct main"
     description:

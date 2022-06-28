@@ -62,7 +62,7 @@ void main() {
     ));
     getIt.registerSingleton<CartRepository>(MockCartRepository(_mockCart));
     getIt.registerSingleton<CartBloc>(MockCartBloc(
-      _mockCart,
+      cart: _mockCart,
       stateToSend: EmptyCartState(),
     ));
     getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(_mockUnit));
@@ -107,7 +107,7 @@ void main() {
 
       await getIt.unregister<CartBloc>();
       getIt.registerSingleton<CartBloc>(MockCartBloc(
-        _mockCart,
+        cart: _mockCart,
         stateToSend: EmptyCartState(),
       ));
     });
@@ -153,7 +153,7 @@ void main() {
 
       getIt.unregister<CartBloc>();
       getIt.registerSingleton<CartBloc>(MockCartBloc(
-        _mockCart,
+        cart: _mockCart,
         // stateToSend: EmptyCartState(),
       ));
     });
@@ -208,7 +208,7 @@ void main() {
 
       await getIt.unregister<CartBloc>();
       getIt.registerSingleton<CartBloc>(MockCartBloc(
-        _mockCart,
+        cart: _mockCart,
         // stateToSend: EmptyCartState(),
       ));
     });
@@ -260,7 +260,7 @@ void main() {
 
       await getIt.unregister<CartBloc>();
       getIt.registerSingleton<CartBloc>(MockCartBloc(
-        _mockCart,
+        cart: _mockCart,
         stateToSend: CartErrorState(
           code: CartException.UNKNOWN_ERROR,
           message: 'TEST ERROR MESSAGE',

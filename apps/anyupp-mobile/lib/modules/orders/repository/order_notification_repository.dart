@@ -60,7 +60,7 @@ class OrderNotificationService {
           showNotification(
             title: transEx(context, "notifications.messageFrom"),
             message: transEx(context, "notifications.orderProcessing"),
-            navigateToPage: MainNavigation(
+            navigateToPage: HomeScreen(
               pageIndex: 2,
             ),
           );
@@ -86,7 +86,7 @@ class OrderNotificationService {
           showNotification(
             title: transEx(context, "notifications.messageFrom"),
             message: transEx(context, "notifications.orderReady"),
-            navigateToPage: MainNavigation(
+            navigateToPage: HomeScreen(
               pageIndex: 2,
             ),
           );

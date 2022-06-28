@@ -53,6 +53,9 @@ ThemeData getThemeData(BuildContext context, ThemeChainData theme) {
   );
 }
 
+ThemeChainData defaultTheme() =>
+    generateTheme(Color(0xFF309791), Color(0xFF373737));
+
 ThemeChainData generateTheme(Color primary, Color secondary) {
   var secondary64 = _col(secondary, 64);
   var secondary40 = _col(secondary, 40);

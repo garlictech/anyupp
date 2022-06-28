@@ -9,7 +9,6 @@ class ProductCategoryTabWidget extends StatefulWidget {
   final List<ProductCategory> productCategories;
   final ValueChanged<int> onTap;
   final bool addFavorites;
-  // final int selectedIndex;
 
   ProductCategoryTabWidget({
     Key? key,
@@ -17,7 +16,6 @@ class ProductCategoryTabWidget extends StatefulWidget {
     required this.productCategories,
     required this.onTap,
     required this.addFavorites,
-    // required this.selectedIndex,
   }) : super(key: key);
 
   @override
@@ -47,7 +45,7 @@ class _ProductCategoryTabWidgetState extends State<ProductCategoryTabWidget> {
           ),
           color: theme.secondary,
         ),
-        labelColor: theme.buttonText,
+        labelColor: theme.secondary0,
         // labelStyle: Fonts.hH5(),
         labelPadding: EdgeInsets.only(
           left: 4,
@@ -58,7 +56,6 @@ class _ProductCategoryTabWidgetState extends State<ProductCategoryTabWidget> {
           color: theme.secondary,
         ),
         indicatorWeight: 0,
-        // indicatorPadding: EdgeInsets.zero,
         tabs: _getTabBarTitles(context, widget.productCategories),
         onTap: widget.onTap,
       ),

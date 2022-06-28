@@ -11,23 +11,11 @@ abstract class BaseOrderAction extends Equatable {
 }
 
 class StartGetOrderListSubscription extends BaseOrderAction {
-  final String chainId;
-  final String unitId;
-  const StartGetOrderListSubscription(this.chainId, this.unitId);
-
-  @override
-  List<Object?> get props => [chainId, unitId];
+  const StartGetOrderListSubscription();
 }
 
 class StopOrderListSubscription extends BaseOrderAction {
   const StopOrderListSubscription();
-}
-
-class LoadOrderDetail extends BaseOrderAction {
-  final String orderId;
-  LoadOrderDetail({required this.orderId});
-  @override
-  List<Object?> get props => [orderId];
 }
 
 class OrdersLoaded extends BaseOrderAction {
@@ -36,7 +24,11 @@ class OrdersLoaded extends BaseOrderAction {
   final bool hasMoreItems;
   final String? nextToken;
 
-  OrdersLoaded({this.orders, this.totalCount = 0, this.hasMoreItems = false, this.nextToken});
+  OrdersLoaded(
+      {this.orders,
+      this.totalCount = 0,
+      this.hasMoreItems = false,
+      this.nextToken});
 
   @override
   List<Object?> get props => [orders, totalCount, hasMoreItems, nextToken];

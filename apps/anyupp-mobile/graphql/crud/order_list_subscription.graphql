@@ -1,5 +1,5 @@
-subscription OnOrderChanged($userId: String, $unitId: String) {
-  onOrderChanged(unitId: $unitId, userId: $userId) {
+subscription OnOrderChanged($userId: String) {
+  onOrderChanged(userId: $userId) {
     id
     orderNum
     currentStatus

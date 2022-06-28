@@ -5,9 +5,14 @@ import 'package:fa_prev/modules/screens.dart';
 import 'package:fa_prev/shared/connectivity/connectivity.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  final int pageIndex;
+  const HomeScreen({
+    Key? key,
+    this.pageIndex = 0,
+  }) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -15,16 +20,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  final ThemeChainData theme =
-      generateTheme(Color(0xFF309791), Color(0xFF373737));
+  // final ThemeChainData theme = defaultTheme();
 
   // Caching pages
   List<Widget> _pages = [
     SelectUnitScreen(),
     SelectUnitMapScreen(),
-    // OrdersScreen(key: UniqueKey()),
+    OrdersScreen(),
     Profile(),
   ];
+
+  @override
+  void initState() {
+    setState(() {
+      _selectedIndex = widget.pageIndex;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +60,18 @@ class _HomeScreenState extends State<HomeScreen> {
               behavior: SnackBarBehavior.floating,
               backgroundColor: Color(0xAA880000),
             ),
-            child: IndexedStack(
-              index: _selectedIndex,
-              children: _pages,
+            child: BlocListener<MainNavigationBloc, MainNavigationState>(
+              listener: (context, state) {
+                if (state is MainNavaigationNeed) {
+                  log.d(
+                      '******** HomeScreenScreen.MainNavigationBloc.state=${state.pageIndex}');
+                  _navigateToPage(state.pageIndex);
+                }
+              },
+              child: IndexedStack(
+                index: _selectedIndex,
+                children: _pages,
+              ),
             ),
           ),
           bottomNavigationBar: BottomAppBar(
@@ -70,6 +91,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 _createBottomBarIconWithText(
                   2,
+                  Icons.receipt_outlined,
+                  'home.menu.orders',
+                ),
+                _createBottomBarIconWithText(
+                  3,
                   Icons.account_circle,
                   'home.menu.profile',
                 ),

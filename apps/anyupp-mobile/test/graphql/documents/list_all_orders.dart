@@ -4,17 +4,16 @@ import 'package:fa_prev/graphql/graphql.dart';
 import '../../test_logger.dart';
 
 Future<List<String>> listAllDummyOrders(String userId, String unitId) async {
-  List<String> results = await _listAllDummyOrdersNotArchived(userId, unitId);
+  List<String> results = await _listAllDummyOrdersNotArchived(userId);
   results.addAll(await _listAllDummyOrdersArchived(userId, unitId));
   return results;
 }
 
-Future<List<String>> _listAllDummyOrdersNotArchived(
-    String userId, String unitId) async {
+Future<List<String>> _listAllDummyOrdersNotArchived(String userId) async {
   try {
     var result = await GQL.amplify.execute(
       SearchOrdersQuery(
-        variables: SearchOrdersArguments(userId: userId, unitId: unitId),
+        variables: SearchOrdersArguments(userId: userId),
       ),
     );
 
@@ -50,7 +49,7 @@ Future<List<String>> _listAllDummyOrdersArchived(
   try {
     var result = await GQL.amplify.execute(
       SearchOrderHistoryQuery(
-        variables: SearchOrderHistoryArguments(userId: userId, unitId: unitId),
+        variables: SearchOrderHistoryArguments(userId: userId),
       ),
     );
 

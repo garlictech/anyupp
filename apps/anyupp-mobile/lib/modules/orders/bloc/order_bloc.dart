@@ -19,7 +19,6 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
     on<LoadMoreOrders>(_onLoadMoreOrders);
     on<StartGetOrderListSubscription>(_onStartGetOrderListSubscription);
     on<StopOrderListSubscription>(_onStopOrderListSubscription);
-    on<LoadOrderDetail>(_onLoadOrderDetail);
   }
 
   @override
@@ -92,8 +91,7 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
           totalCount: _repository.orderListTotalCount,
         ));
       });
-      await _repository.startOrderListSubscription(
-          event.unitId, _orderController!);
+      await _repository.startOrderListSubscription(_orderController!);
     } on Exception catch (e) {
       _handleError(e, emit);
     }
@@ -104,17 +102,6 @@ class OrderBloc extends Bloc<BaseOrderAction, BaseOrderState> {
     try {
       await _repository.stopOrderListSubscription();
       emit(NoOrdersLoaded());
-    } on Exception catch (e) {
-      _handleError(e, emit);
-    }
-  }
-
-  FutureOr<void> _onLoadOrderDetail(
-      LoadOrderDetail event, Emitter<BaseOrderState> emit) async {
-    try {
-      emit(OrderLoadingState());
-      Order? order = await _repository.getOrder(event.orderId);
-      emit(OrderDetailLoadedState(order: order));
     } on Exception catch (e) {
       _handleError(e, emit);
     }

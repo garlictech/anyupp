@@ -1,13 +1,13 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:fa_prev/core/logger/logger.dart';
 import 'package:fa_prev/core/theme/theme.dart';
+import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class TakeAwayToggle extends StatefulWidget {
-  final bool Function(bool isLeft) onToggle;
-  final bool inPlace;
+  final Future<bool> Function(ServingMode selected) onToggle;
+  final ServingMode initialMode;
   final bool showText;
   final double height;
   final Color selectedColor;
@@ -16,7 +16,7 @@ class TakeAwayToggle extends StatefulWidget {
   TakeAwayToggle({
     Key? key,
     required this.onToggle,
-    this.inPlace = true,
+    this.initialMode = ServingMode.inPlace,
     this.showText = false,
     this.height = 50.0,
     this.selectedColor = const Color(0xFF373737),
@@ -29,12 +29,9 @@ class TakeAwayToggle extends StatefulWidget {
 }
 
 class _TakeAwayToggleState extends State<TakeAwayToggle> {
-  late bool _inPlace;
-
   @override
   void initState() {
     super.initState();
-    _inPlace = widget.inPlace;
   }
 
   @override
@@ -42,12 +39,12 @@ class _TakeAwayToggleState extends State<TakeAwayToggle> {
     bool showText = widget.showText;
     final _textInPlace = trans('cart.inPlace');
     final _textTakeAway = trans('cart.takeAway');
-    return AnimatedToggleSwitch<bool>.dual(
+    return AnimatedToggleSwitch<ServingMode>.dual(
       height: widget.height,
-      current: _inPlace,
+      current: widget.initialMode,
       // onTap: () => log.e('onTap()=${selectedIndex}'),
-      first: false,
-      second: true,
+      first: ServingMode.inPlace,
+      second: ServingMode.takeAway,
       dif: 0.0,
       borderColor: Colors.transparent,
       borderWidth: 0.0,
@@ -55,15 +52,11 @@ class _TakeAwayToggleState extends State<TakeAwayToggle> {
       indicatorSize: showText
           ? const Size.fromWidth(110)
           : const Size(46.0, double.infinity),
-      onChanged: (b) async {
-        log.e('onChanged()=${b}');
-        bool canSwitch = await widget.onToggle(b);
-        if (canSwitch) {
-          setState(() => _inPlace = b);
-        }
+      onChanged: (mode) async {
+        await widget.onToggle(mode);
       },
       colorBuilder: (b) => widget.selectedColor,
-      iconBuilder: (value) => value
+      iconBuilder: (value) => value == ServingMode.takeAway
           ? showText
               ? _IconWithTextWidget(
                   url: 'assets/icons/bag.svg',
@@ -72,7 +65,7 @@ class _TakeAwayToggleState extends State<TakeAwayToggle> {
                 )
               : _IconWidget(
                   url: 'assets/icons/bag.svg',
-                  color: value == true
+                  color: value == ServingMode.takeAway
                       ? widget.unselectedColor
                       : widget.selectedColor,
                 )
@@ -84,11 +77,11 @@ class _TakeAwayToggleState extends State<TakeAwayToggle> {
                 )
               : _IconWidget(
                   url: 'assets/icons/restaurant_menu_black.svg',
-                  color: value == false
+                  color: value == ServingMode.inPlace
                       ? widget.unselectedColor
                       : widget.selectedColor,
                 ),
-      textBuilder: (value) => value
+      textBuilder: (value) => value == ServingMode.takeAway
           ? showText
               ? _IconWithTextWidget(
                   url: 'assets/icons/restaurant_menu_black.svg',
@@ -97,7 +90,7 @@ class _TakeAwayToggleState extends State<TakeAwayToggle> {
                 )
               : _IconWidget(
                   url: 'assets/icons/restaurant_menu_black.svg',
-                  color: value == false
+                  color: value == ServingMode.inPlace
                       ? widget.unselectedColor
                       : widget.selectedColor,
                 )
@@ -109,7 +102,7 @@ class _TakeAwayToggleState extends State<TakeAwayToggle> {
                 )
               : _IconWidget(
                   url: 'assets/icons/bag.svg',
-                  color: value == true
+                  color: value == ServingMode.takeAway
                       ? widget.unselectedColor
                       : widget.selectedColor,
                 ),

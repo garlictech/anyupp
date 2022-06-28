@@ -14,6 +14,7 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
 
   ThemeBloc(this._unitSelectBloc) : super(ThemeState(theme: ThemeAnyUpp())) {
     on<ThemeSelected>(_onThemeSelected);
+    on<ResetTheme>(_onResetTheme);
     _unitSelectSubscription =
         _unitSelectBloc.stream.asBroadcastStream().listen((unitSelectedState) {
       log.d('****** ThemeBloc._unitSelectSubscription=$unitSelectedState');
@@ -33,5 +34,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   FutureOr<void> _onThemeSelected(
       ThemeSelected event, Emitter<ThemeState> emit) {
     emit(ThemeState(theme: event.theme));
+  }
+
+  FutureOr<void> _onResetTheme(ResetTheme event, Emitter<ThemeState> emit) {
+    emit(ThemeState(theme: defaultTheme()));
   }
 }

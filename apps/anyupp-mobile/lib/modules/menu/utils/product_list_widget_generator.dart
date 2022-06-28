@@ -94,14 +94,14 @@ class ProductListWidgetGenerator {
   // final _RND = Random();
   int _tabPos = 0;
   int _itemPos = 0;
-  bool _bannerAdded = true;
-  int _bannerPosition = 0;
+  // bool _bannerAdded = true;
+  // int _bannerPosition = 0;
 
   void _reset() {
     _tabPos = 0;
     _itemPos = 0;
-    _bannerAdded = true;
-    _bannerPosition = 0;
+    // _bannerAdded = true;
+    // _bannerPosition = 0;
   }
 
   GeneratedSubMenu generateSubMenu({
@@ -153,6 +153,11 @@ class ProductListWidgetGenerator {
           },
         ),
       );
+      MenuListItem? banner = _getBanner(listItems, unit);
+      if (banner != null) {
+        _itemPos++;
+        listItems.add(banner);
+      }
       _tabPos++;
     }
 
@@ -189,8 +194,7 @@ class ProductListWidgetGenerator {
       //   position: _itemPos++,
       //   title: transEx(context, 'main.menu.favorites'),
       // ));
-      _checkAndAddBanner(listItems, unit.adBanners);
-      var favoriteItems = favorites!.map(
+      List<MenuListItem> favoriteItems = List<MenuListItem>.from(favorites!.map(
         (favorite) {
           return MenuItemFavorite(
               position: _itemPos++,
@@ -201,8 +205,14 @@ class ProductListWidgetGenerator {
                 servingMode,
               ));
         },
-      ).toList();
+      ));
 
+      // _checkAndAddBanner(listItems, unit.adBanners);
+      // _addBanner(listItems, unit);
+      MenuListItem? banner = _getBanner(listItems, unit);
+      if (banner != null) {
+        favoriteItems.add(banner);
+      }
       listItems.addAll(favoriteItems);
       mainCategoryMenuItems['favorites'] = favoriteItems;
     }
@@ -229,7 +239,7 @@ class ProductListWidgetGenerator {
           continue;
         }
         var entries = productMap[category.id] ?? [];
-        var productItems = entries.map(
+        List<MenuListItem> productItems = List<MenuListItem>.from(entries.map(
           (product) {
             return MenuItemProduct(
               position: _itemPos++,
@@ -241,8 +251,12 @@ class ProductListWidgetGenerator {
               ),
             );
           },
-        ).toList();
+        ));
         if (productItems.isNotEmpty) {
+          MenuListItem? banner = _getBanner(productItems, unit);
+          if (banner != null) {
+            productItems.add(banner);
+          }
           filteredProductCategories.add(category);
           listItems.addAll(productItems);
           mainCategoryMenuItems[category.id] = productItems;
@@ -258,19 +272,33 @@ class ProductListWidgetGenerator {
     );
   }
 
-  void _checkAndAddBanner(
+  MenuListItem? _getBanner(
     List<MenuListItem> listItems,
-    List<ImageAsset>? adBanners,
+    GeoUnit unit,
   ) {
-    if (!_bannerAdded && _itemPos == _bannerPosition) {
-      _bannerAdded = true;
-      var banner = getRandomBanner(banners: adBanners);
-      listItems.add(MenuItemAdBanner(
+    if (unit.adBannersEnabled == true) {
+      var banner = getRandomBanner(banners: unit.adBanners);
+      return MenuItemAdBanner(
         position: _itemPos++,
         adBanner: banner ?? ImageAsset(imageUrl: 'assets/images/test_1.png'),
-      ));
+      );
     }
+    return null;
   }
+
+  // void _checkAndAddBanner(
+  //   List<MenuListItem> listItems,
+  //   List<ImageAsset>? adBanners,
+  // ) {
+  //   if (!_bannerAdded && _itemPos == _bannerPosition) {
+  //     _bannerAdded = true;
+  //     var banner = getRandomBanner(banners: adBanners);
+  //     listItems.add(MenuItemAdBanner(
+  //       position: _itemPos++,
+  //       adBanner: banner ?? ImageAsset(imageUrl: 'assets/images/test_1.png'),
+  //     ));
+  //   }
+  // }
 
   List<GeneratedProduct> _filterUnavailableProducts(
     List<GeneratedProduct> products,
@@ -317,7 +345,7 @@ class ProductListWidgetGenerator {
       ServingMode servingMode,
       List<int> listIndexMap,
       List<int> tabIndexMap) {
-    var listItems = [];
+    List<MenuListItem> listItems = [];
     for (int i = 0; i < productCategories.length; i++) {
       var category = productCategories[i];
       if (category.parentId != null) {

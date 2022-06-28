@@ -95,8 +95,8 @@ class OrderHistoryBloc
           totalCount: _repository.orderHistoryListTotalCount,
         ));
       });
-      await _repository.startOrderHistoryListSubscription(
-          event.unitId, _orderHistoryController!);
+      await _repository
+          .startOrderHistoryListSubscription(_orderHistoryController!);
     } on Exception catch (e) {
       _handleError(e, emit);
     }

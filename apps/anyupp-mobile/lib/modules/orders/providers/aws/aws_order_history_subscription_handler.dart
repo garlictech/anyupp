@@ -15,12 +15,10 @@ class AwsOrderHistorySubscription {
   String? _nextToken;
   int _totalCount = 0;
 
-  final String unitId;
   final String userId;
 
   AwsOrderHistorySubscription({
     required this.userId,
-    required this.unitId,
   });
 
   Future<void> startListSubscription({
@@ -54,7 +52,6 @@ class AwsOrderHistorySubscription {
           .stream(
         OnOrderHistoryChangedSubscription(
           variables: OnOrderHistoryChangedArguments(
-            unitId: unitId,
             userId: userId,
           ),
         ),
@@ -125,12 +122,11 @@ class AwsOrderHistorySubscription {
   }
 
   Future<List<Order>?> _getList() async {
-    log.d('_getOrderHistoryList().userId=$userId, unitId=$unitId');
+    log.d('_getOrderHistoryList().userId=$userId');
     try {
       var result = await GQL.amplify.execute(SearchOrderHistoryQuery(
           variables: SearchOrderHistoryArguments(
         userId: userId,
-        unitId: unitId,
         limit: getIt<AppConstants>().paginationSize,
         nextToken: _nextToken,
       )));

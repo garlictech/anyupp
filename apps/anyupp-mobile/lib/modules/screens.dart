@@ -2,6 +2,7 @@ export 'cart/screens/cart_screen.dart';
 export 'cart/screens/select_payment_method_screen.dart';
 export 'favorites/screens/favorites_screen.dart';
 export 'login/screens/login_screen.dart';
+export 'main/screens/home_screen.dart';
 export 'main/screens/main_navigation_screen.dart';
 export 'menu/screens/product_details_screen.dart';
 export 'menu/screens/product_image_details_screen.dart';

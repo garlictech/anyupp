@@ -246,12 +246,13 @@ class MockGenerator {
   }
 
   static GeoUnit generateUnit({
+    String? id,
     required String name,
     required String currency,
     OrderPolicy? orderPolicy = OrderPolicy.full,
   }) {
     return GeoUnit(
-      id: faker.guid.guid(),
+      id: id ?? faker.guid.guid(),
       groupId: faker.guid.guid(),
       chainId: faker.guid.guid(),
       name: name,

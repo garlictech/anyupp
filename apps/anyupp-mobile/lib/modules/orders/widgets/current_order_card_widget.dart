@@ -13,11 +13,11 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 
 class CurrentOrderCardWidget extends StatelessWidget {
   final Order order;
-  final GeoUnit unit;
+  // final GeoUnit unit;
 
   const CurrentOrderCardWidget({
     required this.order,
-    required this.unit,
+    // required this.unit,
   });
 
   static const Map<OrderStatus, IconData> _ICONMAP = {
@@ -27,6 +27,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
     OrderStatus.ready: Icons.schedule_outlined,
     OrderStatus.served: Icons.check,
     OrderStatus.rejected: Icons.close,
+    OrderStatus.failed: Icons.close,
   };
 
   @override
@@ -36,7 +37,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
       onTap: () => Nav.to(
         OrderDetailsScreen(
           order: order,
-          unit: unit,
+          // unit: unit,
         ),
         duration: const Duration(milliseconds: 200),
         animationType: NavAnim.SLIDEIN_DOWN,

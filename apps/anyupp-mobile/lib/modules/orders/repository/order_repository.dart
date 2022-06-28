@@ -25,8 +25,8 @@ class OrderRepository implements IOrdersProvider {
   }
 
   Future<void> startOrderHistoryListSubscription(
-      String unitId, StreamController<List<Order>?> controller) async {
-    await _provider.startOrderHistoryListSubscription(unitId, controller);
+      StreamController<List<Order>?> controller) async {
+    await _provider.startOrderHistoryListSubscription(controller);
   }
 
   Future<void> stopOrderHistoryListSubscription() async {
@@ -90,8 +90,8 @@ class OrderRepository implements IOrdersProvider {
 
   @override
   Future<void> startOrderListSubscription(
-      String unitId, StreamController<List<Order>?> controller) {
-    return _provider.startOrderListSubscription(unitId, controller);
+      StreamController<List<Order>?> controller) {
+    return _provider.startOrderListSubscription(controller);
   }
 
   @override

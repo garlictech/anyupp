@@ -5,6 +5,7 @@ export 'utils/takeaway_navigation_utils.dart';
 export 'utils/unit_text_utils.dart';
 export 'widgets/barcode_scanner_overlay_widget.dart';
 export 'widgets/barcode_scanner_widgets.dart';
+export 'widgets/map/google_maps_controller.dart';
 export 'widgets/no_unit_image_widget.dart';
 export 'widgets/show_qr_scanner_sheet.dart';
 export 'widgets/unit_card_widget.dart';

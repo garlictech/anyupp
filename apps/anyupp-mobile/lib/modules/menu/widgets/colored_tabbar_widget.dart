@@ -23,14 +23,24 @@ class ColoredTabBar extends Container implements PreferredSizeWidget {
           right: 8.0,
         ),
         width: width,
-        // color: color,
-        child: tabBar,
-        decoration: BoxDecoration(
+        color: color,
+        child: ClipRRect(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(56.0),
-            bottomLeft: Radius.circular(56.0),
+            topLeft: Radius.circular(32.0),
+            bottomLeft: Radius.circular(32.0),
+            bottomRight: Radius.circular(32.0),
+            topRight: Radius.circular(32.0),
           ),
-          color: color,
+          child: tabBar,
         ),
+        // decoration: BoxDecoration(
+        //   borderRadius: BorderRadius.only(
+        //     topLeft: Radius.circular(56.0),
+        //     bottomLeft: Radius.circular(56.0),
+        //     // topRight: Radius.circular(56.0),
+        //     // bottomRight: Radius.circular(56.0),
+        //   ),
+        //   color: color,
+        // ),
       );
 }

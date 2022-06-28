@@ -63,11 +63,11 @@ class UnitMapCardWidget extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 6.0,
-                      vertical: 4.0,
+                      vertical: 3.0,
                     ),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(
-                        4.0,
+                        32.0,
                       ),
                       border: Border.all(
                         width: 1,

@@ -8,9 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class OrderHistoryListWidget extends StatefulWidget {
-  final GeoUnit unit;
-
-  const OrderHistoryListWidget({required this.unit});
+  const OrderHistoryListWidget();
 
   @override
   _OrderHistoryListWidgetState createState() => _OrderHistoryListWidgetState();
@@ -99,7 +97,6 @@ class _OrderHistoryListWidgetState extends State<OrderHistoryListWidget> {
                     child: FadeInAnimation(
                       child: CurrentOrderCardWidget(
                         order: list[position],
-                        unit: widget.unit,
                       ),
                     ),
                   ),
@@ -139,8 +136,8 @@ class _OrderHistoryListWidgetState extends State<OrderHistoryListWidget> {
               backgroundColor: Colors.transparent,
               primary: theme.secondary,
             ),
-            onPressed: () => getIt<OrderHistoryBloc>()
-                .add(LoadMoreOrderHistory(widget.unit.id, _nextToken)),
+            onPressed: () =>
+                getIt<OrderHistoryBloc>().add(LoadMoreOrderHistory(_nextToken)),
             child: Text(
               trans('orders.loadMore'),
               textAlign: TextAlign.center,

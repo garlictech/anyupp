@@ -57,8 +57,8 @@ class BottomBarItem extends StatelessWidget {
         // padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         padding: const EdgeInsets.only(
           bottom: 8.0,
-          left: 24.0,
-          right: 24.0,
+          left: 16.0,
+          right: 16.0,
         ),
         decoration: selected
             ? BoxDecoration(
@@ -80,7 +80,7 @@ class BottomBarItem extends StatelessWidget {
               child: Icon(
                 icon,
                 color: selected
-                    ? (selectedColor ?? theme.highlight)
+                    ? (selectedColor ?? theme.icon)
                     : (unselectedColor ?? theme.secondary64),
               ),
             ),

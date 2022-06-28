@@ -41,7 +41,7 @@ void main() {
       servingMode: ServingMode.takeAway,
     ));
     getIt.registerSingleton<CartRepository>(MockCartRepository(mockCart));
-    getIt.registerSingleton<CartBloc>(MockCartBloc(mockCart));
+    getIt.registerSingleton<CartBloc>(MockCartBloc(cart: mockCart));
     getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(mockUnit));
     getIt.registerSingleton<StripePaymentBloc>(MockStripePaymentBloc());
   });

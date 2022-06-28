@@ -12,3 +12,5 @@ class ThemeSelected extends ThemeEvent {
 
   const ThemeSelected({required this.theme});
 }
+
+class ResetTheme extends ThemeEvent {}
