@@ -14,6 +14,13 @@
       },
       "outputs": [
         "apps/anyupp-backend/build/rkeeper-product-processor.js",
+        "apps/anyupp-backend/build/appsync-lambda/index.js",
+        "apps/anyupp-backend/build/report-generator.js",
+        "apps/anyupp-backend/build/stripe-webhook/index.js",
+        "apps/anyupp-backend/build/rkeeper-webhook/index.js",
+        "apps/anyupp-backend/build/stack-seeder/index.js",
+        "apps/anyupp-backend/build/crud-api-updater/index.js",
+        "apps/anyupp-backend/build/stuck-order-cleanup/index.js",
         "libs/shared/config/src/lib/stack-config/'{args.env}'/stack-config.json",
         "libs/shared/config/src/lib/stack-config/generated/stack-config.json"
       ],

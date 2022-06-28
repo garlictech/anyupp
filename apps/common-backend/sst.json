@@ -1,5 +1,5 @@
 {
-  "name": "common-backend",
+  "name": "common-backend2",
   "type": "@serverless-stack/resources",
   "region": "eu-west-1",
   "lint": false

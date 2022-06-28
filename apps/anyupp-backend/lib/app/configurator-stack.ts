@@ -5,11 +5,12 @@ import {
   Duration,
   // We must follow this pattern! the aws_iam as iam form was inherited from
   // CDK 1. See #3622
-  aws_lambda_nodejs,
+  aws_lambda,
 } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
 import { StackProps } from '@serverless-stack/resources';
+import path from 'path';
 
 export interface ConfiguratorStackProps extends StackProps {
   consumerUserPoolId: string;
@@ -20,14 +21,16 @@ export class ConfiguratorStack extends sst.Stack {
     super(scope, id);
     const app = this.node.root as sst.App;
 
-    const updaterLambda = new aws_lambda_nodejs.NodejsFunction(
+    const updaterLambda = new aws_lambda.Function(
       this,
       'CrudApiUpdaterLambda',
       {
         ...commonLambdaProps,
-        timeout: Duration.seconds(10),
-        handler: 'handler',
-        entry: __dirname + '/../../lib/lambda/crud-api-updater/index.ts',
+        timeout: Duration.seconds(20),
+        handler: 'index.handler',
+        code: aws_lambda.Code.fromAsset(
+          path.join(__dirname, '../../build/crud-api-updater'),
+        ),
       },
     );
 

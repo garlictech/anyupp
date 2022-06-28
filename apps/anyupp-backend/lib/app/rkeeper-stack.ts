@@ -14,7 +14,7 @@ import {
   RemovalPolicy,
   Duration,
   CfnOutput,
-  aws_lambda_nodejs,
+  aws_lambda,
 } from 'aws-cdk-lib';
 import { getFQParamName } from './utils';
 import * as sst from '@serverless-stack/resources';
@@ -126,15 +126,17 @@ export class RKeeperStack extends sst.Stack {
       }),
     });
 
-    const rkeeperLambda = new aws_lambda_nodejs.NodejsFunction(
+    const rkeeperLambda = new aws_lambda.Function(
       this,
       'RKeeperWebhookLambda',
       {
         ...commonLambdaProps,
         memorySize: 512,
         timeout: Duration.seconds(20),
-        handler: 'handler',
-        entry: __dirname + '/../../lib/lambda/rkeeper-webhook/index.ts',
+        handler: 'index.handler',
+        code: aws_lambda.Code.fromAsset(
+          path.join(__dirname, '../../build/rkeeper-webhook'),
+        ),
         environment: {
           API_ACCESS_KEY_ID: props.apiAccessKeyId,
           API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
@@ -205,15 +207,17 @@ export class RKeeperStack extends sst.Stack {
       stringValue: menusyncTaskDefinition.taskDefinitionArn,
     });
 
-    const stuckOrderCleanupLambda = new aws_lambda_nodejs.NodejsFunction(
+    const stuckOrderCleanupLambda = new aws_lambda.Function(
       this,
       'RKeeperStuckOrderCleanupLambda',
       {
         ...commonLambdaProps,
         memorySize: 512,
         timeout: Duration.seconds(30),
-        handler: 'handler',
-        entry: __dirname + '/../../lib/lambda/stuck-order-cleanup/index.ts',
+        handler: 'index.handler',
+        code: aws_lambda.Code.fromAsset(
+          path.join(__dirname, '../../build/stuck-order-cleanup'),
+        ),
         environment: {
           API_ACCESS_KEY_ID: props.apiAccessKeyId,
           API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,

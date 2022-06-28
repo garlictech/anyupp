@@ -10,7 +10,7 @@ export const getFQParamName = (app: sst.App, paramName: string) =>
   getFQParamNameFromDetails(app.stage, app.name, paramName);
 
 export const commonBackendStack = 'common-backend-anyupp';
-export const anyuppVpcName = 'AnyuppVpc';
+export const anyuppVpcName = 'AnyuppVpc2';
 export const anyuppFargateClusterName = 'anyupp-fargate-cluster';
 export const anyuppVpcSecurityGroupParamName =
   '/common/AnyuppVpcSecurityGroupName';

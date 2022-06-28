@@ -3,12 +3,13 @@ import {
   aws_cognito as cognito,
   aws_secretsmanager as sm,
   Duration,
-  aws_lambda_nodejs,
+  aws_lambda,
 } from 'aws-cdk-lib';
 
 import { tableConfig } from '@bgap/crud-gql/backend';
 import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
+import path from 'path';
 
 export interface AppsyncAppStackProps extends sst.StackProps {
   adminUserPool: cognito.UserPool;
@@ -24,27 +25,25 @@ export interface AppsyncAppStackProps extends sst.StackProps {
 export class AppsyncAppStack extends sst.Stack {
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
     super(scope, id);
-    const apiLambda = new aws_lambda_nodejs.NodejsFunction(
-      this,
-      'AppsyncLambda',
-      {
-        ...commonLambdaProps,
-        functionName: `${scope.stage}-anyupp-graphql-resolvers`,
-        handler: 'handler',
-        entry: __dirname + '/../../lib/lambda/appsync-lambda/index.ts',
-        timeout: Duration.seconds(30),
-        memorySize: 512,
-        environment: {
-          userPoolId: props.adminUserPool.userPoolId,
-          secretName: props.secretsManager.secretName,
-          STRIPE_SECRET_KEY: props.stripeSecretKey,
-          STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
-          SZAMLAZZ_HU_AGENT_KEY: props.szamlazzhuAgentKey,
-          API_ACCESS_KEY_ID: props.apiAccessKeyId,
-          API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
-        },
+    const apiLambda = new aws_lambda.Function(this, 'AppsyncLambda', {
+      ...commonLambdaProps,
+      handler: 'index.handler',
+      code: aws_lambda.Code.fromAsset(
+        path.join(__dirname, '../../build/appsync-lambda'),
+      ),
+      functionName: `${scope.stage}-anyupp-graphql-resolvers`,
+      timeout: Duration.seconds(30),
+      memorySize: 512,
+      environment: {
+        userPoolId: props.adminUserPool.userPoolId,
+        secretName: props.secretsManager.secretName,
+        STRIPE_SECRET_KEY: props.stripeSecretKey,
+        STRIPE_SIGNING_SECRET: props.stripeSigningSecret,
+        SZAMLAZZ_HU_AGENT_KEY: props.szamlazzhuAgentKey,
+        API_ACCESS_KEY_ID: props.apiAccessKeyId,
+        API_SECRET_ACCESS_KEY: props.apiSecretAccessKey,
       },
-    );
+    });
 
     if (apiLambda.role) {
       apiLambda.role.addToPrincipalPolicy(
