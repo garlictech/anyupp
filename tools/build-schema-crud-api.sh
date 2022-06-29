@@ -20,6 +20,7 @@ fi
 echo
 echo 'Compile schema with amplify'
 echo '=============================='
+#amplify api gql-compile --allow-destructive-graphql-schema-updates
 amplify api gql-compile
 amplify codegen
 

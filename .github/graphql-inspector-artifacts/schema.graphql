@@ -166,6 +166,7 @@ type GroupProduct @aws_iam @aws_cognito_user_pools {
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
+  chainProduct: ChainProduct
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -186,6 +187,7 @@ type UnitProduct @aws_iam @aws_cognito_user_pools {
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
+  groupProduct: GroupProduct
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }

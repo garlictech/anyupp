@@ -168,6 +168,8 @@ type GroupProduct
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
+  # For removing generated product
+  chainProduct: ChainProduct @hasOne(fields: ["parentId"])
 }
 
 type UnitProduct
@@ -189,6 +191,8 @@ type UnitProduct
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
+  # For removing generated product
+  groupProduct: GroupProduct @hasOne(fields: ["parentId"])
 }
 
 type ProductConfigComponent {
@@ -755,23 +759,23 @@ type ProductComponentSet
 
 type GeneratedProductConfigComponent {
   productComponentId: ID!
-  price: Float!
-  position: Int!
-  name: LocalizedItem!
-  allergens: [Allergen]
-  netPackagingFee: Float
-  soldOut: Boolean
+  price: Float! # UnitProduct.configSets.items.price
+  position: Int! # UnitProduct.configSets.items.position
+  name: LocalizedItem! # (query for UnitProduct.configSets.items.productComponentId).name
+  allergens: [Allergen] # (query for UnitProduct.configSets.items.productComponentId).allergens
+  netPackagingFee: Float # UnitProduct.configSets.items.netPackagingFee
+  soldOut: Boolean # (query for UnitProduct.configSets.items.productComponentId).soldOut
   externalId: String
 }
 
 type GeneratedProductConfigSet {
   productSetId: ID!
-  name: LocalizedItem!
-  position: Int!
-  type: ProductComponentSetType!
-  maxSelection: Int
-  items: [GeneratedProductConfigComponent!]!
-  supportedServingModes: [ServingMode!]
+  name: LocalizedItem! # (query for UnitProduct.configSets.productSetId).name
+  position: Int! # UnitProduct.configSets.productSet.position
+  type: ProductComponentSetType! # (query for UnitProduct.configSets.productSetId).type
+  maxSelection: Int # (query for UnitProduct.configSets.productSetId).maxSelection
+  items: [GeneratedProductConfigComponent!]! # UnitProduct.configSets
+  supportedServingModes: [ServingMode!] # (query for UnitProduct.configSets.productSetId).supportedServingModes
 }
 
 type GeneratedProductCategory
@@ -791,35 +795,35 @@ type GeneratedProduct
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  unitId: ID!
+  unitId: ID!  # From UnitProduct
     @index(name: "productsByUnit")
     @index(
       name: "productsByUnitAndCategory"
       sortKeyFields: ["productCategoryId"]
     )
-  productCategoryId: ID!
-  name: LocalizedItem!
-  description: LocalizedItem
-  productType: ProductType!
-  tax: Int!
-  takeawayTax: Int
-  position: Int!
-  image: String
+  productCategoryId: ID! # From ChainProduct
+  name: LocalizedItem! # From ChainProduct
+  description: LocalizedItem # From ChainProduct
+  productType: ProductType! # From ChainProduct
+  tax: Int! # From GroupProduct
+  takeawayTax: Int # From GroupProduct
+  position: Int! # From UnitProduct
+  image: String # From ChainProduct
   variants: [GeneratedProductVariant!]!
-  allergens: [Allergen]
+  allergens: [Allergen] # From ChainProduct
   configSets: [GeneratedProductConfigSet]
-  supportedServingModes: [ServingMode!]
-  soldOut: Boolean
+  supportedServingModes: [ServingMode!] # From UnitProduct
+  soldOut: Boolean # Unused shit
 }
 
 type GeneratedProductVariant {
   id: ID!
-  variantName: LocalizedItem!
-  pack: ProductVariantPack
-  price: Float!
-  netPackagingFee: Float
-  position: Int!
-  soldOut: Boolean
+  variantName: LocalizedItem! # UnitProduct.variant
+  pack: ProductVariantPack # # UnitProduct.variant
+  price: Float! # UnitProduct.variant
+  netPackagingFee: Float # UnitProduct.variant
+  position: Int! # UnitProduct.variant
+  soldOut: Boolean # UnitProduct.variant
 }
 
 type FavoriteProduct
