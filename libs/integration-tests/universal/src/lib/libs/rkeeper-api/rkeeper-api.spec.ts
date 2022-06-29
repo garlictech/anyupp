@@ -532,7 +532,14 @@ test('send order to rkeeper by HTTP post', done => {
         expect(result?.data.success).toEqual(true);
       }),
     )
-    .subscribe(() => done());
+    .subscribe({
+      next: () => console.log,
+      error: error => {
+        console.error('Error', error);
+        done();
+      },
+      complete: () => done(),
+    });
 }, 60000);
 
 test('send order to rkeeper by sendRkeeperOrder', done => {
@@ -546,7 +553,80 @@ test('send order to rkeeper by sendRkeeperOrder', done => {
         expect(result).toEqual('UUID');
       }),
     )
-    .subscribe(() => done());
+    .subscribe({
+      next: () => console.log,
+      error: error => {
+        console.error('Error', error);
+        done();
+      },
+      complete: () => done(),
+    });
+}, 60000);
+
+test('send an unpaid order to rkeeper by HTTP post, then send another request to set it to Paid status', done => {
+  defer(() =>
+    from(
+      axios.request({
+        url: `${fixtures.rkeeperEndpoint}/postorder/${fixtures.yellowRestaurantId}`,
+        method: 'post',
+        data: {
+          ...fixtures.rkeeperOrder,
+          pay_online_type: 1,
+        },
+        auth: {
+          username: fixtures.yellowRkeeperUsername,
+          password: fixtures.yellowRkeeperPassword,
+        },
+      }),
+    ),
+  )
+    .pipe(
+      tap(postOrderResponse =>
+        expect(postOrderResponse?.config.auth).toMatchSnapshot('config.auth'),
+      ),
+      map(postOrderResponse => postOrderResponse.data),
+      tap(postOrderResponseData => {
+        console.log(
+          'postOrderResponseData',
+          JSON.stringify(postOrderResponseData),
+        );
+        expect(postOrderResponseData.success).toEqual(true);
+      }),
+      switchMap(postOrderResponseData =>
+        from(
+          axios.request({
+            url: `${fixtures.rkeeperEndpoint}/postorder/payed/${fixtures.yellowRestaurantId}/${postOrderResponseData.data.data['visit_id']}`,
+            method: 'post',
+            auth: {
+              username: fixtures.yellowRkeeperUsername,
+              password: fixtures.yellowRkeeperPassword,
+            },
+          }),
+        ).pipe(
+          tap(postPayedResponse =>
+            expect(postPayedResponse?.config.auth).toMatchSnapshot(
+              'config.auth',
+            ),
+          ),
+          map(postPayedResponse => postPayedResponse.data),
+          tap(postPayedResponseData => {
+            console.log(
+              'postPayedResponseData',
+              JSON.stringify(postPayedResponseData),
+            );
+            expect(postPayedResponseData.success).toEqual(true);
+          }),
+        ),
+      ),
+    )
+    .subscribe({
+      next: () => console.log,
+      error: error => {
+        console.error('Error', error);
+        done();
+      },
+      complete: () => done(),
+    });
 }, 60000);
 
 test('test the menusync route', done => {
@@ -567,7 +647,14 @@ test('test the menusync route', done => {
         expect(result?.status).toEqual(200);
       }),
     )
-    .subscribe(() => done());
+    .subscribe({
+      next: () => console.log,
+      error: error => {
+        console.error('Error', error);
+        done();
+      },
+      complete: () => done(),
+    });
 }, 60000);
 
 test('test the order status route', done => {
@@ -593,5 +680,12 @@ test('test the order status route', done => {
         expect(result.response?.status).toEqual(400);
       }),
     )
-    .subscribe(() => done());
+    .subscribe({
+      next: () => console.log,
+      error: error => {
+        console.error('Error', error);
+        done();
+      },
+      complete: () => done(),
+    });
 }, 60000);
