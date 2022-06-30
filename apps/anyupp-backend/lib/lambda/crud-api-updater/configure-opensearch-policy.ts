@@ -1,8 +1,8 @@
 import { OpenSearch } from 'aws-sdk';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
-import { throwIfEmptyValue } from '@bgap/shared/utils';
 import { defer, from, of } from 'rxjs';
 import { catchError, filter, map, switchMap } from 'rxjs/operators';
+import { DomainStatus } from 'aws-sdk/clients/opensearch';
 
 const openSearch = new OpenSearch({
   apiVersion: '2021-01-01',
@@ -34,12 +34,11 @@ export const configureOpenSearchPolicy = () =>
     filter(
       domainStatus => domainStatus.AdvancedSecurityOptions?.Enabled == true,
     ),
-    throwIfEmptyValue(),
-    switchMap(() =>
+    switchMap((domainStatus: DomainStatus) =>
       from(
         openSearch
           .updateDomainConfig({
-            DomainName: domainName,
+            DomainName: domainStatus.DomainName,
             AccessPolicies: JSON.stringify(accessPolicies),
           })
           .promise(),
@@ -47,6 +46,6 @@ export const configureOpenSearchPolicy = () =>
     ),
     catchError(err => {
       console.warn('Policy attachment was not successful: ', err);
-      return of({});
+      return of(true);
     }),
   );

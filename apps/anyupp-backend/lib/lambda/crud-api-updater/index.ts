@@ -23,7 +23,7 @@ export const handler: Handler = async (
     return forkJoin([
       createIndices$,
       configurePools(userPoolId),
-      //      configureOpenSearchPolicy,
+      configureOpenSearchPolicy(),
     ])
       .pipe(
         switchMap(() =>
