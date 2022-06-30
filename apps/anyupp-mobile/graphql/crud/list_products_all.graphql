@@ -1,6 +1,10 @@
 query ListAllProducts($unitId: ID!, $nextToken: String, $limit: Int) {
-  searchGeneratedProducts(
-    filter: { unitId: { eq: $unitId } }
+  searchUnitProducts(
+    filter: {
+      unitId: { eq: $unitId }
+      dirty: { ne: true }
+      and: { deletedAt: { exists: false } }
+    }
     nextToken: $nextToken
     limit: $limit
   ) {
@@ -9,22 +13,7 @@ query ListAllProducts($unitId: ID!, $nextToken: String, $limit: Int) {
     items {
       id
       unitId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      image
       position
-      productCategoryId
-      productType
-      tax
-      allergens
       variants {
         id
         position
@@ -40,35 +29,115 @@ query ListAllProducts($unitId: ID!, $nextToken: String, $limit: Int) {
         }
         netPackagingFee
         soldOut
+        isAvailable
       }
       configSets {
         productSetId
         position
-        type
-        name {
-          de
-          en
-          hu
-        }
-        maxSelection
-        supportedServingModes
         items {
+          position
+          price
+          netPackagingFee
+          productComponentId
+          externalId
+        }
+      }
+      supportedServingModes
+      dirty
+      groupProduct {
+        variants {
+          isAvailable
+          netPackagingFee
+          pack {
+            size
+            unit
+          }
+          position
+          price
+          soldOut
+          variantName {
+            de
+            en
+            hu
+          }
+        }
+        configSets {
+          position
+          items {
+            position
+            price
+            netPackagingFee
+            productComponentId
+            externalId
+          }
+          productSetId
+        }
+        chainProduct {
           allergens
           name {
             de
             en
             hu
           }
-          position
-          price
-          netPackagingFee
-          productComponentId
-          soldOut
-          externalId
+          productType
+          variants {
+            isAvailable
+            netPackagingFee
+            pack {
+              size
+              unit
+            }
+            id
+            position
+            price
+            soldOut
+            variantName {
+              de
+              en
+              hu
+            }
+          }
+          image
+          dirty
+          configSets {
+            position
+            items {
+              netPackagingFee
+              position
+              price
+              productComponentId
+              refGroupPrice
+            }
+            productSetId
+          }
+          isVisible
+          description {
+            de
+            en
+            hu
+          }
+          productCategoryId
         }
+        dirty
+        groupId
+        id
+        isVisible
+        takeawayTax
+        tax
+        externalId
+        parentId
+        deletedAt
+        createdAt
+        updatedAt
       }
-      supportedServingModes
-      soldOut
+      isVisible
+      parentId
+      chainId
+      groupId
+      externalId
+      createdAt
+      deletedAt
+      updatedAt
     }
   }
 }

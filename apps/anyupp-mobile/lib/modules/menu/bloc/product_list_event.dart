@@ -22,11 +22,16 @@ class LoadProductList extends ProductListEvent {
 
 class LoadAllProductList extends ProductListEvent {
   final String unitId;
+  final String chainId;
   final String? nextToken;
-  const LoadAllProductList({required this.unitId, this.nextToken});
+  const LoadAllProductList({
+    required this.unitId,
+    required this.chainId,
+    this.nextToken,
+  });
 
   @override
-  List<Object?> get props => [unitId, nextToken];
+  List<Object?> get props => [unitId, chainId, nextToken];
 }
 
 class RefreshFavoritesInProductList extends ProductListEvent {

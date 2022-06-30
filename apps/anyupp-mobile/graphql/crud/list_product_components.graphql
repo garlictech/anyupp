@@ -1,0 +1,34 @@
+query ListChainProductComponents(
+  $chainId: ID!
+  $nextToken: String
+  $limit: Int
+) {
+  searchProductComponents(
+    filter: {
+      chainId: { eq: $chainId }
+      dirty: { ne: true }
+      and: { deletedAt: { exists: false } }
+    }
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    items {
+      name {
+        de
+        en
+        hu
+      }
+      soldOut
+      updatedAt
+      id
+      externalId
+      description
+      deletedAt
+      createdAt
+      chainId
+      allergens
+    }
+    nextToken
+    total
+  }
+}

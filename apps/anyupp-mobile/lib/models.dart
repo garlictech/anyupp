@@ -6,6 +6,7 @@ export 'models/ChainStyleImages.dart';
 export 'models/CumulatedPrice.dart';
 export 'models/FavoriteProduct.dart';
 export 'models/GeneratedProduct.dart';
+export 'models/GeneratedProductCategory.dart';
 export 'models/GeneratedProductConfigComponent.dart';
 export 'models/GeneratedProductConfigSet.dart';
 export 'models/GeoUnit.dart';

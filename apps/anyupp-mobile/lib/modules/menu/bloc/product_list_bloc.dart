@@ -64,8 +64,9 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
 
       // Load products
       var products = await _productRepository.getAllProductList(
-        event.unitId,
-        event.nextToken,
+        unitId: event.unitId,
+        chainId: event.chainId,
+        nextToken: event.nextToken,
       );
 
       log.d('********* ProductListBloc.categories=${categories.data?.length}');

@@ -9,6 +9,9 @@ abstract class IProductProvider {
       String unitId, String categoryId,
       [String? nextToken]);
 
-  Future<PageResponse<GeneratedProduct>> getAllProductList(String unitId,
-      [String? nextToken]);
+  Future<PageResponse<GeneratedProduct>> getAllProductList({
+    required String unitId,
+    required String chainId,
+    String? nextToken,
+  });
 }

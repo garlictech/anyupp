@@ -1,0 +1,36 @@
+query ListChainProductComponentSets(
+  $chainId: ID!
+  $nextToken: String
+  $limit: Int
+) {
+  searchProductComponentSets(
+    filter: {
+      chainId: { eq: $chainId }
+      dirty: { ne: true }
+      and: { deletedAt: { exists: false } }
+    }
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    items {
+      chainId
+      createdAt
+      deletedAt
+      description
+      externalId
+      id
+      items
+      maxSelection
+      name {
+        de
+        en
+        hu
+      }
+      supportedServingModes
+      type
+      updatedAt
+    }
+    nextToken
+    total
+  }
+}

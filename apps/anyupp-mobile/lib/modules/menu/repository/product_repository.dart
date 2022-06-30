@@ -19,8 +19,15 @@ class ProductRepository {
     return _provider.getProductList(unitId, categoryId, nextToken);
   }
 
-  Future<PageResponse<GeneratedProduct>> getAllProductList(String unitId,
-      [String? nextToken]) {
-    return _provider.getAllProductList(unitId, nextToken);
+  Future<PageResponse<GeneratedProduct>> getAllProductList({
+    required String chainId,
+    required String unitId,
+    String? nextToken,
+  }) {
+    return _provider.getAllProductList(
+      unitId: unitId,
+      chainId: chainId,
+      nextToken: nextToken,
+    );
   }
 }
