@@ -54,6 +54,8 @@ import {
   UnitProduct,
 } from '@bgap/domain';
 
+const commonBackendName = 'common-backend2-anyupp';
+
 describe('Test the rkeeper api basic functionality', () => {
   const crudSdk = createIamCrudSdk();
 
@@ -463,9 +465,9 @@ describe('Test the rkeeper api basic functionality', () => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
       RKeeperProcessProductSubnet:
-        commonStackConfig['common-backend-anyupp'].AnyuppVpcSubnetOutput,
+        commonStackConfig[commonBackendName].AnyuppVpcSubnetOutput,
       RKeeperProcessProductSecurityGroup:
-        commonStackConfig['common-backend-anyupp'].AnyuppVpcSecurityGroupOutput,
+        commonStackConfig[commonBackendName].AnyuppVpcSecurityGroupOutput,
       taskDefinitionArn: config.RkeeperTaskDefinitionArn,
       bucketName:
         anyuppStackConfig['anyupp-backend-rkeeper'].RKeeperTaskBucketName,
