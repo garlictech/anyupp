@@ -8,29 +8,30 @@ const openSearch = new OpenSearch({
   apiVersion: '2021-01-01',
 });
 
-const domainName = CrudApiConfig.openSearchEndpoint.split('/')[1];
+const domainName = CrudApiConfig.openSearchArn.split('/')[1];
 
-const accessPolicies = [
-  {
-    Version: '2012-10-17',
-    Statement: [
-      {
-        Effect: 'Allow',
-        Principal: {
-          AWS: '*',
-        },
-        Action: 'es:ESHttp*',
-        Resource: `${CrudApiConfig.openSearchEndpoint}/*`,
+const accessPolicy = {
+  Version: '2012-10-17',
+  Statement: [
+    {
+      Effect: 'Allow',
+      Principal: {
+        AWS: '*',
       },
-    ],
-  },
-];
+      Action: 'es:ESHttp*',
+      Resource: `${CrudApiConfig.openSearchArn}/*`,
+    },
+  ],
+};
 
 export const configureOpenSearchPolicy = () =>
   defer(() =>
     from(openSearch.describeDomain({ DomainName: domainName }).promise()),
   ).pipe(
-    map(response => response.DomainStatus),
+    map(response => {
+      console.log(response);
+      return response.DomainStatus;
+    }),
     filter(
       domainStatus => domainStatus.AdvancedSecurityOptions?.Enabled == true,
     ),
@@ -39,7 +40,7 @@ export const configureOpenSearchPolicy = () =>
         openSearch
           .updateDomainConfig({
             DomainName: domainStatus.DomainName,
-            AccessPolicies: JSON.stringify(accessPolicies),
+            AccessPolicies: JSON.stringify(accessPolicy),
           })
           .promise(),
       ),
