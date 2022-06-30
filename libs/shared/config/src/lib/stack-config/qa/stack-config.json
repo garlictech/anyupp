@@ -8,11 +8,11 @@
     "googleClientIdOutput": "1016713353610-q3nsj1t1flrjuo33sfakis645gl7ijv3.apps.googleusercontent.com",
     "facebookAppIdOutput": "166876958090898",
     "googleApiKeyOutput": "AIzaSyDGNIG1eIqvKsRoBsQ2T7PVff2d1XUhsVg",
-    "securityGroupId": "sg-067322e2345a84f7e",
+    "securityGroupId": "sg-0d8ed08b1456cac31",
     "slackChannelOutput": "net.cyberg.anyupp.cognito",
     "appleTeamIdOutput": "36CW47H75G",
     "appleKeyIdOutput": "8W2A8ZDZH8",
-    "vpcIdOutput": "vpc-0880d26d0165c9f7f"
+    "vpcIdOutput": "vpc-03b2ca8e29e8d680e"
   },
   "anyupp-backend-sites": {
     "AdminSiteDomainA75B4E32": "qa-admin-anyupp-backend.anyupp.com",
@@ -37,9 +37,9 @@
     "StripeWebhookEndpointE83D65EB": "https://q2pa2rywp4.execute-api.eu-west-1.amazonaws.com/qa/"
   },
   "anyupp-backend-rkeeper": {
-    "RKeeperWebhookEndpointCBC72BD4": "https://eeo9wxi3pk.execute-api.eu-west-1.amazonaws.com/qa/",
+    "RKeeperWebhookEndpointCBC72BD4": "https://gzje2ztdt5.execute-api.eu-west-1.amazonaws.com/qa/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-qa.anyupp.com/qa",
-    "RKeeperTaskBucketName": "qa-anyupp-backend-rkeepe-anyupprkeepermenubucket4-5aiwz9eeobix",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/qa-anyupp-backend-rkeeper-RkeeperECSTaskExecutionR-1WUNF9CK6POIT"
+    "RKeeperTaskBucketName": "qa-anyupp-backend-rkeepe-anyupprkeepermenubucket4-1gbswprof34iv",
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/qa-anyupp-backend-rkeeper-RkeeperECSTaskExecutionR-CMKAUWWKC0SZ"
   }
 }
