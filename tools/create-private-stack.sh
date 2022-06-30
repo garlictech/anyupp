@@ -104,7 +104,7 @@ echo "************************************************************************"
 echo
 tput sgr 0
 
-yarn nx build-schema crud-backend --env=$ENVNAME
+yarn nx build crud-backend --env=$ENVNAME
 yarn nx build anyupp-backend --env=$ENVNAME
 yarn nx deploy anyupp-backend --env=$ENVNAME
 
