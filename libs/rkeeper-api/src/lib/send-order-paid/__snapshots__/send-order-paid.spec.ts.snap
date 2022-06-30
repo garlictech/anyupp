@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SendOrderPaid should call correct URI - happy path 1`] = `
+Array [
+  Array [
+    Object {
+      "auth": Object {
+        "password": "f3e7c8260b2f9b1cc62208a441410a",
+        "username": "590_49_985_540",
+      },
+      "method": "post",
+      "url": "https://testendpoint.ucs.hu/wp-json/vendor/v1/postorder/payed/109150006/1656509181-606-109150006",
+    },
+  ],
+]
+`;
