@@ -120,6 +120,9 @@ OS_ARN=$(aws cloudformation list-exports | \
   jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainArn\")" | \
   jq ".Value")
 
+echo "OS domain endpoint: ${OS_ENDPOINT}"
+echo "OS domain ARN: ${OS_ARN}"  
+
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
 # ----------------------------------------------------------

@@ -20,6 +20,10 @@ OS_ENDPOINT=$(aws cloudformation list-exports | \
   jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainEndpoint\")" | \
   jq ".Value")
 
+OS_ARN=$(aws cloudformation list-exports | \
+  jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainArn\")" | \
+  jq ".Value")  
+
 CRUD_CONFIG_FILE=../../libs/crud-gql/api/src/lib/generated/crud-api-config.ts
 
 printf "Generating ${CRUD_CONFIG_FILE}...\n"
