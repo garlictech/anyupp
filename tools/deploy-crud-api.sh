@@ -27,7 +27,7 @@ printf "Generating ${CRUD_CONFIG_FILE}...\n"
 echo "
 export const CrudApiConfig = {
   appId: '${APPID}',
-  appsyncApiId: ${API_ID},
+  appsyncApiId: '${API_ID}',
   openSearchEndpoint: ${OS_ENDPOINT},
   openSearchArn: ${OS_ARN}
 }
