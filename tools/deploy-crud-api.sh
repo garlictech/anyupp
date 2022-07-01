@@ -33,6 +33,8 @@ export const CrudApiConfig = {
 }
 " > ${CRUD_CONFIG_FILE}
 
+cat $CRUD_CONFIG_FILE
+
 X=$(aws ssm put-parameter \
   --type String \
   --overwrite \
