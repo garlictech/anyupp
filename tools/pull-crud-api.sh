@@ -138,6 +138,8 @@ export const CrudApiConfig = {
 }
 " > ${CRUD_CONFIG_FILE}
 
+cat $CRUD_CONFIG_FILE
+
 # ----------------------------------------------------------
 # Post-processing the result
 # ----------------------------------------------------------
