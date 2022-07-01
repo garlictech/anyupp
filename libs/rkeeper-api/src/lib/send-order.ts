@@ -3,7 +3,7 @@ import { AxiosStatic } from 'axios';
 import { Method } from 'axios';
 import { defer, from, Observable } from 'rxjs';
 import * as R from 'ramda';
-import { mapTo, tap, map } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 import {
   CreateOrderInput,
   OrderItemConfigSetInput,
