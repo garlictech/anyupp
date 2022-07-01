@@ -21,13 +21,11 @@ import {
   OrderStatus,
   PaymentMode,
   Place,
-  PosType,
   ProductType,
   ServingMode,
   StatusLogInput,
   Unit,
 } from '@bgap/domain';
-import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 import {
   getCartIsMissingError,
   getUnitIsNotAcceptingOrdersError,
@@ -298,29 +296,6 @@ export const createOrderFromCart =
           archived: hasSimplifiedOrder(props.unit),
         },
       })),
-      // Push the order to rkeeper if the unit is backed by rkeeper
-      switchMap(props =>
-        props.unit.pos?.type === PosType.rkeeper
-          ? sendRkeeperOrder({
-              currentTimeISOString: deps.currentTimeISOString,
-              axiosInstance: deps.axiosInstance,
-              uuidGenerator: deps.uuid,
-            })(props.unit, props.orderInput).pipe(
-              map(sendOrderResponse => ({
-                ...props,
-                orderInput: {
-                  ...props.orderInput,
-                  ...(sendOrderResponse?.externalId && {
-                    externalId: sendOrderResponse.externalId,
-                  }),
-                  ...(sendOrderResponse?.visitId && {
-                    visitId: sendOrderResponse.visitId,
-                  }),
-                },
-              })),
-            )
-          : of(props),
-      ),
       // Place order into the DB
       switchMap(props =>
         createOrderInDb(props.orderInput)(deps).pipe(
