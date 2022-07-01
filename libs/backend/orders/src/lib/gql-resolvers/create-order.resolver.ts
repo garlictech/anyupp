@@ -146,6 +146,9 @@ export const handleRkeeperOrder =
           ...input,
           order: {
             ...input.order,
+            ...(sendOrderResponse?.externalId && {
+              externalId: sendOrderResponse.externalId,
+            }),
             ...(sendOrderResponse?.visitId && {
               visitId: sendOrderResponse.visitId,
             }),

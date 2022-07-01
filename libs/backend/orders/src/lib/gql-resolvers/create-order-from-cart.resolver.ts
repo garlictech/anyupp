@@ -310,7 +310,9 @@ export const createOrderFromCart =
                 ...props,
                 orderInput: {
                   ...props.orderInput,
-                  externalId: sendOrderResponse.externalId,
+                  ...(sendOrderResponse?.externalId && {
+                    externalId: sendOrderResponse.externalId,
+                  }),
                   ...(sendOrderResponse?.visitId && {
                     visitId: sendOrderResponse.visitId,
                   }),
