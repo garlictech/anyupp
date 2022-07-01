@@ -3,7 +3,7 @@ import { AxiosStatic } from 'axios';
 import { Method } from 'axios';
 import { defer, from, Observable } from 'rxjs';
 import * as R from 'ramda';
-import { mapTo, tap } from 'rxjs/operators';
+import { mapTo, tap, map } from 'rxjs/operators';
 import {
   CreateOrderInput,
   OrderItemConfigSetInput,
@@ -33,12 +33,17 @@ export type RkeeperOrder = Pick<
   'paymentMode' | 'place' | 'items'
 >;
 
+export interface SendRKeeperOrderResponse {
+  externalId: string;
+  visitId: string;
+}
+
 export const sendRkeeperOrder =
   (deps: SendRkeeperOrderDeps) =>
   (
     unit: Unit,
     orderInput: CreateOrderInput,
-  ): Observable<string | undefined> => {
+  ): Observable<SendRKeeperOrderResponse> => {
     const externalId = deps.uuidGenerator();
 
     return pipe(
@@ -88,15 +93,9 @@ export const sendRkeeperOrder =
       tap(data =>
         console.debug('RKEEPER RESPONSE: ', JSON.stringify(data.data, null, 2)),
       ),
-      /*R.tap(x =>
-          console.debug(
-            'Order submitted to rkeeper:',
-            JSON.stringify(x, null, 2),
-          ),
-        ),
-        map(data => data?.data?.data?.remoteResponse?.remoteOrderId),
-        tap(data => console.debug('RKEEPER ORDER EXTERNAL ID: ', data)),
-         */
-      mapTo(externalId),
+      map(rKeeperResponse => ({
+        externalId,
+        visitId: rKeeperResponse.data?.data?.data?.visit_id,
+      })),
     );
   };

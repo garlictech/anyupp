@@ -2,7 +2,7 @@ import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
 import { from, Observable, of, throwError } from 'rxjs';
-import { map, mapTo } from 'rxjs/operators';
+import { map, mapTo, switchMap } from 'rxjs/operators';
 
 import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
 import {
@@ -132,14 +132,26 @@ export const handleRkeeperOrder =
     input: CalculationState_UnitAdded,
   ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
     pipe(
-      input.unit.pos?.type === PosType.rkeeper
-        ? sendRkeeperOrder({
-            currentTimeISOString: deps.currentTimeISOString,
-            axiosInstance: deps.axiosInstance,
-            uuidGenerator: deps.uuid,
-          })(input.unit, input.order)
-        : of(''),
-      mapTo(input),
+      of(input.unit.pos?.type === PosType.rkeeper).pipe(
+        switchMap(isRKeeperPos =>
+          isRKeeperPos
+            ? sendRkeeperOrder({
+                currentTimeISOString: deps.currentTimeISOString,
+                axiosInstance: deps.axiosInstance,
+                uuidGenerator: deps.uuid,
+              })(input.unit, input.order)
+            : of(null),
+        ),
+        map(sendOrderResponse => ({
+          ...input,
+          order: {
+            ...input.order,
+            ...(sendOrderResponse?.visitId && {
+              visitId: sendOrderResponse.visitId,
+            }),
+          },
+        })),
+      ),
       oeTryCatch,
     );
 
@@ -148,6 +160,7 @@ export const createOrder =
   (deps: OrderResolverDeps): Observable<Order> =>
     getUnit(deps)(input).pipe(
       OE.chain(getNextOrderNum(deps)),
+      OE.chain(handleRkeeperOrder(deps)),
       OE.chain(placeOrder(deps)),
       OE.map(state => state.order),
       OE.fold(

@@ -562,6 +562,7 @@ type Order
   currentStatus: OrderStatus
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  visitId: String
 }
 
 input CreateOrderInput {
@@ -593,6 +594,7 @@ input CreateOrderInput {
   packagingFeeTaxPercentage: Float
   externalId: String
   guestLabel: String
+  visitId: String
 }
 
 input OrderItemInput {

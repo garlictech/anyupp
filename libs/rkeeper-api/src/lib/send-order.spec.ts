@@ -9,7 +9,6 @@ import {
   ProductComponentSetType,
   ServingMode,
 } from '@bgap/domain';
-import { tap } from 'rxjs/operators';
 import { sendRkeeperOrder } from './send-order';
 
 /* A reference JSON that the stuff must produce:
@@ -171,21 +170,44 @@ const testCases = [
   },
 ];
 
+const mockSuccessResponse = {
+  success: true,
+  data: {
+    remoteResponse: {
+      remoteOrderId: 72562,
+    },
+    data: {
+      seq_number: 771,
+      visit_id: '1656509181-606-109150006',
+    },
+    source: 'endpoint_server',
+    status: 'Ok',
+  },
+};
+
 test.each(testCases)('Test: $label', ({ orderInput }, done: any) => {
   const deps: any = {
     axiosInstance: {
-      request: jest.fn().mockReturnValue(Promise.resolve({})),
+      request: jest.fn().mockReturnValue(
+        Promise.resolve({
+          data: mockSuccessResponse,
+        }),
+      ),
     },
     currentTimeISOString: () =>
       new Date('2020-04-13T00:00:00.000+08:00').toISOString(),
     uuidGenerator: () => 'UUID',
   };
 
-  sendRkeeperOrder(deps)(unit, orderInput)
-    .pipe(
-      tap(() =>
-        expect(deps.axiosInstance.request.mock.calls).toMatchSnapshot(),
-      ),
-    )
-    .subscribe(() => done());
+  sendRkeeperOrder(deps)(unit, orderInput).subscribe({
+    next: sendRkeeperOrderResponse => {
+      expect(deps.axiosInstance.request.mock.calls).toMatchSnapshot();
+      expect(sendRkeeperOrderResponse).toMatchSnapshot();
+    },
+    complete: () => done(),
+    error: err => {
+      console.log('Error in test', err);
+      done();
+    },
+  });
 });

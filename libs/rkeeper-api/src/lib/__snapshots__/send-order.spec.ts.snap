@@ -51,6 +51,13 @@ Array [
 ]
 `;
 
+exports[`Test: Known guest label 2`] = `
+Object {
+  "externalId": "UUID",
+  "visitId": "1656509181-606-109150006",
+}
+`;
+
 exports[`Test: Unknown guest label 1`] = `
 Array [
   Array [
@@ -100,4 +107,11 @@ Array [
     },
   ],
 ]
+`;
+
+exports[`Test: Unknown guest label 2`] = `
+Object {
+  "externalId": "UUID",
+  "visitId": "1656509181-606-109150006",
+}
 `;

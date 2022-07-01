@@ -300,23 +300,24 @@ export const createOrderFromCart =
       })),
       // Push the order to rkeeper if the unit is backed by rkeeper
       switchMap(props =>
-        (props.unit.pos?.type === PosType.rkeeper
+        props.unit.pos?.type === PosType.rkeeper
           ? sendRkeeperOrder({
               currentTimeISOString: deps.currentTimeISOString,
               axiosInstance: deps.axiosInstance,
               uuidGenerator: deps.uuid,
-            })(props.unit, props.orderInput)
-          : of(undefined)
-        ).pipe(
-          map(externalId => ({
-            ...props,
-            orderInput: {
-              ...props.orderInput,
-              externalId,
-              id: externalId,
-            },
-          })),
-        ),
+            })(props.unit, props.orderInput).pipe(
+              map(sendOrderResponse => ({
+                ...props,
+                orderInput: {
+                  ...props.orderInput,
+                  externalId: sendOrderResponse.externalId,
+                  ...(sendOrderResponse?.visitId && {
+                    visitId: sendOrderResponse.visitId,
+                  }),
+                },
+              })),
+            )
+          : of(props),
       ),
       // Place order into the DB
       switchMap(props =>
