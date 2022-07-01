@@ -13,9 +13,9 @@ import {
   Transaction,
 } from '@bgap/domain';
 
-import { createInvoice } from '../../szamlazzhu';
-import { createReceiptSzamlazzHu } from '../../szamlazzhu/receipt';
-import { createReceiptAndConnectTransaction } from './invoice-receipt.utils';
+import { createInvoice } from '../../../szamlazzhu';
+import { createReceiptSzamlazzHu } from '../../../szamlazzhu/receipt';
+import { createReceiptAndConnectTransaction } from '../invoice-receipt.utils';
 import {
   loadOrder,
   loadTransactionByExternalTransactionId,
@@ -23,8 +23,9 @@ import {
   updateInvoiceState,
   updateOrderState,
   updateTransactionState,
-} from './stripe-graphql-crud';
-import { StripeResolverDepsUnauth } from './stripe.utils';
+} from '../stripe-graphql-crud';
+import { StripeResolverDepsUnauth } from '../stripe.utils';
+import { handleRKeeperPaidStatusUpdate } from './handleRKeeperPaidStatusUpdate';
 
 export const createStripeWebhookExpressApp = (
   szamlazzClient: Szamlazz.Client,
@@ -257,6 +258,10 @@ const handleSuccessTransaction =
         transaction.id,
         PaymentStatus.success,
       )({ ...deps, userId: transaction.userId });
+      await handleRKeeperPaidStatusUpdate({
+        orderId: transaction.orderId,
+        deps,
+      });
       // console.debug('***** handleSuccessTransaction().success()');
       if (transaction.invoiceId) {
         await handleInvoice(transaction)(deps);
