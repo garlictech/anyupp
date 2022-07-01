@@ -136,8 +136,7 @@ echo "
 export const CrudApiConfig = {
   appId: '${APPID}',
   appsyncApiId: '${API_ID}',
-  openSearchEndpoint: ${OS_ENDPOINT},
-  openSearchArn: ${OS_ARN}
+  openSearchEndpoint: ${OS_ENDPOINT}
 }
 " > ${CRUD_CONFIG_FILE}
 
