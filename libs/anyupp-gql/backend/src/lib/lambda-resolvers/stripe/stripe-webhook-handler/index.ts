@@ -1,8 +1,13 @@
-import * as awsServerlessExpressMiddleware from 'aws-serverless-express/middleware';
+import { eventContext } from 'aws-serverless-express/middleware';
 import bodyParser from 'body-parser';
 import express from 'express';
 import Stripe from 'stripe';
-import * as Szamlazz from 'szamlazz.js';
+import {
+  Client,
+  Language,
+  PaymentMethod,
+  SendRequestResponse,
+} from 'szamlazz.js';
 
 import { getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import {
@@ -28,7 +33,7 @@ import { StripeResolverDepsUnauth } from '../stripe.utils';
 import { handleRKeeperPaidStatusUpdate } from './handleRKeeperPaidStatusUpdate';
 
 export const createStripeWebhookExpressApp = (
-  szamlazzClient: Szamlazz.Client,
+  szamlazzClient: Client,
   stripeClient: Stripe,
 ) => {
   // declare a new express app
@@ -42,9 +47,10 @@ export const createStripeWebhookExpressApp = (
   };
 
   const app = express();
+  app.disable('x-powered-by');
 
   //app.use(bodyParser.json())
-  app.use(awsServerlessExpressMiddleware.eventContext());
+  app.use(eventContext());
 
   // Enable CORS for all methods
   app.use(function (_req, res, next) {
@@ -142,10 +148,10 @@ const handleInvoice =
         user,
         transaction,
         order,
-        language: Szamlazz.Language.Hungarian,
+        language: Language.Hungarian,
       });
 
-      const invoiceData: Szamlazz.SendRequestResponse =
+      const invoiceData: SendRequestResponse =
         await deps.szamlazzClient.getInvoiceData({
           invoiceId: invoice.invoiceId,
           pdf: false,
@@ -201,15 +207,15 @@ const handleReceipt =
       const receipt = await createReceiptSzamlazzHu(deps.szamlazzClient)({
         transaction,
         order,
-        language: Szamlazz.Language.Hungarian,
-        paymentMethod: Szamlazz.PaymentMethod.Stripe,
+        language: Language.Hungarian,
+        paymentMethod: PaymentMethod.Stripe,
       });
       console.debug(
         '***** handleReceipt().receipt=' +
           JSON.stringify(receipt, undefined, 2),
       );
 
-      const receiptData: Szamlazz.SendRequestResponse =
+      const receiptData: SendRequestResponse =
         await deps.szamlazzClient.getReceiptData({
           receiptId: receipt.receiptId,
           pdf: true,
