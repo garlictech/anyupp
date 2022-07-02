@@ -6,7 +6,9 @@ import * as fs from 'fs';
 
 const project = 'anyupp';
 const environment = process.argv[2];
-const secretEnvironment = ['dev', 'qa', 'staging', 'prod'].includes(environment)
+const secretEnvironment = ['dev', 'qa', 'staging', 'prod', 'test'].includes(
+  environment,
+)
   ? environment
   : 'dev';
 
