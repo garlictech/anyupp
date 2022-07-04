@@ -101,7 +101,7 @@ export class AppsyncAppStack extends sst.Stack {
       this,
       'AWSAppSyncPushToCloudWatchLogsRole',
       {
-        roleName: 'AWSAppSyncPushToCloudWatchLogsRole',
+        roleName: `${scope.stage}-AWSAppSyncPushToCloudWatchLogsRole`,
         assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
       },
     );

@@ -118,7 +118,7 @@ export class AnyUppStack extends Stack {
 
     new ConfiguratorStack(scope, 'configurator', {
       consumerUserPoolId: cognitoStack.consumerUserPool.userPoolId,
-      appSynclogPublisherRole: appsyncStack.appSyncLogPublisherRole,
+      appSynclogPublisherRoleArn: appsyncStack.appSyncLogPublisherRole.roleArn,
     });
 
     new RKeeperStack(scope, 'rkeeper', {
