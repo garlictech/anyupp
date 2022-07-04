@@ -2,22 +2,33 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:collection/collection.dart';
 
+typedef UnitProduct
+    = ListAllProducts$Query$SearchableUnitProductConnection$UnitProduct;
+typedef ProductComponentSet
+    = ListChainProductComponentSets$Query$SearchableProductComponentSetConnection$ProductComponentSet;
+
+typedef ProductComponent
+    = ListChainProductComponents$Query$SearchableProductComponentConnection$ProductComponent;
+
 GeneratedProduct? getProductFromQuery(
-  ListAllProducts$Query$SearchableUnitProductConnection$UnitProduct data,
-  Map<String,
-          ListChainProductComponentSets$Query$SearchableProductComponentSetConnection$ProductComponentSet>
-      componentSets,
-  Map<String,
-          ListChainProductComponents$Query$SearchableProductComponentConnection$ProductComponent>
-      components,
+  UnitProduct data,
+  Map<String, ProductComponentSet> componentSets,
+  Map<String, ProductComponent> components,
 ) {
   var chainProduct = data.groupProduct?.chainProduct!;
   var groupProduct = data.groupProduct;
 
+  // If no chain or group product => return null
   if (chainProduct == null || groupProduct == null) {
     return null;
   }
 
+  // If product is not visible in any level => return null
+  if (!data.isVisible && !groupProduct.isVisible && !chainProduct.isVisible) {
+    return null;
+  }
+
+  // Create generated product
   return GeneratedProduct(
       id: data.id,
       unitId: data.unitId,
@@ -27,11 +38,13 @@ GeneratedProduct? getProductFromQuery(
         en: chainProduct.name.en,
         de: chainProduct.name.de,
       ),
-      description: LocalizedItem(
-        hu: chainProduct.description?.hu,
-        en: chainProduct.description?.en,
-        de: chainProduct.description?.de,
-      ),
+      description: chainProduct.description != null
+          ? LocalizedItem(
+              hu: chainProduct.description?.hu,
+              en: chainProduct.description?.en,
+              de: chainProduct.description?.de,
+            )
+          : null,
       productType: chainProduct.productType,
       tax: groupProduct.tax,
       position: data.position,
@@ -40,33 +53,47 @@ GeneratedProduct? getProductFromQuery(
           data.supportedServingModes ?? [ServingMode.inPlace],
       allergens: chainProduct.allergens?.whereNotNull().toList(),
       soldOut: false,
-      variants: data.variants!.asMap().entries.map((entry) {
-        var variant = entry.value;
-        var groupVariant = groupProduct.variants?[entry.key];
-        var chainVariant = chainProduct.variants?[entry.key];
-        return ProductVariant(
-          variantName: LocalizedItem(
-            hu: variant?.variantName.hu,
-            en: variant?.variantName.en,
-            de: variant?.variantName.de,
-          ),
-          price: variant!.price,
-          position: variant!.position,
-          soldOut: variant.soldOut ?? false,
-          id: variant.id,
-          netPackagingFee: variant.netPackagingFee,
-          pack: ProductVariantPack(
-            size: variant.pack?.size ??
-                groupVariant?.pack?.size ??
-                chainVariant?.pack?.size ??
-                0,
-            unit: variant.pack?.unit ??
-                groupVariant?.pack?.unit ??
-                chainVariant?.pack?.unit ??
-                '',
-          ),
-        );
-      }).toList(),
+      variants: data.variants!
+          .asMap()
+          .entries
+          .map((entry) {
+            var variant = entry.value;
+            var groupVariant = groupProduct.variants?[entry.key];
+            var chainVariant = chainProduct.variants?[entry.key];
+
+            if (variant == null ||
+                groupVariant == null ||
+                chainVariant == null) {
+              return null;
+            }
+
+            return ProductVariant(
+              variantName: LocalizedItem(
+                hu: variant.variantName.hu,
+                en: variant.variantName.en,
+                de: variant.variantName.de,
+              ),
+              price: variant.price > 0
+                  ? variant.price
+                  : variant.refGroupPrice ?? 0,
+              position: variant.position,
+              soldOut: variant.soldOut ?? false,
+              id: variant.id,
+              netPackagingFee: variant.netPackagingFee,
+              pack: ProductVariantPack(
+                size: variant.pack?.size ??
+                    groupVariant.pack?.size ??
+                    chainVariant.pack?.size ??
+                    0,
+                unit: variant.pack?.unit ??
+                    groupVariant.pack?.unit ??
+                    chainVariant.pack?.unit ??
+                    '',
+              ),
+            );
+          })
+          .whereNotNull()
+          .toList(),
       configSets: _getConfigSet(
         data,
         components,
@@ -75,13 +102,9 @@ GeneratedProduct? getProductFromQuery(
 }
 
 _getConfigSet(
-  ListAllProducts$Query$SearchableUnitProductConnection$UnitProduct data,
-  Map<String,
-          ListChainProductComponents$Query$SearchableProductComponentConnection$ProductComponent>
-      components,
-  Map<String,
-          ListChainProductComponentSets$Query$SearchableProductComponentSetConnection$ProductComponentSet>
-      componentSets,
+  UnitProduct data,
+  Map<String, ProductComponent> components,
+  Map<String, ProductComponentSet> componentSets,
 ) {
   var unitProductCS = data.configSets;
   var groupProductCS = data.groupProduct?.configSets;
@@ -97,35 +120,46 @@ _getConfigSet(
   for (int i = 0; i < unitProductCS.length; i++) {
     var componentSet = componentSets[unitProductCS[i]!.productSetId];
     assert(componentSet != null);
+    if (componentSet == null) {
+      continue;
+    }
     results.add(GeneratedProductConfigSet(
       name: LocalizedItem(
-        hu: componentSet?.name.hu,
-        en: componentSet?.name.en,
-        de: componentSet?.name.de,
+        hu: componentSet.name.hu,
+        en: componentSet.name.en,
+        de: componentSet.name.de,
       ),
-      productSetId: componentSet!.id,
+      externalId: componentSet.externalId,
+      productSetId: componentSet.id,
       supportedServingModes:
-          componentSet!.supportedServingModes ?? [ServingMode.inPlace],
+          componentSet.supportedServingModes ?? [ServingMode.inPlace],
       description: componentSet.description,
       type: componentSet.type,
-      items: unitProductCS[i]!.items.map((item) {
-        var component = components[item.productComponentId];
-        assert(component != null);
-        return GeneratedProductConfigComponent(
-          productComponentId: component!.id,
-          name: LocalizedItem(
-            hu: component.name.hu,
-            en: component.name.en,
-            de: component.name.de,
-          ),
-          position: item.position,
-          price: item.price,
-          soldOut: component.soldOut ?? false,
-          externalId: item.externalId,
-          netPackagingFee: item.netPackagingFee,
-          allergens: component.allergens?.whereNotNull().toList(),
-        );
-      }).toList(),
+      items: unitProductCS[i]!
+          .items
+          .map((item) {
+            var component = components[item.productComponentId];
+            assert(component != null);
+            if (component == null) {
+              return null;
+            }
+            return GeneratedProductConfigComponent(
+              productComponentId: component!.id,
+              name: LocalizedItem(
+                hu: component.name.hu,
+                en: component.name.en,
+                de: component.name.de,
+              ),
+              position: item.position,
+              price: item.price > 0 ? item.price : item.refGroupPrice,
+              soldOut: component.soldOut ?? false,
+              externalId: item.externalId,
+              netPackagingFee: item.netPackagingFee,
+              allergens: component.allergens?.whereNotNull().toList(),
+            );
+          })
+          .whereNotNull()
+          .toList(),
     ));
   }
   return results;

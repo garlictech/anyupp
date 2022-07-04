@@ -1,0 +1,1043 @@
+{
+  "data": {
+    "listGeneratedProducts": {
+      "items": [
+        {
+          "id": "c626f001-b06f-49d1-8c3f-987315ac0f11",
+          "unitId": "fc97ed7f-80ab-49af-a74e-785fc478a337",
+          "name": {
+            "en": "NEW WAVE ESPRESSO",
+            "de": "",
+            "hu": "NEW WAVE ESPRESSO"
+          },
+          "description": {
+            "en": "New York újhullámos stílusban",
+            "de": "",
+            "hu": "New York újhullámos stílusban"
+          },
+          "image": "products/5krpjobler7f5mor.PNG",
+          "position": 1,
+          "productCategoryId": "97cdcda5-dcfe-49f3-abd5-267eb45591a1",
+          "productType": "drink",
+          "tax": 5,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "08ed3a90-3585-11ec-9cb2-4df0e9572a76",
+              "position": 0,
+              "price": 400.0,
+              "pack": {
+                "size": 20.0,
+                "unit": "ml"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Cup",
+                "hu": "Csésze"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "612362ef-5904-4ce3-ba92-e55fdab160ea",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "",
+                "en": "SUGAR",
+                "hu": "CUKOR"
+              },
+              "maxSelection": null,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "NO SUGAR",
+                    "hu": "CUKOR NÉLKÜL"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "958fcc6f-34ae-49ae-8d0f-1f9c7700328b",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "WITH SUGAR",
+                    "hu": "CUKORRAL"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "1b29d2dc-870f-4a78-9780-af2b67af47ab",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "WITH SWEETENER",
+                    "hu": "ÉDESÍTŐSZERREL"
+                  },
+                  "position": 3,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "2d7e18f5-04f0-4bc2-b9a7-563020718548",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "5f49e9cf-fb69-4a47-9415-25ece30d317f",
+          "unitId": "9b1bb994-9de4-4d70-988f-dc67e2963565",
+          "name": {
+            "en": "Baklava",
+            "de": "Baklava",
+            "hu": "Baklava"
+          },
+          "description": {
+            "en": " ",
+            "de": "  ",
+            "hu": ""
+          },
+          "image": "products/jptdncddgh3lhs6u.jpg",
+          "position": 0,
+          "productCategoryId": "c040d25f-2ed2-4d91-b455-1645365e8d84",
+          "productType": "food",
+          "tax": 5,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "fa5dc530-d4f8-11ec-af86-39ca405f3182",
+              "position": 0,
+              "price": 650.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db / pcs"
+              },
+              "variantName": {
+                "de": "Slice",
+                "en": "Slice",
+                "hu": "Szelet"
+              },
+              "netPackagingFee": null,
+              "soldOut": false
+            }
+          ],
+          "configSets": [],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "0666f6ae-5a75-4e5b-8443-c02a2d852377",
+          "unitId": "9411ef76-b024-4f6a-88dc-17aa05cafbc8",
+          "name": {
+            "en": "LIPTON ICE TEA",
+            "de": "",
+            "hu": "LIPTON ICE TEA"
+          },
+          "description": {
+            "en": "ICE TEA WITH A TWIST OF LEMON or PEACH",
+            "de": "",
+            "hu": "CITROMOS és ŐSZIBARACK ÍZŰ SZÉNSAVMENTES ÜDÍTŐITAL"
+          },
+          "image": "products/lwlsx7612gyp4tnj.jpg",
+          "position": 5,
+          "productCategoryId": "ca66de42-6781-495b-8b63-17830c64d734",
+          "productType": "drink",
+          "tax": 27,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "a631d910-202b-11ec-ae43-69e724284d4a",
+              "position": 0,
+              "price": 490.0,
+              "pack": {
+                "size": 0.25,
+                "unit": "liter"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Lemon",
+                "hu": "Citrom"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "f374e690-202b-11ec-ae43-69e724284d4a",
+              "position": 0,
+              "price": 490.0,
+              "pack": {
+                "size": 0.25,
+                "unit": "liter"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Peach",
+                "hu": "Őszibarack"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [],
+          "supportedServingModes": ["inPlace"],
+          "soldOut": null
+        },
+        {
+          "id": "b1d22154-9852-4c2e-8a12-3dc7fd926083",
+          "unitId": "fc97ed7f-80ab-49af-a74e-785fc478a337",
+          "name": {
+            "en": "CAPPUCCINO",
+            "de": "",
+            "hu": "CAPPUCCINO"
+          },
+          "description": {
+            "en": "A \"klasszikus\". Krémes espresso és habosított tej házassága. Majdnem a fele tiszta kávé, csak a többi tej, hogy ne \"higítsuk fel\" a zamatokat\t\t",
+            "de": "",
+            "hu": "A \"klasszikus\". Krémes espresso és habosított tej házassága. Majdnem a fele tiszta kávé, csak a többi tej, hogy ne \"higítsuk fel\" a zamatokat\t\t"
+          },
+          "image": "products/d5a58npwhjnxbghb.PNG",
+          "position": 3,
+          "productCategoryId": "013602b9-d005-44f1-84a9-4876ecccc797",
+          "productType": "drink",
+          "tax": 5,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "efe19c00-3587-11ec-9cb2-4df0e9572a76",
+              "position": 0,
+              "price": 580.0,
+              "pack": {
+                "size": 200.0,
+                "unit": "ml"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Cup",
+                "hu": "Csésze"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "2eaeaa76-1ee1-473a-9e74-78c2eb6c2470",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "",
+                "en": "CAFFEIN",
+                "hu": "KOFFEIN"
+              },
+              "maxSelection": null,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "WITH CAFFEIN ",
+                    "hu": "KOFFEIN TARTALMÚ"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "507dc9ed-60a3-43c2-8ece-fcce43e50445",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "CAFFEIN FREE",
+                    "hu": "KOFFEIN MENTES"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "541309fc-d1af-4c49-bb32-23c83041fe01",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            },
+            {
+              "productSetId": "51f3f42b-c832-4fda-b44d-f43029d04e59",
+              "position": 2,
+              "type": "modifier",
+              "name": {
+                "de": "",
+                "en": "MILK / MILK ALTERNATIVE",
+                "hu": "TEJ / TEJALTERNATÍVA"
+              },
+              "maxSelection": null,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["milk"],
+                  "name": {
+                    "de": "",
+                    "en": "MILK",
+                    "hu": "TEJ"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "c10ba784-375c-4524-8f7b-ebcc711e100c",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "LACTOSE FREE",
+                    "hu": "LAKTÓZMENTES TEJ"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "444bad06-7431-442c-96fe-8eb1ee76e6b0",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "SOYA MILK",
+                    "hu": "SZÓJA TEJ"
+                  },
+                  "position": 3,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "08f842ce-3628-4c82-bf52-f4355a0fb085",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "ALMOND MILK",
+                    "hu": "MANDULA TEJ"
+                  },
+                  "position": 4,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "5869475f-b980-43d6-9f1e-1a6886583b7b",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "COCONUT MILK",
+                    "hu": "KÓKUSZTEJ"
+                  },
+                  "position": 5,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "8b6599a3-ca69-43cc-b4ed-8373343774a7",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "OAT MILK",
+                    "hu": "ZAB TEJ"
+                  },
+                  "position": 6,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "fcaa89b3-d881-4e80-9cf4-1fe857b6ae5c",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            },
+            {
+              "productSetId": "612362ef-5904-4ce3-ba92-e55fdab160ea",
+              "position": 3,
+              "type": "modifier",
+              "name": {
+                "de": "",
+                "en": "SUGAR",
+                "hu": "CUKOR"
+              },
+              "maxSelection": null,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "NO SUGAR",
+                    "hu": "CUKOR NÉLKÜL"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "958fcc6f-34ae-49ae-8d0f-1f9c7700328b",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "WITH SUGAR",
+                    "hu": "CUKORRAL"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "1b29d2dc-870f-4a78-9780-af2b67af47ab",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "WITH SWEETENER",
+                    "hu": "ÉDESÍTŐSZERREL"
+                  },
+                  "position": 3,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "2d7e18f5-04f0-4bc2-b9a7-563020718548",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "7e0f848d-8828-44c8-8f30-aadb5c056c12",
+          "unitId": "213bc500-b0e4-11ec-9a1a-135807c7de07",
+          "name": {
+            "en": "Carbonara",
+            "de": "Carbonara",
+            "hu": "Carbonara"
+          },
+          "description": {
+            "en": "Carbonara",
+            "de": "Carbonara",
+            "hu": "Carbonara"
+          },
+          "image": "products/zbjd6z3ekb5x2kc2.jpg",
+          "position": -1,
+          "productCategoryId": "default-product-category-e463b987-c655-489d-84d9-076aacc841a8",
+          "productType": "food",
+          "tax": -1,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "id",
+              "position": -1,
+              "price": 2390.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db /pcs"
+              },
+              "variantName": {
+                "de": "",
+                "en": "",
+                "hu": "Normál adag"
+              },
+              "netPackagingFee": null,
+              "soldOut": false
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "2d900693-60fd-4064-959a-abed97afd4bc",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Tészták",
+                "en": "Tészták",
+                "hu": "Tészták"
+              },
+              "maxSelection": null,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": null,
+                  "name": {
+                    "de": null,
+                    "en": null,
+                    "hu": "Casarecce"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "9c6fe476-5a0e-4676-9d84-078b08e7ef1e",
+                  "soldOut": null,
+                  "externalId": "1001107"
+                },
+                {
+                  "allergens": null,
+                  "name": {
+                    "de": null,
+                    "en": null,
+                    "hu": "Fusilli"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "8e8db2ca-b28f-4ba1-a41e-0da7f63b2199",
+                  "soldOut": null,
+                  "externalId": "1001103"
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": null,
+                    "en": null,
+                    "hu": "Giggli"
+                  },
+                  "position": 3,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "f56d457e-ed6f-4e06-a9bd-a549bd5a3e31",
+                  "soldOut": false,
+                  "externalId": "1001106"
+                },
+                {
+                  "allergens": null,
+                  "name": {
+                    "de": null,
+                    "en": null,
+                    "hu": "Gnocchi"
+                  },
+                  "position": 4,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "7f2f52c4-c7af-4062-99fa-658054ba530b",
+                  "soldOut": null,
+                  "externalId": "1001154"
+                },
+                {
+                  "allergens": null,
+                  "name": {
+                    "de": null,
+                    "en": null,
+                    "hu": "Lasagne"
+                  },
+                  "position": 5,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "6678e2e3-c337-43e6-9e3e-6f00b082bfc1",
+                  "soldOut": null,
+                  "externalId": "1001104"
+                },
+                {
+                  "allergens": null,
+                  "name": {
+                    "de": null,
+                    "en": null,
+                    "hu": "Papardelle"
+                  },
+                  "position": 6,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "cf7de65c-e737-4507-813c-d9cac0d22f4d",
+                  "soldOut": null,
+                  "externalId": "1001289"
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": null,
+                    "en": null,
+                    "hu": "Rigattoni"
+                  },
+                  "position": 7,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "f86dbbed-3965-489c-bf01-1761b0289793",
+                  "soldOut": false,
+                  "externalId": "1001148"
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": null,
+                    "en": null,
+                    "hu": "Spaghetti mod"
+                  },
+                  "position": 8,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "fe8f4489-0490-41bb-9972-3346efacd516",
+                  "soldOut": false,
+                  "externalId": "1001105"
+                },
+                {
+                  "allergens": null,
+                  "name": {
+                    "de": null,
+                    "en": null,
+                    "hu": "Tagliatelle"
+                  },
+                  "position": 9,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "a0514cfb-d68d-4b49-ae88-bcbce9ad4311",
+                  "soldOut": null,
+                  "externalId": "1001152"
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace"],
+          "soldOut": null
+        },
+        {
+          "id": "e38d7199-c1d2-4224-b129-08cb6cc48d66",
+          "unitId": "9411ef76-b024-4f6a-88dc-17aa05cafbc8",
+          "name": {
+            "en": "MOGYI PEANUTS",
+            "de": "",
+            "hu": "MOGYI FÖLDIMOGYORÓ"
+          },
+          "description": {
+            "en": "PEANUTS SALTED , ROASTED\t",
+            "de": "",
+            "hu": "FÖLDIMOGYORÓ, SÓZOTT, PÖRKÖLT\t"
+          },
+          "image": "products/cvnjnefcxbuouj5u.jpg",
+          "position": 1,
+          "productCategoryId": "0871e064-b146-48e5-8dd9-cd1da2fae639",
+          "productType": "food",
+          "tax": 27,
+          "allergens": ["peanut", "treenuts"],
+          "variants": [
+            {
+              "id": "11a97f90-2031-11ec-ae43-69e724284d4a",
+              "position": 0,
+              "price": 450.0,
+              "pack": {
+                "size": 85.0,
+                "unit": "g"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Pack",
+                "hu": "Csomag"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [],
+          "supportedServingModes": ["inPlace"],
+          "soldOut": null
+        },
+        {
+          "id": "56765180-7504-4f55-b97b-e2bc55495d8a",
+          "unitId": "fc97ed7f-80ab-49af-a74e-785fc478a337",
+          "name": {
+            "en": "NEW WAVE FLAT WHITE",
+            "de": "",
+            "hu": "New wave flat white"
+          },
+          "description": {
+            "en": "Újhullámos kávékonyha",
+            "de": "",
+            "hu": "Újhullámos kávékonyha"
+          },
+          "image": "products/8snkwkaow7woo59z.PNG",
+          "position": 3,
+          "productCategoryId": "a7e10c92-fe42-4604-a2d3-f60397c84b41",
+          "productType": "drink",
+          "tax": 5,
+          "allergens": ["milk"],
+          "variants": [
+            {
+              "id": "a9f4c0d0-359d-11ec-a2d2-634a724d2c7b",
+              "position": 0,
+              "price": 750.0,
+              "pack": {
+                "size": 200.0,
+                "unit": "ml"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Glass",
+                "hu": "Pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "51f3f42b-c832-4fda-b44d-f43029d04e59",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "",
+                "en": "MILK / MILK ALTERNATIVE",
+                "hu": "TEJ / TEJALTERNATÍVA"
+              },
+              "maxSelection": null,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["milk"],
+                  "name": {
+                    "de": "",
+                    "en": "MILK",
+                    "hu": "TEJ"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "c10ba784-375c-4524-8f7b-ebcc711e100c",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "LACTOSE FREE",
+                    "hu": "LAKTÓZMENTES TEJ"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "444bad06-7431-442c-96fe-8eb1ee76e6b0",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "SOYA MILK",
+                    "hu": "SZÓJA TEJ"
+                  },
+                  "position": 3,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "08f842ce-3628-4c82-bf52-f4355a0fb085",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "ALMOND MILK",
+                    "hu": "MANDULA TEJ"
+                  },
+                  "position": 4,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "5869475f-b980-43d6-9f1e-1a6886583b7b",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "COCONUT MILK",
+                    "hu": "KÓKUSZTEJ"
+                  },
+                  "position": 5,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "8b6599a3-ca69-43cc-b4ed-8373343774a7",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "OAT MILK",
+                    "hu": "ZAB TEJ"
+                  },
+                  "position": 6,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "fcaa89b3-d881-4e80-9cf4-1fe857b6ae5c",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            },
+            {
+              "productSetId": "612362ef-5904-4ce3-ba92-e55fdab160ea",
+              "position": 2,
+              "type": "modifier",
+              "name": {
+                "de": "",
+                "en": "SUGAR",
+                "hu": "CUKOR"
+              },
+              "maxSelection": null,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "NO SUGAR",
+                    "hu": "CUKOR NÉLKÜL"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "958fcc6f-34ae-49ae-8d0f-1f9c7700328b",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "WITH SUGAR",
+                    "hu": "CUKORRAL"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "1b29d2dc-870f-4a78-9780-af2b67af47ab",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "WITH SWEETENER",
+                    "hu": "ÉDESÍTŐSZERREL"
+                  },
+                  "position": 3,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "2d7e18f5-04f0-4bc2-b9a7-563020718548",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "17b38af2-159d-48b1-9065-6306236e461b",
+          "unitId": "fc97ed7f-80ab-49af-a74e-785fc478a337",
+          "name": {
+            "en": "CASABLANCAI TEJSZÍNES MENTA-LATTE",
+            "de": "",
+            "hu": "CASABLANCAI TEJSZÍNES MENTA-LATTE"
+          },
+          "description": {
+            "en": "A beduinok kedvenc menta teájára espressot főzünk, utánakardamont, arab fűszereket és kókuszt adunk hozzá, végül pedig belekeverjük az egykori francia gyarmatosítók manapság is minden marokkói delikát-üzletben kapható gesztenye pépjét. Komplex recept, épp annyira \"zűrzavaros\", minr Casablanca - mégis összeáll!\t\t",
+            "de": "",
+            "hu": "A beduinok kedvenc menta teájára espressot főzünk, utánakardamont, arab fűszereket és kókuszt adunk hozzá, végül pedig belekeverjük az egykori francia gyarmatosítók manapság is minden marokkói delikát-üzletben kapható gesztenye pépjét. Komplex recept, épp annyira \"zűrzavaros\", minr Casablanca - mégis összeáll!\t\t"
+          },
+          "image": "products/owmw44jbriwzx5kw.PNG",
+          "position": 3,
+          "productCategoryId": "e9730efa-225f-447e-9e6f-f4d4a632c248",
+          "productType": "drink",
+          "tax": 5,
+          "allergens": ["milk"],
+          "variants": [
+            {
+              "id": "8597f6c0-3599-11ec-a2d2-634a724d2c7b",
+              "position": 0,
+              "price": 800.0,
+              "pack": {
+                "size": 200.0,
+                "unit": "ml"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Cup",
+                "hu": "Csésze"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "2eaeaa76-1ee1-473a-9e74-78c2eb6c2470",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "",
+                "en": "CAFFEIN",
+                "hu": "KOFFEIN"
+              },
+              "maxSelection": null,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "WITH CAFFEIN ",
+                    "hu": "KOFFEIN TARTALMÚ"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "507dc9ed-60a3-43c2-8ece-fcce43e50445",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "",
+                    "en": "CAFFEIN FREE",
+                    "hu": "KOFFEIN MENTES"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "541309fc-d1af-4c49-bb32-23c83041fe01",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "bc769bdb-0620-40c9-a020-94fdfb98441e",
+          "unitId": "9b1bb994-9de4-4d70-988f-dc67e2963565",
+          "name": {
+            "en": "Multivitamin",
+            "de": "",
+            "hu": "Multivitamin"
+          },
+          "description": {
+            "en": "50% fruit content",
+            "de": "",
+            "hu": "50% gyümölcs tartalom"
+          },
+          "image": "products/idhq97f0egm42j2t.jpg",
+          "position": 0,
+          "productCategoryId": "f281360e-82a8-4d2e-9668-18461450377a",
+          "productType": "drink",
+          "tax": 27,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "77e95030-d046-11ec-87e5-898819216c6e",
+              "position": 0,
+              "price": 400.0,
+              "pack": {
+                "size": 0.33,
+                "unit": "l"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Bottle ( PET )",
+                "hu": "Palack ( PET )"
+              },
+              "netPackagingFee": null,
+              "soldOut": false
+            }
+          ],
+          "configSets": [],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "2fcd9fd3-5fd2-4921-a837-45dba4b9928a",
+          "unitId": "9b1bb994-9de4-4d70-988f-dc67e2963565",
+          "name": {
+            "en": "Fanta Orange",
+            "de": "",
+            "hu": "Fanta Narancs"
+          },
+          "description": {
+            "en": " ",
+            "de": "",
+            "hu": " "
+          },
+          "image": "products/q83jvixm43ej6uzj.jpg",
+          "position": 4,
+          "productCategoryId": "9a8361b5-e01d-4c5b-a3c6-5837c2586fbe",
+          "productType": "drink",
+          "tax": 27,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "698e0640-d071-11ec-b176-91d1abcc1ba0",
+              "position": 0,
+              "price": 400.0,
+              "pack": {
+                "size": 0.33,
+                "unit": "l"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Can",
+                "hu": "Doboz"
+              },
+              "netPackagingFee": null,
+              "soldOut": false
+            },
+            {
+              "id": "7536cbd0-d071-11ec-b176-91d1abcc1ba0",
+              "position": 0,
+              "price": 490.0,
+              "pack": {
+                "size": 0.5,
+                "unit": "l"
+              },
+              "variantName": {
+                "de": "",
+                "en": "Bottle ( PET )",
+                "hu": "Palack ( PET )"
+              },
+              "netPackagingFee": null,
+              "soldOut": false
+            }
+          ],
+          "configSets": [],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        }
+      ]
+    }
+  }
+}

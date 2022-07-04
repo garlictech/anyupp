@@ -1,0 +1,1825 @@
+{
+  "data": {
+    "listGeneratedProducts": {
+      "items": [
+        {
+          "id": "seeded_unit_product_c1_g1_u1_1_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Fanta",
+            "de": "Fanta",
+            "hu": "Fanta"
+          },
+          "description": {
+            "en": "orange drink",
+            "de": "orange drink",
+            "hu": "narancsos üdítő"
+          },
+          "image": "https://picsum.photos/200?random=9",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_2_id",
+          "productType": "drink",
+          "tax": 27,
+          "allergens": ["sulphites"],
+          "variants": [
+            {
+              "id": "seeded_chain_product_variant_c1_p2_1_id",
+              "position": 1,
+              "price": 300.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "af36ee60-528a-11ec-afe3-15e1afd659e2",
+              "position": 2,
+              "price": 500.0,
+              "pack": {
+                "size": 5.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "üveg"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Temperature",
+                "en": "Temperature",
+                "hu": "Hőmérséklet"
+              },
+              "maxSelection": 2,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Room temperature",
+                    "en": "Room temperature",
+                    "hu": "Szobahőmérsékletű"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Cold",
+                    "en": "Cold",
+                    "hu": "Hideg"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            },
+            {
+              "productSetId": "seeded_product_component_set_02_id",
+              "position": 2,
+              "type": "extras",
+              "name": {
+                "de": "Decoration",
+                "en": "Decoration",
+                "hu": "Dekoráció"
+              },
+              "maxSelection": 2,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "Straw",
+                    "en": "Straw",
+                    "hu": "Szívószál"
+                  },
+                  "position": 1,
+                  "price": 50.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_21_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "Mint",
+                    "en": "Mint",
+                    "hu": "Menta levél"
+                  },
+                  "position": 2,
+                  "price": 200.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_22_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_7_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Sprite",
+            "de": "Sprite",
+            "hu": "Sprite"
+          },
+          "description": {
+            "en": "soda-pop",
+            "de": "soda-pop",
+            "hu": "szénsavas üdítő"
+          },
+          "image": "https://picsum.photos/200?random=7",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_2_id",
+          "productType": "drink",
+          "tax": 27,
+          "allergens": ["sulphites"],
+          "variants": [
+            {
+              "id": "f1200050-528f-11ec-90c0-fdfe82b3802d",
+              "position": 1,
+              "price": 300.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "f1c6a090-528f-11ec-90c0-fdfe82b3802d",
+              "position": 2,
+              "price": 500.0,
+              "pack": {
+                "size": 5.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "üveg"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Temperature",
+                "en": "Temperature",
+                "hu": "Hőmérséklet"
+              },
+              "maxSelection": 2,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Room temperature",
+                    "en": "Room temperature",
+                    "hu": "Szobahőmérsékletű"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Cold",
+                    "en": "Cold",
+                    "hu": "Hideg"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            },
+            {
+              "productSetId": "seeded_product_component_set_02_id",
+              "position": 2,
+              "type": "extras",
+              "name": {
+                "de": "Decoration",
+                "en": "Decoration",
+                "hu": "Dekoráció"
+              },
+              "maxSelection": 2,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "Straw",
+                    "en": "Straw",
+                    "hu": "Szívószál"
+                  },
+                  "position": 1,
+                  "price": 50.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_21_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "Mint",
+                    "en": "Mint",
+                    "hu": "Menta levél"
+                  },
+                  "position": 2,
+                  "price": 200.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_22_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_12_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Sajtburger",
+            "de": "Sajtburger",
+            "hu": "Sajtburger"
+          },
+          "description": {
+            "en": "sajtos szendvics",
+            "de": "sajtos szendvics",
+            "hu": "sajtos szendvics"
+          },
+          "image": "https://picsum.photos/200?random=3",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_1_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": ["sesame"],
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1200.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1500.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Garnish",
+                "en": "Garnish",
+                "hu": "Köret"
+              },
+              "maxSelection": 3,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "French fries",
+                    "en": "French fries",
+                    "hu": "Hasábburgonya"
+                  },
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Boiled potato",
+                    "en": "Boiled potato",
+                    "hu": "Főtt krumpli"
+                  },
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Rice",
+                    "en": "Rice",
+                    "hu": "Rizs"
+                  },
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_6_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Dreher",
+            "de": "Dreher",
+            "hu": "Dreher"
+          },
+          "description": {
+            "en": "lager beer",
+            "de": "lager beer",
+            "hu": "világos sör"
+          },
+          "image": "https://picsum.photos/200?random=8",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_3_id",
+          "productType": "drink",
+          "tax": 27,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "065caaa0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 400.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "0c565c30-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 500.0,
+              "pack": {
+                "size": 3.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "13eaaaf0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 600.0,
+              "pack": {
+                "size": 4.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Temperature",
+                "en": "Temperature",
+                "hu": "Hőmérséklet"
+              },
+              "maxSelection": 2,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Room temperature",
+                    "en": "Room temperature",
+                    "hu": "Szobahőmérsékletű"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Cold",
+                    "en": "Cold",
+                    "hu": "Hideg"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_4_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Fishburger",
+            "de": "Fishburger",
+            "hu": "Halburger"
+          },
+          "description": {
+            "en": "sea fish burger",
+            "de": "sea fish burger",
+            "hu": "tengeri halas burger"
+          },
+          "image": "https://picsum.photos/200?random=2",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_1_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": [
+            "lupin",
+            "molluscs",
+            "crustaceans",
+            "egg",
+            "soya",
+            "sesame",
+            "fish",
+            "gluten"
+          ],
+          "variants": [
+            {
+              "id": "16853de0-528d-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 1200.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "1ce35690-528d-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 1500.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Garnish",
+                "en": "Garnish",
+                "hu": "Köret"
+              },
+              "maxSelection": 3,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "French fries",
+                    "en": "French fries",
+                    "hu": "Hasábburgonya"
+                  },
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Boiled potato",
+                    "en": "Boiled potato",
+                    "hu": "Főtt krumpli"
+                  },
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Rice",
+                    "en": "Rice",
+                    "hu": "Rizs"
+                  },
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_15_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Sajtburger",
+            "de": "Sajtburger",
+            "hu": "Sajtburger"
+          },
+          "description": {
+            "en": "sajtos szendvics",
+            "de": "sajtos szendvics",
+            "hu": "sajtos szendvics"
+          },
+          "image": "https://picsum.photos/200?random=3",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_1_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": ["sesame"],
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1200.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1500.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Garnish",
+                "en": "Garnish",
+                "hu": "Köret"
+              },
+              "maxSelection": 3,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "French fries",
+                    "en": "French fries",
+                    "hu": "Hasábburgonya"
+                  },
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Boiled potato",
+                    "en": "Boiled potato",
+                    "hu": "Főtt krumpli"
+                  },
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Rice",
+                    "en": "Rice",
+                    "hu": "Rizs"
+                  },
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_5_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "HB",
+            "de": "HB",
+            "hu": "HB"
+          },
+          "description": {
+            "en": "lager beer",
+            "de": "lager beer",
+            "hu": "világos sör"
+          },
+          "image": "https://picsum.photos/200?random=5",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_3_id",
+          "productType": "drink",
+          "tax": 27,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "4d498eb0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 400.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "4dc8a9c0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 500.0,
+              "pack": {
+                "size": 3.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "4e2fa8f0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 600.0,
+              "pack": {
+                "size": 4.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Temperature",
+                "en": "Temperature",
+                "hu": "Hőmérséklet"
+              },
+              "maxSelection": 2,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Room temperature",
+                    "en": "Room temperature",
+                    "hu": "Szobahőmérsékletű"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Cold",
+                    "en": "Cold",
+                    "hu": "Hideg"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_8_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Coca-Cola",
+            "de": "Coca-Cola",
+            "hu": "Coca-Cola"
+          },
+          "description": {
+            "en": "klasszikus íz",
+            "de": "klasszikus íz",
+            "hu": "klasszikus íz"
+          },
+          "image": "https://picsum.photos/200?random=6",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_2_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": ["egg", "gluten", "peanut"],
+          "variants": [
+            {
+              "id": "seeded_chain_product_variant_c1_p3_1_id",
+              "position": 1,
+              "price": 300.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "3a20c280-528b-11ec-afe3-15e1afd659e2",
+              "position": 2,
+              "price": 500.0,
+              "pack": {
+                "size": 5.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "üveg"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Temperature",
+                "en": "Temperature",
+                "hu": "Hőmérséklet"
+              },
+              "maxSelection": 2,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Room temperature",
+                    "en": "Room temperature",
+                    "hu": "Szobahőmérsékletű"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Cold",
+                    "en": "Cold",
+                    "hu": "Hideg"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            },
+            {
+              "productSetId": "seeded_product_component_set_02_id",
+              "position": 2,
+              "type": "extras",
+              "name": {
+                "de": "Decoration",
+                "en": "Decoration",
+                "hu": "Dekoráció"
+              },
+              "maxSelection": 2,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "Straw",
+                    "en": "Straw",
+                    "hu": "Szívószál"
+                  },
+                  "position": 1,
+                  "price": 50.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_21_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": [],
+                  "name": {
+                    "de": "Mint",
+                    "en": "Mint",
+                    "hu": "Menta levél"
+                  },
+                  "position": 2,
+                  "price": 100.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_22_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_9_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Sajtburger",
+            "de": "Sajtburger",
+            "hu": "Sajtburger"
+          },
+          "description": {
+            "en": "sajtos szendvics",
+            "de": "sajtos szendvics",
+            "hu": "sajtos szendvics"
+          },
+          "image": "https://picsum.photos/200?random=3",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_1_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": ["sesame"],
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1200.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1500.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Garnish",
+                "en": "Garnish",
+                "hu": "Köret"
+              },
+              "maxSelection": 3,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "French fries",
+                    "en": "French fries",
+                    "hu": "Hasábburgonya"
+                  },
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Boiled potato",
+                    "en": "Boiled potato",
+                    "hu": "Főtt krumpli"
+                  },
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Rice",
+                    "en": "Rice",
+                    "hu": "Rizs"
+                  },
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_14_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Sajtburger",
+            "de": "Sajtburger",
+            "hu": "Sajtburger"
+          },
+          "description": {
+            "en": "sajtos szendvics",
+            "de": "sajtos szendvics",
+            "hu": "sajtos szendvics"
+          },
+          "image": "https://picsum.photos/200?random=3",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_1_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": ["sesame"],
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1200.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1500.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Garnish",
+                "en": "Garnish",
+                "hu": "Köret"
+              },
+              "maxSelection": 3,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "French fries",
+                    "en": "French fries",
+                    "hu": "Hasábburgonya"
+                  },
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Boiled potato",
+                    "en": "Boiled potato",
+                    "hu": "Főtt krumpli"
+                  },
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Rice",
+                    "en": "Rice",
+                    "hu": "Rizs"
+                  },
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_2_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Hamburger",
+            "de": "Hamburger",
+            "hu": "Hamburger"
+          },
+          "description": {
+            "en": "laktató szendvics",
+            "de": "laktató szendvics",
+            "hu": "laktató szendvics"
+          },
+          "image": "https://picsum.photos/200?random=1",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_1_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": [
+            "egg",
+            "gluten",
+            "mustard",
+            "milk",
+            "soya",
+            "fish",
+            "sesame"
+          ],
+          "variants": [
+            {
+              "id": "seeded_chain_product_variant_c1_p1_1_id",
+              "position": 1,
+              "price": 1200.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "ec84f130-528b-11ec-afe3-15e1afd659e2",
+              "position": 2,
+              "price": 1500.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Garnish",
+                "en": "Garnish",
+                "hu": "Köret"
+              },
+              "maxSelection": 3,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "French fries",
+                    "en": "French fries",
+                    "hu": "Hasábburgonya"
+                  },
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Boiled potato",
+                    "en": "Boiled potato",
+                    "hu": "Főtt krumpli"
+                  },
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Rice",
+                    "en": "Rice",
+                    "hu": "Rizs"
+                  },
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_13_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Sajtburger",
+            "de": "Sajtburger",
+            "hu": "Sajtburger"
+          },
+          "description": {
+            "en": "sajtos szendvics",
+            "de": "sajtos szendvics",
+            "hu": "sajtos szendvics"
+          },
+          "image": "https://picsum.photos/200?random=3",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_1_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": ["sesame"],
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1200.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1500.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Garnish",
+                "en": "Garnish",
+                "hu": "Köret"
+              },
+              "maxSelection": 3,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "French fries",
+                    "en": "French fries",
+                    "hu": "Hasábburgonya"
+                  },
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Boiled potato",
+                    "en": "Boiled potato",
+                    "hu": "Főtt krumpli"
+                  },
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Rice",
+                    "en": "Rice",
+                    "hu": "Rizs"
+                  },
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_11_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Sajtburger",
+            "de": "Sajtburger",
+            "hu": "Sajtburger"
+          },
+          "description": {
+            "en": "sajtos szendvics",
+            "de": "sajtos szendvics",
+            "hu": "sajtos szendvics"
+          },
+          "image": "https://picsum.photos/200?random=3",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_1_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": ["sesame"],
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1200.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1500.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Garnish",
+                "en": "Garnish",
+                "hu": "Köret"
+              },
+              "maxSelection": 3,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "French fries",
+                    "en": "French fries",
+                    "hu": "Hasábburgonya"
+                  },
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Boiled potato",
+                    "en": "Boiled potato",
+                    "hu": "Főtt krumpli"
+                  },
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Rice",
+                    "en": "Rice",
+                    "hu": "Rizs"
+                  },
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_10_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Sajtburger",
+            "de": "Sajtburger",
+            "hu": "Sajtburger"
+          },
+          "description": {
+            "en": "sajtos szendvics",
+            "de": "sajtos szendvics",
+            "hu": "sajtos szendvics"
+          },
+          "image": "https://picsum.photos/200?random=3",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_1_id",
+          "productType": "food",
+          "tax": 27,
+          "allergens": ["sesame"],
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1200.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 1500.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Garnish",
+                "en": "Garnish",
+                "hu": "Köret"
+              },
+              "maxSelection": 3,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "French fries",
+                    "en": "French fries",
+                    "hu": "Hasábburgonya"
+                  },
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Boiled potato",
+                    "en": "Boiled potato",
+                    "hu": "Főtt krumpli"
+                  },
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["mustard"],
+                  "name": {
+                    "de": "Rice",
+                    "en": "Rice",
+                    "hu": "Rizs"
+                  },
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_3_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "name": {
+            "en": "Kőbányai",
+            "de": "Kőbányai",
+            "hu": "Kőbányai"
+          },
+          "description": {
+            "en": "lager beer",
+            "de": "lager beer",
+            "hu": "világos sör"
+          },
+          "image": "https://picsum.photos/200?random=4",
+          "position": 0,
+          "productCategoryId": "seeded_product_category_c1_3_id",
+          "productType": "drink",
+          "tax": 27,
+          "allergens": [],
+          "variants": [
+            {
+              "id": "85322620-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 400.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "858b1b90-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 500.0,
+              "pack": {
+                "size": 3.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            },
+            {
+              "id": "86353e40-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 600.0,
+              "pack": {
+                "size": 4.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "type": "modifier",
+              "name": {
+                "de": "Temperature",
+                "en": "Temperature",
+                "hu": "Hőmérséklet"
+              },
+              "maxSelection": 2,
+              "supportedServingModes": ["inPlace"],
+              "items": [
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Room temperature",
+                    "en": "Room temperature",
+                    "hu": "Szobahőmérsékletű"
+                  },
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "soldOut": null,
+                  "externalId": null
+                },
+                {
+                  "allergens": ["egg", "gluten", "milk", "soya", "peanut"],
+                  "name": {
+                    "de": "Cold",
+                    "en": "Cold",
+                    "hu": "Hideg"
+                  },
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "soldOut": null,
+                  "externalId": null
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "soldOut": null
+        }
+      ]
+    }
+  }
+}

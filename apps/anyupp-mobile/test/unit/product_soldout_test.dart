@@ -1,5 +1,3 @@
-// formatPackNumber
-
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:flutter_test/flutter_test.dart';

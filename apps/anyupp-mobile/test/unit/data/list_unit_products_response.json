@@ -1,0 +1,4080 @@
+{
+  "data": {
+    "searchUnitProducts": {
+      "total": 15,
+      "nextToken": "WyJzZWVkZWRfdW5pdF9wcm9kdWN0X2MxX2cxX3UxXzEwX2lkIl0=",
+      "items": [
+        {
+          "id": "seeded_unit_product_c1_g1_u1_9_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1200.0
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "normal",
+                  "en": "normal",
+                  "hu": "normál"
+                },
+                "refGroupPrice": 1200.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "double",
+                  "en": "double",
+                  "hu": "dupla"
+                },
+                "refGroupPrice": 1500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_31_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_32_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 3,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_33_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_03_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["sesame"],
+              "name": {
+                "de": "Sajtburger",
+                "en": "Sajtburger",
+                "hu": "Sajtburger"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "normal",
+                    "en": "normal",
+                    "hu": "normál"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "double",
+                    "en": "double",
+                    "hu": "dupla"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=3",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_31_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_32_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 3,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_33_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_03_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "sajtos szendvics",
+                "en": "sajtos szendvics",
+                "hu": "sajtos szendvics"
+              },
+              "productCategoryId": "seeded_product_category_c1_1_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_3_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_7_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_3_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.388Z",
+            "updatedAt": "2022-06-30T10:15:54.388Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_7_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.132Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.132Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_8_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "seeded_chain_product_variant_c1_p3_1_id",
+              "position": 1,
+              "price": 11.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 300.0
+            },
+            {
+              "id": "3a20c280-528b-11ec-afe3-15e1afd659e2",
+              "position": 2,
+              "price": 0.0,
+              "pack": {
+                "size": 5.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "üveg"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                },
+                {
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                }
+              ]
+            },
+            {
+              "productSetId": "seeded_product_component_set_02_id",
+              "position": 2,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 50,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_21_id",
+                  "externalId": null,
+                  "refGroupPrice": 50
+                },
+                {
+                  "position": 2,
+                  "price": 100,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_22_id",
+                  "externalId": null,
+                  "refGroupPrice": 100
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 2.0,
+                  "unit": "dl"
+                },
+                "position": 1,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 300.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 5.0,
+                  "unit": "dl"
+                },
+                "position": 2,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "üveg"
+                },
+                "refGroupPrice": 500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_11_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_12_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_01_id"
+              },
+              {
+                "position": 2,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_21_id",
+                    "externalId": null,
+                    "refGroupPrice": 50
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_22_id",
+                    "externalId": null,
+                    "refGroupPrice": 100
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_02_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["egg", "gluten", "peanut"],
+              "name": {
+                "de": "Coca-Cola",
+                "en": "Coca-Cola",
+                "hu": "Coca-Cola"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 2.0,
+                    "unit": "dl"
+                  },
+                  "id": "seeded_chain_product_variant_c1_p3_1_id",
+                  "position": 10,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 5.0,
+                    "unit": "dl"
+                  },
+                  "id": "3a20c280-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "üveg"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=6",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_11_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_12_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_01_id"
+                },
+                {
+                  "position": 2,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_21_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_22_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_02_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "klasszikus íz",
+                "en": "klasszikus íz",
+                "hu": "klasszikus íz"
+              },
+              "productCategoryId": "seeded_product_category_c1_2_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_6_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_3_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_6_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.461Z",
+            "updatedAt": "2022-06-30T10:15:54.461Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_3_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.090Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.090Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_7_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "f1200050-528f-11ec-90c0-fdfe82b3802d",
+              "position": 1,
+              "price": 0.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 300.0
+            },
+            {
+              "id": "f1c6a090-528f-11ec-90c0-fdfe82b3802d",
+              "position": 2,
+              "price": 0.0,
+              "pack": {
+                "size": 5.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "üveg"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                },
+                {
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                }
+              ]
+            },
+            {
+              "productSetId": "seeded_product_component_set_02_id",
+              "position": 2,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 50,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_21_id",
+                  "externalId": null,
+                  "refGroupPrice": 50
+                },
+                {
+                  "position": 2,
+                  "price": 200,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_22_id",
+                  "externalId": null,
+                  "refGroupPrice": 200
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 2.0,
+                  "unit": "dl"
+                },
+                "position": 1,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 300.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 5.0,
+                  "unit": "dl"
+                },
+                "position": 2,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "üveg"
+                },
+                "refGroupPrice": 500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_11_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_12_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_01_id"
+              },
+              {
+                "position": 2,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_21_id",
+                    "externalId": null,
+                    "refGroupPrice": 50
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_22_id",
+                    "externalId": null,
+                    "refGroupPrice": 200
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_02_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["sulphites"],
+              "name": {
+                "de": "Sprite",
+                "en": "Sprite",
+                "hu": "Sprite"
+              },
+              "productType": "drink",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 2.0,
+                    "unit": "dl"
+                  },
+                  "id": "f1200050-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 5.0,
+                    "unit": "dl"
+                  },
+                  "id": "f1c6a090-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "üveg"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=7",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_11_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_12_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_01_id"
+                },
+                {
+                  "position": 2,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_21_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_22_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_02_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "soda-pop",
+                "en": "soda-pop",
+                "hu": "szénsavas üdítő"
+              },
+              "productCategoryId": "seeded_product_category_c1_2_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_7_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_2_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_7_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.393Z",
+            "updatedAt": "2022-06-30T10:15:54.393Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_2_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.164Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.164Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_6_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "065caaa0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 400
+            },
+            {
+              "id": "0c565c30-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 3.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 500.0
+            },
+            {
+              "id": "13eaaaf0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 4.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 600
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                },
+                {
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 2.0,
+                  "unit": "dl"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 400
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 3.0,
+                  "unit": "dl"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 500.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 4.0,
+                  "unit": "dl"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 600
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_11_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_12_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_01_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": [],
+              "name": {
+                "de": "Dreher",
+                "en": "Dreher",
+                "hu": "Dreher"
+              },
+              "productType": "drink",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 2.0,
+                    "unit": "dl"
+                  },
+                  "id": "065caaa0-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 3.0,
+                    "unit": "dl"
+                  },
+                  "id": "0c565c30-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 4.0,
+                    "unit": "dl"
+                  },
+                  "id": "13eaaaf0-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=8",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_11_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_12_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_01_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "lager beer",
+                "en": "lager beer",
+                "hu": "világos sör"
+              },
+              "productCategoryId": "seeded_product_category_c1_3_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_8_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_6_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_8_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.371Z",
+            "updatedAt": "2022-06-30T10:15:54.371Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_6_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.074Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.074Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_5_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "4d498eb0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 400
+            },
+            {
+              "id": "4dc8a9c0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 3.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 500.0
+            },
+            {
+              "id": "4e2fa8f0-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 4.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 600
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                },
+                {
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 2.0,
+                  "unit": "dl"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 400
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 3.0,
+                  "unit": "dl"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 500.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 4.0,
+                  "unit": "dl"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 600
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_11_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_12_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_01_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": [],
+              "name": {
+                "de": "HB",
+                "en": "HB",
+                "hu": "HB"
+              },
+              "productType": "drink",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 2.0,
+                    "unit": "dl"
+                  },
+                  "id": "4d498eb0-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 3.0,
+                    "unit": "dl"
+                  },
+                  "id": "4dc8a9c0-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 4.0,
+                    "unit": "dl"
+                  },
+                  "id": "4e2fa8f0-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=5",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_11_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_12_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_01_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "lager beer",
+                "en": "lager beer",
+                "hu": "világos sör"
+              },
+              "productCategoryId": "seeded_product_category_c1_3_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_5_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_8_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_5_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.331Z",
+            "updatedAt": "2022-06-30T10:15:54.331Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_8_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.209Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.209Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_4_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "16853de0-528d-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1200.0
+            },
+            {
+              "id": "1ce35690-528d-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "normal",
+                  "en": "normal",
+                  "hu": "normál"
+                },
+                "refGroupPrice": 1200.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "double",
+                  "en": "double",
+                  "hu": "dupla"
+                },
+                "refGroupPrice": 1500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_31_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_32_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 3,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_33_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_03_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": [
+                "lupin",
+                "molluscs",
+                "crustaceans",
+                "egg",
+                "soya",
+                "sesame",
+                "fish",
+                "gluten"
+              ],
+              "name": {
+                "de": "Fishburger",
+                "en": "Fishburger",
+                "hu": "Halburger"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "16853de0-528d-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "normal",
+                    "en": "normal",
+                    "hu": "normál"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "1ce35690-528d-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "double",
+                    "en": "double",
+                    "hu": "dupla"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=2",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_31_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_32_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 3,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_33_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_03_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "sea fish burger",
+                "en": "sea fish burger",
+                "hu": "tengeri halas burger"
+              },
+              "productCategoryId": "seeded_product_category_c1_1_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_2_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_9_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_2_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.459Z",
+            "updatedAt": "2022-06-30T10:15:54.459Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_9_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.055Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.055Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_3_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "85322620-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 400
+            },
+            {
+              "id": "858b1b90-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 3.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 500.0
+            },
+            {
+              "id": "86353e40-528f-11ec-90c0-fdfe82b3802d",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 4.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 600
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                },
+                {
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 2.0,
+                  "unit": "dl"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 400
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 3.0,
+                  "unit": "dl"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 500.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 4.0,
+                  "unit": "dl"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 600
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_11_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_12_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_01_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": [],
+              "name": {
+                "de": "Kőbányai",
+                "en": "Kőbányai",
+                "hu": "Kőbányai"
+              },
+              "productType": "drink",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 2.0,
+                    "unit": "dl"
+                  },
+                  "id": "85322620-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 3.0,
+                    "unit": "dl"
+                  },
+                  "id": "858b1b90-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 4.0,
+                    "unit": "dl"
+                  },
+                  "id": "86353e40-528f-11ec-90c0-fdfe82b3802d",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=4",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_11_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_12_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_01_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "lager beer",
+                "en": "lager beer",
+                "hu": "világos sör"
+              },
+              "productCategoryId": "seeded_product_category_c1_3_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_4_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_4_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_4_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.301Z",
+            "updatedAt": "2022-06-30T10:15:54.301Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_4_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.126Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.126Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_2_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "seeded_chain_product_variant_c1_p1_1_id",
+              "position": 1,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1200.0
+            },
+            {
+              "id": "ec84f130-528b-11ec-afe3-15e1afd659e2",
+              "position": 2,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 1,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "normal",
+                  "en": "normal",
+                  "hu": "normál"
+                },
+                "refGroupPrice": 1200.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 2,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "double",
+                  "en": "double",
+                  "hu": "dupla"
+                },
+                "refGroupPrice": 1500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_31_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_32_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 3,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_33_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_03_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": [
+                "egg",
+                "gluten",
+                "mustard",
+                "milk",
+                "soya",
+                "fish",
+                "sesame"
+              ],
+              "name": {
+                "de": "Hamburger",
+                "en": "Hamburger",
+                "hu": "Hamburger"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "seeded_chain_product_variant_c1_p1_1_id",
+                  "position": 10,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "normal",
+                    "en": "normal",
+                    "hu": "normál"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "ec84f130-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "double",
+                    "en": "double",
+                    "hu": "dupla"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=1",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_31_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_32_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 3,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_33_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_03_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "laktató szendvics",
+                "en": "laktató szendvics",
+                "hu": "laktató szendvics"
+              },
+              "productCategoryId": "seeded_product_category_c1_1_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_1_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_1_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_1_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.258Z",
+            "updatedAt": "2022-06-30T10:15:54.258Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_1_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.195Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.195Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_1_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "seeded_chain_product_variant_c1_p2_1_id",
+              "position": 1,
+              "price": 0.0,
+              "pack": {
+                "size": 2.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "pohár"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 300.0
+            },
+            {
+              "id": "af36ee60-528a-11ec-afe3-15e1afd659e2",
+              "position": 2,
+              "price": 0.0,
+              "pack": {
+                "size": 5.0,
+                "unit": "dl"
+              },
+              "variantName": {
+                "de": "glass",
+                "en": "glass",
+                "hu": "üveg"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_01_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_11_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                },
+                {
+                  "position": 2,
+                  "price": 0.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_12_id",
+                  "externalId": null,
+                  "refGroupPrice": 0
+                }
+              ]
+            },
+            {
+              "productSetId": "seeded_product_component_set_02_id",
+              "position": 2,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 50,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_21_id",
+                  "externalId": null,
+                  "refGroupPrice": 50
+                },
+                {
+                  "position": 2,
+                  "price": 200,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_22_id",
+                  "externalId": null,
+                  "refGroupPrice": 200
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 2.0,
+                  "unit": "dl"
+                },
+                "position": 1,
+                "price": 11.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "pohár"
+                },
+                "refGroupPrice": 300.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 5.0,
+                  "unit": "dl"
+                },
+                "position": 2,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "glass",
+                  "en": "glass",
+                  "hu": "üveg"
+                },
+                "refGroupPrice": 500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_11_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_12_id",
+                    "externalId": null,
+                    "refGroupPrice": 0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_01_id"
+              },
+              {
+                "position": 2,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_21_id",
+                    "externalId": null,
+                    "refGroupPrice": 50
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_22_id",
+                    "externalId": null,
+                    "refGroupPrice": 200
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_02_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["sulphites"],
+              "name": {
+                "de": "Fanta",
+                "en": "Fanta",
+                "hu": "Fanta"
+              },
+              "productType": "drink",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 2.0,
+                    "unit": "dl"
+                  },
+                  "id": "seeded_chain_product_variant_c1_p2_1_id",
+                  "position": 10,
+                  "price": 11.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "pohár"
+                  },
+                  "refGroupPrice": 300.0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 5.0,
+                    "unit": "dl"
+                  },
+                  "id": "af36ee60-528a-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "glass",
+                    "en": "glass",
+                    "hu": "üveg"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=9",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_11_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_12_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_01_id"
+                },
+                {
+                  "position": 2,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_21_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_22_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_02_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "orange drink",
+                "en": "orange drink",
+                "hu": "narancsos üdítő"
+              },
+              "productCategoryId": "seeded_product_category_c1_2_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_9_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_5_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_9_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.436Z",
+            "updatedAt": "2022-06-30T10:15:54.436Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_5_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.075Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.075Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_15_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1200.0
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "normal",
+                  "en": "normal",
+                  "hu": "normál"
+                },
+                "refGroupPrice": 1200.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "double",
+                  "en": "double",
+                  "hu": "dupla"
+                },
+                "refGroupPrice": 1500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_31_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_32_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 3,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_33_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_03_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["sesame"],
+              "name": {
+                "de": "Sajtburger",
+                "en": "Sajtburger",
+                "hu": "Sajtburger"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "normal",
+                    "en": "normal",
+                    "hu": "normál"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "double",
+                    "en": "double",
+                    "hu": "dupla"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=3",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_31_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_32_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 3,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_33_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_03_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "sajtos szendvics",
+                "en": "sajtos szendvics",
+                "hu": "sajtos szendvics"
+              },
+              "productCategoryId": "seeded_product_category_c1_1_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_3_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_7_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_3_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.388Z",
+            "updatedAt": "2022-06-30T10:15:54.388Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_7_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.174Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.174Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_14_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1200.0
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "normal",
+                  "en": "normal",
+                  "hu": "normál"
+                },
+                "refGroupPrice": 1200.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "double",
+                  "en": "double",
+                  "hu": "dupla"
+                },
+                "refGroupPrice": 1500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_31_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_32_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 3,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_33_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_03_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["sesame"],
+              "name": {
+                "de": "Sajtburger",
+                "en": "Sajtburger",
+                "hu": "Sajtburger"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "normal",
+                    "en": "normal",
+                    "hu": "normál"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "double",
+                    "en": "double",
+                    "hu": "dupla"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=3",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_31_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_32_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 3,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_33_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_03_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "sajtos szendvics",
+                "en": "sajtos szendvics",
+                "hu": "sajtos szendvics"
+              },
+              "productCategoryId": "seeded_product_category_c1_1_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_3_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_7_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_3_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.388Z",
+            "updatedAt": "2022-06-30T10:15:54.388Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_7_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.254Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.254Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_13_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1200.0
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "normal",
+                  "en": "normal",
+                  "hu": "normál"
+                },
+                "refGroupPrice": 1200.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "double",
+                  "en": "double",
+                  "hu": "dupla"
+                },
+                "refGroupPrice": 1500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_31_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_32_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 3,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_33_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_03_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["sesame"],
+              "name": {
+                "de": "Sajtburger",
+                "en": "Sajtburger",
+                "hu": "Sajtburger"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "normal",
+                    "en": "normal",
+                    "hu": "normál"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "double",
+                    "en": "double",
+                    "hu": "dupla"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=3",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_31_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_32_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 3,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_33_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_03_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "sajtos szendvics",
+                "en": "sajtos szendvics",
+                "hu": "sajtos szendvics"
+              },
+              "productCategoryId": "seeded_product_category_c1_1_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_3_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_7_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_3_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.388Z",
+            "updatedAt": "2022-06-30T10:15:54.388Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_7_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.230Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.230Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_12_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1200.0
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "normal",
+                  "en": "normal",
+                  "hu": "normál"
+                },
+                "refGroupPrice": 1200.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "double",
+                  "en": "double",
+                  "hu": "dupla"
+                },
+                "refGroupPrice": 1500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_31_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_32_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 3,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_33_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_03_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["sesame"],
+              "name": {
+                "de": "Sajtburger",
+                "en": "Sajtburger",
+                "hu": "Sajtburger"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "normal",
+                    "en": "normal",
+                    "hu": "normál"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "double",
+                    "en": "double",
+                    "hu": "dupla"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=3",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_31_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_32_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 3,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_33_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_03_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "sajtos szendvics",
+                "en": "sajtos szendvics",
+                "hu": "sajtos szendvics"
+              },
+              "productCategoryId": "seeded_product_category_c1_1_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_3_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_7_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_3_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.388Z",
+            "updatedAt": "2022-06-30T10:15:54.388Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_7_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.202Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.202Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_11_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1200.0
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "normal",
+                  "en": "normal",
+                  "hu": "normál"
+                },
+                "refGroupPrice": 1200.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "double",
+                  "en": "double",
+                  "hu": "dupla"
+                },
+                "refGroupPrice": 1500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_31_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_32_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 3,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_33_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_03_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["sesame"],
+              "name": {
+                "de": "Sajtburger",
+                "en": "Sajtburger",
+                "hu": "Sajtburger"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "normal",
+                    "en": "normal",
+                    "hu": "normál"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "double",
+                    "en": "double",
+                    "hu": "dupla"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=3",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_31_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_32_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 3,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_33_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_03_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "sajtos szendvics",
+                "en": "sajtos szendvics",
+                "hu": "sajtos szendvics"
+              },
+              "productCategoryId": "seeded_product_category_c1_1_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_3_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_7_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_3_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.388Z",
+            "updatedAt": "2022-06-30T10:15:54.388Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_7_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.204Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.204Z"
+        },
+        {
+          "id": "seeded_unit_product_c1_g1_u1_10_id",
+          "unitId": "seeded_unit_c1_g1_1_id",
+          "position": 0,
+          "variants": [
+            {
+              "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "normal",
+                "en": "normal",
+                "hu": "normál"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1200.0
+            },
+            {
+              "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+              "position": 0,
+              "price": 0.0,
+              "pack": {
+                "size": 1.0,
+                "unit": "db"
+              },
+              "variantName": {
+                "de": "double",
+                "en": "double",
+                "hu": "dupla"
+              },
+              "netPackagingFee": null,
+              "soldOut": null,
+              "isAvailable": true,
+              "refGroupPrice": 1500.0
+            }
+          ],
+          "configSets": [
+            {
+              "productSetId": "seeded_product_component_set_03_id",
+              "position": 1,
+              "items": [
+                {
+                  "position": 1,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_31_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 2,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_32_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                },
+                {
+                  "position": 3,
+                  "price": 500.0,
+                  "netPackagingFee": null,
+                  "productComponentId": "seeded_product_component_33_id",
+                  "externalId": null,
+                  "refGroupPrice": 500.0
+                }
+              ]
+            }
+          ],
+          "supportedServingModes": ["inPlace", "takeAway"],
+          "dirty": null,
+          "groupProduct": {
+            "variants": [
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "normal",
+                  "en": "normal",
+                  "hu": "normál"
+                },
+                "refGroupPrice": 1200.0
+              },
+              {
+                "isAvailable": true,
+                "netPackagingFee": null,
+                "pack": {
+                  "size": 1.0,
+                  "unit": "db"
+                },
+                "position": 0,
+                "price": 0.0,
+                "soldOut": null,
+                "variantName": {
+                  "de": "double",
+                  "en": "double",
+                  "hu": "dupla"
+                },
+                "refGroupPrice": 1500.0
+              }
+            ],
+            "configSets": [
+              {
+                "position": 1,
+                "items": [
+                  {
+                    "position": 1,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_31_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 2,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_32_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  },
+                  {
+                    "position": 3,
+                    "price": 0.0,
+                    "netPackagingFee": null,
+                    "productComponentId": "seeded_product_component_33_id",
+                    "externalId": null,
+                    "refGroupPrice": 500.0
+                  }
+                ],
+                "productSetId": "seeded_product_component_set_03_id"
+              }
+            ],
+            "chainProduct": {
+              "allergens": ["sesame"],
+              "name": {
+                "de": "Sajtburger",
+                "en": "Sajtburger",
+                "hu": "Sajtburger"
+              },
+              "productType": "food",
+              "variants": [
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "normal",
+                    "en": "normal",
+                    "hu": "normál"
+                  },
+                  "refGroupPrice": 0
+                },
+                {
+                  "isAvailable": true,
+                  "netPackagingFee": null,
+                  "pack": {
+                    "size": 1.0,
+                    "unit": "db"
+                  },
+                  "id": "de590330-528b-11ec-afe3-15e1afd659e2",
+                  "position": 0,
+                  "price": 0.0,
+                  "soldOut": null,
+                  "variantName": {
+                    "de": "double",
+                    "en": "double",
+                    "hu": "dupla"
+                  },
+                  "refGroupPrice": 0
+                }
+              ],
+              "image": "https://picsum.photos/200?random=3",
+              "dirty": null,
+              "configSets": [
+                {
+                  "position": 1,
+                  "items": [
+                    {
+                      "netPackagingFee": null,
+                      "position": 1,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_31_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 2,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_32_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    },
+                    {
+                      "netPackagingFee": null,
+                      "position": 3,
+                      "price": 0.0,
+                      "productComponentId": "seeded_product_component_33_id",
+                      "refGroupPrice": 0,
+                      "externalId": null
+                    }
+                  ],
+                  "productSetId": "seeded_product_component_set_03_id"
+                }
+              ],
+              "isVisible": true,
+              "description": {
+                "de": "sajtos szendvics",
+                "en": "sajtos szendvics",
+                "hu": "sajtos szendvics"
+              },
+              "productCategoryId": "seeded_product_category_c1_1_id",
+              "externalId": null,
+              "id": "seeded_chain_product_c1_3_id"
+            },
+            "dirty": null,
+            "groupId": "seeded_group_c1_1_id",
+            "id": "seeded_chain_product_c1_g1_7_id",
+            "isVisible": true,
+            "takeawayTax": 20,
+            "tax": 27,
+            "externalId": null,
+            "parentId": "seeded_chain_product_c1_3_id",
+            "deletedAt": null,
+            "createdAt": "2022-06-30T10:15:54.388Z",
+            "updatedAt": "2022-06-30T10:15:54.388Z"
+          },
+          "isVisible": true,
+          "parentId": "seeded_chain_product_c1_g1_7_id",
+          "chainId": "seeded_chain_1_id",
+          "groupId": "seeded_group_c1_1_id",
+          "externalId": null,
+          "createdAt": "2022-06-30T10:15:55.136Z",
+          "deletedAt": null,
+          "updatedAt": "2022-06-30T10:15:55.136Z"
+        }
+      ]
+    }
+  }
+}

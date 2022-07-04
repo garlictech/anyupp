@@ -13,6 +13,7 @@ class GeneratedProductConfigSet {
   final int? maxSelection;
   final List<GeneratedProductConfigComponent> items;
   final List<ServingMode> supportedServingModes;
+  final String? externalId;
 
   GeneratedProductConfigSet({
     required this.productSetId,
@@ -23,6 +24,7 @@ class GeneratedProductConfigSet {
     this.maxSelection,
     required this.items,
     required this.supportedServingModes,
+    this.externalId,
   });
 
   GeneratedProductConfigSet copyWith({
@@ -34,6 +36,7 @@ class GeneratedProductConfigSet {
     int? maxSelection,
     List<GeneratedProductConfigComponent>? items,
     List<ServingMode>? supportedServingModes,
+    String? externalId,
   }) {
     return GeneratedProductConfigSet(
       productSetId: productSetId ?? this.productSetId,
@@ -45,6 +48,7 @@ class GeneratedProductConfigSet {
       items: items ?? this.items,
       supportedServingModes:
           supportedServingModes ?? this.supportedServingModes,
+      externalId: externalId ?? this.externalId,
     );
   }
 
@@ -59,6 +63,7 @@ class GeneratedProductConfigSet {
       'items': items.map((x) => x.toJson()).toList(),
       'supportedServingModes':
           supportedServingModes.map((x) => enumToString(x)).toList(),
+      'externalId': externalId,
     };
   }
 
@@ -82,6 +87,7 @@ class GeneratedProductConfigSet {
               ),
             )
           : [],
+      externalId: map['externalId'],
     );
   }
 
@@ -101,6 +107,7 @@ class GeneratedProductConfigSet {
         other.position == position &&
         other.type == type &&
         other.maxSelection == maxSelection &&
+        other.externalId == externalId &&
         listEquals(other.items, items) &&
         listEquals(other.supportedServingModes, supportedServingModes);
   }
@@ -114,6 +121,7 @@ class GeneratedProductConfigSet {
         type.hashCode ^
         maxSelection.hashCode ^
         items.hashCode ^
+        externalId.hashCode ^
         supportedServingModes.hashCode;
   }
 }

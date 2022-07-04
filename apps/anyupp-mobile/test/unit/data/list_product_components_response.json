@@ -1,0 +1,122 @@
+{
+  "data": {
+    "searchProductComponents": {
+      "items": [
+        {
+          "name": {
+            "de": "Rice",
+            "en": "Rice",
+            "hu": "Rizs"
+          },
+          "soldOut": null,
+          "updatedAt": "2022-06-30T10:15:50.293Z",
+          "id": "seeded_product_component_33_id",
+          "externalId": null,
+          "description": "Frissen főzve",
+          "deletedAt": null,
+          "createdAt": "2022-06-30T10:15:50.293Z",
+          "chainId": "seeded_chain_1_id",
+          "allergens": ["mustard"]
+        },
+        {
+          "name": {
+            "de": "Boiled potato",
+            "en": "Boiled potato",
+            "hu": "Főtt krumpli"
+          },
+          "soldOut": null,
+          "updatedAt": "2022-06-30T10:15:49.875Z",
+          "id": "seeded_product_component_32_id",
+          "externalId": null,
+          "description": "Frissen főzve",
+          "deletedAt": null,
+          "createdAt": "2022-06-30T10:15:49.875Z",
+          "chainId": "seeded_chain_1_id",
+          "allergens": ["mustard"]
+        },
+        {
+          "name": {
+            "de": "French fries",
+            "en": "French fries",
+            "hu": "Hasábburgonya"
+          },
+          "soldOut": null,
+          "updatedAt": "2022-06-30T10:15:49.316Z",
+          "id": "seeded_product_component_31_id",
+          "externalId": null,
+          "description": "Frissen szeletelve",
+          "deletedAt": null,
+          "createdAt": "2022-06-30T10:15:49.316Z",
+          "chainId": "seeded_chain_1_id",
+          "allergens": ["mustard"]
+        },
+        {
+          "name": {
+            "de": "Mint",
+            "en": "Mint",
+            "hu": "Menta levél"
+          },
+          "soldOut": null,
+          "updatedAt": "2022-06-30T10:15:48.575Z",
+          "id": "seeded_product_component_22_id",
+          "externalId": null,
+          "description": "Dekoráció",
+          "deletedAt": null,
+          "createdAt": "2022-06-30T10:15:48.575Z",
+          "chainId": "seeded_chain_1_id",
+          "allergens": []
+        },
+        {
+          "name": {
+            "de": "Straw",
+            "en": "Straw",
+            "hu": "Szívószál"
+          },
+          "soldOut": null,
+          "updatedAt": "2022-06-30T10:15:48.091Z",
+          "id": "seeded_product_component_21_id",
+          "externalId": null,
+          "description": "Papír szívócső",
+          "deletedAt": null,
+          "createdAt": "2022-06-30T10:15:48.091Z",
+          "chainId": "seeded_chain_1_id",
+          "allergens": []
+        },
+        {
+          "name": {
+            "de": "Cold",
+            "en": "Cold",
+            "hu": "Hideg"
+          },
+          "soldOut": null,
+          "updatedAt": "2022-06-30T10:15:47.466Z",
+          "id": "seeded_product_component_12_id",
+          "externalId": null,
+          "description": "10-20 °C",
+          "deletedAt": null,
+          "createdAt": "2022-06-30T10:15:47.466Z",
+          "chainId": "seeded_chain_1_id",
+          "allergens": ["egg", "gluten", "milk", "soya", "peanut"]
+        },
+        {
+          "name": {
+            "de": "Room temperature",
+            "en": "Room temperature",
+            "hu": "Szobahőmérsékletű"
+          },
+          "soldOut": null,
+          "updatedAt": "2022-06-30T10:15:46.910Z",
+          "id": "seeded_product_component_11_id",
+          "externalId": null,
+          "description": "20-25 °C",
+          "deletedAt": null,
+          "createdAt": "2022-06-30T10:15:46.910Z",
+          "chainId": "seeded_chain_1_id",
+          "allergens": ["egg", "gluten", "milk", "soya", "peanut"]
+        }
+      ],
+      "nextToken": "WyJzZWVkZWRfcHJvZHVjdF9jb21wb25lbnRfMTFfaWQiXQ==",
+      "total": 7
+    }
+  }
+}

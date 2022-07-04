@@ -142,12 +142,8 @@ class AwsProductProvider implements IProductProvider {
       }
 
       // Load Config Components and Config sets for Chain
-      Map<String,
-              ListChainProductComponentSets$Query$SearchableProductComponentSetConnection$ProductComponentSet>
-          componentSets = {};
-      Map<String,
-              ListChainProductComponents$Query$SearchableProductComponentConnection$ProductComponent>
-          components = {};
+      Map<String, ProductComponentSet> componentSets = {};
+      Map<String, ProductComponent> components = {};
       await Future.wait(
         [
           (() async => componentSets = await _getChainProductSets(chainId))(),
@@ -155,8 +151,8 @@ class AwsProductProvider implements IProductProvider {
               components = await _getChainProductComponents(chainId))(),
         ],
       );
-      log.e('ComponentSets=${componentSets}');
-      log.e('Components=${components}');
+      // log.d('ComponentSets=${componentSets}');
+      // log.d('Components=${components}');
 
       int count = result.data?.searchUnitProducts?.total ?? 0;
       String? token = result.data?.searchUnitProducts?.nextToken;
@@ -196,10 +192,7 @@ class AwsProductProvider implements IProductProvider {
     }
   }
 
-  Future<
-          Map<String,
-              ListChainProductComponentSets$Query$SearchableProductComponentSetConnection$ProductComponentSet>>
-      _getChainProductSets(
+  Future<Map<String, ProductComponentSet>> _getChainProductSets(
     String chainId,
   ) async {
     var result = await GQL.amplify.execute(
@@ -223,10 +216,7 @@ class AwsProductProvider implements IProductProvider {
         value: (v) => v);
   }
 
-  Future<
-          Map<String,
-              ListChainProductComponents$Query$SearchableProductComponentConnection$ProductComponent>>
-      _getChainProductComponents(
+  Future<Map<String, ProductComponent>> _getChainProductComponents(
     String chainId,
   ) async {
     var result = await GQL.amplify.execute(
