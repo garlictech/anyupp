@@ -110,9 +110,194 @@ Object {
 }
 `;
 
-exports[`CreateOrder mutation test should create an order with resolver function: rkeeper deps called 1`] = `Array []`;
+exports[`CreateOrder mutation test should create an order with resolver function: rkeeper deps called 1`] = `
+Array [
+  Array [
+    Object {
+      "axiosInstance": [Function],
+      "currentTimeISOString": [Function],
+      "uuidGenerator": [Function],
+    },
+  ],
+]
+`;
 
-exports[`CreateOrder mutation test should create an order with resolver function: rkeeper func called 1`] = `Array []`;
+exports[`CreateOrder mutation test should create an order with resolver function: rkeeper func called 1`] = `
+Array [
+  Array [
+    Object {
+      "adBanners": null,
+      "adBannersEnabled": null,
+      "address": Object {
+        "address": "Ág u. 1.",
+        "city": "Budapest",
+        "country": "Magyarország",
+        "location": Object {
+          "lat": 47,
+          "lng": 19,
+        },
+        "postalCode": "1021",
+        "title": "HQ",
+      },
+      "canCallWaiter": null,
+      "canRequestVatInvoice": null,
+      "chainId": "foobar",
+      "coverBanners": null,
+      "coverBannersEnabled": null,
+      "createdAt": "MASKED DATE",
+      "description": null,
+      "email": null,
+      "externalId": "109150006",
+      "floorMap": null,
+      "groupId": "foobar",
+      "id": "createorder-unitwithrkeeoer-MASKED ID",
+      "isAcceptingOrders": true,
+      "isActive": true,
+      "isVisibleInApp": null,
+      "lanes": null,
+      "lastOrderNum": null,
+      "location": Object {
+        "lat": 47,
+        "lon": 19,
+      },
+      "merchantId": null,
+      "name": "Order test unit",
+      "open": null,
+      "openingHours": null,
+      "orderPaymentPolicy": "prepay",
+      "orderPolicy": null,
+      "packagingTaxPercentage": null,
+      "paymentModes": Array [
+        Object {
+          "caption": null,
+          "method": "cash",
+          "type": "cash",
+        },
+      ],
+      "phone": null,
+      "pos": Object {
+        "rkeeper": Object {
+          "anyuppPassword": "MASKED ANYUPP PASSWORD",
+          "anyuppUsername": "ANYUPP_USERNAME",
+          "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
+          "rkeeperPassword": "f3e7c8260b2f9b1cc62208a441410a",
+          "rkeeperUsername": "590_49_985_540",
+        },
+        "type": "rkeeper",
+      },
+      "ratingPolicies": null,
+      "serviceFeePolicy": null,
+      "soldOutVisibilityPolicy": null,
+      "supportedOrderModes": Array [
+        "instant",
+      ],
+      "supportedServingModes": Array [
+        "inPlace",
+        "takeAway",
+      ],
+      "timeZone": null,
+      "tipPolicy": null,
+      "updatedAt": "MASKED DATE",
+    },
+    Object {
+      "hasRated": true,
+      "id": "create-order-3-MASKED ID",
+      "items": Array [
+        Object {
+          "configSets": Array [
+            Object {
+              "items": Array [
+                Object {
+                  "allergens": Array [
+                    "egg",
+                    "gluten",
+                  ],
+                  "name": Object {
+                    "de": "Room temperature",
+                    "en": "Room temperature",
+                    "hu": "Szobahőmérsékletű",
+                  },
+                  "price": -1.7999999999999998,
+                  "productComponentId": "test_product_component_id",
+                },
+              ],
+              "name": Object {
+                "de": null,
+                "en": "Modifier comp set",
+                "hu": "Módosító komponens set",
+              },
+              "productSetId": "test_product_component_set_id",
+              "type": "modifier",
+            },
+          ],
+          "laneId": "lane_01",
+          "priceShown": Object {
+            "currency": "HUF",
+            "pricePerUnit": 300,
+            "priceSum": 1500,
+            "tax": 27,
+            "taxSum": 318.9,
+          },
+          "productId": "PRODUCT ID",
+          "productName": Object {
+            "en": "Product name",
+          },
+          "productType": "drink",
+          "quantity": 5,
+          "statusLog": Array [
+            Object {
+              "status": "none",
+              "ts": "MASKED TIMESTAMP",
+              "userId": "test-monad",
+            },
+          ],
+          "sumPriceShown": Object {
+            "currency": "HUF",
+            "pricePerUnit": 298.2,
+            "priceSum": 1491,
+            "tax": 27,
+            "taxSum": 316.98,
+          },
+          "variantId": "VARIANT ID",
+          "variantName": Object {
+            "en": "VARIANT NAME",
+          },
+        },
+      ],
+      "orderMode": "instant",
+      "orderNum": "001",
+      "paymentMode": Object {
+        "method": "cash",
+        "type": "card",
+      },
+      "place": Object {
+        "seat": "01",
+        "table": "01",
+      },
+      "rating": Object {
+        "key": "RATING KEY",
+        "value": 3,
+      },
+      "serviceFee": Object {
+        "currency": "HUF",
+        "grossPrice": 200,
+        "taxContent": 20,
+      },
+      "servingMode": "inPlace",
+      "sumPriceShown": Object {
+        "currency": "HUF",
+        "pricePerUnit": 298.2,
+        "priceSum": 2982,
+        "tax": 27,
+        "taxSum": 633.96,
+      },
+      "takeAway": false,
+      "unitId": "createorder-unitwithrkeeoer-MASKED ID",
+      "userId": "test-monad",
+    },
+  ],
+]
+`;
 
 exports[`CreateOrder mutation test should create an order with resolver function: second order ordernum 1`] = `"002"`;
 
@@ -254,6 +439,7 @@ Object {
   "updatedAt": "MASKED DATE",
   "userId": "test-monad",
   "version": null,
+  "visitId": null,
 }
 `;
 
