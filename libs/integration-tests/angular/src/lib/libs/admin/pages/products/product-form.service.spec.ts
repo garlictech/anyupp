@@ -2,7 +2,7 @@ import { combineLatest, EMPTY, of } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { TestBed } from '@angular/core/testing';
-import { FormArray, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormArray, ReactiveFormsModule } from '@angular/forms';
 import { ProductFormService } from '@bgap/admin/refactor';
 import { CrudSdkService } from '@bgap/admin/refactor';
 
@@ -92,7 +92,7 @@ describe('ProductFormService', () => {
   });
 
   it('patchProductVariants should add variants to form array', () => {
-    const variantsArray = new FormArray([]);
+    const variantsArray = new UntypedFormArray([]);
 
     service.patchProductVariants(
       productFixture.chainProductBase.variants,
@@ -103,7 +103,7 @@ describe('ProductFormService', () => {
   });
 
   it('patchExtendedProductVariants should add variants to form array', () => {
-    const variantsArray = new FormArray([]);
+    const variantsArray = new UntypedFormArray([]);
 
     service.patchExtendedProductVariants(
       productFixture.groupProductBase.variants,
@@ -114,7 +114,7 @@ describe('ProductFormService', () => {
   });
 
   it('patchConfigSet should add configsets to form array', () => {
-    const configSetsArray = new FormArray([]);
+    const configSetsArray = new UntypedFormArray([]);
 
     service.patchConfigSet([], configSetsArray);
 
