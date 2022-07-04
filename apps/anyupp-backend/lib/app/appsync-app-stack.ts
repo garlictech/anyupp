@@ -5,7 +5,6 @@ import {
   Duration,
   aws_lambda,
 } from 'aws-cdk-lib';
-
 import { tableConfig } from '@bgap/crud-gql/backend';
 import * as sst from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
@@ -23,8 +22,11 @@ export interface AppsyncAppStackProps extends sst.StackProps {
 }
 
 export class AppsyncAppStack extends sst.Stack {
+  readonly appSyncLogPublisherRole: iam.Role;
+
   constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
     super(scope, id);
+
     const apiLambda = new aws_lambda.Function(this, 'AppsyncLambda', {
       ...commonLambdaProps,
       handler: 'index.handler',
@@ -94,5 +96,25 @@ export class AppsyncAppStack extends sst.Stack {
     }
 
     props.secretsManager.grantRead(apiLambda);
+
+    this.appSyncLogPublisherRole = new iam.Role(
+      this,
+      'AWSAppSyncPushToCloudWatchLogsRole',
+      {
+        roleName: 'AWSAppSyncPushToCloudWatchLogsRole',
+        assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
+      },
+    );
+
+    this.appSyncLogPublisherRole.addToPrincipalPolicy(
+      new iam.PolicyStatement({
+        actions: [
+          'logs:CreateLogGroup',
+          'logs:CreateLogStream',
+          'logs:PutLogEvents',
+        ],
+        resources: ['*'],
+      }),
+    );
   }
 }

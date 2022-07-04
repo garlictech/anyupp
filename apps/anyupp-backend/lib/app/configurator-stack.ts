@@ -14,6 +14,7 @@ import path from 'path';
 
 export interface ConfiguratorStackProps extends StackProps {
   consumerUserPoolId: string;
+  appSynclogPublisherRole: iam.Role;
 }
 
 export class ConfiguratorStack extends sst.Stack {
@@ -53,6 +54,7 @@ export class ConfiguratorStack extends sst.Stack {
       properties: {
         userPoolId: props.consumerUserPoolId,
         physicalResourceId: app.logicalPrefixedName('CrudApiUpdater'),
+        logPublisherArn: props.appSynclogPublisherRole.roleArn,
       },
     });
   }

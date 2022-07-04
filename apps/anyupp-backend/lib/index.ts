@@ -82,7 +82,7 @@ export class AnyUppStack extends Stack {
       securityGroupId,
     });
 
-    new AppsyncAppStack(scope, 'appsync', {
+    const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
       consumerUserPool: cognitoStack.consumerUserPool,
       adminUserPool: cognitoStack.adminUserPool,
       stripeSecretKey: secretsManagerStack.stripeSecretKey,
@@ -118,6 +118,7 @@ export class AnyUppStack extends Stack {
 
     new ConfiguratorStack(scope, 'configurator', {
       consumerUserPoolId: cognitoStack.consumerUserPool.userPoolId,
+      appSynclogPublisherRole: appsyncStack.appSyncLogPublisherRole,
     });
 
     new RKeeperStack(scope, 'rkeeper', {

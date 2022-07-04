@@ -13,7 +13,7 @@ const appsync = new AppSync({
 const region = process.env.AWS_REGION || '';
 const apiId = CrudApiConfig.appsyncApiId;
 
-export const configurePools = (userPoolId: string) =>
+export const configurePools = (userPoolId: string, logPublisherArn: string) =>
   defer(() => from(appsync.getGraphqlApi({ apiId }).promise())).pipe(
     map(response => response.graphqlApi),
     throwIfEmptyValue(),
@@ -31,6 +31,11 @@ export const configurePools = (userPoolId: string) =>
           },
         },
       ],
+      logConfig: {
+        fieldLogLevel: 'ALL',
+        cloudWatchLogsRoleArn: logPublisherArn,
+      },
+      xrayEnabled: true,
     })),
     map(fp.omit(['arn', 'uris', 'tags'])),
     switchMap((graphqlApi: UpdateGraphqlApiRequest) =>
