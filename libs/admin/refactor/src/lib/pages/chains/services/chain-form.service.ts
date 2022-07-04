@@ -3,7 +3,7 @@ import { iif } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import {
   Chain,
   ChainStyleImages,
@@ -25,7 +25,7 @@ import { ChainCollectionService } from '../../../store/chains';
 export class ChainFormService {
   constructor(
     private _store: Store,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _chainCollectionService: ChainCollectionService,
   ) {}
 

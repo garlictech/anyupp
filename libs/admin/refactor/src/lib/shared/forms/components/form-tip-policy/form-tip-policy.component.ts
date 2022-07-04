@@ -7,7 +7,11 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { TipPolicy } from '@bgap/domain';
 import { KeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -22,9 +26,9 @@ import { FormsService } from '../../services/forms/forms.service';
   templateUrl: './form-tip-policy.component.html',
 })
 export class FormTipPolicyComponent implements OnInit {
-  @Input() tipPolicyFormGroup?: FormGroup;
+  @Input() tipPolicyFormGroup?: UntypedFormGroup;
 
-  public newPercentControl: FormControl = new FormControl(
+  public newPercentControl: UntypedFormControl = new UntypedFormControl(
     '',
     Validators.required,
   );

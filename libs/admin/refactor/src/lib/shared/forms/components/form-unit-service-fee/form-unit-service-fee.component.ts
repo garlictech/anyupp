@@ -5,7 +5,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ServiceFeeType } from '@bgap/domain';
 import { KeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -18,8 +18,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   templateUrl: './form-unit-service-fee.component.html',
 })
 export class FormUnitServiceFeeComponent implements OnInit {
-  @Input() serviceFeeFormGroup?: FormGroup;
-  public serviceFeeTypeControl: FormControl = new FormControl('');
+  @Input() serviceFeeFormGroup?: UntypedFormGroup;
+  public serviceFeeTypeControl: UntypedFormControl = new UntypedFormControl('');
   public EServiceFeeType = ServiceFeeType;
 
   public serviceFeeOptions: KeyValue[] = [

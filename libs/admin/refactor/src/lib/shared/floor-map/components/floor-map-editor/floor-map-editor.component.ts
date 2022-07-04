@@ -1,7 +1,7 @@
 import { debounceTime } from 'rxjs/operators';
 
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import {
   FloorMapData,
   FloorMapDataObject,
@@ -11,12 +11,30 @@ import {
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 
-import * as floorMapActions from '../../+state/floor-map.actions';
+import { floorMapInitialized } from '../../+state/floor-map.actions';
 import {
   FLOOR_MAP_OBJECT_COMMON_DEFAULTS,
   FLOOR_MAP_OBJECT_DEFAULTS,
 } from '../../const';
-import * as floorMapFuncs from '../../fn';
+import {
+  copyActiveObject,
+  generateId,
+  getObjectText,
+  getRawDataField,
+  initCanvas,
+  initRawData,
+  isSeat,
+  isTableOrSeat,
+  loadRawData,
+  loadRawDataObject,
+  mapRawData,
+  registerCanvasEvent,
+  removeActiveObject,
+  resizeCanvas,
+  setRawDataField,
+  setTextToActiveObject,
+  updateObjectMapRawData,
+} from '../../fn';
 
 @UntilDestroy()
 @Component({
@@ -27,17 +45,20 @@ import * as floorMapFuncs from '../../fn';
 export class FloorMapEditorComponent implements OnInit, AfterViewInit {
   @Input() editMode?: boolean;
   @Input() floorMap?: Maybe<FloorMapData>;
-  public dimensionForm?: FormGroup;
-  public objectForm?: FormGroup;
+  public dimensionForm?: UntypedFormGroup;
+  public objectForm?: UntypedFormGroup;
   public EUnitMapObjectType = UnitMapObjectType;
 
-  constructor(private _store: Store, private _formBuilder: FormBuilder) {}
+  constructor(
+    private _store: Store,
+    private _formBuilder: UntypedFormBuilder,
+  ) {}
 
   ngOnInit() {
     const w = this.floorMap?.w || 800;
     const h = this.floorMap?.h || 300;
 
-    floorMapFuncs.initRawData(w, h);
+    initRawData(w, h);
 
     this.dimensionForm = this._formBuilder.group({
       width: [w],
@@ -52,47 +73,44 @@ export class FloorMapEditorComponent implements OnInit, AfterViewInit {
     this.dimensionForm.valueChanges
       .pipe(debounceTime(500), untilDestroyed(this))
       .subscribe(value => {
-        floorMapFuncs.resizeCanvas(value.width, value.height);
-        floorMapFuncs.mapRawData.w = +value.width;
-        floorMapFuncs.mapRawData.h = +value.height;
+        resizeCanvas(value.width, value.height);
+        mapRawData.w = +value.width;
+        mapRawData.h = +value.height;
       });
     this.objectForm.valueChanges
       .pipe(debounceTime(500), untilDestroyed(this))
       .subscribe(value => {
-        floorMapFuncs.setTextToActiveObject(value.text);
+        setTextToActiveObject(value.text);
 
-        floorMapFuncs.setRawDataField('c', value.text);
-        floorMapFuncs.setRawDataField('tID', value.tableId || null);
-        floorMapFuncs.setRawDataField('sID', value.seatId || null);
+        setRawDataField('c', value.text);
+        setRawDataField('tID', value.tableId || null);
+        setRawDataField('sID', value.seatId || null);
       });
   }
 
   ngAfterViewInit() {
-    floorMapFuncs.initCanvas(this.editMode || false);
-    floorMapFuncs.resizeCanvas(
+    initCanvas(this.editMode || false);
+    resizeCanvas(
       this.dimensionForm?.value.width,
       this.dimensionForm?.value.height,
     );
 
     if (this.editMode) {
-      floorMapFuncs.registerCanvasEvent(
-        'object:modified',
-        floorMapFuncs.updateObjectMapRawData,
-      );
+      registerCanvasEvent('object:modified', updateObjectMapRawData);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      floorMapFuncs.registerCanvasEvent('mouse:up', (e: any) => {
+      registerCanvasEvent('mouse:up', (e: any) => {
         if (e.target?.id) {
           this.objectForm?.setValue({
-            text: floorMapFuncs.getObjectText(e.target),
-            tableId: floorMapFuncs.getRawDataField(e.target, 'tID') || '',
-            seatId: floorMapFuncs.getRawDataField(e.target, 'sID') || '',
+            text: getObjectText(e.target),
+            tableId: getRawDataField(e.target, 'tID') || '',
+            seatId: getRawDataField(e.target, 'sID') || '',
           });
 
           this.objectForm?.controls['tableId'][
-            floorMapFuncs.isTableOrSeat(e.target) ? 'enable' : 'disable'
+            isTableOrSeat(e.target) ? 'enable' : 'disable'
           ]();
           this.objectForm?.controls['seatId'][
-            floorMapFuncs.isSeat(e.target) ? 'enable' : 'disable'
+            isSeat(e.target) ? 'enable' : 'disable'
           ]();
         } else {
           this.objectForm?.setValue({
@@ -106,21 +124,19 @@ export class FloorMapEditorComponent implements OnInit, AfterViewInit {
 
     // Load existing data
     if (this.floorMap) {
-      floorMapFuncs.loadRawData(this.floorMap);
+      loadRawData(this.floorMap);
 
       this.dimensionForm?.patchValue({
-        width: floorMapFuncs.mapRawData.w,
-        height: floorMapFuncs.mapRawData.h,
+        width: mapRawData.w,
+        height: mapRawData.h,
       });
     }
 
-    this._store.dispatch(
-      floorMapActions.floorMapInitialized({ initialized: true }),
-    );
+    this._store.dispatch(floorMapInitialized({ initialized: true }));
   }
 
   public addObject(objectType: keyof typeof UnitMapObjectType) {
-    const id = floorMapFuncs.generateId();
+    const id = generateId();
     const rawDataObject: FloorMapDataObject = {
       id,
       t: UnitMapObjectType[objectType],
@@ -128,14 +144,14 @@ export class FloorMapEditorComponent implements OnInit, AfterViewInit {
       ...FLOOR_MAP_OBJECT_DEFAULTS[objectType],
     };
 
-    floorMapFuncs.loadRawDataObject(rawDataObject, true);
+    loadRawDataObject(rawDataObject, true);
   }
 
   public removeObject() {
-    floorMapFuncs.removeActiveObject();
+    removeActiveObject();
   }
 
   public copyObject() {
-    floorMapFuncs.copyActiveObject();
+    copyActiveObject();
   }
 }

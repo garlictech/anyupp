@@ -5,7 +5,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./form-color-picker.component.scss'],
 })
 export class FormColorPickerComponent implements OnInit {
-  @Input() control?: FormControl | null;
+  @Input() control?: UntypedFormControl | null;
   @Input() caption = ''; // Language key!!!
   @Input() disabled = false;
   public color = '';

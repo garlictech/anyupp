@@ -6,10 +6,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { Unit } from '@bgap/domain';
 
-import * as floorMapLib from '../../../../shared/floor-map';
+import { floorMapActions, mapRawData } from '../../../../shared/floor-map';
 import { AbstractFormDialogComponent } from '../../../../shared/forms';
 import { QrGeneratorService } from '../../../../shared/utils';
 
@@ -25,7 +25,7 @@ export class UnitFloorMapComponent
 {
   @ViewChild('container') container!: ElementRef;
   public unit!: Unit;
-  public rawForm?: FormGroup;
+  public rawForm?: UntypedFormGroup;
 
   constructor(
     protected override _injector: Injector,
@@ -33,7 +33,7 @@ export class UnitFloorMapComponent
   ) {
     super(_injector);
 
-    this._store.dispatch(floorMapLib.floorMapActions.resetFloorMap());
+    this._store.dispatch(floorMapActions.resetFloorMap());
   }
 
   async ngOnInit() {
@@ -50,7 +50,7 @@ export class UnitFloorMapComponent
 
   public submit() {
     this._dataService
-      .updateUnit$({ id: this.unit.id, floorMap: floorMapLib.mapRawData })
+      .updateUnit$({ id: this.unit.id, floorMap: mapRawData })
       .toPromise()
       .then(
         () => {

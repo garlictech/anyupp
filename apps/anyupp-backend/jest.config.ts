@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   collectCoverageFrom: ['src/**/*.{js,ts}'],
   displayName: 'anyupp-backend',
 
@@ -11,5 +11,5 @@ module.exports = {
   moduleFileExtensions: ['ts', 'js', 'html'],
   modulePathIgnorePatterns: ['cdk.out', '.build', '.serverless'],
   coverageDirectory: '../../coverage/apps/anyupp-backend',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };

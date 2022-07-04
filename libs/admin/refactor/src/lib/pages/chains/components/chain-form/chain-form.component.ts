@@ -7,7 +7,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { Chain } from '@bgap/domain';
 import { EImageType, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -107,7 +107,7 @@ export class ChainFormComponent
   }
 
   public logoUploadCallback = (image: string, param: string) => {
-    (<FormControl>(
+    (<UntypedFormControl>(
       this.dialogForm?.get('style')?.get('images')?.get(param)
     )).setValue(image);
 
@@ -123,7 +123,7 @@ export class ChainFormComponent
   };
 
   public logoRemoveCallback = (param: string) => {
-    (<FormControl>(
+    (<UntypedFormControl>(
       this.dialogForm?.get('style')?.get('images')?.get(param)
     )).setValue('');
 

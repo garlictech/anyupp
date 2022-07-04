@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormControl } from '@angular/forms';
+import { UntypedFormArray, UntypedFormControl } from '@angular/forms';
 import {
   baseFromTaxedPrice,
   taxedFromBasePrice,
@@ -7,8 +7,8 @@ import {
 } from '../../../../shared/utils';
 import { EVariantAvailabilityType, KeyValue } from '@bgap/shared/types';
 import { TranslateService } from '@ngx-translate/core';
-import * as CrudApi from '@bgap/crud-gql/api';
 import { FormsService } from '../../services/forms/forms.service';
+import { ServiceFeePolicy, ServiceFeeType } from '@bgap/domain';
 
 @Component({
   // changeDetection: ChangeDetectionStrategy.OnPush,
@@ -17,16 +17,16 @@ import { FormsService } from '../../services/forms/forms.service';
   styleUrls: ['./form-product-availabilities.component.scss'],
 })
 export class FormProductAvailabilitiesComponent implements OnInit {
-  @Input() availabilityFormArray?: FormArray | null;
+  @Input() availabilityFormArray?: UntypedFormArray | null;
   @Input() currency?: string;
-  @Input() unitServiceFeePolicy?: CrudApi.ServiceFeePolicy | null;
+  @Input() unitServiceFeePolicy?: ServiceFeePolicy | null;
   @Input() productTax?: number;
   public EVariantAvailabilityType = EVariantAvailabilityType;
   public iterativeAvailabilities: KeyValue[];
   public availabilityTypes;
 
-  public netPriceFormArray: FormArray = new FormArray([]);
-  public menuPriceFormArray: FormArray = new FormArray([]);
+  public netPriceFormArray: UntypedFormArray = new UntypedFormArray([]);
+  public menuPriceFormArray: UntypedFormArray = new UntypedFormArray([]);
 
   constructor(
     private _formsService: FormsService,
@@ -61,15 +61,17 @@ export class FormProductAvailabilitiesComponent implements OnInit {
 
   ngOnInit() {
     // Create calculation fields
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     this.availabilityFormArray?.controls.forEach((availability, i) => {
-      this.menuPriceFormArray.push(new FormControl(''));
-      this.netPriceFormArray.push(new FormControl(''));
+      this.menuPriceFormArray.push(new UntypedFormControl(''));
+      this.netPriceFormArray.push(new UntypedFormControl(''));
       this.grossPriceChanged(availability.value.price, i);
     });
   }
 
   public addAvailability() {
-    (<FormArray>this.availabilityFormArray)?.push(
+    (<UntypedFormArray>this.availabilityFormArray)?.push(
       this._formsService.createProductAvailabilityFormGroup(),
     );
 
@@ -79,39 +81,39 @@ export class FormProductAvailabilitiesComponent implements OnInit {
     if (this.menuPriceFormArray.controls[newAvailabilityIdx]) {
       this.menuPriceFormArray.controls[newAvailabilityIdx].patchValue('');
     } else {
-      this.menuPriceFormArray.controls[newAvailabilityIdx] = new FormControl(
-        '',
-      );
+      this.menuPriceFormArray.controls[newAvailabilityIdx] =
+        new UntypedFormControl('');
     }
 
     if (this.netPriceFormArray.controls[newAvailabilityIdx]) {
       this.netPriceFormArray.controls[newAvailabilityIdx].patchValue('');
     } else {
-      this.netPriceFormArray.controls[newAvailabilityIdx] = new FormControl('');
+      this.netPriceFormArray.controls[newAvailabilityIdx] =
+        new UntypedFormControl('');
     }
 
     this._changeDetectorRef.detectChanges();
   }
 
   public removeAvailability(idx: number) {
-    (<FormArray>this.availabilityFormArray)?.removeAt(idx);
+    (<UntypedFormArray>this.availabilityFormArray)?.removeAt(idx);
 
     // Remove calculation fields
-    (<FormArray>this.menuPriceFormArray)?.removeAt(idx);
-    (<FormArray>this.netPriceFormArray)?.removeAt(idx);
+    (<UntypedFormArray>this.menuPriceFormArray)?.removeAt(idx);
+    (<UntypedFormArray>this.netPriceFormArray)?.removeAt(idx);
 
     this._changeDetectorRef.detectChanges();
   }
 
   public onTypeChange(value: EVariantAvailabilityType, idx: number) {
     // Clear days
-    (<FormArray>this.availabilityFormArray)?.controls[idx].patchValue({
+    (<UntypedFormArray>this.availabilityFormArray)?.controls[idx].patchValue({
       dayFrom: '',
       dayTo: '',
     });
 
     if (value === EVariantAvailabilityType.ALWAYS) {
-      (<FormArray>this.availabilityFormArray)?.controls[idx].patchValue({
+      (<UntypedFormArray>this.availabilityFormArray)?.controls[idx].patchValue({
         timeFrom: '',
         timeTo: '',
       });
@@ -124,7 +126,7 @@ export class FormProductAvailabilitiesComponent implements OnInit {
     this.menuPriceFormArray.controls[idx].patchValue(
       taxedFromBasePrice(
         +value,
-        this.unitServiceFeePolicy?.type === CrudApi.ServiceFeeType.included
+        this.unitServiceFeePolicy?.type === ServiceFeeType.included
           ? +this.unitServiceFeePolicy.percentage
           : 0,
       ),
@@ -138,12 +140,12 @@ export class FormProductAvailabilitiesComponent implements OnInit {
   public menuPriceChanged(value: number, idx: number) {
     const grossPrice = baseFromTaxedPrice(
       +value,
-      this.unitServiceFeePolicy?.type === CrudApi.ServiceFeeType.included
+      this.unitServiceFeePolicy?.type === ServiceFeeType.included
         ? +this.unitServiceFeePolicy.percentage
         : 0,
     );
 
-    (this.availabilityFormArray as FormArray).controls[idx].patchValue({
+    (this.availabilityFormArray as UntypedFormArray).controls[idx].patchValue({
       price: grossPrice,
     });
 
@@ -155,13 +157,13 @@ export class FormProductAvailabilitiesComponent implements OnInit {
   public netPriceChanged(value: number, idx: number) {
     const grossPrice = taxedFromBasePrice(+value, this.productTax || 0);
 
-    (this.availabilityFormArray as FormArray).controls[idx].patchValue({
+    (this.availabilityFormArray as UntypedFormArray).controls[idx].patchValue({
       price: grossPrice,
     });
     this.menuPriceFormArray.controls[idx].patchValue(
       taxedFromBasePrice(
         grossPrice,
-        this.unitServiceFeePolicy?.type === CrudApi.ServiceFeeType.included
+        this.unitServiceFeePolicy?.type === ServiceFeeType.included
           ? +this.unitServiceFeePolicy.percentage
           : 0,
       ),

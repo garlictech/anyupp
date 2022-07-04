@@ -1,7 +1,11 @@
 import { v1 as uuidV1 } from 'uuid';
 
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import {
   dailyScheduleBothEmptyOrProperlyFilledValidator,
   multiLangValidator,
@@ -14,9 +18,9 @@ import { EVariantAvailabilityType } from '@bgap/shared/types';
   providedIn: 'root',
 })
 export class FormsService {
-  constructor(private _formBuilder: FormBuilder) {}
+  constructor(private _formBuilder: UntypedFormBuilder) {}
 
-  public createProductVariantFormGroup = (): FormGroup => {
+  public createProductVariantFormGroup = (): UntypedFormGroup => {
     const groupConfig = {
       id: [uuidV1()],
       variantName: this._formBuilder.group(
@@ -43,7 +47,7 @@ export class FormsService {
     return this._formBuilder.group(groupConfig);
   };
 
-  public createProductAvailabilityFormGroup = (): FormGroup =>
+  public createProductAvailabilityFormGroup = (): UntypedFormGroup =>
     this._formBuilder.group(
       {
         type: [EVariantAvailabilityType.ALWAYS, [Validators.required]],
@@ -56,7 +60,7 @@ export class FormsService {
       { validators: productAvailabilityValidator },
     );
 
-  public createCustomDailyScheduleFormGroup = (): FormGroup =>
+  public createCustomDailyScheduleFormGroup = (): UntypedFormGroup =>
     this._formBuilder.group(
       {
         date: ['', [Validators.required]],
@@ -68,21 +72,21 @@ export class FormsService {
       },
     );
 
-  public createLaneFormGroup = (): FormGroup =>
+  public createLaneFormGroup = (): UntypedFormGroup =>
     this._formBuilder.group({
       id: [uuidV1()],
       name: ['', [Validators.required]],
       color: ['#ffffff', [Validators.required]],
     });
 
-  public createProductConfigSetFormGroup = (): FormGroup =>
+  public createProductConfigSetFormGroup = (): UntypedFormGroup =>
     this._formBuilder.group({
       productSetId: [''],
       items: this._formBuilder.array([]),
       position: [0],
     });
 
-  public createProductConfigSetItemFormGroup = (): FormGroup =>
+  public createProductConfigSetItemFormGroup = (): UntypedFormGroup =>
     this._formBuilder.group({
       productComponentId: ['', Validators.required],
       position: [0, Validators.required],
@@ -91,7 +95,7 @@ export class FormsService {
       netPackagingFee: [0],
     });
 
-  public createRkeeperFormGroup = (): FormGroup =>
+  public createRkeeperFormGroup = (): UntypedFormGroup =>
     this._formBuilder.group({
       endpointUri: [{ value: '', disabled: true }, Validators.required],
       rkeeperUsername: [{ value: '', disabled: true }, Validators.required],
@@ -103,7 +107,7 @@ export class FormsService {
       ],
     });
 
-  public createRatingPolicyFormGroup = (): FormGroup =>
+  public createRatingPolicyFormGroup = (): UntypedFormGroup =>
     this._formBuilder.group({
       key: [''],
       title: this._formBuilder.group({
@@ -119,7 +123,7 @@ export class FormsService {
       ratings: this._formBuilder.array([]),
     });
 
-  public createTipPolicyFormGroup = (): FormGroup =>
+  public createTipPolicyFormGroup = (): UntypedFormGroup =>
     this._formBuilder.group({
       title: this._formBuilder.group({
         hu: [''],
@@ -145,7 +149,7 @@ export class FormsService {
     return percents.filter(v => v !== removable).sort();
   };
 
-  public createServiceFeePolicyFormGroup = (): FormGroup =>
+  public createServiceFeePolicyFormGroup = (): UntypedFormGroup =>
     this._formBuilder.group({
       type: [{ value: '', disabled: true }, Validators.required],
       percentage: [{ value: '', disabled: true }, Validators.required],

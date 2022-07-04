@@ -5,7 +5,7 @@
     "module": "commonjs",
     "types": ["jest", "node", "googlemaps"],
     "allowJs": true,
-    "target": "es2017",
+    "target": "es2020",
     "downlevelIteration": true
   },
   "files": ["src/test-setup.ts"],

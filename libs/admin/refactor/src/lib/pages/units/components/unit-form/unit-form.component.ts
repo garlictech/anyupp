@@ -9,7 +9,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { UntypedFormArray } from '@angular/forms';
 import { PaymentMode, PosType, Unit } from '@bgap/domain';
 import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -91,7 +91,7 @@ export class UnitFormComponent
 
       this._unitFormService.patchRatingPolicies(
         this.unit.ratingPolicies || [],
-        this.dialogForm?.controls['ratingPolicies'] as FormArray,
+        this.dialogForm?.controls['ratingPolicies'] as UntypedFormArray,
       );
 
       // Parse openingHours object to temp array
@@ -104,7 +104,7 @@ export class UnitFormComponent
               this._formsService.createCustomDailyScheduleFormGroup();
             dayGroup.patchValue(day);
 
-            (<FormArray>(
+            (<UntypedFormArray>(
               this.dialogForm?.get('openingHours')?.get('custom')
             )).push(dayGroup);
           }
@@ -116,7 +116,7 @@ export class UnitFormComponent
         if (lane) {
           const laneGroup = this._formsService.createLaneFormGroup();
           laneGroup.patchValue(lane);
-          (<FormArray>this.dialogForm?.get('lanes')).push(laneGroup);
+          (<UntypedFormArray>this.dialogForm?.get('lanes')).push(laneGroup);
         }
       });
     } else {

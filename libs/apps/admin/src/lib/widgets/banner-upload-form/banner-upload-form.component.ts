@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { AbsUnitBannerService, bannerType, ImageAsset } from '@bgap/domain';
 
 import { ToggleButtonOptions } from '../../ui-widgets/toggle-button-ui/toggle-button-ui.component';
@@ -34,8 +38,8 @@ export class BannerUploadFormComponent implements OnInit {
     untoggledText: 'common.disallowed',
   };
 
-  bannerUploadForm = new FormGroup({
-    fileUpload: new FormControl(null, [
+  bannerUploadForm = new UntypedFormGroup({
+    fileUpload: new UntypedFormControl(null, [
       Validators.required,
       fileUploadValidator({
         allowedMimePrefixes: ['image/'],
@@ -52,8 +56,8 @@ export class BannerUploadFormComponent implements OnInit {
 
   constructor(private _bannerService: AbsUnitBannerService) {}
 
-  get fileUpload(): FormControl {
-    return this.bannerUploadForm.get('fileUpload') as FormControl;
+  get fileUpload(): UntypedFormControl {
+    return this.bannerUploadForm.get('fileUpload') as UntypedFormControl;
   }
 
   get operationIsPending(): boolean {

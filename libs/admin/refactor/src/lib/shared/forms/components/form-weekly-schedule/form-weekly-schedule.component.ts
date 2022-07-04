@@ -4,7 +4,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { FormArray, FormControl } from '@angular/forms';
+import { UntypedFormArray, UntypedFormControl } from '@angular/forms';
 
 import { FormsService } from '../../services/forms/forms.service';
 
@@ -14,7 +14,7 @@ import { FormsService } from '../../services/forms/forms.service';
   templateUrl: './form-weekly-schedule.component.html',
 })
 export class FormWeeklyScheduleComponent {
-  @Input() scheduleControl?: FormControl | null;
+  @Input() scheduleControl?: UntypedFormControl | null;
   public dayKeys: string[];
 
   constructor(
@@ -25,7 +25,7 @@ export class FormWeeklyScheduleComponent {
   }
 
   public addCustomDate() {
-    (<FormArray>this.scheduleControl?.get('custom')).push(
+    (<UntypedFormArray>this.scheduleControl?.get('custom')).push(
       this._formsService.createCustomDailyScheduleFormGroup(),
     );
 
@@ -33,6 +33,6 @@ export class FormWeeklyScheduleComponent {
   }
 
   public removeCustomDate(idx: number) {
-    (<FormArray>this.scheduleControl?.get('custom')).removeAt(idx);
+    (<UntypedFormArray>this.scheduleControl?.get('custom')).removeAt(idx);
   }
 }

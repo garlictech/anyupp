@@ -8,7 +8,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { FormArray } from '@angular/forms';
+import { UntypedFormArray } from '@angular/forms';
 import {
   AdminUserSettings,
   ProductCategory,
@@ -103,12 +103,12 @@ export class ProductExtendFormComponent
 
       this._productFormService.patchExtendedProductVariants(
         this.product.variants || [],
-        this.dialogForm?.controls['variants'] as FormArray,
+        this.dialogForm?.controls['variants'] as UntypedFormArray,
       );
 
       this._productFormService.patchConfigSet(
         this.product.configSets || [],
-        this.dialogForm?.controls['configSets'] as FormArray,
+        this.dialogForm?.controls['configSets'] as UntypedFormArray,
       );
     } else {
       this.dialogForm.controls['isVisible'].patchValue(true);

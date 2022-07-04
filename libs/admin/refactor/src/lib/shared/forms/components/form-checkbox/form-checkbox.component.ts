@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -8,6 +8,6 @@ import { FormControl } from '@angular/forms';
 })
 export class FormCheckboxComponent {
   @Input() caption = ''; // Language key!!!
-  @Input() control?: FormControl;
+  @Input() control?: UntypedFormControl;
   @Input() inputId = '';
 }

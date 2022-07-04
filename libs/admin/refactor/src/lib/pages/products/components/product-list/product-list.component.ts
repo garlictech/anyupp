@@ -14,7 +14,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { AdminUser, ChainProduct, Group } from '@bgap/domain';
 import { EProductLevel, ProductOrderChangeEvent } from '@bgap/shared/types';
 import {
@@ -67,7 +67,7 @@ export class ProductListComponent implements OnInit {
   public eProductLevel = EProductLevel;
   public selectedProductLevel: EProductLevel;
   public loggedUser$: Observable<AdminUser | undefined>;
-  public searchControl: FormControl;
+  public searchControl: UntypedFormControl;
 
   private _sortedUnitProductIds: string[] = [];
 
@@ -78,7 +78,7 @@ export class ProductListComponent implements OnInit {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.selectedProductLevel = EProductLevel.CHAIN;
-    this.searchControl = new FormControl('');
+    this.searchControl = new UntypedFormControl('');
 
     this.loggedUser$ = this._store
       .select(loggedUserSelectors.getLoggedUser)

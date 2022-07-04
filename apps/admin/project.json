@@ -5,7 +5,6 @@
       "style": "scss"
     }
   },
-  "root": "apps/admin",
   "sourceRoot": "apps/admin/src",
   "prefix": "bgap",
   "targets": {
@@ -26,9 +25,11 @@
         ],
         "allowedCommonJsDependencies": [
           "@angular/common/locales",
-          "@aws-crypto/crc32",
-          "@aws-crypto/sha256-browser",
           "@aws-crypto/sha256-js",
+          "@aws-crypto/sha256-browser",
+          "@aws-crypto/sha1-browser",
+          "@aws-crypto/crc32",
+          "@aws-crypto/crc32c",
           "aws-appsync",
           "axios",
           "buffer",
@@ -45,10 +46,15 @@
           "uuid",
           "ulid",
           "zen-observable",
-          "@aws-amplify/core",
-          "@aws-amplify/auth",
+          "@aws-amplify",
           "xlsx",
-          "qrcode"
+          "qrcode",
+          "zen-push",
+          "camelcase-keys",
+          "entities",
+          "core-js",
+          "raf",
+          "fp-ts-rxjs"
         ],
         "vendorChunk": true,
         "extractLicenses": false,

@@ -2,7 +2,11 @@ import { EMPTY, iif } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormBuilder,
+  Validators,
+} from '@angular/forms';
 import { Maybe } from '@bgap/crud-gql/api';
 import {
   CreateUnitInput,
@@ -46,7 +50,7 @@ import { UnitCollectionService } from '../../../store/units';
 @Injectable({ providedIn: 'root' })
 export class UnitFormService {
   constructor(
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _formsService: FormsService,
     private _store: Store,
     private _crudSdk: CrudSdkService,
@@ -185,7 +189,7 @@ export class UnitFormService {
 
   public patchRatingPolicies(
     ratingPolicyValues: Maybe<RatingPolicy>[],
-    ratingPoliciesArray: FormArray,
+    ratingPoliciesArray: UntypedFormArray,
   ) {
     (ratingPolicyValues || []).forEach(ratingPolicyValue => {
       const ratingPolicyGroup =

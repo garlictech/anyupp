@@ -4,7 +4,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { AbstractControl, FormArray } from '@angular/forms';
+import { AbstractControl, UntypedFormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { EProductLevel } from '@bgap/shared/types';
@@ -16,7 +16,7 @@ import { Availability, ProductVariant, ServiceFeePolicy } from '@bgap/domain';
   templateUrl: './form-product-variants.component.html',
 })
 export class FormProductVariantsComponent {
-  @Input() variantFormArray?: FormArray;
+  @Input() variantFormArray?: UntypedFormArray;
   @Input() allowAddVariant: boolean;
   @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
@@ -33,7 +33,7 @@ export class FormProductVariantsComponent {
   }
 
   public addVariant() {
-    (<FormArray>this.variantFormArray)?.push(
+    (<UntypedFormArray>this.variantFormArray)?.push(
       this._formsService.createProductVariantFormGroup(),
     );
 
@@ -56,10 +56,10 @@ export class FormProductVariantsComponent {
 
       arr.sort(customNumberCompare('position'));
 
-      (<FormArray>this.variantFormArray)?.controls.forEach(
+      (<UntypedFormArray>this.variantFormArray)?.controls.forEach(
         (g: AbstractControl, i: number) => {
           g.patchValue(arr[i]);
-          (g.get('availabilities') as FormArray).clear();
+          (g.get('availabilities') as UntypedFormArray).clear();
 
           (arr[i]?.availabilities || []).forEach(
             (availability: Availability) => {
@@ -67,7 +67,9 @@ export class FormProductVariantsComponent {
                 this._formsService.createProductAvailabilityFormGroup();
               availabilityGroup.patchValue(availability);
 
-              (g.get('availabilities') as FormArray).push(availabilityGroup);
+              (g.get('availabilities') as UntypedFormArray).push(
+                availabilityGroup,
+              );
             },
           );
         },

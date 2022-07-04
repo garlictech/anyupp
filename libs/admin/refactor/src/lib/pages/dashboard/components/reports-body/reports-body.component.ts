@@ -7,7 +7,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { isRejectedOrder, orderHasIncome } from '@bgap/crud-gql/api';
 import { Group, Order, PaymentStatus, Unit } from '@bgap/domain';
 import { KeyValueObject, ProducMixArrayItem } from '@bgap/shared/types';
@@ -32,7 +32,7 @@ import { unitsSelectors } from '../../../../store/units';
   styleUrls: ['./reports-body.component.scss'],
 })
 export class ReportsBodyComponent implements OnInit {
-  public dateFormControl: FormControl;
+  public dateFormControl: UntypedFormControl;
   public incomeOrders$: BehaviorSubject<Order[]> = new BehaviorSubject<Order[]>(
     [],
   );
@@ -56,7 +56,7 @@ export class ReportsBodyComponent implements OnInit {
     private _changeDetectorRef: ChangeDetectorRef,
     private _orderHistoryCollectionService: OrderHistoryCollectionService,
   ) {
-    this.dateFormControl = new FormControl();
+    this.dateFormControl = new UntypedFormControl();
 
     this._store
       .pipe(
@@ -80,7 +80,7 @@ export class ReportsBodyComponent implements OnInit {
       .select(dashboardSelectors.getSelectedHistoryDate)
       .pipe(filterNullish(), take(1), untilDestroyed(this))
       .subscribe(historyDate => {
-        this.dateFormControl = new FormControl(
+        this.dateFormControl = new UntypedFormControl(
           new Date(historyDate).toISOString().slice(0, 10),
         );
 

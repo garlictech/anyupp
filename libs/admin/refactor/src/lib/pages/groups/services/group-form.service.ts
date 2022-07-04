@@ -2,7 +2,7 @@ import { iif } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { CreateGroupInput, UpdateGroupInput } from '@bgap/domain';
 import { Store } from '@ngrx/store';
 
@@ -18,7 +18,7 @@ import { GroupCollectionService } from '../../../store/groups';
 export class GroupFormService {
   constructor(
     private _store: Store,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     private _groupCollectionService: GroupCollectionService,
   ) {}
 

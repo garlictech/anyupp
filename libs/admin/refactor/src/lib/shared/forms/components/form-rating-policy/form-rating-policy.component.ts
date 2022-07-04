@@ -8,7 +8,11 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { FormArray, FormControl, Validators } from '@angular/forms';
+import {
+  UntypedFormArray,
+  UntypedFormControl,
+  Validators,
+} from '@angular/forms';
 import { RATING_DEFINITIONS } from '../../../../shared/utils';
 
 import { KeyValue } from '@bgap/shared/types';
@@ -25,8 +29,8 @@ import { RatingPolicy } from '@bgap/domain';
   templateUrl: './form-rating-policy.component.html',
 })
 export class FormRatingPolicyComponent implements OnInit {
-  @Input() ratingPoliciesFormArray?: FormArray;
-  public ratingPolicyControl: FormControl = new FormControl(
+  @Input() ratingPoliciesFormArray?: UntypedFormArray;
+  public ratingPolicyControl: UntypedFormControl = new UntypedFormControl(
     '',
     Validators.required,
   );
@@ -70,7 +74,7 @@ export class FormRatingPolicyComponent implements OnInit {
   }
 
   public removePolicyFromList(idx: number) {
-    (<FormArray>this.ratingPoliciesFormArray)?.removeAt(idx);
+    (<UntypedFormArray>this.ratingPoliciesFormArray)?.removeAt(idx);
     this._changeDetectorRef.detectChanges();
   }
 }
