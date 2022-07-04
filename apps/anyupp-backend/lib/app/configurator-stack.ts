@@ -14,7 +14,11 @@ import path from 'path';
 
 export interface ConfiguratorStackProps extends StackProps {
   consumerUserPoolId: string;
+<<<<<<< HEAD
   appSynclogPublisherRoleArn: string;
+=======
+  appSynclogPublisherRole: iam.Role;
+>>>>>>> chore(infra): add role for appsync and set logging to cloudwatch
 }
 
 export class ConfiguratorStack extends sst.Stack {
