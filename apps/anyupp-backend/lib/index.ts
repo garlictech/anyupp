@@ -15,6 +15,7 @@ import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
 import { WafStack } from './app/waf-stack';
+import { CrudApiConfig } from '@bgap/crud-gql/api';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
@@ -132,7 +133,9 @@ export class AnyUppStack extends Stack {
       rootDomain,
     });
 
-    new WafStack(scope, 'waf', {});
+    new WafStack(scope, 'waf', {
+      graphqlApiId: CrudApiConfig.appsyncApiId,
+    });
   }
 }
 
