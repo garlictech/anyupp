@@ -26,7 +26,7 @@ export class AnyuppCommonStack extends Stack {
       clusterName: anyuppFargateClusterName,
     });
 
-    // The fargete part
+    // The fargate part
 
     new ssm.StringParameter(this, 'AnyuppVpcIdParam', {
       allowedPattern: '.*',

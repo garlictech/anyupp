@@ -1,5 +1,5 @@
 import * as sst from '@serverless-stack/resources';
-import { StackProps } from '@serverless-stack/resources';
+import { Stack, StackProps } from '@serverless-stack/resources';
 import { WebAclWithRules } from '../shared/webacl-with-rules';
 
 export class WafStack extends sst.Stack {
@@ -10,7 +10,7 @@ export class WafStack extends sst.Stack {
 
     new WebAclWithRules(this, 'frontendAcl', {
       namePostfix: '',
-      region: 'us-east-1',
+      region: Stack.of(this).region,
       aclType: 'CLOUDFRONT',
     });
   }
