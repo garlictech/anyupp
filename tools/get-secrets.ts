@@ -1,4 +1,4 @@
-import * as AWS from 'aws-sdk';
+import { SecretsManager } from 'aws-sdk';
 const region = 'eu-west-1';
 import { pipe } from 'fp-ts/lib/function';
 import { tap, isEmpty } from 'lodash/fp';
@@ -20,7 +20,7 @@ const targetDir = `${__dirname}/../libs/shared/config/src/lib/generated`;
 const androidKeyStoreTargetFile = `${__dirname}/../apps/anyupp-mobile/android/anyupp-keystore.jks`;
 const androidKeyPropertiesTargetFile = `${__dirname}/../apps/anyupp-mobile/android/key.properties`;
 
-const client = new AWS.SecretsManager({
+const client = new SecretsManager({
   region: region,
 });
 

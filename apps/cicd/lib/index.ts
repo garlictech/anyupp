@@ -19,12 +19,6 @@ export default function main(app: App): void {
     chatbot: slackChannel.chatbot,
   };
 
-  if (app.stage !== 'prod') {
-    createStacksForDevStages();
-  } else {
-    createStacksForProdStage();
-  }
-
   function createStacksForDevStages() {
     const pipelineSecretsManagerArn =
       'arn:aws:secretsmanager:eu-west-1:568276182587:secret:codebuild-Z12nwS';
@@ -153,5 +147,11 @@ export default function main(app: App): void {
       secretsManager,
       ...commonConfig,
     });
+  }
+
+  if (app.stage !== 'prod') {
+    createStacksForDevStages();
+  } else {
+    createStacksForProdStage();
   }
 }
