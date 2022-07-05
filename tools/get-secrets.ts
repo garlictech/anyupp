@@ -1,8 +1,8 @@
 import * as AWS from 'aws-sdk';
 const region = 'eu-west-1';
 import { pipe } from 'fp-ts/lib/function';
-import * as fp from 'lodash/fp';
-import * as fs from 'fs';
+import { tap, isEmpty } from 'lodash/fp';
+import { writeFileSync, mkdirSync } from 'fs';
 
 const project = 'anyupp';
 const environment = process.argv[2];
@@ -24,7 +24,7 @@ const client = new AWS.SecretsManager({
   region: region,
 });
 
-fs.mkdirSync(targetDir, { recursive: true });
+mkdirSync(targetDir, { recursive: true });
 
 client.getSecretValue({ SecretId: secretName }, (err, data) => {
   if (err) {
@@ -32,26 +32,26 @@ client.getSecretValue({ SecretId: secretName }, (err, data) => {
   } else {
     pipe(
       data.SecretString as string,
-      fp.tap(secret => {
-        if (fp.isEmpty(secret)) {
+      tap(secret => {
+        if (isEmpty(secret)) {
           throw new Error('Invalid secred');
         }
       }),
       JSON.parse,
-      fp.tap(secret => {
+      tap(secret => {
         // Android keystore binary
-        fs.writeFileSync(androidKeyStoreTargetFile, secret.androidKeyStore, {
+        writeFileSync(androidKeyStoreTargetFile, secret.androidKeyStore, {
           encoding: 'base64',
         });
 
         // Android keystore binary
-        fs.writeFileSync(androidKeyStoreTargetFile, secret.androidKeyStore, {
+        writeFileSync(androidKeyStoreTargetFile, secret.androidKeyStore, {
           encoding: 'base64',
         });
         console.log(`Secret config written to ${androidKeyStoreTargetFile}`);
 
         // Android key properties (key alias, password, path etc...)
-        fs.writeFileSync(
+        writeFileSync(
           androidKeyPropertiesTargetFile,
           secret.androidKeyProperties,
           { encoding: 'base64' },

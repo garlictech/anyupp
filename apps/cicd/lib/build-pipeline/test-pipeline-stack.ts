@@ -1,10 +1,10 @@
-import * as sst from '@serverless-stack/resources';
-import * as utils from './utils';
+import { App, Stack } from '@serverless-stack/resources';
+import { createCommonDevPipeline, PipelineStackProps } from './utils';
 
-export class TestBuildPipelineStack extends sst.Stack {
-  constructor(app: sst.App, id: string, props: utils.PipelineStackProps) {
+export class TestBuildPipelineStack extends Stack {
+  constructor(app: App, id: string, props: PipelineStackProps) {
     super(app, id, props);
 
-    utils.createCommonDevPipeline(this, 'test', props);
+    createCommonDevPipeline(this, 'test', props);
   }
 }
