@@ -1,10 +1,10 @@
-import * as sst from '@serverless-stack/resources';
+import { App } from '@serverless-stack/resources';
 import { Stack, StackProps } from '@serverless-stack/resources';
 import { WebAclWithRules } from '../shared/webacl-with-rules';
 
-export class WafStack extends sst.Stack {
+export class WafStack extends Stack {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  constructor(scope: sst.App, id: string, props?: StackProps) {
+  constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id);
     props?.env;
 
