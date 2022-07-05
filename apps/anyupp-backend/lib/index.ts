@@ -14,8 +14,9 @@ import { RKeeperStack } from './app/rkeeper-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
-import { WafStack } from './app/waf-stack';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
+import { OpenSearchCustomStack } from './app/opensearch-custom-stack';
+import { WafStack } from './app/waf-stack';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
@@ -131,6 +132,10 @@ export class AnyUppStack extends Stack {
       zone,
       certificate,
       rootDomain,
+    });
+
+    new OpenSearchCustomStack(scope, 'opensearch-custom', {
+      openSearchArn: CrudApiConfig.openSearchArn,
     });
 
     new WafStack(scope, 'waf', {
