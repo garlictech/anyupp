@@ -96,6 +96,7 @@ exports[`ProductFormService createGroupProduct$ should create group product 1`] 
 Object {
   "data": Object {
     "chainId": "chainId_",
+    "chainProduct": null,
     "configSets": null,
     "createdAt": Any<String>,
     "deletedAt": null,
@@ -223,6 +224,7 @@ Object {
     "dirty": null,
     "externalId": null,
     "groupId": "groupId_",
+    "groupProduct": null,
     "id": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
     "isVisible": true,
     "laneId": "laneId_",
@@ -499,6 +501,7 @@ exports[`ProductFormService updateGroupProduct$ should update group product 1`] 
 Object {
   "data": Object {
     "chainId": "chainId_",
+    "chainProduct": null,
     "configSets": null,
     "createdAt": Any<String>,
     "deletedAt": null,
@@ -584,6 +587,7 @@ Object {
     "dirty": null,
     "externalId": null,
     "groupId": "groupId_",
+    "groupProduct": null,
     "id": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
     "isVisible": false,
     "laneId": "laneId_",
