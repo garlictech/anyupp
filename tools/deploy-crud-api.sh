@@ -28,7 +28,7 @@ OS_ARN=$(echo $CF_EXPORTS | \
   jq ".Value")
 
 echo "OS domain endpoint: ${OS_ENDPOINT}"
-echo "OS domain ARN: ${OS_ARN}"  
+echo "OS domain ARN: ${OS_ARN}"
 
 CRUD_CONFIG_FILE=../../libs/crud-gql/api/src/lib/generated/crud-api-config.ts
 
@@ -38,8 +38,7 @@ echo "
 export const CrudApiConfig = {
   appId: '${APPID}',
   appsyncApiId: '${API_ID}',
-  openSearchEndpoint: ${OS_ENDPOINT},
-  openSearchArn: ${OS_ARN}
+  openSearchEndpoint: ${OS_ENDPOINT}
 }
 " > ${CRUD_CONFIG_FILE}
 

@@ -123,7 +123,7 @@ OS_ARN=$(echo $CF_EXPORTS | \
   jq ".Value")
 
 echo "OS domain endpoint: ${OS_ENDPOINT}"
-echo "OS domain ARN: ${OS_ARN}"  
+echo "OS domain ARN: ${OS_ARN}"
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
@@ -138,8 +138,7 @@ echo "
 export const CrudApiConfig = {
   appId: '${APPID}',
   appsyncApiId: '${API_ID}',
-  openSearchEndpoint: ${OS_ENDPOINT},
-  openSearchArn: ${OS_ARN}
+  openSearchEndpoint: ${OS_ENDPOINT}
 }
 " > ${CRUD_CONFIG_FILE}
 
@@ -154,6 +153,6 @@ mv -f ../../libs/crud-gql/api/src/lib/generated/aws-exports.js ../../libs/crud-g
 # ----------------------------------------------------------
 # Generate global config
 # ----------------------------------------------------------
-pushd ../.. 
+pushd ../..
 yarn ts-node ./tools/fetch-configuration.ts $ENVNAME
 popd
