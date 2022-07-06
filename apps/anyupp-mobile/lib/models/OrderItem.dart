@@ -93,7 +93,7 @@ class OrderItem {
       'statusLog': statusLog.map((x) => x.toJson()).toList(),
       'variantName': variantName.toJson(),
       'image': image,
-      'allergens': allergens,
+      'allergens': allergens?.map((x) => enumToString(x)).toList(),
       'productType': enumToString(productType),
       'configSets': configSets?.map((x) => x.toJson()).toList(),
       'netPackagingFee': netPackagingFee,

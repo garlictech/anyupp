@@ -24,7 +24,6 @@ export 'models/OrderRating.dart';
 export 'models/PaymentMode.dart';
 export 'models/Place.dart';
 export 'models/Price.dart';
-export 'models/Price.dart';
 export 'models/PriceShown.dart';
 export 'models/ProductCategory.dart';
 export 'models/ProductVariant.dart';

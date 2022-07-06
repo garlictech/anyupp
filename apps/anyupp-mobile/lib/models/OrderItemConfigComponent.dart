@@ -8,27 +8,29 @@ class OrderItemConfigComponent {
   final double price;
   final LocalizedItem name;
   final List<Allergen>? allergens;
+  final double? netPackagingFee;
   final String? externalId;
   OrderItemConfigComponent({
     required this.productComponentId,
     required this.price,
     required this.name,
     this.allergens,
+    this.netPackagingFee,
     this.externalId,
   });
 
-  OrderItemConfigComponent copyWith({
-    String? productComponentId,
-    double? price,
-    LocalizedItem? name,
-    List<Allergen>? allergens,
-    String? externalId,
-  }) {
+  OrderItemConfigComponent copyWith(
+      {String? productComponentId,
+      double? price,
+      LocalizedItem? name,
+      List<Allergen>? allergens,
+      double? netPackagingFee}) {
     return OrderItemConfigComponent(
       productComponentId: productComponentId ?? this.productComponentId,
       price: price ?? this.price,
       name: name ?? this.name,
       allergens: allergens ?? this.allergens,
+      netPackagingFee: netPackagingFee ?? this.netPackagingFee,
       externalId: externalId ?? this.externalId,
     );
   }
@@ -39,6 +41,7 @@ class OrderItemConfigComponent {
       'price': price,
       'name': name.toJson(),
       'allergens': allergens?.map((x) => enumToString(x)).toList(),
+      'netPackagingFee': netPackagingFee,
       'externalId': externalId,
     };
   }
@@ -47,6 +50,7 @@ class OrderItemConfigComponent {
     return OrderItemConfigComponent(
       productComponentId: map['productComponentId'],
       price: map['price'],
+      netPackagingFee: map['netPackagingFee'],
       name: LocalizedItem.fromJson(map['name']),
       allergens: map['allergens'] != null
           ? List<Allergen>.from(
@@ -58,7 +62,7 @@ class OrderItemConfigComponent {
 
   @override
   String toString() {
-    return 'OrderItemConfigComponent(productComponentId: $productComponentId, price: $price, name: $name, allergens: $allergens, externalId: $externalId)';
+    return 'OrderItemConfigComponent(productComponentId: $productComponentId, price: $price, netPackagingFee: $netPackagingFee, name: $name, externalId: $externalId, allergens: $allergens)';
   }
 
   @override
@@ -67,6 +71,7 @@ class OrderItemConfigComponent {
 
     return other is OrderItemConfigComponent &&
         other.productComponentId == productComponentId &&
+        other.netPackagingFee == netPackagingFee &&
         other.price == price &&
         other.name == name &&
         other.externalId == externalId &&
@@ -77,8 +82,9 @@ class OrderItemConfigComponent {
   int get hashCode {
     return productComponentId.hashCode ^
         price.hashCode ^
+        netPackagingFee.hashCode ^
         name.hashCode ^
-        externalId.hashCode ^
-        allergens.hashCode;
+        allergens.hashCode ^
+        externalId.hashCode;
   }
 }

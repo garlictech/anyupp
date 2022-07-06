@@ -1269,7 +1269,7 @@ class OrderDetailsInfoTable extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             primary: false,
-            itemCount: 5,
+            itemCount: 4,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return OrderDetailsInfoTableItem(
@@ -1331,19 +1331,13 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
               : trans(context, 'cart.inPlace').capitalize(),
         );
       case 2:
-        return OrderDetailsInfoTableItemData(
-          icon: Icons.receipt_long_rounded,
-          title: trans(context, 'orders.infos.titles.2'),
-          value: '#${order.orderNum}',
-        );
-      case 3:
         var createdAt = dateFormatter.format(order.createdAt);
         return OrderDetailsInfoTableItemData(
           icon: Icons.event,
           title: trans(context, 'orders.infos.titles.3'),
           value: createdAt,
         );
-      case 4:
+      case 3:
         var createdAt = timeFormatter.format(order.createdAt);
         return OrderDetailsInfoTableItemData(
           icon: Icons.schedule_rounded,

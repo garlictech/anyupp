@@ -151,7 +151,6 @@ query SearchOrderHistory($userId: ID!, $limit: Int, $nextToken: String) {
         created
       }
       createdAt
-      orderNum
       transactionId
       transactionStatus
       updatedAt

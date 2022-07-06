@@ -16,8 +16,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../unit/mock/mock_auth_provider.dart';
 import '../mock/mock_data_faker.dart';
+import '../unit/mock/mock_auth_provider.dart';
 import 'mock/mocks.dart';
 
 GeoUnit _unit = MockGenerator.generateUnit(
@@ -98,9 +98,7 @@ void main() {
     registerFallbackValue(FakeNetworkStatusEvent());
     registerFallbackValue(FakeConfigsetState());
     registerFallbackValue(FakeConfigsetEvent());
-  });
 
-  setUp(() {
     GoogleFonts.config.allowRuntimeFetching = false;
     MockThemeBloc themeBloc = MockThemeBloc();
 
@@ -175,6 +173,39 @@ void main() {
       expect(find.byType(ProductDetailsScreen), findsOneWidget);
       expect(find.byType(ProductDetailsWidget), findsOneWidget);
       expect(find.byType(AddToCartPanelWidget), findsOneWidget);
+    });
+  });
+
+  testWidgets('Test Product Details widget', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = Size(1080, 2000);
+
+    await tester.runAsync(() async {
+      GeneratedProduct product = MockGenerator.generateProduct(
+        name: 'Hamburger',
+        variantCount: 1,
+        servingModes: [ServingMode.inPlace],
+      ).copyWith(soldOut: true);
+
+      await tester.pumpWidget(
+        _createBoilerPlateApp(
+          child: ProductDetailsScreen(
+            item: product,
+            unit: _unit,
+            displayState: ProductItemDisplayState.SOLDOUT,
+            servingMode: ServingMode.takeAway,
+          ),
+        ),
+      );
+
+      await tester.pump(Duration(seconds: 5));
+
+      expect(find.byType(ProductDetailsScreen), findsOneWidget);
+      expect(find.byType(ProductDetailsWidget), findsOneWidget);
+      expect(find.byType(AddToCartPanelWidget), findsOneWidget);
+
+      var soldOutText = find.byWidgetPredicate((widget) =>
+          widget is Text && widget.data == 'A termék sajnos elfogyott');
+      expect(soldOutText, findsOneWidget);
     });
   });
 }

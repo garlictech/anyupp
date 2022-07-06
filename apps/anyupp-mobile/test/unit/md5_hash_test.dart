@@ -1,5 +1,3 @@
-// formatPackNumber
-
 import 'package:fa_prev/shared/utils/md5_hash.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../test_logger.dart';

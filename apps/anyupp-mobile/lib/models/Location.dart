@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -33,10 +34,11 @@ class Location {
   }
 
   factory Location.fromJson(Map<String, dynamic> map) {
+    log.e('Location.fromJson=$map');
     return Location(
       id: map['id'],
       lat: map['lat'],
-      lng: map['lng'],
+      lng: map['lng'] ?? map['lon'],
     );
   }
 

@@ -446,6 +446,14 @@ class MockGenerator {
       items: [],
       servingMode: servingMode,
       orderPolicy: OrderPolicy.full,
+      packagingFeeTaxPercentage: 0.0,
+      orderMode: OrderMode.instant,
     );
   }
+
+  static LocalizedItem getLocalizedItem(String text) => LocalizedItem(
+        hu: text,
+        en: text,
+        de: text,
+      );
 }

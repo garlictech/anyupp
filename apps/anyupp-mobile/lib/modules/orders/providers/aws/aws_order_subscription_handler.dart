@@ -149,6 +149,7 @@ class AwsOrderSubscription {
       log.d('_getOrderList().result.data=${result.data}');
       log.d('_getOrderList().result.errors=${result.errors}');
       if (result.hasErrors) {
+        print('_getOrderList().result.errors=${result.errors}');
         throw GraphQLException.fromGraphQLError(
             GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
@@ -174,8 +175,11 @@ class AwsOrderSubscription {
 
       List<Order> results = [];
       for (int i = 0; i < items.length; i++) {
-        results.add(Order.fromJson(items[i]!.toJson()));
+        Order order = Order.fromJson(items[i]!.toJson());
+        print('_getOrderList.order[${order.id}].createdAt=${order.createdAt}');
+        results.add(order);
       }
+      results.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
       log.d('***** _getOrderList().results.length=${results.length}');
       return results;

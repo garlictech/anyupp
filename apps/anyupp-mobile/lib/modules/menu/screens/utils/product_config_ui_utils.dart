@@ -2,6 +2,11 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
+// class ConfigType {
+//   static const String MODIFIER = 'modifier';
+//   static const String EXTRA = 'extras';
+// }
+
 String getModifierItemsTotalPrice(
     GeneratedProductConfigSet modifier, String currency) {
   double price = 0;

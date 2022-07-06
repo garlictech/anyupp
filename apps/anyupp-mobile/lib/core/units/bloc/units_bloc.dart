@@ -32,7 +32,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     emit(UnitsLoading());
     try {
       _userLocation = event.location;
-      _units = await _unitRepository.searchUnitsNearLocation(
+      _units = await _unitRepository.searchUnitsNearRadius(
         event.location,
         radiusInMeter,
       );
@@ -69,7 +69,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
           reasonMessage: 'Cannot access location of the user\'s device',
         ));
       } else {
-        _units = await _unitRepository.searchUnitsNearLocation(
+        _units = await _unitRepository.searchUnitsNearRadius(
           _userLocation!,
           radiusInMeter,
         );

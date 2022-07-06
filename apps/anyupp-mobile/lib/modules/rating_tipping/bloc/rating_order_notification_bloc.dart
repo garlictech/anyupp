@@ -58,7 +58,6 @@ class RatingOrderNotificationBloc
           showDelay: delay,
         ));
         await prefs.setBool('rating_schedule_${order.id}', true);
-        ;
       }
     });
 

@@ -1,5 +1,6 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
 import 'package:fa_prev/shared/locale/locale.dart';
@@ -52,51 +53,22 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   Future<void> setButton() async {
-    OrderItem? orderItem = await getOrderItem();
-    if (orderItem != null) {
-      BlocProvider.of<ConfigsetBloc>(context).add(ConfigsetUpdatedEvent(
-          orderItem: orderItem,
-          unit: widget.unit,
-          totalPrice: _modifierTotalPrice));
-    }
-  }
-
-  Future<OrderItem?> getOrderItem() async {
     User? user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
-    return OrderItem(
-      productType: widget.product.productType,
-      productId: widget.product.id,
-      variantId: _productVariant.id!,
-      image: widget.product.image,
-      priceShown: PriceShown(
-        currency: widget.unit.currency,
-        pricePerUnit: _productVariant.price,
-        priceSum: _productVariant.price,
-        tax: 0,
-        taxSum: 0,
-      ),
-      sumPriceShown: PriceShown(
-        currency: widget.unit.currency,
-        pricePerUnit: _productVariant.price,
-        priceSum: _productVariant.price,
-        tax: 0,
-        taxSum: 0,
-      ),
-      allergens: widget.product.allergens,
-      productName: widget.product.name,
-      variantName: _productVariant.variantName,
-      // generatedProductConfigSet: widget.product.,
-      statusLog: [
-        StatusLog(
-          userId: user!.id,
-          status: OrderStatus.none,
-          ts: 0,
-        ),
-      ],
-      quantity: 1,
-      netPackagingFee: _productVariant.netPackagingFee,
-      selectedConfigMap: getSelectedComponentMap(),
-    );
+    OrderItem orderItem = getIt<CartRepository>()
+        .getOrderItem(
+          user!.id,
+          widget.unit,
+          widget.product,
+          _productVariant,
+        )
+        .copyWith(
+          selectedConfigMap: getSelectedComponentMap(),
+        );
+
+    BlocProvider.of<ConfigsetBloc>(context).add(ConfigsetUpdatedEvent(
+        orderItem: orderItem,
+        unit: widget.unit,
+        totalPrice: _modifierTotalPrice));
   }
 
   @override

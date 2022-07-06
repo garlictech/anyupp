@@ -5,6 +5,7 @@ import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:fa_prev/modules/cart/utils/cart_to_order_calculations.dart';
 import 'package:fa_prev/modules/login/login.dart';
 import 'package:fa_prev/shared/auth/auth.dart';
 import 'package:fa_prev/shared/utils/md5_hash.dart';
@@ -20,7 +21,7 @@ class CartRepository implements ICartProvider {
 
   Future<Cart?> addProductToCart(
       GeoUnit unit, OrderItem item, ServingMode servingMode) async {
-    Cart? _cart = await _cartProvider.getCurrentCart(unit.id);
+    Cart? cart = await _cartProvider.getCurrentCart(unit.id);
     User? user = await _authProvider.getAuthenticatedUserProfile();
     if (user == null) {
       throw LoginException(
@@ -29,89 +30,97 @@ class CartRepository implements ICartProvider {
         message: 'User not logged in. getAuthenticatedUserProfile() is null',
       );
     }
-    if (_cart == null || _cart.items.isEmpty) {
-      _cart = Cart(
+    if (cart == null || cart.items.isEmpty) {
+      cart = Cart(
+        version: 1,
         userId: user.id,
         unitId: unit.id,
         guestLabel: generateHash(user.id),
         servingMode: servingMode,
+        orderMode: OrderMode.instant,
+        packagingFeeTaxPercentage: unit.packagingTax,
         place: await getPlacePref(unit.id) ??
             Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
-        items: [
-          item.copyWith(quantity: 0),
-        ],
         orderPolicy: unit.orderPolicy,
         paymentMode: PaymentMode(
           method: PaymentMethod.cash,
           type: PaymentType.cash,
         ),
+        hasRated: false,
+        ratingPolicies: unit.ratingPolicies,
+        serviceFeePolicy: unit.serviceFeePolicy,
+        soldOutVisibilityPolicy: unit.soldOutVisibilityPolicy,
+        tipPolicy: unit.tipPolicy,
+        items: [
+          item.copyWith(quantity: 0),
+        ],
       );
     }
 
-    int index = _cart.items.indexWhere((order) =>
+    int index = cart.items.indexWhere((order) =>
         order.productId == item.productId &&
         order.variantId == item.variantId &&
         DeepCollectionEquality()
             .equals(order.getConfigIdMap(), item.getConfigIdMap()));
     if (index != -1) {
-      OrderItem existingOrder = _cart.items[index]
-          .copyWith(quantity: _cart.items[index].quantity + item.quantity);
-      List<OrderItem> items = List<OrderItem>.from(_cart.items);
+      OrderItem existingOrder = cart.items[index]
+          .copyWith(quantity: cart.items[index].quantity + item.quantity);
+      List<OrderItem> items = List<OrderItem>.from(cart.items);
       items[index] = existingOrder;
-      _cart = _cart.copyWith(items: items);
+      cart = cart.copyWith(items: items);
     } else {
-      List<OrderItem> items = List<OrderItem>.from(_cart.items);
+      List<OrderItem> items = List<OrderItem>.from(cart.items);
       items.add(item);
-      _cart = _cart.copyWith(items: items);
+      cart = cart.copyWith(items: items);
     }
 
-    await _cartProvider.updateCart(unit.id, _cart);
-    return _cart;
+    await _cartProvider.updateCart(unit.id, cart);
+    return cart;
   }
 
   Future<Cart?> removeProductFromCart(String unitId, OrderItem item) async {
-    Cart? _cart = await _cartProvider.getCurrentCart(unitId);
-    if (_cart == null) {
-      await _cartProvider.updateCart(unitId, _cart);
+    Cart? cart = await _cartProvider.getCurrentCart(unitId);
+    if (cart == null) {
+      await _cartProvider.updateCart(unitId, cart);
       return null;
     }
 
-    int index = _cart.items.indexWhere((order) =>
+    int index = cart.items.indexWhere((order) =>
         order.productId == item.productId &&
         order.variantId == item.variantId &&
         DeepCollectionEquality()
             .equals(order.getConfigIdMap(), item.getConfigIdMap()));
     if (index != -1) {
-      OrderItem existingOrder = _cart.items[index]
-          .copyWith(quantity: _cart.items[index].quantity - 1);
+      OrderItem existingOrder =
+          cart.items[index].copyWith(quantity: cart.items[index].quantity - 1);
       if (existingOrder.quantity <= 0) {
-        List<OrderItem> items = List<OrderItem>.from(_cart.items);
+        List<OrderItem> items = List<OrderItem>.from(cart.items);
         items.removeWhere((order) =>
             order.productId == item.productId &&
             order.variantId == item.variantId &&
             DeepCollectionEquality()
                 .equals(order.getConfigIdMap(), item.getConfigIdMap()));
-        _cart = _cart.copyWith(items: items);
+        cart = cart.copyWith(items: items);
       } else {
-        List<OrderItem> items = List<OrderItem>.from(_cart.items);
+        List<OrderItem> items = List<OrderItem>.from(cart.items);
         items[index] = existingOrder.copyWith();
-        _cart = _cart.copyWith(items: items);
+        cart = cart.copyWith(items: items);
       }
     }
 
-    await _cartProvider.updateCart(unitId, _cart);
-    return _cart;
+    await _cartProvider.updateCart(unitId, cart);
+    return cart;
   }
 
   Future<Cart?> updatePlaceInCart(GeoUnit unit, Place place) async {
-    Cart? _cart = await _cartProvider.getCurrentCart(unit.id);
-    if (_cart == null || _cart.items.isEmpty) {
+    Cart? cart = await _cartProvider.getCurrentCart(unit.id);
+    if (cart == null || cart.items.isEmpty) {
       return null;
     }
     // await setPlacePref(place);
-    _cart = _cart.copyWith(place: place);
-    await _cartProvider.updateCart(unit.id, _cart);
-    return _cart;
+    cart = cart.copyWith(place: place);
+    await _cartProvider.updateCart(unit.id, cart);
+    return cart;
   }
 
   Future<Cart?> getCurrentCart(String unitId) {
@@ -144,8 +153,9 @@ class CartRepository implements ICartProvider {
   }
 
   @override
-  Future<String> createAndSendOrderFromCart() {
-    return _cartProvider.createAndSendOrderFromCart();
+  Future<String> createAndSendOrderFromCart() async {
+    String orderId = await _cartProvider.createAndSendOrderFromCart();
+    return orderId;
   }
 
   @override
@@ -166,5 +176,57 @@ class CartRepository implements ICartProvider {
   @override
   void resetCartInMemory() {
     return _cartProvider.resetCartInMemory();
+  }
+
+  OrderItem getOrderItem(
+    String userId,
+    GeoUnit unit,
+    GeneratedProduct product,
+    ProductVariant variant,
+  ) {
+    return OrderItem(
+      productType: product.productType,
+      // TODO configSets: ,
+      serviceFee: getServiceFee(
+        unit.serviceFeePolicy,
+        PriceShown(
+          currency: unit.currency,
+          pricePerUnit: variant.price,
+          priceSum: variant.price,
+          tax: product.tax,
+          taxSum: getTaxSum(variant.price, product.tax),
+        ),
+      ),
+      productId: product.id,
+      variantId: variant.id!,
+      image: product.image,
+      priceShown: PriceShown(
+        currency: unit.currency,
+        pricePerUnit: variant.price,
+        priceSum: variant.price,
+        tax: product.tax,
+        taxSum: getTaxSum(variant.price, product.tax),
+      ),
+      sumPriceShown: PriceShown(
+        currency: unit.currency,
+        pricePerUnit: variant.price,
+        priceSum: variant.price,
+        tax: product.tax,
+        taxSum: getTaxSum(variant.price, product.tax),
+      ),
+      allergens: product.allergens,
+      productName: product.name,
+      variantName: variant.variantName,
+      statusLog: [
+        StatusLog(
+          userId: userId,
+          status: OrderStatus.none,
+          ts: 0,
+        ),
+      ],
+      quantity: 1,
+      netPackagingFee: variant.netPackagingFee,
+      // selectedConfigMap: getSelectedComponentMap(),
+    );
   }
 }

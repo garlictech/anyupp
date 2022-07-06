@@ -2,7 +2,7 @@ query SearchOrders($userId: ID!, $limit: Int, $nextToken: String) {
   searchOrders(
     filter: { userId: { eq: $userId }, archived: { eq: false } }
     limit: $limit
-    sort: { direction: desc, field: createdAt }
+    # sort: { direction: desc, field: createdAt } TODO!!! Ha ezt visszateszem üres tömb jön le...
     nextToken: $nextToken
   ) {
     items {
@@ -152,7 +152,6 @@ query SearchOrders($userId: ID!, $limit: Int, $nextToken: String) {
         productType
       }
       createdAt
-      orderNum
       transactionId
       transactionStatus
       updatedAt

@@ -84,7 +84,9 @@ void main() {
 
       expect(original.tax, equals(test1.tax));
       expect(
-          original.supportedServingModes, equals(test1.supportedServingModes));
+        original.supportedServingModes,
+        equals(test1.supportedServingModes),
+      );
       expect(original.soldOut, equals(test1.soldOut));
       expect(original.description, equals(test1.description));
       expect(original.image, equals(test1.image));

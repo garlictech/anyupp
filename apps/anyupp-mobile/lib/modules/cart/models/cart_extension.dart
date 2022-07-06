@@ -3,8 +3,6 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
 
 extension CartExtension on Cart {
-  int get orderCount => items.length;
-
   int get totalCount {
     int count = 0;
     items.forEach((order) => count += order.quantity);

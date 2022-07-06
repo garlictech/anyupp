@@ -61,7 +61,7 @@ void _initProviders() {
   getIt.registerLazySingleton<IFavoritesProvider>(
       () => AwsFavoritesProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<ICartProvider>(
-      () => AwsCartProvider(getIt<IAuthProvider>()));
+      () => AwsCartMemoryProvider(getIt<IAuthProvider>()));
   getIt.registerFactory<IOrdersProvider>(
       () => AwsOrderProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());

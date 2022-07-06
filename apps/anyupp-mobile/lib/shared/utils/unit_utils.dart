@@ -4,6 +4,8 @@ import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/takeaway/takeaway.dart';
 
+import 'place_preferences.dart';
+
 GeoUnit? get currentUnit {
   var state = getIt<UnitSelectBloc>().state;
   if (state is UnitSelected) {
@@ -12,6 +14,11 @@ GeoUnit? get currentUnit {
   return null;
 }
 
+Cart? get currentCart => getIt.get<CartRepository>().cart;
+
+Future<Place?> get currentPlace async =>
+    (currentUnit != null ? await getPlacePref(currentUnit!.id) : null);
+
 ServingMode get currentServingMode {
   var state = getIt<TakeAwayBloc>().state;
   if (state is ServingModeSelectedState) {
@@ -19,8 +26,6 @@ ServingMode get currentServingMode {
   }
   return ServingMode.inPlace;
 }
-
-Cart? get currentCart => getIt.get<CartRepository>().cart;
 
 double get serviceFeeMul =>
     // 1.0 + ((currentUnit?.serviceFeePolicy?.percentage ?? 0.0) / 100.0);

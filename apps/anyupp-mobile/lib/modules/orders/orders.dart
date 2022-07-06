@@ -13,6 +13,7 @@ export 'providers/order_provider_interface.dart';
 export 'repository/order_notification_repository.dart';
 export 'repository/order_repository.dart';
 export 'utils/order_rating_utils.dart';
+export 'utils/order_status_icon_map.dart';
 export 'widgets/animated_dot.dart';
 export 'widgets/animated_order_icon.dart';
 export 'widgets/current_order_card_widget.dart';

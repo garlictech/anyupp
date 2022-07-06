@@ -45,10 +45,10 @@ class CartBloc extends Bloc<BaseCartAction, BaseCartState> {
       getIt<ExceptionBloc>().add(ShowException(
         CartException.fromException(CartException.UNKNOWN_ERROR, e),
       ));
-      emit(CartErrorState(
-        code: CartException.UNKNOWN_ERROR,
-        message: e.toString(),
-      ));
+      // emit(CartErrorState(
+      //   code: CartException.UNKNOWN_ERROR,
+      //   message: e.toString(),
+      // ));
     }
   }
 

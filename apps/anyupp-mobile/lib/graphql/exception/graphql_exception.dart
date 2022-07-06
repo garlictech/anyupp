@@ -31,7 +31,8 @@ class GraphQLException extends AppException {
     );
   }
 
-  factory GraphQLException.fromOperationException(String code, OperationException oe) {
+  factory GraphQLException.fromOperationException(
+      String code, OperationException oe) {
     GraphQLError graphQLError = oe.graphqlErrors.first;
     String message = graphQLError.message.toString();
     String subCode;
@@ -68,12 +69,13 @@ class GraphQLException extends AppException {
         details: e.runtimeType);
   }
 
-  factory GraphQLException.fromGraphQLError(String code, List<GraphQLError>? errors) {
+  factory GraphQLException.fromGraphQLError(
+      String code, List<GraphQLError>? errors) {
     return GraphQLException(
       code: GraphQLException.CODE,
       subCode: code,
-      message: errors?[0].toString(),
-      details: errors?.toString(),
+      message: errors?[0].message,
+      details: errors?[0].locations.toString(),
     );
   }
 

@@ -26,15 +26,17 @@ void main() {
     Cart mockCart = MockGenerator.generateBasicCart(
       servingMode: ServingMode.takeAway,
     );
-    mockCart = mockCart.copyWith(items: [
-      MockGenerator.generateOrderItem(
-        name: 'Hamburger',
-        variantName: 'Dupla',
-        price: 500.0,
-        packagingFee: 100.0,
-        status: OrderStatus.placed,
-      ),
-    ]);
+    mockCart = mockCart.copyWith(
+      items: [
+        MockGenerator.generateOrderItem(
+          name: 'Hamburger',
+          variantName: 'Dupla',
+          price: 500.0,
+          packagingFee: 100.0,
+          status: OrderStatus.placed,
+        ),
+      ],
+    );
 
     getIt.registerSingleton<ThemeBloc>(MockThemeBloc());
     getIt.registerSingleton<TakeAwayBloc>(MockTakeAwayBloc(
@@ -77,6 +79,8 @@ void main() {
 
       // Wait to complete the animations of the cart items
       await tester.pumpAndSettle(Duration(milliseconds: 1000));
+
+      expect(find.byType(CartListItemWidget), findsNWidgets(2));
 
       // Character \xa0 is a non-breaking-space
       checkTextValue('cart-packagingfee-text', '105\xa0Ft');

@@ -18,13 +18,13 @@ targets:
             - schema: graphql/crud-api-schema.graphql
               queries_glob: graphql/crud/**.graphql
               output: lib/graphql/generated/crud-api.dart
-              naming_scheme: pathedWithTypes
+              naming_scheme: pathedWithFields
 
             # Schema mapping for Flutter tests
             - schema: graphql/crud-api-schema.graphql
               queries_glob: graphql/test/**.graphql
               output: lib/../test/graphql/generated/crud-api.dart
-              naming_scheme: pathedWithTypes
+              naming_scheme: pathedWithFields
           scalar_mapping:
             - custom_parser_import: 'package:fa_prev/graphql/utils/graphql_coercers.dart'
               graphql_type: AWSDateTime

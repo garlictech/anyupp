@@ -146,7 +146,6 @@ query GetOrder($orderId: ID!) {
       created
     }
     createdAt
-    orderNum
     transactionId
     transactionStatus
     updatedAt

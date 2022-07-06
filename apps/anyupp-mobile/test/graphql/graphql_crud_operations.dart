@@ -10,7 +10,6 @@ Future<String?> createDummyOrder(
     var result = await GQL.amplify.execute(CreateOrderMutation(
         variables: CreateOrderArguments(
       input: CreateOrderInput(
-        takeAway: false,
         servingMode: ServingMode.inPlace,
         orderMode: OrderMode.instant,
         unitId: unitId,

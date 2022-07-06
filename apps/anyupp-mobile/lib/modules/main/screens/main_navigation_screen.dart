@@ -43,7 +43,7 @@ class _MainNavigationState extends State<MainNavigation>
   List<Widget> _pages = [
     MenuScreen(),
     FavoritesScreen(),
-    OrdersScreen(key: UniqueKey()),
+    OrdersScreen(),
     Profile(),
     CartScreen(),
   ];
@@ -281,11 +281,11 @@ class _MainNavigationState extends State<MainNavigation>
     }
     if (_selectedIndex == index) return;
 
-    if (index == 2) {
-      _pages[2] = OrdersScreen(
-        key: UniqueKey(),
-      );
-    }
+    // if (index == 2) {
+    //   _pages[2] = OrdersScreen(
+    //     key: UniqueKey(),
+    //   );
+    // }
 
     if (index == 0 || index == 4) {
       // Menu + Cart
@@ -297,6 +297,7 @@ class _MainNavigationState extends State<MainNavigation>
 
     if (index == 4) {
       index = 0;
+      print('MainNavigationScreen.NAVTO CART!!!!');
       Future.delayed(Duration(seconds: 1))
           .then((value) => Nav.to(CartScreen()));
     }

@@ -1,6 +1,7 @@
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:fa_prev/models.dart';
+import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:intl/intl.dart';
 
 extension OrderExtension on Order {
@@ -20,5 +21,16 @@ extension OrderExtension on Order {
       ? 0
       : (serviceFee?.grossPrice ?? 0.0);
 
-  OrderStatus get status => currentStatus ?? OrderStatus.none;
+  OrderStatus get status => statusLog != null && statusLog?.isNotEmpty == true
+      ? statusLog!.last.status
+      : OrderStatus.none;
+
+  StatusLog? get lastLog =>
+      statusLog?.isNotEmpty == true ? statusLog?.last : null;
+
+  bool get isAfterPayOrdersReadyToPay =>
+      currentUnit?.orderPaymentPolicy == OrderPaymentPolicy.afterpay &&
+      transactionStatus == PaymentStatus.waitingForPayment &&
+      (status == OrderStatus.ready || status == OrderStatus.served) &&
+      transactionId == null;
 }

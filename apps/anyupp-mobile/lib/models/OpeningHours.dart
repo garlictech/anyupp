@@ -1,3 +1,4 @@
+import 'package:fa_prev/models.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -48,7 +49,13 @@ class OpeningHours {
 
   @override
   String toString() {
-    return 'OpeningHours(to: $to, from: $from, date: $date, closed: $closed)';
+    return 'OpeningHours(date: $date, from: ${_getDateString(from)}, to: ${_getDateString(to)}, closed: $closed)';
+  }
+
+  String _getDateString(double? ms) {
+    return ms != null
+        ? ohHourFormat.format(DateTime.fromMillisecondsSinceEpoch(to!.toInt()))
+        : ms?.toString() ?? '-';
   }
 
   @override
