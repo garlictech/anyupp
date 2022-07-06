@@ -41,7 +41,7 @@ import {
   commonStackConfig,
   anyuppStackConfig,
 } from '@bgap/shared/config';
-import { maskAll, maskV4UuidIds } from '@bgap/shared/fixtures';
+import { maskAll, maskDate, maskV4UuidIds } from '@bgap/shared/fixtures';
 import {
   ChainProduct,
   GeneratedProduct,
@@ -318,6 +318,7 @@ describe('Test the rkeeper api basic functionality', () => {
         pipe(
           result,
           maskV4UuidIds,
+          maskDate,
           R.sortBy(JSON.stringify),
           R.forEach(res => expect(res).toMatchSnapshot(matcher, label)),
         );
