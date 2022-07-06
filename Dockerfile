@@ -36,6 +36,7 @@ RUN yarn global add @aws-amplify/cli
 WORKDIR /build
 
 COPY apps/cicd/package.json /build/cicd/package.json 
-COPY apps/anyupp-backend/package.json /build/anyupp-backend/package.json 
+COPY apps/anyupp-backend/package.json /build/anyupp-backend/package.json
+COPY apps/anyupp-global/package.json /build/anyupp-global/package.json
 COPY package.json yarn.lock patches /build/
 RUN yarn --frozen-lockfile

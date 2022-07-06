@@ -236,7 +236,8 @@
   "workspaces": [
     "apps/cicd",
     "apps/anyupp-backend",
-    "apps/common-backend"
+    "apps/common-backend",
+    "apps/anyupp-global"
   ],
   "commitlint": {
     "extends": [

@@ -6,6 +6,7 @@
     "admin-refactor": "libs/admin/refactor",
     "anyupp-backend": "apps/anyupp-backend",
     "anyupp-backend-lib": "libs/anyupp-backend-lib",
+    "anyupp-global": "apps/anyupp-global",
     "anyupp-gql-backend": "libs/anyupp-gql/backend",
     "anyupp-mobile": "apps/anyupp-mobile",
     "anyupp-schema": "libs/anyupp-schema",

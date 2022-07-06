@@ -1,0 +1,45 @@
+{
+  "root": "apps/anyupp-global",
+  "sourceRoot": "apps/anyupp-global/src",
+  "projectType": "application",
+  "prefix": "anyupp-global",
+  "targets": {
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/anyupp-global",
+        "commands": [
+          {
+            "command": "yarn sst deploy --stage='{args.env}'"
+          }
+        ]
+      }
+    },
+    "remove": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "cwd": "apps/anyupp-global",
+        "commands": [
+          {
+            "command": "yarn sst remove --stage='{args.env}'"
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/anyupp-global/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/anyupp-global"],
+      "options": {
+        "jestConfig": "apps/anyupp-global/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["type:backend", "platform:nodejs"]
+}
