@@ -17,13 +17,15 @@ APINAME=$(aws amplify get-app --app-id $APPID | jq -r ".app.name")
 METAFILE=amplify/backend/amplify-meta.json
 API_ID=$(jq -r ".api.$APINAME.output.GraphQLAPIIdOutput" $METAFILE)
 
-OS_ENDPOINT=$(aws cloudformation list-exports | \
+CF_EXPORTS=$(aws cloudformation list-exports)
+
+OS_ENDPOINT=$(echo $CF_EXPORTS | \
   jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainEndpoint\")" | \
   jq ".Value")
 
-OS_ARN=$(aws cloudformation list-exports | \
+OS_ARN=$(echo $CF_EXPORTS | \
   jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainArn\")" | \
-  jq ".Value")  
+  jq ".Value")
 
 echo "OS domain endpoint: ${OS_ENDPOINT}"
 echo "OS domain ARN: ${OS_ARN}"  

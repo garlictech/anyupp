@@ -112,11 +112,13 @@ done
 RESULT+="\"_closing_tag\": \"dont use me\"}"
 echo $RESULT > ${TABLE_CONFIG_NAME}
 
-OS_ENDPOINT=$(aws cloudformation list-exports | \
+CF_EXPORTS=$(aws cloudformation list-exports)
+
+OS_ENDPOINT=$(echo $CF_EXPORTS | \
   jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainEndpoint\")" | \
   jq ".Value")
 
-OS_ARN=$(aws cloudformation list-exports | \
+OS_ARN=$(echo $CF_EXPORTS | \
   jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainArn\")" | \
   jq ".Value")
 
