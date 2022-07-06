@@ -4,7 +4,7 @@ import { defer, from, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, filter } from 'rxjs/operators';
 import { UpdateGraphqlApiRequest, GraphqlApi } from 'aws-sdk/clients/appsync';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
-import * as fp from 'lodash/fp';
+import { omit } from 'lodash/fp';
 
 const appsync = new AppSync({
   apiVersion: '2017-07-25',
@@ -31,7 +31,7 @@ export const configureLogging = (logPublisherArn: string) =>
         excludeVerboseContent: false,
       },
     })),
-    map(fp.omit(['arn', 'uris', 'tags'])),
+    map(omit(['arn', 'uris', 'tags'])),
     switchMap((graphqlApi: UpdateGraphqlApiRequest) =>
       from(appsync.updateGraphqlApi(graphqlApi).promise()),
     ),
@@ -71,7 +71,7 @@ export const configurePools = (userPoolId: string) =>
         },
       ],
     })),
-    map(fp.omit(['arn', 'uris', 'tags'])),
+    map(omit(['arn', 'uris', 'tags'])),
     switchMap((graphqlApi: UpdateGraphqlApiRequest) =>
       from(appsync.updateGraphqlApi(graphqlApi).promise()),
     ),
