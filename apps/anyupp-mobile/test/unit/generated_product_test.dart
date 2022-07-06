@@ -1,6 +1,7 @@
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/menu/menu.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fa_prev/core/logger.dart';
 
 import 'utils/json_loader.dart';
 
@@ -54,13 +55,13 @@ void main() {
 
   setUpAll(() async {
     _generatedProducts = await _loadAndParseGeneratedProducts();
-    print('generatedProducts=${_generatedProducts.length}');
+    log.d('generatedProducts=${_generatedProducts.length}');
     _unitProducts = await _loadAndParseUnitProducts();
-    print('unitProducts=${_unitProducts.length}');
+    log.d('unitProducts=${_unitProducts.length}');
     _productComponentSets = await _loadAndParseProductComponentSets();
-    print('productComponentSets=${_productComponentSets.length}');
+    log.d('productComponentSets=${_productComponentSets.length}');
     _productComponents = await _loadAndParseProductComponents();
-    print('productComponents=${_productComponentSets.length}');
+    log.d('productComponents=${_productComponentSets.length}');
   });
 
   group('Generated product conversion from Unit+Chain+Group Product', () {
@@ -84,7 +85,9 @@ void main() {
 
       expect(original.tax, equals(test1.tax));
       expect(
-          original.supportedServingModes, equals(test1.supportedServingModes));
+        original.supportedServingModes,
+        equals(test1.supportedServingModes),
+      );
       expect(original.soldOut, equals(test1.soldOut));
       expect(original.description, equals(test1.description));
       expect(original.image, equals(test1.image));

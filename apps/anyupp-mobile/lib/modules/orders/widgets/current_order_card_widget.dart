@@ -20,16 +20,6 @@ class CurrentOrderCardWidget extends StatelessWidget {
     // required this.unit,
   });
 
-  static const Map<OrderStatus, IconData> _ICONMAP = {
-    OrderStatus.none: Icons.hourglass_bottom_outlined,
-    OrderStatus.placed: Icons.assignment_turned_in,
-    OrderStatus.processing: Icons.history_toggle_off_outlined,
-    OrderStatus.ready: Icons.schedule_outlined,
-    OrderStatus.served: Icons.check,
-    OrderStatus.rejected: Icons.close,
-    OrderStatus.failed: Icons.close,
-  };
-
   @override
   Widget build(BuildContext context) {
     var status = order.status;
@@ -86,9 +76,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: Icon(
-                      order.orderPolicy == OrderPolicy.full
-                          ? _ICONMAP[status]
-                          : _ICONMAP[OrderStatus.served],
+                      STATUS_ICON_MAP[status],
                       size: 16.0,
                       color: order.archived ? theme.secondary0 : theme.icon,
                     ),

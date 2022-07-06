@@ -71,4 +71,32 @@ class MockCartRepository implements CartRepository {
   Future<Cart?> setServingMode(String unitId, ServingMode mode) async {
     return _cart;
   }
+
+  @override
+  OrderItem getOrderItem(String userId, GeoUnit unit, GeneratedProduct product,
+      ProductVariant variant) {
+    return OrderItem(
+      productId: product.id,
+      variantId: variant.id!,
+      productName: product.name,
+      priceShown: PriceShown(
+        currency: unit.currency,
+        pricePerUnit: variant.price,
+        priceSum: variant.price,
+        tax: product.tax,
+        taxSum: 0,
+      ),
+      sumPriceShown: PriceShown(
+        currency: unit.currency,
+        pricePerUnit: variant.price,
+        priceSum: variant.price,
+        tax: product.tax,
+        taxSum: 0,
+      ),
+      quantity: 1,
+      statusLog: [],
+      variantName: variant.variantName,
+      productType: ProductType.food,
+    );
+  }
 }

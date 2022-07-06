@@ -100,7 +100,7 @@ class Locally {
     log.d(
         'Notification.onSelectNotification().payload=$payloadStr, page=$navigatePage');
     // if (payload != null) {
-    //   debugPrint('notification payload: ' + payload);
+    //   debuglog.d('notification payload: ' + payload);
     // }
     // await Navigator.push(context, pageRoute);
     if (payloadStr != null && payloadStr != "") {

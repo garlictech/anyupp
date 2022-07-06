@@ -105,12 +105,12 @@ class OrderNotificationService {
   }
 
   void _showNotification(BuildContext context, String titleKey,
-      String messageKey, String orderNum) {
+      String messageKey, String? orderNum) {
     showSuccessDialog(
       context: context,
       title: transEx(context, titleKey),
       message: transEx(context, messageKey, [orderNum]),
-      bigTitle: '#$orderNum',
+      bigTitle: orderNum != null ? '#$orderNum' : '',
     );
 
     // showNotification(

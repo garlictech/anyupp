@@ -1,7 +1,6 @@
 import 'dart:async';
 
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/core.dart';
+import 'package:fa_prev/core/logger.dart';
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
@@ -12,6 +11,7 @@ import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
+@deprecated
 class AwsCartProvider implements ICartProvider {
   late final IAuthProvider _authProvider;
   StreamController<Cart?> _cartController = BehaviorSubject<Cart?>();
@@ -32,14 +32,21 @@ class AwsCartProvider implements ICartProvider {
   Future<String> createAndSendOrderFromCart() async {
     log.d('AwsCartProvider.createAndSendOrderFromCart()=${_cart?.id}');
     try {
-      if (_cart == null || _cart?.id == null) {
+      if (_cart == null || _cart?.id == null || currentUnit == null) {
         throw CartException(
             code: CartException.UNKNOWN_ERROR, message: 'Cart is null.');
       }
 
+      if (currentUnit == null) {
+        throw CartException(
+            code: CartException.UNKNOWN_ERROR,
+            message: 'No unit selected when try to send cart.');
+      }
+
       var result = await GQL.amplify.execute(CreateOrderFromCartMutation(
-          variables: CreateOrderFromCartArguments(
-        cartId: _cart!.id!,
+          variables: createOrderFromCartArguments(
+        currentUnit!,
+        _cart!,
       )));
 
       // log.d('AwsOrderProvider.createAndSendOrderFromCart().result.data=${result.data}');
@@ -50,8 +57,8 @@ class AwsCartProvider implements ICartProvider {
       }
 
       String? id;
-      if (result.data != null && result.data?.createOrderFromCart != null) {
-        id = result.data!.createOrderFromCart;
+      if (result.data != null && result.data?.createOrder != null) {
+        id = result.data!.createOrder?.id;
         log.d('AwsCartProvider.createAndSendOrderFromCart().id=$id');
       }
       await clearCart();
@@ -188,7 +195,7 @@ class AwsCartProvider implements ICartProvider {
     log.d('AwsCartProvider.CREATING CART IN BACKEND');
     try {
       var result = await GQL.amplify.execute(CreateCartMutation(
-        variables: _createCartArguments(cart),
+        variables: createCartArguments(cart),
         // variables: CreateCartArguments(
         //   createCartInput: _createCartInput(cart),
         // ),
@@ -220,7 +227,7 @@ class AwsCartProvider implements ICartProvider {
     try {
       var result = await GQL.amplify.execute(UpdateCartMutation(
           variables: UpdateCartArguments(
-        updateCartInput: _updateCartInput(cart),
+        updateCartInput: updateCartInput(cart),
       )));
 
       if (result.hasErrors) {
@@ -251,200 +258,5 @@ class AwsCartProvider implements ICartProvider {
       log.e('AwsCartProvider._deleteCartFromBackend.Exception: $e');
       rethrow;
     }
-  }
-
-  CreateCartArguments _createCartArguments(Cart cart) {
-    return CreateCartArguments(
-      version: AppConfig.AppVersion,
-      unitId: cart.unitId,
-      userId: cart.userId,
-      servingMode: cart.servingMode,
-      orderPolicy: cart.orderPolicy,
-      guestLabel: cart.guestLabel,
-      items: cart.items.map((item) {
-        return OrderItemInput(
-          productId: item.productId,
-          variantId: item.variantId,
-          variantName: LocalizedItemInput(
-            hu: item.variantName.hu,
-            en: item.variantName.en,
-            de: item.variantName.de,
-          ),
-          netPackagingFee: item.netPackagingFee,
-          productType: item.productType,
-          created: DateTime.now().millisecondsSinceEpoch.toDouble(),
-          productName: LocalizedItemInput(
-            hu: item.productName.hu,
-            en: item.productName.en,
-            de: item.productName.de,
-          ),
-          priceShown: PriceShownInput(
-            currency: item.priceShown.currency,
-            pricePerUnit: item.priceShown.pricePerUnit,
-            priceSum: item.priceShown.priceSum,
-            tax: item.priceShown.tax,
-            taxSum: item.priceShown.taxSum,
-          ),
-          quantity: item.quantity,
-          statusLog: [
-            StatusLogInput(
-              status: OrderStatus.none,
-              userId: cart.userId,
-              ts: DateTime.now().millisecond.toDouble(),
-            ),
-          ],
-          sumPriceShown: PriceShownInput(
-            currency: item.priceShown.currency,
-            pricePerUnit: item.getPrice(currentUnit?.serviceFeePolicy),
-            priceSum:
-                item.getPrice(currentUnit?.serviceFeePolicy) * item.quantity,
-            tax: item.priceShown.tax,
-            taxSum: item.priceShown.taxSum,
-          ),
-          allergens: item.allergens,
-          image: item.image,
-          configSets: item.selectedConfigMap?.keys.map((configSet) {
-            return OrderItemConfigSetInput(
-              name: LocalizedItemInput(
-                hu: configSet.name.hu,
-                en: configSet.name.en,
-                de: configSet.name.de,
-              ),
-              productSetId: configSet.productSetId,
-              type: configSet.type,
-              items: item.selectedConfigMap != null &&
-                      item.selectedConfigMap?[configSet] != null
-                  ? item.selectedConfigMap![configSet]!.map((configComponent) {
-                      return OrderItemConfigComponentInput(
-                        name: LocalizedItemInput(
-                          hu: configComponent.name.hu,
-                          en: configComponent.name.en,
-                          de: configComponent.name.de,
-                        ),
-                        price: configComponent.price,
-                        productComponentId: configComponent.productComponentId,
-                        netPackagingFee: configComponent.netPackagingFee,
-                        allergens: configComponent.allergens,
-                        externalId: configComponent.externalId,
-                      );
-                    }).toList()
-                  : [],
-            );
-          }).toList(),
-        );
-      }).toList(),
-      takeAway: false,
-      paymentMode: cart.paymentMode != null
-          ? PaymentModeInput(
-              method: cart.paymentMode!.method,
-              type: cart.paymentMode!.type,
-              caption: cart.paymentMode!.caption,
-            )
-          : null,
-      place: cart.place != null
-          ? PlaceInput(
-              table: cart.place!.table ?? '',
-              seat: cart.place!.seat ?? '',
-            )
-          : null,
-    );
-  }
-
-  UpdateCartInput _updateCartInput(Cart cart) {
-    return UpdateCartInput(
-      id: cart.id!,
-      version: AppConfig.AppVersion,
-      unitId: cart.unitId,
-      userId: cart.userId,
-      servingMode: cart.servingMode,
-      orderPolicy: cart.orderPolicy,
-      guestLabel: cart.guestLabel,
-      items: cart.items.map((item) {
-        return OrderItemInput(
-          productId: item.productId,
-          variantId: item.variantId,
-          variantName: LocalizedItemInput(
-            hu: item.variantName.hu,
-            en: item.variantName.en,
-            de: item.variantName.de,
-          ),
-          netPackagingFee: item.netPackagingFee,
-          productType: item.productType,
-          created: DateTime.now().millisecondsSinceEpoch.toDouble(),
-          productName: LocalizedItemInput(
-            hu: item.productName.hu,
-            en: item.productName.en,
-            de: item.productName.de,
-          ),
-          priceShown: PriceShownInput(
-            currency: item.priceShown.currency,
-            pricePerUnit: item.priceShown.pricePerUnit,
-            priceSum: item.priceShown.priceSum,
-            tax: item.priceShown.tax,
-            taxSum: item.priceShown.taxSum,
-          ),
-          quantity: item.quantity,
-          statusLog: [
-            StatusLogInput(
-              status: OrderStatus.none,
-              userId: cart.userId,
-              ts: DateTime.now().millisecond.toDouble(),
-            ),
-          ],
-          sumPriceShown: PriceShownInput(
-            currency: item.priceShown.currency,
-            pricePerUnit: item.getPrice(currentUnit?.serviceFeePolicy),
-            priceSum:
-                item.getPrice(currentUnit?.serviceFeePolicy) * item.quantity,
-            tax: item.priceShown.tax,
-            taxSum: item.priceShown.taxSum,
-          ),
-          allergens: item.allergens,
-          image: item.image,
-          configSets: item.selectedConfigMap?.keys.map((configSet) {
-            return OrderItemConfigSetInput(
-              name: LocalizedItemInput(
-                hu: configSet.name.hu,
-                en: configSet.name.en,
-                de: configSet.name.de,
-              ),
-              productSetId: configSet.productSetId,
-              type: configSet.type,
-              items: item.selectedConfigMap != null &&
-                      item.selectedConfigMap?[configSet] != null
-                  ? item.selectedConfigMap![configSet]!.map((configComponent) {
-                      return OrderItemConfigComponentInput(
-                        name: LocalizedItemInput(
-                          hu: configComponent.name.hu,
-                          en: configComponent.name.en,
-                          de: configComponent.name.de,
-                        ),
-                        price: configComponent.price,
-                        productComponentId: configComponent.productComponentId,
-                        netPackagingFee: configComponent.netPackagingFee,
-                        allergens: configComponent.allergens,
-                        externalId: configComponent.externalId,
-                      );
-                    }).toList()
-                  : [],
-            );
-          }).toList(),
-        );
-      }).toList(),
-      takeAway: false,
-      paymentMode: cart.paymentMode != null
-          ? PaymentModeInput(
-              method: cart.paymentMode!.method,
-              type: cart.paymentMode!.type,
-              caption: cart.paymentMode!.caption,
-            )
-          : null,
-      place: cart.place != null
-          ? PlaceInput(
-              table: cart.place!.table ?? '',
-              seat: cart.place!.seat ?? '',
-            )
-          : null,
-    );
   }
 }

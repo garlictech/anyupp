@@ -25,6 +25,7 @@ class GeoUnit {
   final TipPolicy? tipPolicy;
   final ServiceFeePolicy? serviceFeePolicy;
   final SoldOutVisibilityPolicy? soldOutVisibilityPolicy;
+  final OrderPaymentPolicy? orderPaymentPolicy;
   final Location? location;
   final bool? adBannersEnabled;
   final List<ImageAsset>? adBanners;
@@ -44,7 +45,6 @@ class GeoUnit {
     required this.name,
     required this.address,
     required this.style,
-    this.paymentModes,
     required this.distance,
     required this.currency,
     required this.isAcceptingOrders,
@@ -53,10 +53,12 @@ class GeoUnit {
     required this.supportedOrderModes,
     required this.orderPolicy,
     required this.packagingTax,
+    this.paymentModes,
     this.ratingPolicies,
     this.tipPolicy,
     this.serviceFeePolicy,
     this.soldOutVisibilityPolicy,
+    this.orderPaymentPolicy,
     this.location,
     this.adBannersEnabled,
     this.adBanners,
@@ -90,6 +92,7 @@ class GeoUnit {
     TipPolicy? tipPolicy,
     ServiceFeePolicy? serviceFeePolicy,
     SoldOutVisibilityPolicy? soldOutVisibilityPolicy,
+    OrderPaymentPolicy? orderPaymentPolicy,
     Location? location,
     bool? adBannersEnabled,
     List<ImageAsset>? adBanners,
@@ -124,6 +127,7 @@ class GeoUnit {
       serviceFeePolicy: serviceFeePolicy ?? this.serviceFeePolicy,
       soldOutVisibilityPolicy:
           soldOutVisibilityPolicy ?? this.soldOutVisibilityPolicy,
+      orderPaymentPolicy: orderPaymentPolicy ?? this.orderPaymentPolicy,
       location: location ?? this.location,
       adBannersEnabled: adBannersEnabled ?? this.adBannersEnabled,
       adBanners: adBanners ?? this.adBanners,
@@ -162,6 +166,7 @@ class GeoUnit {
       'tipPolicy': tipPolicy?.toJson(),
       'serviceFeePolicy': serviceFeePolicy?.toJson(),
       'soldOutVisibilityPolicy': enumToString(soldOutVisibilityPolicy),
+      'orderPaymentPolicy': enumToString(orderPaymentPolicy),
       'location': location?.toJson(),
       'adBannersEnabled': adBannersEnabled,
       'adBanners': adBanners?.map((x) => x.toJson()).toList(),
@@ -186,7 +191,7 @@ class GeoUnit {
       style: ChainStyle.fromJson(map['style']),
       paymentModes: List<PaymentMode?>.from(
           map['paymentModes']?.map((x) => PaymentMode?.fromJson(x))),
-      distance: map['distance'],
+      distance: map['distance'] ?? 0,
       currency: map['currency'],
       isAcceptingOrders: map['isAcceptingOrders'],
       openingHoursNext7: map['openingHoursNext7'] != null
@@ -221,6 +226,11 @@ class GeoUnit {
         map['soldOutVisibilityPolicy'],
         SoldOutVisibilityPolicy.values,
       ),
+      orderPaymentPolicy: enumFromStringNull(
+            map['unit']?['orderPaymentPolicy'],
+            OrderPaymentPolicy.values,
+          ) ??
+          OrderPaymentPolicy.prepay, // TODO mock, kivenni
       location:
           map['location'] != null ? Location.fromJson(map['location']) : null,
       adBannersEnabled: map['unit']?['adBannersEnabled'] ?? false,
@@ -273,6 +283,7 @@ class GeoUnit {
         other.serviceFeePolicy == serviceFeePolicy &&
         other.tipPolicy == tipPolicy &&
         other.soldOutVisibilityPolicy == soldOutVisibilityPolicy &&
+        other.orderPaymentPolicy == orderPaymentPolicy &&
         other.location == location &&
         other.adBannersEnabled == adBannersEnabled &&
         listEquals(other.adBanners, adBanners) &&
@@ -306,6 +317,7 @@ class GeoUnit {
         tipPolicy.hashCode ^
         serviceFeePolicy.hashCode ^
         soldOutVisibilityPolicy.hashCode ^
+        orderPaymentPolicy.hashCode ^
         location.hashCode ^
         adBannersEnabled.hashCode ^
         adBanners.hashCode ^

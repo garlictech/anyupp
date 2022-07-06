@@ -205,7 +205,7 @@ class AwsProductProvider implements IProductProvider {
     );
 
     if (result.hasErrors) {
-      print('AwsUnitProvider._getGroup().result.errors=${result.errors}');
+      log.d('AwsUnitProvider._getGroup().result.errors=${result.errors}');
       throw GraphQLException.fromGraphQLError(
           GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
     }
@@ -229,7 +229,7 @@ class AwsProductProvider implements IProductProvider {
     );
 
     if (result.hasErrors) {
-      print('AwsUnitProvider._getGroup().result.errors=${result.errors}');
+      log.d('AwsUnitProvider._getGroup().result.errors=${result.errors}');
       throw GraphQLException.fromGraphQLError(
           GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
     }

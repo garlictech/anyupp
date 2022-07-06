@@ -77,12 +77,11 @@ class UpdatePlaceInCartAction extends BaseCartAction {
 
 class CreateAndSendOrder extends BaseCartAction {
   final GeoUnit unit;
-  final String paymentMethod;
 
-  const CreateAndSendOrder(this.unit, this.paymentMethod);
+  const CreateAndSendOrder(this.unit);
 
   @override
-  List<Object?> get props => [unit, paymentMethod];
+  List<Object?> get props => [unit];
 }
 
 class AddInvoiceInfo extends BaseCartAction {

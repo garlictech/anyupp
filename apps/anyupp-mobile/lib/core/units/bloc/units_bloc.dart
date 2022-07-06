@@ -32,7 +32,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     emit(UnitsLoading());
     try {
       _userLocation = event.location;
-      _units = await _unitRepository.searchUnitsNearLocation(
+      _units = await _unitRepository.searchUnitsNearRadius(
         event.location,
         radiusInMeter,
       );
@@ -62,6 +62,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
       log.d('****** Start getting location');
       // --- Get device current location (ask permissions if not granted)
       _userLocation = await _locationService.getUserCurrentLocation();
+      _userLocation = LatLng(47, 19); // TODO kiszedni!
       log.d('****** Current Location=$_userLocation');
       if (_userLocation == null) {
         emit(UnitsNotLoaded(
@@ -69,7 +70,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
           reasonMessage: 'Cannot access location of the user\'s device',
         ));
       } else {
-        _units = await _unitRepository.searchUnitsNearLocation(
+        _units = await _unitRepository.searchUnitsNearRadius(
           _userLocation!,
           radiusInMeter,
         );

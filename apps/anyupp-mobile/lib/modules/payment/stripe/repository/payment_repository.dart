@@ -36,7 +36,7 @@ class StripePaymentRepository
 
   @override
   Future<void> startExternalPayment(
-      Cart cart, PaymentMode paymentMode, UserInvoiceAddress? invoiceAddress) {
+      Cart? cart, PaymentMode paymentMode, UserInvoiceAddress? invoiceAddress) {
     return _externalPaymentProvider.startExternalPayment(
         cart, paymentMode, invoiceAddress);
   }

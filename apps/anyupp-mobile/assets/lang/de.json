@@ -7,8 +7,9 @@
     "select": "Select",
     "ok": "OK",
     "today": "Today",
-    "ok2": "OK",
-    "exit": "Tap back again to exit app."
+    "yesterday": "Yesterday",
+    "exit": "Tap the back button again to exit app.",
+    "ok2": "OK"
   },
   "locale": {
     "EN": "English",

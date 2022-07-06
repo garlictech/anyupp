@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:fa_prev/core/core.dart';
 import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/exception.dart';
 import 'package:fa_prev/shared/locale.dart';
 import 'package:fa_prev/shared/widgets.dart';
 import 'package:flutter/gestures.dart';
@@ -84,17 +83,6 @@ class _LoginScreenState extends State<LoginScreen>
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<ExceptionBloc, ExceptionState>(
-            listener: (BuildContext context, ExceptionState state) {
-          if (state is ExceptionShowState) {
-            log.d('LoginScreen.ExceptionState=$state');
-            builderKey = UniqueKey();
-            setState(() {});
-            // Future.delayed(Duration(seconds: 1)).then((_) =>
-            //     getIt<ExceptionBloc>().add(ShowException(state.exception)));
-            // _showException(context, state.exception);
-          }
-        }),
         BlocListener<LoginBloc, LoginState>(
             listener: (BuildContext context, LoginState state) {
           if (state is EmailFormUIChange) {
@@ -143,6 +131,9 @@ class _LoginScreenState extends State<LoginScreen>
           }
           if (state is LoginError) {
             builderKey = UniqueKey();
+            return CommonErrorWidget(
+              error: state.message ?? state.code,
+            );
           }
 
           // --- Bottom sheet

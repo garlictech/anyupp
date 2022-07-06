@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/core.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
@@ -36,7 +37,7 @@ class Location {
     return Location(
       id: map['id'],
       lat: map['lat'],
-      lng: map['lng'],
+      lng: map['lng'] ?? map['lon'],
     );
   }
 

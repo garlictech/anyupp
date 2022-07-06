@@ -19,10 +19,9 @@ bool isNeedScheduleNotification(
     return false;
   }
 
-  OrderStatus status = order.status;
   bool isInScheduleTime =
       now.difference(order.updatedAt) < AppConfig.ratingNotificationTimer;
-  if (status == OrderStatus.served && isInScheduleTime) {
+  if (order.status == OrderStatus.served && isInScheduleTime) {
     bool alreadyScheduled =
         prefs.getBool('rating_schedule_${order.id}') ?? false;
     return !alreadyScheduled;

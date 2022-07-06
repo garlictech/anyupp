@@ -154,8 +154,8 @@ class AwsOrderHistorySubscription {
 
       List<Order> results = [];
       for (int i = 0; i < items.length; i++) {
-        log.d(
-            '**** _getOrderHistoryList._getList.order[${items[i]!.id}].hasRated=${items[i]!.hasRated}');
+        // log.d(
+        //     '**** _getOrderHistoryList._getList.order[${items[i]!.id}].hasRated=${items[i]!.hasRated}');
 
         results.add(Order.fromJson(items[i]!.toJson()));
       }

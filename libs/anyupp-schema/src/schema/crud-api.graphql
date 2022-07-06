@@ -1402,12 +1402,13 @@ input SearchByRadiusInput {
 
 type GeoSearchConnection {
   items: [String]
-    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+    @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
 
   nextToken: String
-    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+    @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
 
-  total: Int @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+  total: Int
+    @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
 }
 
 type Query {

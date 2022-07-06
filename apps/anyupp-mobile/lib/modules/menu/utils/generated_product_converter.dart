@@ -2,13 +2,15 @@ import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:collection/collection.dart';
 
-typedef UnitProduct
-    = ListAllProducts$Query$SearchableUnitProductConnection$UnitProduct;
+typedef UnitProduct = ListAllProducts$Query$SearchUnitProducts$Items;
+// = ListAllProducts$Query$SearchableUnitProductConnection$UnitProduct;
 typedef ProductComponentSet
-    = ListChainProductComponentSets$Query$SearchableProductComponentSetConnection$ProductComponentSet;
+    = ListChainProductComponentSets$Query$SearchProductComponentSets$Items;
+// = ListChainProductComponentSets$Query$SearchableProductComponentSetConnection$ProductComponentSet;
 
 typedef ProductComponent
-    = ListChainProductComponents$Query$SearchableProductComponentConnection$ProductComponent;
+    = ListChainProductComponents$Query$SearchProductComponents$Items;
+// = ListChainProductComponents$Query$SearchableProductComponentConnection$ProductComponent;
 
 GeneratedProduct? getProductFromQuery(
   UnitProduct data,

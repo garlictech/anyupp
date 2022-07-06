@@ -120,7 +120,7 @@ void main() {
 
         Widget root = _createBoilerPlateApp(
           child: SelectPaymentMethodScreen(
-            cart: _mockCart,
+            // cart: _mockCart,
             unit: _mockUnit,
           ),
         );
@@ -167,7 +167,7 @@ void main() {
         await tester.pumpWidget(
           _createBoilerPlateApp(
             child: SelectPaymentMethodScreen(
-              cart: _mockCart,
+              // cart: _mockCart,
               unit: _mockUnit,
             ),
           ),
@@ -221,7 +221,7 @@ void main() {
         await tester.pumpWidget(
           _createBoilerPlateApp(
             child: SelectPaymentMethodScreen(
-              cart: _mockCart,
+              // cart: _mockCart,
               unit: _mockUnit,
             ),
           ),
@@ -276,7 +276,7 @@ void main() {
         await tester.pumpWidget(
           _createBoilerPlateApp(
             child: SelectPaymentMethodScreen(
-              cart: _mockCart,
+              // cart: _mockCart,
               unit: _mockUnit,
             ),
           ),

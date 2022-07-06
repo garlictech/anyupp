@@ -1,0 +1,19 @@
+query SearchByRadius(
+  $lat: Float!
+  $lon: Float!
+  $radiusInMeters: Float!
+  $limit: Int
+  $nextToken: String
+) {
+  searchByRadius(
+    input: {
+      location: { lat: $lat, lon: $lon }
+      objectType: unit
+      radiusInMeters: $radiusInMeters
+      limit: $limit
+      nextToken: $nextToken
+    }
+  ) {
+    items
+  }
+}

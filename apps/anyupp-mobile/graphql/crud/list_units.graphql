@@ -92,6 +92,7 @@ query getUnitsNearLocation($lat: Float!, $lng: Float!) {
       }
       soldOutVisibilityPolicy
       unit {
+        orderPaymentPolicy
         canCallWaiter
         packagingTaxPercentage
         canRequestVatInvoice

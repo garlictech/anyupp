@@ -2,9 +2,16 @@ import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
 import 'package:fa_prev/shared/locale/extensions/locale_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:fa_prev/core/logger.dart';
 
 // ignore: non_constant_identifier_names
 final DF_SHORT = DateFormat('yyyy.MM.dd HH:mm');
+final DF_TIME_SHORT = DateFormat('HH:mm');
+
+void printWrapped(String text) {
+  final pattern = RegExp('.{1,800}'); // 800 is the size of each chunk
+  pattern.allMatches(text).forEach((match) => log.d(match.group(0)));
+}
 
 String ellapsedTimeToStringDescription(DateTime date) {
   DateTime now = DateTime.now();
@@ -50,12 +57,27 @@ NumberFormat getNumberFormatter(String currency) {
 }
 
 String formatOrderDate(BuildContext context, DateTime date) {
-  final now = DateTime.now();
-  bool isToday = date.difference(now).inDays == 0;
+  int diffIndays = calculateDateDifferenceInDays(date);
+  bool isToday = diffIndays == 0;
+  bool isYesterday = diffIndays == -1;
   if (isToday) {
     return "${transEx(context, 'common.today')}, ${timeShortFormatter.format(date)}";
   }
+  if (isYesterday) {
+    return "${transEx(context, 'common.yesterday')}, ${timeShortFormatter.format(date)}";
+  }
   return dateTimeFormatter.format(date);
+}
+
+int calculateDateDifferenceInDays(DateTime date) {
+  DateTime now = DateTime.now();
+  return DateTime(date.year, date.month, date.day)
+      .difference(DateTime(now.year, now.month, now.day))
+      .inDays;
+}
+
+String formatOrderTime(DateTime date) {
+  return DF_TIME_SHORT.format(date);
 }
 
 String formatPackNumber(double pack) {

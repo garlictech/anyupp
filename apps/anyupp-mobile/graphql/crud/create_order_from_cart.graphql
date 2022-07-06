@@ -1,3 +1,215 @@
-mutation CreateOrderFromCart($cartId: ID!) {
-  createOrderFromCart(input: { id: $cartId })
+mutation CreateOrderFromCart($order: CreateOrderInput!) {
+  createOrder(input: $order) {
+    id
+    unitId
+    userId
+    paymentIntention
+    orderMode
+    servingMode
+    archived
+    paymentMode {
+      caption
+      type
+      method
+    }
+    place {
+      seat
+      table
+    }
+    statusLog {
+      status
+      ts
+      userId
+    }
+    sumPriceShown {
+      currency
+      pricePerUnit
+      priceSum
+      tax
+      taxSum
+    }
+    transaction {
+      createdAt
+      currency
+      externalTransactionId
+      id
+      invoice {
+        city
+        country
+        createdAt
+        customerName
+        email
+        externalInvoiceId
+        id
+        orderId
+        pdfUrl
+        postalCode
+        status
+        streetAddress
+        taxNumber
+        transactionId
+        userId
+        updatedAt
+      }
+      invoiceId
+      orderId
+      receipt {
+        createdAt
+        email
+        externalReceiptId
+        id
+        orderId
+        pdfData
+        status
+        transactionId
+        updatedAt
+        userId
+      }
+      receiptId
+      status
+      total
+      type
+      updatedAt
+      user {
+        createdAt
+        email
+        id
+        invoiceAddress {
+          city
+          country
+          customerName
+          email
+          postalCode
+          streetAddress
+          taxNumber
+        }
+        name
+        phone
+        profileImage
+        stripeCustomerId
+        updatedAt
+      }
+      userId
+    }
+    items {
+      productId
+      netPackagingFee
+      productName {
+        de
+        en
+        hu
+      }
+      priceShown {
+        currency
+        pricePerUnit
+        priceSum
+        tax
+        taxSum
+      }
+      configSets {
+        items {
+          allergens
+          name {
+            de
+            en
+            hu
+          }
+          price
+          productComponentId
+        }
+        name {
+          de
+          en
+          hu
+        }
+        productSetId
+        type
+      }
+      quantity
+      statusLog {
+        status
+        ts
+        userId
+      }
+      sumPriceShown {
+        currency
+        pricePerUnit
+        priceSum
+        tax
+        taxSum
+      }
+      variantId
+      variantName {
+        de
+        en
+        hu
+      }
+      allergens
+      image
+      laneId
+      created
+    }
+    transactionId
+    transactionStatus
+    updatedAt
+    createdAt
+    packagingSum {
+      currency
+      netPrice
+      taxPercentage
+    }
+    rating {
+      key
+      value
+    }
+    hasRated
+    tip {
+      type
+      value
+    }
+    tipTransactionId
+    tipTransactionStatus
+    serviceFee {
+      currency
+      grossPrice
+      taxContent
+    }
+    orderPolicy
+    serviceFeePolicy {
+      type
+      percentage
+    }
+    tipPolicy {
+      description {
+        de
+        en
+        hu
+      }
+      minOtherAmount
+      percents
+      title {
+        de
+        en
+        hu
+      }
+    }
+    ratingPolicies {
+      key
+      ratings {
+        value
+        icon
+        text {
+          de
+          en
+          hu
+        }
+      }
+      title {
+        de
+        en
+        hu
+      }
+    }
+    soldOutVisibilityPolicy
+  }
 }

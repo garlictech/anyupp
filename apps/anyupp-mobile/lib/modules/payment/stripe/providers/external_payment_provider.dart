@@ -12,11 +12,12 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
   ExternalPaymentProvider(this._cartProvider);
 
   @override
-  Future<void> startExternalPayment(Cart cart, PaymentMode paymentMode,
+  Future<void> startExternalPayment(Cart? cart, PaymentMode paymentMode,
       UserInvoiceAddress? invoiceAddress) async {
-    log.d(
-        'startExternalPayment().start().orderMethod=$paymentMode, cart=${cart.id}');
-    await _cartProvider.setPaymentMode(cart.unitId, paymentMode);
+    log.d('startExternalPayment().start()=$paymentMode, cart=${cart?.id}');
+    if (cart != null) {
+      await _cartProvider.setPaymentMode(cart.unitId, paymentMode);
+    }
 
     PaymentMethod method = PaymentMethod.values.firstWhere(
         (m) => stringFromEnum(m) == stringFromEnum(paymentMode.method),
