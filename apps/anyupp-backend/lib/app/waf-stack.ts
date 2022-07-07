@@ -1,14 +1,14 @@
-import * as sst from '@serverless-stack/resources';
+import { App, StackProps } from '@serverless-stack/resources';
 import { aws_wafv2 as waf } from 'aws-cdk-lib';
 import { Stack } from '@serverless-stack/resources';
 import { WebAclWithRules } from '../shared/WebAclWithRules';
-export interface WafStackProps extends sst.StackProps {
+export interface WafStackProps extends StackProps {
   graphqlApiId: string;
 }
 
-export class WafStack extends sst.Stack {
+export class WafStack extends Stack {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  constructor(scope: sst.App, id: string, props: WafStackProps) {
+  constructor(scope: App, id: string, props: WafStackProps) {
     super(scope, id);
 
     const region = Stack.of(this).region;
