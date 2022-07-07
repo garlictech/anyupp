@@ -8,11 +8,11 @@ import {
   RemovalPolicy,
   CfnOutput,
 } from 'aws-cdk-lib';
-import * as sst from '@serverless-stack/resources';
+import { App, StackProps } from '@serverless-stack/resources';
 import { Construct } from 'constructs';
 import { SSMParameterReader } from './utils/ssm-parameter-reader';
 
-export interface WebsiteProps extends sst.StackProps {
+export interface WebsiteProps extends StackProps {
   domainName: string;
   siteSubDomain: string;
   distDir: string;
@@ -24,7 +24,7 @@ export class WebsiteConstruct extends Construct {
 
   constructor(scope: Construct, id: string, props: WebsiteProps) {
     super(scope, id);
-    const app = this.node.root as sst.App;
+    const app = this.node.root as App;
 
     const siteDomain = props.siteSubDomain + '.' + props.domainName;
 
