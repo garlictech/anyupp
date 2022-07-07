@@ -10,6 +10,7 @@ import {
 } from 'aws-cdk-lib';
 import * as sst from '@serverless-stack/resources';
 import { Construct } from 'constructs';
+import { SSMParameterReader } from './utils/ssm-parameter-reader';
 
 export interface WebsiteProps extends sst.StackProps {
   domainName: string;
@@ -41,6 +42,21 @@ export class WebsiteConstruct extends Construct {
 
     new CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
 
+    const webAclParamReader = new SSMParameterReader(
+      this,
+      'WebAclParamReader',
+      {
+        parameterName: 'GLOBAL_WAF_ACL_ARN',
+        region: 'us-east-1',
+        account: app.account,
+      },
+    );
+
+    /* NOTE: if the stored parameter changes, it will not trigger a cloudformation update. In theory, it is possible
+       that the web acl changes, but this stack is unaware of the change.
+     */
+    const webAclArn = webAclParamReader.getParameterValue();
+
     // CloudFront distribution that provides HTTPS
     const distribution = new cloudfront.CloudFrontWebDistribution(
       this,
@@ -63,6 +79,7 @@ export class WebsiteConstruct extends Construct {
             behaviors: [{ isDefaultBehavior: true, compress: true }],
           },
         ],
+        webACLId: webAclArn,
       },
     );
 
