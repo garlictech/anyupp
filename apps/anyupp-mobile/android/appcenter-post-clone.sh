@@ -12,7 +12,7 @@ curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
 sudo installer -pkg AWSCLIV2.pkg -target /
 
 cd ..
-git clone https://github.com/flutter/flutter.git -b 3.0.2 --depth 1
+git clone https://github.com/flutter/flutter.git -b 3.0.4 --depth 1
 export PATH=`pwd`/flutter/bin:$PATH
 
 flutter channel stable
