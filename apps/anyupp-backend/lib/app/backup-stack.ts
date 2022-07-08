@@ -6,12 +6,19 @@ export class AnyuppBackupStack extends Stack {
     super(scope, id);
     const app = this.node.root as App;
 
+    /**
+     * We only want to enable backup for some environments (environment != account)
+     *
+     * If we are in the dev environment, that means we are in the
+     */
+    const stage = app.stage;
+
     const dynamoBackupPlan =
       aws_backup.BackupPlan.dailyWeeklyMonthly5YearRetention(
         this,
-        'DynamoBackupPlan',
+        `${stage}-DynamoBackupPlan`,
       );
-    const backupKey = new aws_kms.Key(this, 'anyupp-backup-key-' + app.stage);
+    const backupKey = new aws_kms.Key(this, `${stage}-anyupp-backup-key`);
 
     dynamoBackupPlan.addRule(
       new aws_backup.BackupPlanRule({
@@ -34,10 +41,23 @@ export class AnyuppBackupStack extends Stack {
     );
 
     dynamoBackupPlan.addSelection('DynamoTables', {
-      resources: [aws_backup.BackupResource.fromTag('user:Stack', app.stage)],
+      resources: [aws_backup.BackupResource.fromTag('user:Stack', stage)],
     });
 
-    const s3BackupPlan = aws;
+    const s3BackupPlan = aws_backup.BackupPlan.dailyWeeklyMonthly5YearRetention(
+      this,
+      `${stage}-S3BackupPlan`,
+    );
+
+    s3BackupPlan.addRule(
+      new aws_backup.BackupPlanRule({
+        moveToColdStorageAfter: Duration.days(20),
+      }),
+    );
+
+    s3BackupPlan.addSelection('S3Buckets', {
+      resources: [aws_backup.BackupResource.fromTag('user:Stack', stage)],
+    });
 
     new aws_backup.BackupVault(this, 'AnyUpp-Vault', {
       encryptionKey: backupKey,
