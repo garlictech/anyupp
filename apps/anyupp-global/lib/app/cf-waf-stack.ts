@@ -10,8 +10,8 @@ export class WafStack extends Stack {
     const app = this.node.root as App;
 
     const webAcl = new WebAclWithRules(this, 'frontendAcl', {
-      namePrefix: app.stageName,
-      region: Stack.of(this).region,
+      namePrefix: app.stage,
+      region: app.region,
       aclType: 'CLOUDFRONT',
     });
 
