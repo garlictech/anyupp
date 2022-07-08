@@ -46,7 +46,7 @@ export class WebsiteConstruct extends Construct {
       this,
       'WebAclParamReader',
       {
-        parameterName: 'GLOBAL_WAF_ACL_ARN',
+        parameterName: `${app.stage}_GLOBAL_WAF_ACL_ARN`,
         region: 'us-east-1',
         account: app.account,
       },
