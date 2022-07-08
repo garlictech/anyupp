@@ -126,6 +126,8 @@ export class AnyUppStack extends Stack {
     new RKeeperStack(scope, 'rkeeper', {
       apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
       apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
+      firebaseServiceAccountCert:
+        secretsManagerStack.firebaseServiceAccountCert,
       vpc,
       securityGroupId: paramsStack.securityGroupId,
       zone,

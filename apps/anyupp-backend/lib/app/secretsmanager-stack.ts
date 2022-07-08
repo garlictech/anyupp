@@ -18,6 +18,7 @@ export class SecretsManagerStack extends sst.Stack {
   public reportAccessKeyID: string;
   public reportSecretAccessKey: string;
   public slackBotToken: string;
+  public firebaseServiceAccountCert: string;
 
   constructor(scope: sst.App, id: string, props?: sst.StackProps) {
     super(scope, id, props);
@@ -97,6 +98,10 @@ export class SecretsManagerStack extends sst.Stack {
 
     this.slackBotToken = this.secretsManager
       .secretValueFromJson('slackBotToken')
+      .toString();
+
+    this.firebaseServiceAccountCert = this.secretsManager
+      .secretValueFromJson('firebaseServiceAccountCert')
       .toString();
 
     new CfnOutput(this, 'SecretsManager', {
