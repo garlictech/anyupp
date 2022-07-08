@@ -16,6 +16,7 @@ export class AnyuppCommonStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
 
+    // TODO: This should be at least 2
     const vpc = new ec2.Vpc(this, anyuppVpcName, {
       maxAzs: 1,
     });
