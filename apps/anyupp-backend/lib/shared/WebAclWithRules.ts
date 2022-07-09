@@ -2,7 +2,7 @@ import { aws_wafv2 as waf } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
 export interface WebAclWithRulesProps {
-  namePostfix: string;
+  namePrefix: string;
   region: string;
   aclType: 'CLOUDFRONT' | 'REGIONAL';
 }
@@ -19,9 +19,9 @@ export class WebAclWithRules extends Construct {
       visibilityConfig: {
         sampledRequestsEnabled: true,
         cloudWatchMetricsEnabled: true,
-        metricName: 'AWS-AWSManagedRulesAmazonIpReputationList',
+        metricName: `${props.namePrefix}-AWS-AWSManagedRulesAmazonIpReputationList`,
       },
-      name: 'AWS-AWSManagedRulesAmazonIpReputationList',
+      name: `${props.namePrefix}-AWS-AWSManagedRulesAmazonIpReputationList`,
       statement: {
         managedRuleGroupStatement: {
           vendorName: 'AWS',
@@ -36,9 +36,9 @@ export class WebAclWithRules extends Construct {
       visibilityConfig: {
         sampledRequestsEnabled: true,
         cloudWatchMetricsEnabled: true,
-        metricName: 'AWS-AWSManagedRulesCommonRuleSet',
+        metricName: `${props.namePrefix}-AWS-AWSManagedRulesCommonRuleSet`,
       },
-      name: 'AWS-AWSManagedRulesCommonRuleSet',
+      name: `${props.namePrefix}-AWS-AWSManagedRulesCommonRuleSet`,
       statement: {
         managedRuleGroupStatement: {
           vendorName: 'AWS',
@@ -53,9 +53,9 @@ export class WebAclWithRules extends Construct {
       visibilityConfig: {
         sampledRequestsEnabled: true,
         cloudWatchMetricsEnabled: true,
-        metricName: 'AWS-AWSManagedRulesKnownBadInputsRuleSet',
+        metricName: `${props.namePrefix}-AWS-AWSManagedRulesKnownBadInputsRuleSet`,
       },
-      name: 'AWS-AWSManagedRulesKnownBadInputsRuleSet',
+      name: `${props.namePrefix}-AWS-AWSManagedRulesKnownBadInputsRuleSet`,
       statement: {
         managedRuleGroupStatement: {
           vendorName: 'AWS',
@@ -65,13 +65,13 @@ export class WebAclWithRules extends Construct {
     };
 
     this.webAcl = new waf.CfnWebACL(this, 'frontendAcl', {
-      name: `anyupp-${props.region}-WebAcl-${props.namePostfix}`,
+      name: `${props.namePrefix}-anyupp-${props.region}-WebAcl`,
       defaultAction: { allow: {} },
       scope: props.aclType,
       visibilityConfig: {
         sampledRequestsEnabled: true,
         cloudWatchMetricsEnabled: true,
-        metricName: `anyupp-${props.region}-web-acl-${props.namePostfix}`,
+        metricName: `${props.namePrefix}-anyupp-${props.region}-web-acl`,
       },
       rules: [
         managedAWSIpReputationListRuleSet,
