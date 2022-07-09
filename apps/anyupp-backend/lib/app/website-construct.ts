@@ -4,6 +4,7 @@ import {
   aws_route53_targets as targets,
   aws_s3_deployment as s3deploy,
   aws_certificatemanager as acm,
+  aws_cloudfront_origins,
   aws_s3 as s3,
   RemovalPolicy,
   CfnOutput,
@@ -16,7 +17,7 @@ export interface WebsiteProps extends StackProps {
   domainName: string;
   siteSubDomain: string;
   distDir: string;
-  certificate: acm.ICertificate;
+  certificate: acm.Certificate;
 }
 
 export class WebsiteConstruct extends Construct {
@@ -36,9 +37,14 @@ export class WebsiteConstruct extends Construct {
       bucketName: siteDomain,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
-      publicReadAccess: true,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: RemovalPolicy.RETAIN,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      enforceSSL: true,
     });
+
+    const oai = new cloudfront.OriginAccessIdentity(this, 's3-bucket-oai');
+    siteBucket.grantRead(oai);
 
     new CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
 
@@ -58,30 +64,42 @@ export class WebsiteConstruct extends Construct {
     const webAclArn = webAclParamReader.getParameterValue();
 
     // CloudFront distribution that provides HTTPS
-    const distribution = new cloudfront.CloudFrontWebDistribution(
-      this,
-      'SiteDistribution',
-      {
+    /* const distribution = new cloudfront.CloudFrontWebDistribution(this,'SiteDistribution', {
         viewerCertificate: cloudfront.ViewerCertificate.fromAcmCertificate(
           props.certificate,
           {
             aliases: [siteDomain],
             sslMethod: cloudfront.SSLMethod.SNI,
-            securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
+            securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2019,
           },
         ),
         originConfigs: [
           {
-            customOriginSource: {
-              domainName: siteBucket.bucketWebsiteDomainName,
-              originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
+            s3OriginSource: {
+              s3BucketSource: siteBucket, 
+              originAccessIdentity: oai,
             },
             behaviors: [{ isDefaultBehavior: true, compress: true }],
           },
         ],
         webACLId: webAclArn,
       },
-    );
+    ); */
+
+    const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
+      defaultBehavior: {
+        origin: new aws_cloudfront_origins.S3Origin(siteBucket, {
+          originAccessIdentity: oai,
+        }),
+        compress: true,
+      },
+      domainNames: [siteDomain],
+      certificate: props.certificate,
+      webAclId: webAclArn,
+    });
+    const cfnDistribution = distribution.node
+      .defaultChild as cloudfront.CfnDistribution;
+    //cfnDistribution.overrideLogicalId('MyDistributionCFDistribution3H55TI9Q');
 
     new CfnOutput(this, 'DistributionId', {
       value: distribution.distributionId,

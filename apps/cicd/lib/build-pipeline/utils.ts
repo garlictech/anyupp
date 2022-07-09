@@ -228,7 +228,11 @@ export const createPipeline = (
 
   const cacheBucket = new s3.Bucket(scope, 'CacheBucket', {
     bucketName: getCacheBucketName(stage),
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    enforceSSL: true,
+    encryption: s3.BucketEncryption.S3_MANAGED,
     removalPolicy: RemovalPolicy.DESTROY,
+
     lifecycleRules: [
       {
         expiration: Duration.days(7),
@@ -247,6 +251,9 @@ export const createPipeline = (
 
   const buildArtifactBucket = new s3.Bucket(scope, 'ArtifactBucket', {
     bucketName: getAppcenterArtifactBucketName(stage),
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    enforceSSL: true,
+    encryption: s3.BucketEncryption.S3_MANAGED,
     removalPolicy: RemovalPolicy.DESTROY, // NOT recommended for production code
     lifecycleRules: [
       {
