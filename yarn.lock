@@ -9593,10 +9593,10 @@
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
-"@vvo/tzdb@6.50.0":
-  version "6.50.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.50.0.tgz#d5d9ad9294879bc5c299e511d5f354bcc70e4b4c"
-  integrity sha512-Qhz+bCCIO8OhriKIhCJ4EHYRiZliY1gmitIxcxgFO4VGOujKG5WWQUs6ecIXBbF0YRYnkbG97TTE6A8uu2f8cg==
+"@vvo/tzdb@6.52.0":
+  version "6.52.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.52.0.tgz#3cfde296f8a57adf89dbee86997084d70b50da85"
+  integrity sha512-GSTPXBCA66A42VdhTbxzUPdun8P2Rx9OQCQMr8ByuB+P74HJ6zxxrUKW2CzJlhyperjzlijjkMN84fotAYEeLQ==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
