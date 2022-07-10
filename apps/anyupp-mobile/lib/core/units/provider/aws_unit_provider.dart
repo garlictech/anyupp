@@ -138,7 +138,6 @@ class AwsUnitProvider implements IUnitProvider {
       ),
     );
 
-    // TODO MOCK!
     if (result.hasErrors) {
       log.d('AwsUnitProvider._searchByRadius().result.errors=${result.errors}');
       throw GraphQLException.fromGraphQLError(
@@ -146,17 +145,6 @@ class AwsUnitProvider implements IUnitProvider {
     }
     var unit_id_list =
         result.data?.searchByRadius?.items?.whereNotNull().toList() ?? [];
-    // unit_id_list = [
-    //   'seeded_unit_c1_g1_1_id',
-    //   'seeded_unit_c1_g1_2_id',
-    //   'seeded_unit_c1_g2_1_id',
-    //   'sportbar-rkeeper-unit',
-    //   'unit-ii',
-    //   'unit-it',
-    //   'unit-pi',
-    //   'unit-pt',
-    //   'yellow-rkeeper-unit',
-    // ]; // TODO MOCK!
     log.d('AwsUnitProvider._searchByRadius().unit_id_list=$unit_id_list');
 
     return unit_id_list;

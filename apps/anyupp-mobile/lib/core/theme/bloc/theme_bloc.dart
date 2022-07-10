@@ -22,6 +22,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
         add(ThemeSelected(
             theme: unitThemeToThemeChainData(unitSelectedState.unit)));
       }
+      if (unitSelectedState is NoUnitSelected) {
+        add(ThemeSelected(theme: defaultTheme()));
+      }
     });
   }
 

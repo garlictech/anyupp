@@ -62,7 +62,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
       log.d('****** Start getting location');
       // --- Get device current location (ask permissions if not granted)
       _userLocation = await _locationService.getUserCurrentLocation();
-      _userLocation = LatLng(47, 19); // TODO kiszedni!
+      _userLocation = LatLng(47.003841, 19.053478); // TODO kiszedni!
       log.d('****** Current Location=$_userLocation');
       if (_userLocation == null) {
         emit(UnitsNotLoaded(
@@ -75,6 +75,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
           radiusInMeter,
         );
         var filteredUnits = _filter(_units ?? [], event.filter);
+        filteredUnits.sort((a, b) => a.distance - b.distance);
         if (filteredUnits.isEmpty) {
           emit(UnitsNoNearUnit());
         } else {
