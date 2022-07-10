@@ -34,6 +34,7 @@ class Location {
   }
 
   factory Location.fromJson(Map<String, dynamic> map) {
+    log.e('Location.fromJson=$map');
     return Location(
       id: map['id'],
       lat: map['lat'],
