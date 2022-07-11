@@ -242,98 +242,96 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     // log.e('_listIndexMap=${_listIndexMap}');
     // log.e('_tabIndexMap=${_tabIndexMap}');
 
-    return RefreshIndicator(
-      onRefresh: () async => _onRefresh(),
-      color: theme.button,
-      child: NestedScrollView(
-        physics: BouncingScrollPhysics(),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          // Animated Unit info
-          return <Widget>[
-            SliverAppBar(
-              backgroundColor: theme.secondary0,
-              automaticallyImplyLeading: false,
-              expandedHeight: 270.0,
-              flexibleSpace: FlexibleSpaceBar(
-                background: UnitInfoHeaderWidget(
-                  unit: unit,
-                ),
+    return NestedScrollView(
+      floatHeaderSlivers: true,
+      physics: AlwaysScrollableScrollPhysics(),
+      headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        // Animated Unit info
+        return <Widget>[
+          SliverAppBar(
+            backgroundColor: theme.secondary0,
+            automaticallyImplyLeading: false,
+            expandedHeight: 270.0,
+            flexibleSpace: FlexibleSpaceBar(
+              background: UnitInfoHeaderWidget(
+                unit: unit,
               ),
             ),
-            // Sticky Category header
-            // Main and SubCategory
-            SliverPersistentHeader(
-              pinned: true,
-              floating: true,
-              delegate: SliverAppBarDelegate(
-                minHeight:
-                    58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
-                maxHeight:
-                    58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
-                child: Material(
-                  elevation: 1.0,
-                  shadowColor: theme.secondary12,
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                    // margin: const EdgeInsets.only(top: 4.0, bottom: 8.0),
-                    color: theme.secondary0,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Main category tabbar
-                        ProductCategoryTabWidget(
-                          tabController: _tabController!,
-                          addFavorites: menu.hasFavorites,
-                          productCategories: menu.productCategories,
-                          onTap: (index) => _handleTabTap(context, index),
-                        ),
-                        // Subcategory tabbar
-                        if (menu.subCategoryWidgets != null)
-                          IndexedStack(
-                            index: 0,
-                            children: menu.productCategories
-                                .map(
-                                  (e) => DefaultTabController(
-                                    length: menu.productCategories.length,
-                                    initialIndex: 0,
-                                    child: SubCategoryTabBarWidget(
-                                      // controller: _subTabController!,
-                                      // controller: ,
-                                      productCategories: menu.productCategories,
-                                      onTap: (index) => log.i('onTap $index'),
-                                    ),
+          ),
+          // Sticky Category header
+          // Main and SubCategory
+          SliverPersistentHeader(
+            pinned: true,
+            floating: true,
+            delegate: SliverAppBarDelegate(
+              minHeight: 58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
+              maxHeight: 58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
+              child: Material(
+                elevation: 1.0,
+                shadowColor: theme.secondary12,
+                child: Container(
+                  padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                  // margin: const EdgeInsets.only(top: 4.0, bottom: 8.0),
+                  color: theme.secondary0,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Main category tabbar
+                      ProductCategoryTabWidget(
+                        tabController: _tabController!,
+                        addFavorites: menu.hasFavorites,
+                        productCategories: menu.productCategories,
+                        onTap: (index) => _handleTabTap(context, index),
+                      ),
+                      // Subcategory tabbar
+                      if (menu.subCategoryWidgets != null)
+                        IndexedStack(
+                          index: 0,
+                          children: menu.productCategories
+                              .map(
+                                (e) => DefaultTabController(
+                                  length: menu.productCategories.length,
+                                  initialIndex: 0,
+                                  child: SubCategoryTabBarWidget(
+                                    // controller: _subTabController!,
+                                    // controller: ,
+                                    productCategories: menu.productCategories,
+                                    onTap: (index) => log.i('onTap $index'),
                                   ),
-                                )
-                                .toList(),
-                          ),
-                      ],
-                    ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                    ],
                   ),
                 ),
               ),
             ),
-          ];
-        },
-        // Menu list
-        body: TabBarView(
-          controller: _tabController,
-          physics: BouncingScrollPhysics(),
-          children: [
-            ...menu.mainCategoryWidgets.entries
-                .map((entry) => SingleChildScrollView(
-                      // controller: _scrollController,
-                      primary: true,
-                      // physics: BouncingScrollPhysics(),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: menu.mainCategoryWidgets[entry.key] ?? [],
-                      ),
-                    ))
-                .toList(),
-          ],
-        ),
+          ),
+        ];
+      },
+      // Menu list
+      body: TabBarView(
+        controller: _tabController,
+        physics: NeverScrollableScrollPhysics(), //BouncingScrollPhysics(),
+        children: [
+          ...menu.mainCategoryWidgets.entries
+              .map((entry) => RefreshIndicator(
+                  onRefresh: () async => _onRefresh(),
+                  color: theme.button,
+                  child: SingleChildScrollView(
+                    // controller: _scrollController,
+                    primary: true,
+                    // physics: BouncingScrollPhysics(),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: menu.mainCategoryWidgets[entry.key] ?? [],
+                    ),
+                  )))
+              .toList(),
+        ],
       ),
     );
   }

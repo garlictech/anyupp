@@ -10,6 +10,9 @@ typedef ProductComponentSet
 typedef ProductComponent
     = ListChainProductComponents$Query$SearchableProductComponentConnection$ProductComponent;
 
+typedef Variant
+    = ListAllProducts$Query$SearchableUnitProductConnection$UnitProduct$ProductVariant;
+
 GeneratedProduct? getProductFromQuery(
   UnitProduct data,
   Map<String, ProductComponentSet> componentSets,
@@ -73,9 +76,7 @@ GeneratedProduct? getProductFromQuery(
                 en: variant.variantName.en,
                 de: variant.variantName.de,
               ),
-              price: variant.price > 0
-                  ? variant.price
-                  : variant.refGroupPrice ?? 0,
+              price: _getVariantPrice(variant),
               position: variant.position,
               soldOut: variant.soldOut ?? false,
               id: variant.id,
@@ -144,7 +145,7 @@ _getConfigSet(
               return null;
             }
             return GeneratedProductConfigComponent(
-              productComponentId: component!.id,
+              productComponentId: component.id,
               name: LocalizedItem(
                 hu: component.name.hu,
                 en: component.name.en,
@@ -163,4 +164,11 @@ _getConfigSet(
     ));
   }
   return results;
+}
+
+double _getVariantPrice(Variant item) {
+  if (item.availabilities?.isNotEmpty == true) {
+    return item.availabilities!.first!.price;
+  }
+  return item.price;
 }
