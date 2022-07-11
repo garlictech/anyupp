@@ -78,7 +78,7 @@ void main() {
       expect(test1, isNotNull);
 
       expect(original.unitId, equals(test1!.unitId));
-      expect(original.id, equals(test1!.id));
+      expect(original.id, equals(test1.id));
       expect(original.name, equals(test1.name));
       expect(original.allergens, equals(test1.allergens));
 
