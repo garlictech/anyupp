@@ -66,7 +66,12 @@ export class WebAclWithRules extends Construct {
           comparisonOperator: 'GE',
           fieldToMatch: { body: {} },
           size: 16384,
-          textTransformations: [],
+          textTransformations: [
+            {
+              priority: 100,
+              type: 'NONE',
+            },
+          ],
         },
       },
     };
