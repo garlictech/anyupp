@@ -1047,6 +1047,11 @@ input GetUnitsNearLocationInput {
   location: LocationLatLngInput!
 }
 
+type FCMToken @aws_iam @aws_cognito_user_pools {
+  token: String!
+  lastSeen: AWSDateTime!
+}
+
 type User @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String
@@ -1055,6 +1060,7 @@ type User @aws_iam @aws_cognito_user_pools {
   profileImage: String
   stripeCustomerId: String
   invoiceAddress: UserInvoiceAddress
+  fcmTokens: [FCMToken!]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2884,6 +2890,11 @@ input OpeningHoursByDateInput {
   to: Float
 }
 
+input FCMTokenInput {
+  token: String!
+  lastSeen: AWSDateTime!
+}
+
 type ModelUserConnection @aws_iam @aws_cognito_user_pools {
   items: [User]!
   nextToken: String
@@ -2920,6 +2931,7 @@ input CreateUserInput {
   profileImage: String
   stripeCustomerId: String
   invoiceAddress: UserInvoiceAddressInput
+  fcmTokens: [FCMTokenInput!]
 }
 
 input UpdateUserInput {
@@ -2930,6 +2942,7 @@ input UpdateUserInput {
   profileImage: String
   stripeCustomerId: String
   invoiceAddress: UserInvoiceAddressInput
+  fcmTokens: [FCMTokenInput!]
 }
 
 input DeleteUserInput {

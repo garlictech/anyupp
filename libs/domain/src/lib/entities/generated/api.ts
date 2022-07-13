@@ -567,6 +567,7 @@ export interface CreateUnitProductInput {
 
 export interface CreateUserInput {
   email?: InputMaybe<Scalars['String']>;
+  fcmTokens?: InputMaybe<Array<FcmTokenInput>>;
   id?: InputMaybe<Scalars['ID']>;
   invoiceAddress?: InputMaybe<UserInvoiceAddressInput>;
   name?: InputMaybe<Scalars['String']>;
@@ -693,6 +694,16 @@ export interface DeleteUnitProductInput {
 
 export interface DeleteUserInput {
   id: Scalars['ID'];
+}
+
+export interface FcmToken {
+  lastSeen: Scalars['AWSDateTime'];
+  token: Scalars['String'];
+}
+
+export interface FcmTokenInput {
+  lastSeen: Scalars['AWSDateTime'];
+  token: Scalars['String'];
 }
 
 export interface FavoriteProduct {
@@ -899,6 +910,7 @@ export interface Group {
 
 export interface GroupProduct {
   chainId: Scalars['ID'];
+  chainProduct?: Maybe<ChainProduct>;
   configSets?: Maybe<Array<Maybe<ProductConfigSet>>>;
   createdAt: Scalars['AWSDateTime'];
   deletedAt?: Maybe<Scalars['AWSDateTime']>;
@@ -4907,6 +4919,7 @@ export interface UnitProduct {
   dirty?: Maybe<Scalars['Boolean']>;
   externalId?: Maybe<Scalars['String']>;
   groupId: Scalars['ID'];
+  groupProduct?: Maybe<GroupProduct>;
   id: Scalars['ID'];
   isVisible: Scalars['Boolean'];
   laneId?: Maybe<Scalars['ID']>;
@@ -5232,6 +5245,7 @@ export interface UpdateUnitProductInput {
 
 export interface UpdateUserInput {
   email?: InputMaybe<Scalars['String']>;
+  fcmTokens?: InputMaybe<Array<FcmTokenInput>>;
   id: Scalars['ID'];
   invoiceAddress?: InputMaybe<UserInvoiceAddressInput>;
   name?: InputMaybe<Scalars['String']>;
@@ -5243,6 +5257,7 @@ export interface UpdateUserInput {
 export interface User {
   createdAt: Scalars['AWSDateTime'];
   email?: Maybe<Scalars['String']>;
+  fcmTokens?: Maybe<Array<FcmToken>>;
   id: Scalars['ID'];
   invoiceAddress?: Maybe<UserInvoiceAddress>;
   name?: Maybe<Scalars['String']>;
@@ -5496,7 +5511,7 @@ export type CreateOrderMutationVariables = Exact<{
 }>;
 
 
-export type CreateOrderMutation = { createOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type CreateOrderMutation = { createOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type RegenerateUnitDataMutationVariables = Exact<{
   input: RegenerateUnitDataInput;
@@ -5577,7 +5592,7 @@ export type CreateGroupProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateGroupProductMutation = { createGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type CreateGroupProductMutation = { createGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type UpdateGroupProductMutationVariables = Exact<{
   input: UpdateGroupProductInput;
@@ -5585,7 +5600,7 @@ export type UpdateGroupProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateGroupProductMutation = { updateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type UpdateGroupProductMutation = { updateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type DeleteGroupProductMutationVariables = Exact<{
   input: DeleteGroupProductInput;
@@ -5593,7 +5608,7 @@ export type DeleteGroupProductMutationVariables = Exact<{
 }>;
 
 
-export type DeleteGroupProductMutation = { deleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type DeleteGroupProductMutation = { deleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type CreateUnitProductMutationVariables = Exact<{
   input: CreateUnitProductInput;
@@ -5601,7 +5616,7 @@ export type CreateUnitProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateUnitProductMutation = { createUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type CreateUnitProductMutation = { createUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type UpdateUnitProductMutationVariables = Exact<{
   input: UpdateUnitProductInput;
@@ -5609,7 +5624,7 @@ export type UpdateUnitProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUnitProductMutation = { updateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type UpdateUnitProductMutation = { updateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type DeleteUnitProductMutationVariables = Exact<{
   input: DeleteUnitProductInput;
@@ -5617,7 +5632,7 @@ export type DeleteUnitProductMutationVariables = Exact<{
 }>;
 
 
-export type DeleteUnitProductMutation = { deleteUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type DeleteUnitProductMutation = { deleteUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type UpdateAdminUserMutationVariables = Exact<{
   input: UpdateAdminUserInput;
@@ -5681,7 +5696,7 @@ export type UpdateOrderMutationVariables = Exact<{
 }>;
 
 
-export type UpdateOrderMutation = { updateOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type UpdateOrderMutation = { updateOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type DeleteOrderMutationVariables = Exact<{
   input: DeleteOrderInput;
@@ -5689,7 +5704,7 @@ export type DeleteOrderMutationVariables = Exact<{
 }>;
 
 
-export type DeleteOrderMutation = { deleteOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type DeleteOrderMutation = { deleteOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type CreateProductCategoryMutationVariables = Exact<{
   input: CreateProductCategoryInput;
@@ -5849,7 +5864,7 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserMutation = { createUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null } | null };
+export type CreateUserMutation = { createUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null } | null };
 
 export type UpdateUserMutationVariables = Exact<{
   input: UpdateUserInput;
@@ -5857,7 +5872,7 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { updateUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null } | null };
+export type UpdateUserMutation = { updateUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null } | null };
 
 export type DeleteUserMutationVariables = Exact<{
   input: DeleteUserInput;
@@ -5865,7 +5880,7 @@ export type DeleteUserMutationVariables = Exact<{
 }>;
 
 
-export type DeleteUserMutation = { deleteUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null } | null };
+export type DeleteUserMutation = { deleteUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null } | null };
 
 export type CreateCartMutationVariables = Exact<{
   input: CreateCartInput;
@@ -5897,7 +5912,7 @@ export type CreateTransactionMutationVariables = Exact<{
 }>;
 
 
-export type CreateTransactionMutation = { createTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
+export type CreateTransactionMutation = { createTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
 
 export type UpdateTransactionMutationVariables = Exact<{
   input: UpdateTransactionInput;
@@ -5905,7 +5920,7 @@ export type UpdateTransactionMutationVariables = Exact<{
 }>;
 
 
-export type UpdateTransactionMutation = { updateTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
+export type UpdateTransactionMutation = { updateTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
 
 export type DeleteTransactionMutationVariables = Exact<{
   input: DeleteTransactionInput;
@@ -5913,7 +5928,7 @@ export type DeleteTransactionMutationVariables = Exact<{
 }>;
 
 
-export type DeleteTransactionMutation = { deleteTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
+export type DeleteTransactionMutation = { deleteTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
 
 export type CreateInvoiceMutationVariables = Exact<{
   input: CreateInvoiceInput;
@@ -6015,7 +6030,7 @@ export type GetGroupProductQueryVariables = Exact<{
 }>;
 
 
-export type GetGroupProductQuery = { getGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type GetGroupProductQuery = { getGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type ListGroupProductsQueryVariables = Exact<{
   filter?: InputMaybe<ModelGroupProductFilterInput>;
@@ -6024,7 +6039,7 @@ export type ListGroupProductsQueryVariables = Exact<{
 }>;
 
 
-export type ListGroupProductsQuery = { listGroupProducts?: { nextToken?: string | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null> } | null };
+export type ListGroupProductsQuery = { listGroupProducts?: { nextToken?: string | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null> } | null };
 
 export type SearchGroupProductsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableGroupProductFilterInput>;
@@ -6036,14 +6051,14 @@ export type SearchGroupProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchGroupProductsQuery = { searchGroupProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchGroupProductsQuery = { searchGroupProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetUnitProductQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetUnitProductQuery = { getUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type GetUnitProductQuery = { getUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type ListUnitProductsQueryVariables = Exact<{
   filter?: InputMaybe<ModelUnitProductFilterInput>;
@@ -6052,7 +6067,7 @@ export type ListUnitProductsQueryVariables = Exact<{
 }>;
 
 
-export type ListUnitProductsQuery = { listUnitProducts?: { nextToken?: string | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null> } | null };
+export type ListUnitProductsQuery = { listUnitProducts?: { nextToken?: string | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null> } | null };
 
 export type SearchUnitProductsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableUnitProductFilterInput>;
@@ -6064,7 +6079,7 @@ export type SearchUnitProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchUnitProductsQuery = { searchUnitProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchUnitProductsQuery = { searchUnitProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetAdminUserQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6155,7 +6170,7 @@ export type GetOrderQueryVariables = Exact<{
 }>;
 
 
-export type GetOrderQuery = { getOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type GetOrderQuery = { getOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type ListOrdersQueryVariables = Exact<{
   filter?: InputMaybe<ModelOrderFilterInput>;
@@ -6164,7 +6179,7 @@ export type ListOrdersQueryVariables = Exact<{
 }>;
 
 
-export type ListOrdersQuery = { listOrders?: { nextToken?: string | null, items: Array<{ id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null> } | null };
+export type ListOrdersQuery = { listOrders?: { nextToken?: string | null, items: Array<{ id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null> } | null };
 
 export type SearchOrdersQueryVariables = Exact<{
   filter?: InputMaybe<SearchableOrderFilterInput>;
@@ -6176,7 +6191,7 @@ export type SearchOrdersQueryVariables = Exact<{
 }>;
 
 
-export type SearchOrdersQuery = { searchOrders?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchOrdersQuery = { searchOrders?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetProductCategoryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6379,7 +6394,7 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { getUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null } | null };
+export type GetUserQuery = { getUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null } | null };
 
 export type ListUsersQueryVariables = Exact<{
   filter?: InputMaybe<ModelUserFilterInput>;
@@ -6388,7 +6403,7 @@ export type ListUsersQueryVariables = Exact<{
 }>;
 
 
-export type ListUsersQuery = { listUsers?: { nextToken?: string | null, items: Array<{ id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null } | null> } | null };
+export type ListUsersQuery = { listUsers?: { nextToken?: string | null, items: Array<{ id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null } | null> } | null };
 
 export type SearchUsersQueryVariables = Exact<{
   filter?: InputMaybe<SearchableUserFilterInput>;
@@ -6400,7 +6415,7 @@ export type SearchUsersQueryVariables = Exact<{
 }>;
 
 
-export type SearchUsersQuery = { searchUsers?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchUsersQuery = { searchUsers?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetCartQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6435,7 +6450,7 @@ export type GetTransactionQueryVariables = Exact<{
 }>;
 
 
-export type GetTransactionQuery = { getTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
+export type GetTransactionQuery = { getTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
 
 export type ListTransactionsQueryVariables = Exact<{
   filter?: InputMaybe<ModelTransactionFilterInput>;
@@ -6444,7 +6459,7 @@ export type ListTransactionsQueryVariables = Exact<{
 }>;
 
 
-export type ListTransactionsQuery = { listTransactions?: { nextToken?: string | null, items: Array<{ id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null> } | null };
+export type ListTransactionsQuery = { listTransactions?: { nextToken?: string | null, items: Array<{ id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null> } | null };
 
 export type SearchTransactionsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableTransactionFilterInput>;
@@ -6456,7 +6471,7 @@ export type SearchTransactionsQueryVariables = Exact<{
 }>;
 
 
-export type SearchTransactionsQuery = { searchTransactions?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchTransactionsQuery = { searchTransactions?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetInvoiceQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6578,14 +6593,14 @@ export type OnGroupProductChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnGroupProductChangeSubscription = { onGroupProductChange?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnGroupProductChangeSubscription = { onGroupProductChange?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type OnUnitProductChangeSubscriptionVariables = Exact<{
   unitId: Scalars['ID'];
 }>;
 
 
-export type OnUnitProductChangeSubscription = { onUnitProductChange?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnUnitProductChangeSubscription = { onUnitProductChange?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type OnGeneratedProductChangeSubscriptionVariables = Exact<{
   unitId: Scalars['ID'];
@@ -6597,12 +6612,12 @@ export type OnGeneratedProductChangeSubscription = { onGeneratedProductChange?: 
 export type OnOrdersChangeSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnOrdersChangeSubscription = { onOrdersChange?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type OnOrdersChangeSubscription = { onOrdersChange?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type OnOrdersDeleteSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnOrdersDeleteSubscription = { onOrdersDelete?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type OnOrdersDeleteSubscription = { onOrdersDelete?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type OnProductChangedSubscriptionVariables = Exact<{
   unitId?: InputMaybe<Scalars['String']>;
@@ -6618,7 +6633,7 @@ export type OnOrderChangedSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnOrderChangedSubscription = { onOrderChanged?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type OnOrderChangedSubscription = { onOrderChanged?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type OnUnitOrdersChangeSubscriptionVariables = Exact<{
   unitId?: InputMaybe<Scalars['String']>;
@@ -6626,7 +6641,7 @@ export type OnUnitOrdersChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnUnitOrdersChangeSubscription = { onUnitOrdersChange?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type OnUnitOrdersChangeSubscription = { onUnitOrdersChange?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type OnCreateChainProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -6646,32 +6661,32 @@ export type OnDeleteChainProductSubscription = { onDeleteChainProduct?: { id: st
 export type OnCreateGroupProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateGroupProductSubscription = { onCreateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnCreateGroupProductSubscription = { onCreateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type OnUpdateGroupProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateGroupProductSubscription = { onUpdateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnUpdateGroupProductSubscription = { onUpdateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type OnDeleteGroupProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteGroupProductSubscription = { onDeleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnDeleteGroupProductSubscription = { onDeleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type OnCreateUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateUnitProductSubscription = { onCreateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnCreateUnitProductSubscription = { onCreateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type OnUpdateUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateUnitProductSubscription = { onUpdateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnUpdateUnitProductSubscription = { onUpdateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type OnDeleteUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteUnitProductSubscription = { onDeleteUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnDeleteUnitProductSubscription = { onDeleteUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type OnUpdateAdminUserSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -6711,12 +6726,12 @@ export type OnDeleteGroupSubscription = { onDeleteGroup?: { id: string, chainId:
 export type OnUpdateOrderSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateOrderSubscription = { onUpdateOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type OnUpdateOrderSubscription = { onUpdateOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type OnDeleteOrderSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteOrderSubscription = { onDeleteOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
+export type OnDeleteOrderSubscription = { onDeleteOrder?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
 
 export type OnCreateProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -6816,17 +6831,17 @@ export type OnDeleteUnitSubscription = { onDeleteUnit?: { id: string, adBannersE
 export type OnCreateUserSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateUserSubscription = { onCreateUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null } | null };
+export type OnCreateUserSubscription = { onCreateUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null } | null };
 
 export type OnUpdateUserSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateUserSubscription = { onUpdateUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null } | null };
+export type OnUpdateUserSubscription = { onUpdateUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null } | null };
 
 export type OnDeleteUserSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteUserSubscription = { onDeleteUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null } | null };
+export type OnDeleteUserSubscription = { onDeleteUser?: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null } | null };
 
 export type OnCreateCartSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -6846,17 +6861,17 @@ export type OnDeleteCartSubscription = { onDeleteCart?: { id: string, version?: 
 export type OnCreateTransactionSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateTransactionSubscription = { onCreateTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
+export type OnCreateTransactionSubscription = { onCreateTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
 
 export type OnUpdateTransactionSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateTransactionSubscription = { onUpdateTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
+export type OnUpdateTransactionSubscription = { onUpdateTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
 
 export type OnDeleteTransactionSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteTransactionSubscription = { onDeleteTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
+export type OnDeleteTransactionSubscription = { onDeleteTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null, fcmTokens?: Array<{ token: string, lastSeen: string }> | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null };
 
 export type OnCreateInvoiceSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -7795,6 +7810,10 @@ export const CreateOrderDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -7889,6 +7908,10 @@ export const CreateOrderDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -8348,6 +8371,68 @@ export const CreateGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8404,6 +8489,68 @@ export const UpdateGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8460,6 +8607,68 @@ export const DeleteGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8519,6 +8728,120 @@ export const CreateUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8578,6 +8901,120 @@ export const UpdateUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8637,6 +9074,120 @@ export const DeleteUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -9030,6 +9581,10 @@ export const UpdateOrderDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -9124,6 +9679,10 @@ export const UpdateOrderDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -9334,6 +9893,10 @@ export const DeleteOrderDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -9428,6 +9991,10 @@ export const DeleteOrderDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -10458,6 +11025,10 @@ export const CreateUserDocument = gql`
       postalCode
       email
     }
+    fcmTokens {
+      token
+      lastSeen
+    }
     createdAt
     updatedAt
   }
@@ -10481,6 +11052,10 @@ export const UpdateUserDocument = gql`
       postalCode
       email
     }
+    fcmTokens {
+      token
+      lastSeen
+    }
     createdAt
     updatedAt
   }
@@ -10503,6 +11078,10 @@ export const DeleteUserDocument = gql`
       streetAddress
       postalCode
       email
+    }
+    fcmTokens {
+      token
+      lastSeen
     }
     createdAt
     updatedAt
@@ -10809,6 +11388,10 @@ export const CreateTransactionDocument = gql`
         postalCode
         email
       }
+      fcmTokens {
+        token
+        lastSeen
+      }
       createdAt
       updatedAt
     }
@@ -10877,6 +11460,10 @@ export const UpdateTransactionDocument = gql`
         postalCode
         email
       }
+      fcmTokens {
+        token
+        lastSeen
+      }
       createdAt
       updatedAt
     }
@@ -10944,6 +11531,10 @@ export const DeleteTransactionDocument = gql`
         streetAddress
         postalCode
         email
+      }
+      fcmTokens {
+        token
+        lastSeen
       }
       createdAt
       updatedAt
@@ -11780,6 +12371,68 @@ export const GetGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -11837,6 +12490,68 @@ export const ListGroupProductsDocument = gql`
       externalId
       dirty
       deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -11903,6 +12618,68 @@ export const SearchGroupProductsDocument = gql`
       externalId
       dirty
       deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -11979,6 +12756,120 @@ export const GetUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -12039,6 +12930,120 @@ export const ListUnitProductsDocument = gql`
       externalId
       dirty
       deletedAt
+      groupProduct {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        takeawayTax
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        chainProduct {
+          id
+          chainId
+          name {
+            en
+            de
+            hu
+          }
+          description {
+            en
+            de
+            hu
+          }
+          productCategoryId
+          productType
+          isVisible
+          image
+          variants {
+            id
+            variantName {
+              en
+              de
+              hu
+            }
+            pack {
+              size
+              unit
+            }
+            refGroupPrice
+            isAvailable
+            price
+            availabilities {
+              type
+              dayFrom
+              dayTo
+              timeFrom
+              timeTo
+              price
+            }
+            position
+            netPackagingFee
+            soldOut
+          }
+          allergens
+          configSets {
+            productSetId
+            items {
+              productComponentId
+              refGroupPrice
+              price
+              position
+              externalId
+              netPackagingFee
+            }
+            position
+          }
+          externalId
+          dirty
+          deletedAt
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -12108,6 +13113,120 @@ export const SearchUnitProductsDocument = gql`
       externalId
       dirty
       deletedAt
+      groupProduct {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        takeawayTax
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        chainProduct {
+          id
+          chainId
+          name {
+            en
+            de
+            hu
+          }
+          description {
+            en
+            de
+            hu
+          }
+          productCategoryId
+          productType
+          isVisible
+          image
+          variants {
+            id
+            variantName {
+              en
+              de
+              hu
+            }
+            pack {
+              size
+              unit
+            }
+            refGroupPrice
+            isAvailable
+            price
+            availabilities {
+              type
+              dayFrom
+              dayTo
+              timeFrom
+              timeTo
+              price
+            }
+            position
+            netPackagingFee
+            soldOut
+          }
+          allergens
+          configSets {
+            productSetId
+            items {
+              productComponentId
+              refGroupPrice
+              price
+              position
+              externalId
+              netPackagingFee
+            }
+            position
+          }
+          externalId
+          dirty
+          deletedAt
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -12644,6 +13763,10 @@ export const GetOrderDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -12738,6 +13861,10 @@ export const GetOrderDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -12949,6 +14076,10 @@ export const ListOrdersDocument = gql`
             postalCode
             email
           }
+          fcmTokens {
+            token
+            lastSeen
+          }
           createdAt
           updatedAt
         }
@@ -13043,6 +14174,10 @@ export const ListOrdersDocument = gql`
             streetAddress
             postalCode
             email
+          }
+          fcmTokens {
+            token
+            lastSeen
           }
           createdAt
           updatedAt
@@ -13263,6 +14398,10 @@ export const SearchOrdersDocument = gql`
             postalCode
             email
           }
+          fcmTokens {
+            token
+            lastSeen
+          }
           createdAt
           updatedAt
         }
@@ -13357,6 +14496,10 @@ export const SearchOrdersDocument = gql`
             streetAddress
             postalCode
             email
+          }
+          fcmTokens {
+            token
+            lastSeen
           }
           createdAt
           updatedAt
@@ -14950,6 +16093,10 @@ export const GetUserDocument = gql`
       postalCode
       email
     }
+    fcmTokens {
+      token
+      lastSeen
+    }
     createdAt
     updatedAt
   }
@@ -14973,6 +16120,10 @@ export const ListUsersDocument = gql`
         streetAddress
         postalCode
         email
+      }
+      fcmTokens {
+        token
+        lastSeen
       }
       createdAt
       updatedAt
@@ -15006,6 +16157,10 @@ export const SearchUsersDocument = gql`
         streetAddress
         postalCode
         email
+      }
+      fcmTokens {
+        token
+        lastSeen
       }
       createdAt
       updatedAt
@@ -15357,6 +16512,10 @@ export const GetTransactionDocument = gql`
         postalCode
         email
       }
+      fcmTokens {
+        token
+        lastSeen
+      }
       createdAt
       updatedAt
     }
@@ -15425,6 +16584,10 @@ export const ListTransactionsDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -15503,6 +16666,10 @@ export const SearchTransactionsDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -16221,6 +17388,68 @@ export const OnGroupProductChangeDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -16280,6 +17509,120 @@ export const OnUnitProductChangeDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -16468,6 +17811,10 @@ export const OnOrdersChangeDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -16562,6 +17909,10 @@ export const OnOrdersChangeDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -16772,6 +18123,10 @@ export const OnOrdersDeleteDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -16866,6 +18221,10 @@ export const OnOrdersDeleteDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -17147,6 +18506,10 @@ export const OnOrderChangedDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -17241,6 +18604,10 @@ export const OnOrderChangedDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -17451,6 +18818,10 @@ export const OnUnitOrdersChangeDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -17545,6 +18916,10 @@ export const OnUnitOrdersChangeDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -17892,6 +19267,68 @@ export const OnCreateGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -17948,6 +19385,68 @@ export const OnUpdateGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -18004,6 +19503,68 @@ export const OnDeleteGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -18063,6 +19624,120 @@ export const OnCreateUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -18122,6 +19797,120 @@ export const OnUpdateUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -18181,6 +19970,120 @@ export const OnDeleteUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -18574,6 +20477,10 @@ export const OnUpdateOrderDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -18668,6 +20575,10 @@ export const OnUpdateOrderDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -18878,6 +20789,10 @@ export const OnDeleteOrderDocument = gql`
           postalCode
           email
         }
+        fcmTokens {
+          token
+          lastSeen
+        }
         createdAt
         updatedAt
       }
@@ -18972,6 +20887,10 @@ export const OnDeleteOrderDocument = gql`
           streetAddress
           postalCode
           email
+        }
+        fcmTokens {
+          token
+          lastSeen
         }
         createdAt
         updatedAt
@@ -20002,6 +21921,10 @@ export const OnCreateUserDocument = gql`
       postalCode
       email
     }
+    fcmTokens {
+      token
+      lastSeen
+    }
     createdAt
     updatedAt
   }
@@ -20025,6 +21948,10 @@ export const OnUpdateUserDocument = gql`
       postalCode
       email
     }
+    fcmTokens {
+      token
+      lastSeen
+    }
     createdAt
     updatedAt
   }
@@ -20047,6 +21974,10 @@ export const OnDeleteUserDocument = gql`
       streetAddress
       postalCode
       email
+    }
+    fcmTokens {
+      token
+      lastSeen
     }
     createdAt
     updatedAt
@@ -20353,6 +22284,10 @@ export const OnCreateTransactionDocument = gql`
         postalCode
         email
       }
+      fcmTokens {
+        token
+        lastSeen
+      }
       createdAt
       updatedAt
     }
@@ -20421,6 +22356,10 @@ export const OnUpdateTransactionDocument = gql`
         postalCode
         email
       }
+      fcmTokens {
+        token
+        lastSeen
+      }
       createdAt
       updatedAt
     }
@@ -20488,6 +22427,10 @@ export const OnDeleteTransactionDocument = gql`
         streetAddress
         postalCode
         email
+      }
+      fcmTokens {
+        token
+        lastSeen
       }
       createdAt
       updatedAt

@@ -1075,6 +1075,11 @@ input GetUnitsNearLocationInput {
   location: LocationLatLngInput!
 }
 
+type FCMToken {
+  token: String!
+  lastSeen: AWSDateTime!
+}
+
 type User
   @model
   @searchable
@@ -1086,6 +1091,7 @@ type User
   profileImage: String
   stripeCustomerId: String
   invoiceAddress: UserInvoiceAddress
+  fcmTokens: [FCMToken!]
 }
 
 type Cart

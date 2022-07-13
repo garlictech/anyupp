@@ -221,6 +221,8 @@ Array [
 
 exports[`orderStatusHandler case: UpdateOrder throws error: RESULT 1`] = `"SEND SPY RESULT"`;
 
+exports[`orderStatusHandler case: UpdateOrder throws error: mockSendOrderStatusChangePushNotification calls 1`] = `0`;
+
 exports[`orderStatusHandler case: UpdateOrder throws error: reply send calls 1`] = `Array []`;
 
 exports[`orderStatusHandler case: UpdateOrder throws error: reply sendSpy calls 1`] = `
@@ -242,6 +244,8 @@ Array [
 `;
 
 exports[`orderStatusHandler case: everything is OK: RESULT 1`] = `"SEND RESULT"`;
+
+exports[`orderStatusHandler case: everything is OK: mockSendOrderStatusChangePushNotification calls 1`] = `1`;
 
 exports[`orderStatusHandler case: everything is OK: reply send calls 1`] = `
 Array [
@@ -289,7 +293,16 @@ Array [
 exports[`updateOrderStatus case: UpdateOrder succes, status: failed: RESULT 1`] = `
 Object {
   "_tag": "Right",
-  "right": "SUCCESSFULL UPDATE",
+  "right": Object {
+    "order": "SUCCESSFULL UPDATE",
+    "request": Object {
+      "currentState": "failed",
+      "remoteOrderId": "REMOTE ORDER ID",
+    },
+    "unit": Object {
+      "id": "UNIT ID",
+    },
+  },
 }
 `;
 
@@ -318,7 +331,16 @@ Array [
 exports[`updateOrderStatus case: UpdateOrder succes, status: ready: RESULT 1`] = `
 Object {
   "_tag": "Right",
-  "right": "SUCCESSFULL UPDATE",
+  "right": Object {
+    "order": "SUCCESSFULL UPDATE",
+    "request": Object {
+      "currentState": "ready",
+      "remoteOrderId": "REMOTE ORDER ID",
+    },
+    "unit": Object {
+      "id": "UNIT ID",
+    },
+  },
 }
 `;
 
@@ -347,7 +369,16 @@ Array [
 exports[`updateOrderStatus case: UpdateOrder succes, status: served: RESULT 1`] = `
 Object {
   "_tag": "Right",
-  "right": "SUCCESSFULL UPDATE",
+  "right": Object {
+    "order": "SUCCESSFULL UPDATE",
+    "request": Object {
+      "currentState": "served",
+      "remoteOrderId": "REMOTE ORDER ID",
+    },
+    "unit": Object {
+      "id": "UNIT ID",
+    },
+  },
 }
 `;
 

@@ -9,6 +9,10 @@ import { validateSchema } from '@bgap/shared/data-validators';
 import { oeTryCatch } from '@bgap/shared/utils';
 import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
 import { Order, OrderStatus, Unit } from '@bgap/domain';
+import {
+  FCMPushNotificationService,
+  IFCMPushNotificationService,
+} from '@bgap/firebase-api';
 
 export type RKeeperRequest = fastify.FastifyRequest<{
   Params: { externalUnitId: string };
@@ -34,10 +38,22 @@ export const {
 export interface OrderStatusHandlerDeps {
   anyuppSdk: CrudSdk;
   timestamp: () => number;
+  getPushNotificationService: () => IFCMPushNotificationService;
 }
 
 const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
 const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
+
+/*
+  base64 encode the json after removing line breaks, and set the result as the env variable
+  e.g.: cat /file/path/to/firebase/cert.json | tr -d '\n' | base64 | tr -d '\n'
+  e.g.: export FIREBASE_SERVICE_ACCOUNT_CERT=`cat /file/path/to/firebase/cert.json | tr -d '\n' | base64 | tr -d '\n'`
+ */
+const serviceAccountCertJSONString = Buffer.from(
+  process.env.FIREBASE_SERVICE_ACCOUNT_CERT || 'READ_COMMENT_ABOVE',
+  'base64',
+).toString();
+
 const anyuppSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 
 export interface State_UnitFetched {
@@ -139,7 +155,20 @@ export const updateOrderStatus =
             `Order with external ID ${state.request.remoteOrderId} not found`,
         ),
       ),
+      OE.map(updatedOrder => ({
+        ...state,
+        order: updatedOrder ? updatedOrder : state.order,
+      })),
     );
+
+const sendPushNotification =
+  (deps: OrderStatusHandlerDeps) => (state: State_OrderFetched) =>
+    deps
+      .getPushNotificationService()
+      .sendOrderStatusChangePushNotification({
+        order: state.order,
+      })
+      .pipe(oeTryCatch);
 
 export const orderStatusHandlerLogic =
   (deps: OrderStatusHandlerDeps) =>
@@ -155,6 +184,7 @@ export const orderStatusHandlerLogic =
       OE.chain(getUnit(deps)(externalUnitId)),
       OE.chain(getOrder(deps)),
       OE.chain(updateOrderStatus(deps)),
+      OE.chain(sendPushNotification(deps)),
       OE.fold(
         error =>
           of(
@@ -171,7 +201,12 @@ export const orderStatusHandler = (
   request: RKeeperRequest,
   reply: fastify.FastifyReply,
 ) =>
-  orderStatusHandlerLogic({ anyuppSdk, timestamp: () => Date.now() })(
-    request,
-    reply,
-  );
+  orderStatusHandlerLogic({
+    anyuppSdk,
+    timestamp: () => Date.now(),
+    getPushNotificationService: () =>
+      new FCMPushNotificationService({
+        sdk: anyuppSdk,
+        serviceAccountCertJSONString,
+      }),
+  })(request, reply);
