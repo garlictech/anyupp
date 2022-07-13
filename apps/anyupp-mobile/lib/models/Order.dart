@@ -252,8 +252,12 @@ class Order {
       packagingFeeTaxPercentage: map['packagingFeeTaxPercentage'],
       currentStatus:
           enumFromStringNull(map['currentStatus'], OrderStatus.values),
-      createdAt: fromGraphQLAWSDateTimeToDartDateTime(map['createdAt']),
-      updatedAt: fromGraphQLAWSDateTimeToDartDateTime(map['updatedAt']),
+      createdAt: map['createdAt'] != null
+          ? fromGraphQLAWSDateTimeToDartDateTime(map['createdAt'])
+          : DateTime.now(),
+      updatedAt: map['updatedAt'] != null
+          ? fromGraphQLAWSDateTimeToDartDateTime(map['updatedAt'])
+          : DateTime.now(),
     );
   }
 

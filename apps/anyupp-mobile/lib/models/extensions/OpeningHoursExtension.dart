@@ -15,7 +15,11 @@ Map<int, String> ohDays = {
 
 extension OpeningHoursExtension on OpeningHours {
   String getHourFormattedString(int? timeStamp) {
-    return timeStamp == null ? "" : ohHourFormat.format(DateTime.fromMillisecondsSinceEpoch(timeStamp)).toString();
+    return timeStamp == null
+        ? ""
+        : ohHourFormat
+            .format(DateTime.fromMillisecondsSinceEpoch(timeStamp))
+            .toString();
   }
 
   String? getDayString() {
@@ -24,7 +28,7 @@ extension OpeningHoursExtension on OpeningHours {
 
   String? getOpenRangeString({bool fromTo = true}) {
     if (!closed && from != null) {
-      String formattedString = getHourFormattedString(from?.toInt()) + " - ";
+      String formattedString = getHourFormattedString(from?.toInt()) + "-";
       if (fromTo) {
         formattedString += getHourFormattedString(to?.toInt());
       }

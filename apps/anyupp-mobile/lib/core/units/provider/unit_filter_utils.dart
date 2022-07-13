@@ -17,6 +17,11 @@ class _OpeningHours {
 
   // Atlog a nyitvatartas holnapra?
   bool get isOpenTomorrow => from != null && (to == null || to! < from!);
+
+  @override
+  String toString() {
+    return '_OpeningHours[from=$from, to=$to]';
+  }
 }
 
 List<OpeningHours> getOpeningHoursNext7(GetUnitById$Query$GetUnit unit) {
@@ -41,6 +46,7 @@ OpeningHours _getOpeningHoursNext(
   var openingHours = getUnitTodayOpeningHours(unit.openingHours, date.weekday);
   var from = d0.add(Duration(minutes: openingHours?.from ?? 0));
   var to = d0.add(Duration(minutes: openingHours?.to ?? 0));
+  log.e('_getOpeningHoursNext[${date.weekday}]=$openingHours');
 
   return OpeningHours(
     date: _dateFormatter.format(date),
@@ -52,14 +58,14 @@ OpeningHours _getOpeningHoursNext(
 
 int calculateDistance(LatLng location, double? unitLat, double? unitLng) {
   if (unitLat == null || unitLng == null) {
-    return -1;
+    return 0;
   }
   return Geolocator.distanceBetween(
     location.latitude,
     location.longitude,
     unitLat,
     unitLng,
-  ).toInt();
+  ).toInt().abs();
 }
 
 bool isUnitOpened(GetUnitById$Query$GetUnit unit, DateTime now) {
@@ -67,16 +73,22 @@ bool isUnitOpened(GetUnitById$Query$GetUnit unit, DateTime now) {
     return false;
   }
 
+  if (unit.openingHours == null) {
+    return false;
+  }
+
+  var today = getUnitTodayOpeningHours(
+    unit.openingHours,
+    now.weekday,
+  );
+  if (today == null) {
+    return false;
+  }
+  if (today.to == today.from) {
+    return false;
+  }
+
   return true;
-
-  // if (unit.openingHours == null) {
-  //   return true;
-  // }
-
-  // var today = getUnitOpeningHoursByWeekday(
-  //   unit.openingHours,
-  //   now.weekday,
-  // );
   // var yesterday = getUnitOpeningHoursByWeekday(
   //   unit.openingHours,
   //   now.weekday - 1,
@@ -100,6 +112,7 @@ _OpeningHours? getUnitTodayOpeningHours(
     GetUnitById$Query$GetUnit$OpeningHours? openingHours, int dayOfWeek) {
   var today = getUnitOpeningHoursByWeekday(openingHours, dayOfWeek);
   var yesterday = getUnitOpeningHoursByWeekday(openingHours, dayOfWeek - 1);
+  return today;
 }
 
 _OpeningHours getUnitOpeningHoursByWeekday(
