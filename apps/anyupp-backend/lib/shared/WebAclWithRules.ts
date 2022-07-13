@@ -1,9 +1,9 @@
 import { aws_logs, aws_wafv2 as waf, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { App } from '@serverless-stack/resources';
 
 export interface WebAclWithRulesProps {
   namePrefix: string;
-  region: string;
   aclType: 'CLOUDFRONT' | 'REGIONAL';
 }
 
@@ -12,10 +12,11 @@ export class WebAclWithRules extends Construct {
 
   constructor(scope: Construct, id: string, props: WebAclWithRulesProps) {
     super(scope, id);
+    const app = this.node.root as App;
 
     const logGroup = new aws_logs.LogGroup(this, 'acl-loggroup', {
       // AWS WAF requires this naming convention: https://docs.aws.amazon.com/waf/latest/developerguide/logging-cw-logs.html
-      logGroupName: `aws-waf-logs-${props.namePrefix}-anyupp-${props.region}`,
+      logGroupName: `aws-waf-logs-${props.namePrefix}-anyupp-${app.region}`,
       removalPolicy: RemovalPolicy.RETAIN,
     });
 
@@ -100,13 +101,13 @@ export class WebAclWithRules extends Construct {
     };
 
     this.webAcl = new waf.CfnWebACL(this, 'frontendAcl', {
-      name: `${props.namePrefix}-anyupp-${props.region}-WebAcl`,
+      name: `${props.namePrefix}-anyupp-${app.region}-WebAcl`,
       defaultAction: { allow: {} },
       scope: props.aclType,
       visibilityConfig: {
         sampledRequestsEnabled: true,
         cloudWatchMetricsEnabled: true,
-        metricName: `${props.namePrefix}-anyupp-${props.region}-web-acl`,
+        metricName: `${props.namePrefix}-anyupp-${app.region}-web-acl`,
       },
       rules: [
         managedAWSIpReputationListRuleSet,
@@ -121,7 +122,7 @@ export class WebAclWithRules extends Construct {
       // arn:aws:logs:eu-west-1:568276182587:log-group:aws-waf-logs-anyupp-dev:*
       //`arn:aws:logs:${region}:${accountId}:log-group:aws-waf-logs-for-app`
       logDestinationConfigs: [
-        logGroup.logGroupArn.substring(0, logGroup.logGroupArn.length - 2),
+        `arn:aws:logs:${app.region}:${app.account}:log-group:${logGroup.logGroupName}`,
       ],
     });
   }

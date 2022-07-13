@@ -15,7 +15,6 @@ export class WafStack extends Stack {
 
     const webAcl = new WebAclWithRules(this, 'frontendAcl', {
       namePrefix: app.stage,
-      region: app.region,
       aclType: 'REGIONAL',
     });
 
