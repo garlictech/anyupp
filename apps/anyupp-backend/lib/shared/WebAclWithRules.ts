@@ -43,6 +43,30 @@ export class WebAclWithRules extends Construct {
         managedRuleGroupStatement: {
           vendorName: 'AWS',
           name: 'AWSManagedRulesCommonRuleSet',
+          excludedRules: [
+            {
+              name: 'SizeRestrictions_BODY',
+            },
+          ],
+        },
+      },
+    };
+
+    const customAnyuppRules = {
+      priority: 50,
+      action: { block: {} },
+      name: `${props.namePrefix}-anyUppBodySizeRule`,
+      visibilityConfig: {
+        sampledRequestsEnabled: true,
+        cloudWatchMetricsEnabled: true,
+        metricName: `${props.namePrefix}-anyUppBodySizeRule`,
+      },
+      statement: {
+        sizeConstraintStatement: {
+          comparisonOperator: 'GE',
+          fieldToMatch: { body: {} },
+          size: 16384,
+          textTransformations: [],
         },
       },
     };
@@ -77,6 +101,7 @@ export class WebAclWithRules extends Construct {
         managedAWSIpReputationListRuleSet,
         managedAWSCommonRuleSet,
         manageAWSKnownBadInputRuleSet,
+        customAnyuppRules,
       ],
     });
   }
