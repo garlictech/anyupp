@@ -1,4 +1,4 @@
-import { aws_wafv2 as waf } from 'aws-cdk-lib';
+import { aws_logs, aws_wafv2 as waf, RemovalPolicy } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
 export interface WebAclWithRulesProps {
@@ -12,6 +12,12 @@ export class WebAclWithRules extends Construct {
 
   constructor(scope: Construct, id: string, props: WebAclWithRulesProps) {
     super(scope, id);
+
+    const logGroup = new aws_logs.LogGroup(this, 'acl-loggroup', {
+      // AWS WAF requires this naming convention: https://docs.aws.amazon.com/waf/latest/developerguide/logging-cw-logs.html
+      logGroupName: `aws-waf-logs-${props.namePrefix}-anyupp-${props.region}`,
+      removalPolicy: RemovalPolicy.RETAIN,
+    });
 
     const managedAWSIpReputationListRuleSet = {
       priority: 1,
@@ -107,6 +113,15 @@ export class WebAclWithRules extends Construct {
         managedAWSCommonRuleSet,
         manageAWSKnownBadInputRuleSet,
         customAnyuppRules,
+      ],
+    });
+
+    new waf.CfnLoggingConfiguration(this, 'logging-config', {
+      resourceArn: this.webAcl.attrArn,
+      // arn:aws:logs:eu-west-1:568276182587:log-group:aws-waf-logs-anyupp-dev:*
+      //`arn:aws:logs:${region}:${accountId}:log-group:aws-waf-logs-for-app`
+      logDestinationConfigs: [
+        logGroup.logGroupArn.substring(0, logGroup.logGroupArn.length - 2),
       ],
     });
   }
