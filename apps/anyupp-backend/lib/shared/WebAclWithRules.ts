@@ -16,7 +16,7 @@ export class WebAclWithRules extends Construct {
 
     const logGroup = new aws_logs.LogGroup(this, 'acl-loggroup', {
       // AWS WAF requires this naming convention: https://docs.aws.amazon.com/waf/latest/developerguide/logging-cw-logs.html
-      logGroupName: `aws-waf-logs-${props.namePrefix}-anyupp-${app.region}`,
+      logGroupName: `aws-waf-logs-${props.namePrefix}-anyupp`,
       removalPolicy: RemovalPolicy.RETAIN,
     });
 
