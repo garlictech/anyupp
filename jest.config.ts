@@ -58,5 +58,6 @@ export default {
     '<rootDir>/libs/apps/backend-anyupp',
     '<rootDir>/libs/apps/shared',
     '<rootDir>/libs/anyupp-schema',
+    '<rootDir>/libs/firebase-api',
   ],
 };

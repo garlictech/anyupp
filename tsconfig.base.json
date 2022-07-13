@@ -58,6 +58,7 @@
       "@bgap/crud-gql/backend": ["libs/crud-gql/backend/src/index.ts"],
       "@bgap/data": ["libs/data/src/index.ts"],
       "@bgap/domain": ["libs/domain/src/index.ts"],
+      "@bgap/firebase-api": ["libs/firebase-api/src/index.ts"],
       "@bgap/gql-sdk": ["libs/gql-sdk/src/index.ts"],
       "@bgap/integration-tests/angular": [
         "libs/integration-tests/angular/src/index.ts"

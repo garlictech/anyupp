@@ -28,6 +28,7 @@
     "crud-gql-backend": "libs/crud-gql/backend",
     "data": "libs/data",
     "domain": "libs/domain",
+    "firebase-api": "libs/firebase-api",
     "gql-sdk": "libs/gql-sdk",
     "integration-tests-angular": "libs/integration-tests/angular",
     "integration-tests-universal": "libs/integration-tests/universal",

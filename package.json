@@ -99,6 +99,7 @@
     "fabric": "5.2.1",
     "fastify": "3.29.1",
     "file-saver": "2.0.5",
+    "firebase-admin": "11.0.0",
     "fp-ts": "2.12.1",
     "fp-ts-rxjs": "0.6.15",
     "fs": "^0.0.1-security",
