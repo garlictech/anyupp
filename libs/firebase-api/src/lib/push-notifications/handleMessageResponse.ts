@@ -1,10 +1,10 @@
-import { MessagingDevicesResponse } from 'firebase-admin/messaging';
+import fbAdmin from 'firebase-admin';
 import { IFCMMessageSendResult } from './IFCMMessageSendResult';
 import { performResultErrorActions } from './performResultErrorActions';
 
 interface Params {
   fcmToken: string;
-  mdResponse: MessagingDevicesResponse;
+  mdResponse: fbAdmin.messaging.MessagingDevicesResponse;
 }
 
 /**
