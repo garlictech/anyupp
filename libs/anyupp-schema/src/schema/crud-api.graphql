@@ -102,6 +102,9 @@ type ChainProduct
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
+  # Schema version 1
+  schemaVersion: Int
+  variantIds: [ID]
 }
 
 enum Allergen {
@@ -170,6 +173,9 @@ type GroupProduct
   deletedAt: AWSDateTime
   # For removing generated product
   chainProduct: ChainProduct @hasOne(fields: ["parentId"])
+  # Schema version 1
+  schemaVersion: Int
+  variantIds: [ID]
 }
 
 type UnitProduct
@@ -193,6 +199,9 @@ type UnitProduct
   deletedAt: AWSDateTime
   # For removing generated product
   groupProduct: GroupProduct @hasOne(fields: ["parentId"])
+  # Schema version 1
+  schemaVersion: Int
+  variantIds: [ID]
 }
 
 type ProductConfigComponent {
@@ -210,7 +219,10 @@ type ProductConfigSet {
   position: Int!
 }
 
-type ProductVariant {
+type ProductVariant
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   variantName: LocalizedItem!
   pack: ProductVariantPack
