@@ -183,10 +183,11 @@ class CartRepository implements ICartProvider {
     GeoUnit unit,
     GeneratedProduct product,
     ProductVariant variant,
+    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+        configSets,
   ) {
     return OrderItem(
       productType: product.productType,
-      // TODO configSets: ,
       serviceFee: getServiceFee(
         unit.serviceFeePolicy,
         PriceShown(
@@ -226,7 +227,36 @@ class CartRepository implements ICartProvider {
       ],
       quantity: 1,
       netPackagingFee: variant.netPackagingFee,
-      // selectedConfigMap: getSelectedComponentMap(),
+      selectedConfigMap: configSets,
+      configSets: _getConfigSets(configSets),
     );
+  }
+
+  List<OrderItemConfigSet>? _getConfigSets(
+      Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+          configSets) {
+    if (configSets.isEmpty) {
+      return null;
+    }
+
+    List<OrderItemConfigSet> result = [];
+    configSets.forEach((key, value) {
+      result.add(OrderItemConfigSet(
+        name: key.name,
+        productSetId: key.productSetId,
+        type: key.type,
+        items: value
+            .map((item) => OrderItemConfigComponent(
+                  name: item.name,
+                  price: item.price,
+                  productComponentId: item.productComponentId,
+                  externalId: item.externalId,
+                  netPackagingFee: item.netPackagingFee,
+                  allergens: item.allergens,
+                ))
+            .toList(),
+      ));
+    });
+    return result;
   }
 }

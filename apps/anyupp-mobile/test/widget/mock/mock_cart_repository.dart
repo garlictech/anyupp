@@ -73,8 +73,14 @@ class MockCartRepository implements CartRepository {
   }
 
   @override
-  OrderItem getOrderItem(String userId, GeoUnit unit, GeneratedProduct product,
-      ProductVariant variant) {
+  OrderItem getOrderItem(
+    String userId,
+    GeoUnit unit,
+    GeneratedProduct product,
+    ProductVariant variant,
+    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+        configSets,
+  ) {
     return OrderItem(
       productId: product.id,
       variantId: variant.id!,

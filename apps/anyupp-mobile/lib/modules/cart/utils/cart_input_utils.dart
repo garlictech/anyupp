@@ -9,44 +9,52 @@ CreateOrderFromCartArguments createOrderFromCartArguments(
   GeoUnit unit,
   Cart cart,
 ) {
-  var map = cart.toJson();
-  map['sumPriceShown'] = {
-    'currency': unit.currency,
-    'pricePerUnit': 0.0,
-    'priceSum': 0.0,
-    'tax': 0,
-    'taxSum': 0.0,
-  };
+  // var map = cart.toJson();
+  // map['sumPriceShown'] = {
+  //   'currency': unit.currency,
+  //   'pricePerUnit': 0.0,
+  //   'priceSum': 0.0,
+  //   'tax': 0,
+  //   'taxSum': 0.0,
+  // };
 
-  Order order = updateOrderPrices(Order.fromJson(map));
+  // Order order = updateOrderPrices(Order.fromJson(map));
   return CreateOrderFromCartArguments(
     order: CreateOrderInput(
-      unitId: order.unitId,
-      userId: order.userId,
-      orderPolicy: order.orderPolicy,
+      unitId: cart.unitId,
+      userId: cart.userId,
+      orderPolicy: cart.orderPolicy,
       archived: false,
       hasRated: false,
-      place: order.place != null
+      place: cart.place != null
           ? PlaceInput(
-              seat: order.place!.seat ?? EMPTY_SEAT,
-              table: order.place!.table ?? EMPTY_TABLE,
+              seat: cart.place!.seat ?? EMPTY_SEAT,
+              table: cart.place!.table ?? EMPTY_TABLE,
             )
           : null,
-      serviceFee: order.serviceFee != null
+      serviceFee: cart.serviceFee != null
           ? CumulatedPriceInput(
-              currency: order.serviceFee!.currency,
-              grossPrice: order.serviceFee!.grossPrice,
-              taxContent: order.serviceFee!.taxContent,
+              currency: cart.serviceFee!.currency,
+              grossPrice: cart.serviceFee!.grossPrice,
+              taxContent: cart.serviceFee!.taxContent,
             )
           : null,
-      sumPriceShown: _priceShownToinput(order.sumPriceShown)!,
-      packagingFeeTaxPercentage: unit.packagingTax,
-      packagingSum: _priceToInput(order.packagingSum),
-      paymentMode: PaymentModeInput(
-        method: order.paymentMode.method,
-        type: order.paymentMode.type,
-        caption: order.paymentMode.caption,
+      sumPriceShown: PriceShownInput(
+        currency: unit.currency,
+        priceSum: cart.totalPrice,
+        pricePerUnit: 0,
+        tax: 0,
+        taxSum: 0,
       ),
+      packagingFeeTaxPercentage: unit.packagingTax,
+      packagingSum: _priceToInput(cart.packagingSum),
+      paymentMode: cart.paymentMode != null
+          ? PaymentModeInput(
+              method: cart.paymentMode!.method,
+              type: cart.paymentMode!.type,
+              caption: cart.paymentMode!.caption,
+            )
+          : null,
       serviceFeePolicy: unit.serviceFeePolicy != null
           ? ServiceFeePolicyInput.fromJson(unit.serviceFeePolicy!.toJson())
           : null,
@@ -58,11 +66,27 @@ CreateOrderFromCartArguments createOrderFromCartArguments(
       ratingPolicies: unit.ratingPolicies
           ?.map((e) => RatingPolicyInput.fromJson(e.toJson()))
           .toList(),
-      items: order.items
+      items: cart.items
           .map(
             (item) => OrderItemInput(
               productId: item.productId,
-              // configSets: item., TODO
+              configSets: item.configSets
+                  ?.map((cs) => OrderItemConfigSetInput(
+                        productSetId: cs.productSetId,
+                        name: _localizedItemInput(cs.name)!,
+                        type: cs.type,
+                        items: cs.items
+                            .map((comp) => OrderItemConfigComponentInput(
+                                  name: _localizedItemInput(comp.name)!,
+                                  externalId: comp.externalId,
+                                  productComponentId: comp.productComponentId,
+                                  price: comp.price,
+                                  netPackagingFee: comp.netPackagingFee,
+                                  allergens: comp.allergens,
+                                ))
+                            .toList(),
+                      ))
+                  .toList(),
               productName: _localizedItemInput(item.productName)!,
               quantity: item.quantity,
               variantId: item.variantId,
@@ -70,15 +94,15 @@ CreateOrderFromCartArguments createOrderFromCartArguments(
               allergens: item.allergens,
               image: item.image,
               serviceFee: _priceToInput(item.serviceFee),
-              netPackagingFee: getTotalNetPackagingFee(
-                  unit, order.servingMode!, order.items),
+              netPackagingFee:
+                  getTotalNetPackagingFee(unit, cart.servingMode!, cart.items),
               priceShown: _priceShownToinput(item.priceShown)!,
               sumPriceShown: _priceShownToinput(item.sumPriceShown)!,
               statusLog: [
                 StatusLogInput(
                   status: OrderStatus.none,
                   ts: DateTime.now().microsecondsSinceEpoch.toDouble(),
-                  userId: order.userId,
+                  userId: cart.userId,
                 )
               ],
             ),
@@ -129,17 +153,19 @@ CreateOrderFromCartArguments createOrderFromCart(GeoUnit unit, Cart cart) {
       serviceFee: serviceFee,
       sumPriceShown: PriceShownInput(
         currency: unit.currency,
-        pricePerUnit: 0,
-        tax: 0,
-        priceSum: 0, // TODO,
-        taxSum: 0, // TODO
+        pricePerUnit: cart.sumPriceShown!.pricePerUnit,
+        tax: cart.sumPriceShown!.tax,
+        priceSum: cart.sumPriceShown!.priceSum,
+        taxSum: cart.sumPriceShown!.taxSum,
       ),
       packagingFeeTaxPercentage: unit.packagingTax,
-      packagingSum: PriceInput(
-        currency: unit.currency,
-        netPrice: 0, // TODO,
-        taxPercentage: 0, // TODO,
-      ),
+      packagingSum: cart.packagingSum != null
+          ? PriceInput(
+              currency: unit.currency,
+              netPrice: cart.packagingSum!.netPrice,
+              taxPercentage: cart.packagingSum!.taxPercentage,
+            )
+          : null,
       paymentMode: cart.paymentMode != null
           ? PaymentModeInput(
               method: cart.paymentMode!.method,
@@ -162,7 +188,23 @@ CreateOrderFromCartArguments createOrderFromCart(GeoUnit unit, Cart cart) {
           .map(
             (item) => OrderItemInput(
               productId: item.productId,
-              // configSets: item., TODO
+              configSets: item.configSets
+                  ?.map((i) => OrderItemConfigSetInput(
+                        name: _localizedItemInput(i.name)!,
+                        productSetId: i.productSetId,
+                        type: i.type,
+                        items: i.items
+                            .map((i) => OrderItemConfigComponentInput(
+                                  name: _localizedItemInput(i.name)!,
+                                  price: i.price,
+                                  productComponentId: i.productComponentId,
+                                  externalId: i.externalId,
+                                  netPackagingFee: i.netPackagingFee,
+                                  allergens: i.allergens,
+                                ))
+                            .toList(),
+                      ))
+                  .toList(),
               productName: _localizedItemInput(item.productName)!,
               quantity: item.quantity,
               variantId: item.variantId,

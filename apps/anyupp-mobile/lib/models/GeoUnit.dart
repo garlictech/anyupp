@@ -230,7 +230,7 @@ class GeoUnit {
             map['unit']?['orderPaymentPolicy'],
             OrderPaymentPolicy.values,
           ) ??
-          OrderPaymentPolicy.prepay, // TODO mock, kivenni
+          OrderPaymentPolicy.afterpay,
       location:
           map['location'] != null ? Location.fromJson(map['location']) : null,
       adBannersEnabled: map['unit']?['adBannersEnabled'] ?? false,

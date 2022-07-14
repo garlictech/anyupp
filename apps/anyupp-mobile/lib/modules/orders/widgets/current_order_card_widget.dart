@@ -157,7 +157,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
   }
 
   String _getCardTitle(BuildContext context) {
-    if (order.orderPolicy == OrderPolicy.full) {
+    if (order.orderPolicy == OrderPolicy.full && order.orderNum != null) {
       return '#${order.orderNum}';
     }
 

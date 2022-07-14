@@ -42,11 +42,10 @@ List<OpeningHours> getOpeningHoursNext7(GetUnitById$Query$GetUnit unit) {
 OpeningHours _getOpeningHoursNext(
     GetUnitById$Query$GetUnit unit, DateTime date) {
   var d0 = DateTime(date.year, date.month, date.day, 0, 0, 0);
-  var d1 = DateTime(date.year, date.month, date.day, 24, 0, 0);
   var openingHours = getUnitTodayOpeningHours(unit.openingHours, date.weekday);
   var from = d0.add(Duration(minutes: openingHours?.from ?? 0));
   var to = d0.add(Duration(minutes: openingHours?.to ?? 0));
-  log.e('_getOpeningHoursNext[${date.weekday}]=$openingHours');
+  // log.e('_getOpeningHoursNext[${date.weekday}]=$openingHours');
 
   return OpeningHours(
     date: _dateFormatter.format(date),
@@ -111,7 +110,6 @@ bool isUnitOpened(GetUnitById$Query$GetUnit unit, DateTime now) {
 _OpeningHours? getUnitTodayOpeningHours(
     GetUnitById$Query$GetUnit$OpeningHours? openingHours, int dayOfWeek) {
   var today = getUnitOpeningHoursByWeekday(openingHours, dayOfWeek);
-  var yesterday = getUnitOpeningHoursByWeekday(openingHours, dayOfWeek - 1);
   return today;
 }
 

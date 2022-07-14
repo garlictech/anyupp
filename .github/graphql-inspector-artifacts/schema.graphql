@@ -1365,9 +1365,9 @@ input SearchByRadiusInput {
 }
 
 type GeoSearchConnection {
-  items: [String] @aws_iam @aws_api_key
-  nextToken: String @aws_iam @aws_api_key
-  total: Int @aws_iam @aws_api_key
+  items: [String] @aws_iam @aws_cognito_user_pools
+  nextToken: String @aws_iam @aws_cognito_user_pools
+  total: Int @aws_iam @aws_cognito_user_pools
 }
 
 type Query {

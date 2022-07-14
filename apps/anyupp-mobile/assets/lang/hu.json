@@ -245,7 +245,7 @@
         "served": {
           "title": "Felszolgálva",
           "titleShort": "Felszolgálva",
-          "description": "A rendelésed elkészült, hamarosan felszolgáljuk neked. "
+          "description": "A rendelésed elkészült, hamarosan felszolgáljuk neked."
         },
         "failed": {
           "title": "Törölve",

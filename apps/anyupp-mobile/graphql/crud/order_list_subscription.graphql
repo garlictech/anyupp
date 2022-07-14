@@ -1,5 +1,5 @@
-subscription OnOrderChanged($userId: String) {
-  onOrderChanged(userId: $userId) {
+subscription OnOrderChanged($userId: String!) {
+  onOrderChanged(userId: $userId, archived: false) {
     id
     orderNum
     currentStatus
@@ -87,6 +87,7 @@ subscription OnOrderChanged($userId: String) {
         updatedAt
       }
       userId
+      paymentMethodId
     }
     items {
       productId
@@ -113,6 +114,8 @@ subscription OnOrderChanged($userId: String) {
           }
           price
           productComponentId
+          externalId
+          netPackagingFee
         }
         name {
           de
@@ -145,6 +148,13 @@ subscription OnOrderChanged($userId: String) {
       image
       laneId
       created
+      externalId
+      productType
+      serviceFee {
+        currency
+        netPrice
+        taxPercentage
+      }
     }
     transactionId
     transactionStatus
@@ -206,7 +216,23 @@ subscription OnOrderChanged($userId: String) {
         en
         hu
       }
+      description {
+        de
+        en
+        hu
+      }
     }
     soldOutVisibilityPolicy
+    externalId
+    guestLabel
+    packagingFeeTaxPercentage
+    statusLog {
+      status
+      ts
+      userId
+    }
+    unpayCategory
+    version
+    visitId
   }
 }

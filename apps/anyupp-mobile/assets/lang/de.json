@@ -243,6 +243,11 @@
           "titleShort": "Deleted",
           "description": "Your order has been canceled. Our colleague will contact you."
         },
+        "failed": {
+          "title": "Deleted",
+          "titleShort": "Deleted",
+          "description": "Your order has been cancelled. Our colleague will contact you soon."
+        },
         "served": {
           "title": "Served",
           "titleShort": "Served",

@@ -184,6 +184,7 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
           compassEnabled: true,
           myLocationButtonEnabled: false,
           mapToolbarEnabled: false,
+          zoomControlsEnabled: false,
           mapType: MapType.normal,
           zoomGesturesEnabled: true,
           initialCameraPosition: CameraPosition(

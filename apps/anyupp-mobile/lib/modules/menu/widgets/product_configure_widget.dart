@@ -54,16 +54,17 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
   Future<void> setButton() async {
     User? user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
-    OrderItem orderItem = getIt<CartRepository>()
-        .getOrderItem(
-          user!.id,
-          widget.unit,
-          widget.product,
-          _productVariant,
-        )
-        .copyWith(
-          selectedConfigMap: getSelectedComponentMap(),
-        );
+    var configSets = getSelectedComponentMap();
+    OrderItem orderItem = getIt<CartRepository>().getOrderItem(
+      user!.id,
+      widget.unit,
+      widget.product,
+      _productVariant,
+      configSets,
+    );
+    // .copyWith(
+    //   selectedConfigMap: configSets,
+    // );
 
     BlocProvider.of<ConfigsetBloc>(context).add(ConfigsetUpdatedEvent(
         orderItem: orderItem,

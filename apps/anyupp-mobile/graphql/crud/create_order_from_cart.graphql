@@ -90,6 +90,7 @@ mutation CreateOrderFromCart($order: CreateOrderInput!) {
         updatedAt
       }
       userId
+      paymentMethodId
     }
     items {
       productId
@@ -116,6 +117,8 @@ mutation CreateOrderFromCart($order: CreateOrderInput!) {
           }
           price
           productComponentId
+          externalId
+          netPackagingFee
         }
         name {
           de
@@ -148,6 +151,8 @@ mutation CreateOrderFromCart($order: CreateOrderInput!) {
       image
       laneId
       created
+      externalId
+      productType
     }
     transactionId
     transactionStatus
@@ -211,5 +216,13 @@ mutation CreateOrderFromCart($order: CreateOrderInput!) {
       }
     }
     soldOutVisibilityPolicy
+    guestLabel
+    externalId
+    currentStatus
+    orderNum
+    packagingFeeTaxPercentage
+    unpayCategory
+    version
+    visitId
   }
 }
