@@ -54,6 +54,9 @@ export class WebAclWithRules extends Construct {
             {
               name: 'SizeRestrictions_BODY',
             },
+            {
+              name: 'NoUserAgent_HEADER',
+            },
           ],
         },
       },
