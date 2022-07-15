@@ -3,7 +3,7 @@ import { forkJoin, from, of, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { sendResponse } from '../utils/send-response';
 import { createIndices$ } from './geoindices';
-import { configurePools, configureLogging } from './configure-pools';
+import { configurePools } from './configure-pools';
 import { configureOpenSearchPolicy } from './configure-opensearch-policy';
 
 export const handler: Handler = async (
@@ -23,7 +23,6 @@ export const handler: Handler = async (
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
     return forkJoin([
       createIndices$,
-      configureLogging(logPublisherArn),
       configurePools(userPoolId),
       configureOpenSearchPolicy(),
     ])
