@@ -18,7 +18,6 @@ export const handler: Handler = async (
    */
   const physicalResourceId = event.ResourceProperties.physicalResourceId;
   const userPoolId = event.ResourceProperties.userPoolId;
-  const logPublisherArn = event.ResourceProperties.logPublisherArn;
 
   if (event.RequestType === 'Create' || event.RequestType === 'Update') {
     return forkJoin([
