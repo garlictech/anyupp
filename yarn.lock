@@ -8880,10 +8880,10 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
-"@types/fabric@4.5.9":
-  version "4.5.9"
-  resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-4.5.9.tgz#25c34dbc2da243cd7fb56142952e256fa2464302"
-  integrity sha512-z7RvtGb93l8tCcaWyJK3fYrshqcBqAqdMlIHhwkK4efZ1wBktFHx+XiGXr8o6bvIZhvsHeXHK39S6M9gutL3dg==
+"@types/fabric@4.5.10":
+  version "4.5.10"
+  resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-4.5.10.tgz#2325d012fc8dc3f8ef0a582b777dcc3af5774d39"
+  integrity sha512-5FYXVfDoQ8R6IGI9slyIvKwqCOVVX4VOxcIEqr49viMyRTFtFEDMNXu1ljOXsqa4VRxDLix0d1k73SNCgVFXSQ==
 
 "@types/file-saver@2.0.5":
   version "2.0.5"
