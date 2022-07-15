@@ -21,9 +21,11 @@ extension OrderExtension on Order {
       ? 0
       : (serviceFee?.grossPrice ?? 0.0);
 
-  OrderStatus get status => statusLog != null && statusLog?.isNotEmpty == true
-      ? statusLog!.last.status
-      : OrderStatus.none;
+  OrderStatus get status => currentStatus != null
+      ? currentStatus!
+      : statusLog != null && statusLog?.isNotEmpty == true
+          ? statusLog!.last.status
+          : OrderStatus.none;
 
   StatusLog? get lastLog =>
       statusLog?.isNotEmpty == true ? statusLog?.last : null;

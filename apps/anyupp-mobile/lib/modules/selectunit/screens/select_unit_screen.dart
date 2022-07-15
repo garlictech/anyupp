@@ -22,6 +22,7 @@ class SelectUnitScreen extends StatefulWidget {
 }
 
 class _SelectUnitScreenState extends State<SelectUnitScreen> {
+  final ThemeChainData theme = defaultTheme();
   RefreshController _refreshController = RefreshController(
     initialRefresh: false,
   );

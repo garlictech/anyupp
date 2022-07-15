@@ -41,16 +41,22 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) {
-        var bloc = getIt<ProductListBloc>();
-        bloc.add(LoadAllProductList(
-          unitId: currentUnit!.id,
-          chainId: currentUnit!.chainId,
-        ));
-        return bloc;
+    return WillPopScope(
+      onWillPop: () async {
+        getIt<ThemeBloc>().add(ResetTheme());
+        return true;
       },
-      child: MenuScreenInner(),
+      child: BlocProvider(
+        create: (BuildContext context) {
+          var bloc = getIt<ProductListBloc>();
+          bloc.add(LoadAllProductList(
+            unitId: currentUnit!.id,
+            chainId: currentUnit!.chainId,
+          ));
+          return bloc;
+        },
+        child: MenuScreenInner(),
+      ),
     );
   }
 }

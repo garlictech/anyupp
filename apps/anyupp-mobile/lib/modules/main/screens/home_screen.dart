@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  // final ThemeChainData theme = defaultTheme();
+  final ThemeChainData theme = defaultTheme();
 
   // Caching pages
   List<Widget> _pages = [
@@ -37,6 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     super.initState();
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   log.e('HomeScreen.didChangeDependencies()');
+  //   getIt<ThemeBloc>().add(ResetTheme());
+  // }
 
   @override
   Widget build(BuildContext context) {

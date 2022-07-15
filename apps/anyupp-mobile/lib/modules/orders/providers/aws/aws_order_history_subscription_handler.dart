@@ -131,7 +131,7 @@ class AwsOrderHistorySubscription {
         nextToken: _nextToken,
       )));
 
-      log.d('_getOrderHistoryList().result.data=${result.data}');
+      // log.d('_getOrderHistoryList().result.data=${result.data}');
       // log.d('_getOrderHistoryList().result.exception=${result.exception}');
       if (result.data?.searchOrders == null) {
         _nextToken = null;

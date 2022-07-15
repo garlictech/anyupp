@@ -35,6 +35,13 @@ void main() {
           packagingFee: 100.0,
           status: OrderStatus.placed,
         ),
+        MockGenerator.generateOrderItem(
+          name: 'Hamburger',
+          variantName: 'Dupla',
+          price: 500.0,
+          packagingFee: 100.0,
+          status: OrderStatus.placed,
+        ),
       ],
     );
 
@@ -83,8 +90,8 @@ void main() {
       expect(find.byType(CartListItemWidget), findsNWidgets(2));
 
       // Character \xa0 is a non-breaking-space
-      checkTextValue('cart-packagingfee-text', '105\xa0Ft');
-      checkTextValue('cart-totalprice-text', 'FIZETEK (605\xa0Ft)');
+      checkTextValue('cart-packagingfee-text', '210\xa0Ft'); // 2 x (100 + 5)
+      checkTextValue('cart-totalprice-text', 'FIZETEK (1\xa0210\xa0Ft)');
     });
   });
 }
