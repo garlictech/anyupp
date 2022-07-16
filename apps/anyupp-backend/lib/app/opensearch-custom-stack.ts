@@ -1,13 +1,13 @@
 import { aws_logs } from 'aws-cdk-lib';
-import * as sst from '@serverless-stack/resources';
+import { Stack, App } from '@serverless-stack/resources';
 import { StackProps } from '@serverless-stack/resources';
 
 export interface OpenSearchCustomStackProps extends StackProps {
   openSearchArn: string;
 }
 
-export class OpenSearchCustomStack extends sst.Stack {
-  constructor(scope: sst.App, id: string, props: OpenSearchCustomStackProps) {
+export class OpenSearchCustomStack extends Stack {
+  constructor(scope: App, id: string, props: OpenSearchCustomStackProps) {
     super(scope, id);
 
     const openSearchDomainName = props.openSearchArn.split('/')[1];
