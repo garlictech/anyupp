@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Product variants resolver tests CreateUnitProduct with API call 1`] = `
+Object {
+  "chainId": "",
+  "configSets": null,
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "dirty": null,
+  "externalId": null,
+  "groupId": "",
+  "groupProduct": null,
+  "id": "product_variants_MASKED ID",
+  "isVisible": true,
+  "laneId": null,
+  "parentId": "",
+  "position": 1,
+  "supportedServingModes": null,
+  "takeaway": null,
+  "unitId": "",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": null,
+      "externalId": null,
+      "id": "MASKED ID",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "product_variants_MASKED ID",
+      "pack": null,
+      "position": 1,
+      "price": 10,
+      "refGroupPrice": null,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": "Variant name",
+        "hu": null,
+      },
+    },
+  ],
+}
+`;
+
+exports[`Product variants resolver tests CreateUnitProduct with direct resolver: CREATE PRODUCT 1`] = `
+Array [
+  Object {
+    "availabilities": null,
+    "createdAt": "MASKED DATE",
+    "externalId": null,
+    "id": "MASKED ID",
+    "isAvailable": true,
+    "netPackagingFee": null,
+    "ownerProduct": "product_variants_c93e2c8e-b088-4885-993e-7d48d9f9d252",
+    "pack": null,
+    "position": 1,
+    "price": 10,
+    "refGroupPrice": null,
+    "soldOut": null,
+    "updatedAt": "MASKED DATE",
+    "variantName": Object {
+      "de": null,
+      "en": "Variant name",
+      "hu": null,
+    },
+  },
+]
+`;
+
+exports[`Product variants resolver tests CreateUnitProduct with direct resolver: GET PRODUCT 1`] = `
+Array [
+  Object {
+    "availabilities": null,
+    "createdAt": "MASKED DATE",
+    "externalId": null,
+    "id": "MASKED ID",
+    "isAvailable": true,
+    "netPackagingFee": null,
+    "ownerProduct": "product_variants_c93e2c8e-b088-4885-993e-7d48d9f9d252",
+    "pack": null,
+    "position": 1,
+    "price": 10,
+    "refGroupPrice": null,
+    "soldOut": null,
+    "updatedAt": "MASKED DATE",
+    "variantName": Object {
+      "de": null,
+      "en": "Variant name",
+      "hu": null,
+    },
+  },
+]
+`;
+
+exports[`Product variants resolver tests GetUnitProduct with API call 1`] = `
+Object {
+  "chainId": "",
+  "configSets": null,
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "dirty": null,
+  "externalId": null,
+  "groupId": "",
+  "groupProduct": null,
+  "id": "product_variants_MASKED ID",
+  "isVisible": true,
+  "laneId": null,
+  "parentId": "",
+  "position": 1,
+  "supportedServingModes": null,
+  "takeaway": null,
+  "unitId": "",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": null,
+      "externalId": null,
+      "id": "MASKED ID",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "product_variants_MASKED ID",
+      "pack": null,
+      "position": 1,
+      "price": 10,
+      "refGroupPrice": null,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": "Variant name",
+        "hu": null,
+      },
+    },
+  ],
+}
+`;
+
+exports[`Product variants resolver tests UpdateUnitProduct with API call 1`] = `
+Object {
+  "chainId": "A NEW CHAIN ID",
+  "configSets": null,
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "dirty": null,
+  "externalId": null,
+  "groupId": "",
+  "groupProduct": null,
+  "id": "product_variants_MASKED ID",
+  "isVisible": true,
+  "laneId": null,
+  "parentId": "",
+  "position": 1,
+  "supportedServingModes": null,
+  "takeaway": null,
+  "unitId": "",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": null,
+      "externalId": null,
+      "id": "MASKED ID",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "product_variants_MASKED ID",
+      "pack": null,
+      "position": 1,
+      "price": 10,
+      "refGroupPrice": null,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": "NEW VARIANT NAME",
+        "hu": null,
+      },
+    },
+  ],
+}
+`;

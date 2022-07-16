@@ -102,9 +102,6 @@ type ChainProduct
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
-  # Schema version 1
-  schemaVersion: Int
-  variantIds: [ID]
 }
 
 enum Allergen {
@@ -173,9 +170,6 @@ type GroupProduct
   deletedAt: AWSDateTime
   # For removing generated product
   chainProduct: ChainProduct @hasOne(fields: ["parentId"])
-  # Schema version 1
-  schemaVersion: Int
-  variantIds: [ID]
 }
 
 type UnitProduct
@@ -191,7 +185,7 @@ type UnitProduct
   takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
-  variants: [ProductVariant]
+  variants: [ProductVariant] @function(name: "${env}-anyupp-graphql-resolvers")
   configSets: [ProductConfigSet]
   supportedServingModes: [ServingMode!]
   externalId: String
@@ -199,9 +193,6 @@ type UnitProduct
   deletedAt: AWSDateTime
   # For removing generated product
   groupProduct: GroupProduct @hasOne(fields: ["parentId"])
-  # Schema version 1
-  schemaVersion: Int
-  variantIds: [ID]
 }
 
 type ProductConfigComponent {
@@ -219,7 +210,25 @@ type ProductConfigSet {
   position: Int!
 }
 
-type ProductVariant
+# ProductVariant was (is) the old embedded type, Variant is the sema one
+# but it is a model. We need this two types as amplify does not handle
+# field resolvers if they are models as well.
+type ProductVariant {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float! # Gross
+  availabilities: [Availability]
+  position: Int!
+  netPackagingFee: Float
+  soldOut: Boolean
+  ownerProduct: ID
+  externalId: String
+}
+
+type Variant
   @model
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
@@ -233,6 +242,8 @@ type ProductVariant
   position: Int!
   netPackagingFee: Float
   soldOut: Boolean
+  ownerProduct: String!
+  externalId: String
 }
 
 type ProductVariantPack {

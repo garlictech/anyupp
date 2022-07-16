@@ -20,14 +20,17 @@ fi
 echo
 echo 'Compile schema with amplify'
 echo '=============================='
-#amplify api gql-compile --allow-destructive-graphql-schema-updates
-amplify api gql-compile
+amplify api gql-compile --allow-destructive-graphql-schema-updates
+#amplify api gql-compile
 amplify codegen
 
 echo
 echo 'Generate typescript api'
 echo '=============================='
 yarn graphql-codegen --config tools/graphql-codegen-crud.yml
+# Remove this duplication of files
+mkdir -p ../../libs/domain/src/lib/entities/generated
+cp ../../libs/crud-gql/api/src/lib/generated/api.ts ../../libs/domain/src/lib/entities/generated/api.ts
 echo 'Done.'
 
 echo "Preparing schema for graphql schema checker..."

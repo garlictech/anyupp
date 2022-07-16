@@ -575,6 +575,21 @@ export interface CreateUserInput {
   stripeCustomerId?: InputMaybe<Scalars['String']>;
 }
 
+export interface CreateVariantInput {
+  availabilities?: InputMaybe<Array<InputMaybe<AvailabilityInput>>>;
+  externalId?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
+  isAvailable: Scalars['Boolean'];
+  netPackagingFee?: InputMaybe<Scalars['Float']>;
+  ownerProduct: Scalars['String'];
+  pack?: InputMaybe<ProductVariantPackInput>;
+  position: Scalars['Int'];
+  price: Scalars['Float'];
+  refGroupPrice?: InputMaybe<Scalars['Float']>;
+  soldOut?: InputMaybe<Scalars['Boolean']>;
+  variantName: LocalizedItemInput;
+}
+
 export interface CumulatedPrice {
   currency?: Maybe<Scalars['String']>;
   grossPrice?: Maybe<Scalars['Float']>;
@@ -692,6 +707,10 @@ export interface DeleteUnitProductInput {
 }
 
 export interface DeleteUserInput {
+  id: Scalars['ID'];
+}
+
+export interface DeleteVariantInput {
   id: Scalars['ID'];
 }
 
@@ -899,6 +918,7 @@ export interface Group {
 
 export interface GroupProduct {
   chainId: Scalars['ID'];
+  chainProduct?: Maybe<ChainProduct>;
   configSets?: Maybe<Array<Maybe<ProductConfigSet>>>;
   createdAt: Scalars['AWSDateTime'];
   deletedAt?: Maybe<Scalars['AWSDateTime']>;
@@ -1853,6 +1873,40 @@ export interface ModelUserFilterInput {
   stripeCustomerId?: InputMaybe<ModelStringInput>;
 }
 
+export interface ModelVariantConditionInput {
+  and?: InputMaybe<Array<InputMaybe<ModelVariantConditionInput>>>;
+  externalId?: InputMaybe<ModelStringInput>;
+  isAvailable?: InputMaybe<ModelBooleanInput>;
+  netPackagingFee?: InputMaybe<ModelFloatInput>;
+  not?: InputMaybe<ModelVariantConditionInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelVariantConditionInput>>>;
+  ownerProduct?: InputMaybe<ModelStringInput>;
+  position?: InputMaybe<ModelIntInput>;
+  price?: InputMaybe<ModelFloatInput>;
+  refGroupPrice?: InputMaybe<ModelFloatInput>;
+  soldOut?: InputMaybe<ModelBooleanInput>;
+}
+
+export interface ModelVariantConnection {
+  items: Array<Maybe<Variant>>;
+  nextToken?: Maybe<Scalars['String']>;
+}
+
+export interface ModelVariantFilterInput {
+  and?: InputMaybe<Array<InputMaybe<ModelVariantFilterInput>>>;
+  externalId?: InputMaybe<ModelStringInput>;
+  id?: InputMaybe<ModelIdInput>;
+  isAvailable?: InputMaybe<ModelBooleanInput>;
+  netPackagingFee?: InputMaybe<ModelFloatInput>;
+  not?: InputMaybe<ModelVariantFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<ModelVariantFilterInput>>>;
+  ownerProduct?: InputMaybe<ModelStringInput>;
+  position?: InputMaybe<ModelIntInput>;
+  price?: InputMaybe<ModelFloatInput>;
+  refGroupPrice?: InputMaybe<ModelFloatInput>;
+  soldOut?: InputMaybe<ModelBooleanInput>;
+}
+
 export interface Mutation {
   createAdminUser?: Maybe<AdminUser>;
   createAnonymUser?: Maybe<CreateAnonymUserOutput>;
@@ -1876,6 +1930,7 @@ export interface Mutation {
   createUnit?: Maybe<Unit>;
   createUnitProduct?: Maybe<UnitProduct>;
   createUser?: Maybe<User>;
+  createVariant?: Maybe<Variant>;
   deleteAdminUser?: Maybe<AdminUser>;
   deleteCart?: Maybe<Cart>;
   deleteChain?: Maybe<Chain>;
@@ -1896,6 +1951,7 @@ export interface Mutation {
   deleteUnit?: Maybe<Unit>;
   deleteUnitProduct?: Maybe<UnitProduct>;
   deleteUser?: Maybe<User>;
+  deleteVariant?: Maybe<Variant>;
   payTipWithStripe?: Maybe<StartStripePaymentOutput>;
   regenerateUnitData: Scalars['Boolean'];
   startStripePayment?: Maybe<StartStripePaymentOutput>;
@@ -1921,6 +1977,7 @@ export interface Mutation {
   updateUnitProduct?: Maybe<UnitProduct>;
   updateUnitRKeeperData?: Maybe<Unit>;
   updateUser?: Maybe<User>;
+  updateVariant?: Maybe<Variant>;
 }
 
 
@@ -2045,6 +2102,12 @@ export interface MutationCreateUserArgs {
 }
 
 
+export interface MutationCreateVariantArgs {
+  condition?: InputMaybe<ModelVariantConditionInput>;
+  input: CreateVariantInput;
+}
+
+
 export interface MutationDeleteAdminUserArgs {
   input: DeleteAdminUserInput;
 }
@@ -2160,6 +2223,12 @@ export interface MutationDeleteUnitProductArgs {
 export interface MutationDeleteUserArgs {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: DeleteUserInput;
+}
+
+
+export interface MutationDeleteVariantArgs {
+  condition?: InputMaybe<ModelVariantConditionInput>;
+  input: DeleteVariantInput;
 }
 
 
@@ -2303,6 +2372,12 @@ export interface MutationUpdateUnitRKeeperDataArgs {
 export interface MutationUpdateUserArgs {
   condition?: InputMaybe<ModelUserConditionInput>;
   input: UpdateUserInput;
+}
+
+
+export interface MutationUpdateVariantArgs {
+  condition?: InputMaybe<ModelVariantConditionInput>;
+  input: UpdateVariantInput;
 }
 
 export interface NestedSortItem {
@@ -2656,9 +2731,11 @@ export enum ProductType {
 
 export interface ProductVariant {
   availabilities?: Maybe<Array<Maybe<Availability>>>;
+  externalId?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   isAvailable: Scalars['Boolean'];
   netPackagingFee?: Maybe<Scalars['Float']>;
+  ownerProduct?: Maybe<Scalars['ID']>;
   pack?: Maybe<ProductVariantPack>;
   position: Scalars['Int'];
   price: Scalars['Float'];
@@ -2669,9 +2746,11 @@ export interface ProductVariant {
 
 export interface ProductVariantInput {
   availabilities?: InputMaybe<Array<InputMaybe<AvailabilityInput>>>;
+  externalId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   isAvailable: Scalars['Boolean'];
   netPackagingFee?: InputMaybe<Scalars['Float']>;
+  ownerProduct?: InputMaybe<Scalars['ID']>;
   pack?: InputMaybe<ProductVariantPackInput>;
   position: Scalars['Int'];
   price: Scalars['Float'];
@@ -2711,6 +2790,7 @@ export interface Query {
   getUnitProduct?: Maybe<UnitProduct>;
   getUnitsNearLocation?: Maybe<GeoUnitList>;
   getUser?: Maybe<User>;
+  getVariant?: Maybe<Variant>;
   listAdminUsers?: Maybe<ModelAdminUserConnection>;
   listCarts?: Maybe<ModelCartConnection>;
   listChainProducts?: Maybe<ModelChainProductConnection>;
@@ -2731,6 +2811,7 @@ export interface Query {
   listUnitProducts?: Maybe<ModelUnitProductConnection>;
   listUnits?: Maybe<ModelUnitConnection>;
   listUsers?: Maybe<ModelUserConnection>;
+  listVariants?: Maybe<ModelVariantConnection>;
   searchAdminUsers?: Maybe<SearchableAdminUserConnection>;
   searchByRadius?: Maybe<GeoSearchConnection>;
   searchCarts?: Maybe<SearchableCartConnection>;
@@ -2751,6 +2832,7 @@ export interface Query {
   searchUnitProducts?: Maybe<SearchableUnitProductConnection>;
   searchUnits?: Maybe<SearchableUnitConnection>;
   searchUsers?: Maybe<SearchableUserConnection>;
+  searchVariants?: Maybe<SearchableVariantConnection>;
 }
 
 
@@ -2850,6 +2932,11 @@ export interface QueryGetUnitsNearLocationArgs {
 
 
 export interface QueryGetUserArgs {
+  id: Scalars['ID'];
+}
+
+
+export interface QueryGetVariantArgs {
   id: Scalars['ID'];
 }
 
@@ -2982,6 +3069,13 @@ export interface QueryListUnitsArgs {
 
 export interface QueryListUsersArgs {
   filter?: InputMaybe<ModelUserFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+}
+
+
+export interface QueryListVariantsArgs {
+  filter?: InputMaybe<ModelVariantFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 }
@@ -3179,6 +3273,16 @@ export interface QuerySearchUsersArgs {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<InputMaybe<SearchableUserSortInput>>>;
+}
+
+
+export interface QuerySearchVariantsArgs {
+  aggregates?: InputMaybe<Array<InputMaybe<SearchableVariantAggregationInput>>>;
+  filter?: InputMaybe<SearchableVariantFilterInput>;
+  from?: InputMaybe<Scalars['Int']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableVariantSortInput>>>;
 }
 
 export interface RKeeper {
@@ -4569,6 +4673,69 @@ export enum SearchableUserSortableFields {
   updatedat = 'updatedAt'
 }
 
+export enum SearchableVariantAggregateField {
+  createdat = 'createdAt',
+  externalid = 'externalId',
+  id = 'id',
+  isavailable = 'isAvailable',
+  netpackagingfee = 'netPackagingFee',
+  ownerproduct = 'ownerProduct',
+  position = 'position',
+  price = 'price',
+  refgroupprice = 'refGroupPrice',
+  soldout = 'soldOut',
+  updatedat = 'updatedAt'
+}
+
+export interface SearchableVariantAggregationInput {
+  field: SearchableVariantAggregateField;
+  name: Scalars['String'];
+  type: SearchableAggregateType;
+}
+
+export interface SearchableVariantConnection {
+  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
+  items: Array<Maybe<Variant>>;
+  nextToken?: Maybe<Scalars['String']>;
+  total?: Maybe<Scalars['Int']>;
+}
+
+export interface SearchableVariantFilterInput {
+  and?: InputMaybe<Array<InputMaybe<SearchableVariantFilterInput>>>;
+  createdAt?: InputMaybe<SearchableStringFilterInput>;
+  externalId?: InputMaybe<SearchableStringFilterInput>;
+  id?: InputMaybe<SearchableIdFilterInput>;
+  isAvailable?: InputMaybe<SearchableBooleanFilterInput>;
+  netPackagingFee?: InputMaybe<SearchableFloatFilterInput>;
+  not?: InputMaybe<SearchableVariantFilterInput>;
+  or?: InputMaybe<Array<InputMaybe<SearchableVariantFilterInput>>>;
+  ownerProduct?: InputMaybe<SearchableStringFilterInput>;
+  position?: InputMaybe<SearchableIntFilterInput>;
+  price?: InputMaybe<SearchableFloatFilterInput>;
+  refGroupPrice?: InputMaybe<SearchableFloatFilterInput>;
+  soldOut?: InputMaybe<SearchableBooleanFilterInput>;
+  updatedAt?: InputMaybe<SearchableStringFilterInput>;
+}
+
+export interface SearchableVariantSortInput {
+  direction?: InputMaybe<SearchableSortDirection>;
+  field?: InputMaybe<SearchableVariantSortableFields>;
+}
+
+export enum SearchableVariantSortableFields {
+  createdat = 'createdAt',
+  externalid = 'externalId',
+  id = 'id',
+  isavailable = 'isAvailable',
+  netpackagingfee = 'netPackagingFee',
+  ownerproduct = 'ownerProduct',
+  position = 'position',
+  price = 'price',
+  refgroupprice = 'refGroupPrice',
+  soldout = 'soldOut',
+  updatedat = 'updatedAt'
+}
+
 export interface ServiceFeePolicy {
   percentage: Scalars['Float'];
   type: ServiceFeeType;
@@ -4679,6 +4846,7 @@ export interface Subscription {
   onCreateTransaction?: Maybe<Transaction>;
   onCreateUnitProduct?: Maybe<UnitProduct>;
   onCreateUser?: Maybe<User>;
+  onCreateVariant?: Maybe<Variant>;
   onDeleteCart?: Maybe<Cart>;
   onDeleteChain?: Maybe<Chain>;
   onDeleteChainProduct?: Maybe<ChainProduct>;
@@ -4697,6 +4865,7 @@ export interface Subscription {
   onDeleteUnit?: Maybe<Unit>;
   onDeleteUnitProduct?: Maybe<UnitProduct>;
   onDeleteUser?: Maybe<User>;
+  onDeleteVariant?: Maybe<Variant>;
   onGeneratedProductChange?: Maybe<GeneratedProduct>;
   onGroupProductChange?: Maybe<GroupProduct>;
   onGroupsChange?: Maybe<Group>;
@@ -4728,6 +4897,7 @@ export interface Subscription {
   onUpdateTransaction?: Maybe<Transaction>;
   onUpdateUnitProduct?: Maybe<UnitProduct>;
   onUpdateUser?: Maybe<User>;
+  onUpdateVariant?: Maybe<Variant>;
 }
 
 
@@ -4907,6 +5077,7 @@ export interface UnitProduct {
   dirty?: Maybe<Scalars['Boolean']>;
   externalId?: Maybe<Scalars['String']>;
   groupId: Scalars['ID'];
+  groupProduct?: Maybe<GroupProduct>;
   id: Scalars['ID'];
   isVisible: Scalars['Boolean'];
   laneId?: Maybe<Scalars['ID']>;
@@ -5240,6 +5411,21 @@ export interface UpdateUserInput {
   stripeCustomerId?: InputMaybe<Scalars['String']>;
 }
 
+export interface UpdateVariantInput {
+  availabilities?: InputMaybe<Array<InputMaybe<AvailabilityInput>>>;
+  externalId?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  isAvailable?: InputMaybe<Scalars['Boolean']>;
+  netPackagingFee?: InputMaybe<Scalars['Float']>;
+  ownerProduct?: InputMaybe<Scalars['String']>;
+  pack?: InputMaybe<ProductVariantPackInput>;
+  position?: InputMaybe<Scalars['Int']>;
+  price?: InputMaybe<Scalars['Float']>;
+  refGroupPrice?: InputMaybe<Scalars['Float']>;
+  soldOut?: InputMaybe<Scalars['Boolean']>;
+  variantName?: InputMaybe<LocalizedItemInput>;
+}
+
 export interface User {
   createdAt: Scalars['AWSDateTime'];
   email?: Maybe<Scalars['String']>;
@@ -5270,6 +5456,23 @@ export interface UserInvoiceAddressInput {
   postalCode: Scalars['String'];
   streetAddress: Scalars['String'];
   taxNumber: Scalars['String'];
+}
+
+export interface Variant {
+  availabilities?: Maybe<Array<Maybe<Availability>>>;
+  createdAt: Scalars['AWSDateTime'];
+  externalId?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  isAvailable: Scalars['Boolean'];
+  netPackagingFee?: Maybe<Scalars['Float']>;
+  ownerProduct: Scalars['String'];
+  pack?: Maybe<ProductVariantPack>;
+  position: Scalars['Int'];
+  price: Scalars['Float'];
+  refGroupPrice?: Maybe<Scalars['Float']>;
+  soldOut?: Maybe<Scalars['Boolean']>;
+  updatedAt: Scalars['AWSDateTime'];
+  variantName: LocalizedItem;
 }
 
 export interface WeeklySchedule {
@@ -5553,7 +5756,7 @@ export type CreateChainProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateChainProductMutation = { createChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type CreateChainProductMutation = { createChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
 
 export type UpdateChainProductMutationVariables = Exact<{
   input: UpdateChainProductInput;
@@ -5561,7 +5764,7 @@ export type UpdateChainProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateChainProductMutation = { updateChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type UpdateChainProductMutation = { updateChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
 
 export type DeleteChainProductMutationVariables = Exact<{
   input: DeleteChainProductInput;
@@ -5569,7 +5772,7 @@ export type DeleteChainProductMutationVariables = Exact<{
 }>;
 
 
-export type DeleteChainProductMutation = { deleteChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type DeleteChainProductMutation = { deleteChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
 
 export type CreateGroupProductMutationVariables = Exact<{
   input: CreateGroupProductInput;
@@ -5577,7 +5780,7 @@ export type CreateGroupProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateGroupProductMutation = { createGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type CreateGroupProductMutation = { createGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type UpdateGroupProductMutationVariables = Exact<{
   input: UpdateGroupProductInput;
@@ -5585,7 +5788,7 @@ export type UpdateGroupProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateGroupProductMutation = { updateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type UpdateGroupProductMutation = { updateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type DeleteGroupProductMutationVariables = Exact<{
   input: DeleteGroupProductInput;
@@ -5593,7 +5796,7 @@ export type DeleteGroupProductMutationVariables = Exact<{
 }>;
 
 
-export type DeleteGroupProductMutation = { deleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type DeleteGroupProductMutation = { deleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type CreateUnitProductMutationVariables = Exact<{
   input: CreateUnitProductInput;
@@ -5601,7 +5804,7 @@ export type CreateUnitProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateUnitProductMutation = { createUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type CreateUnitProductMutation = { createUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type UpdateUnitProductMutationVariables = Exact<{
   input: UpdateUnitProductInput;
@@ -5609,7 +5812,7 @@ export type UpdateUnitProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUnitProductMutation = { updateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type UpdateUnitProductMutation = { updateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type DeleteUnitProductMutationVariables = Exact<{
   input: DeleteUnitProductInput;
@@ -5617,7 +5820,31 @@ export type DeleteUnitProductMutationVariables = Exact<{
 }>;
 
 
-export type DeleteUnitProductMutation = { deleteUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type DeleteUnitProductMutation = { deleteUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
+
+export type CreateVariantMutationVariables = Exact<{
+  input: CreateVariantInput;
+  condition?: InputMaybe<ModelVariantConditionInput>;
+}>;
+
+
+export type CreateVariantMutation = { createVariant?: { id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+
+export type UpdateVariantMutationVariables = Exact<{
+  input: UpdateVariantInput;
+  condition?: InputMaybe<ModelVariantConditionInput>;
+}>;
+
+
+export type UpdateVariantMutation = { updateVariant?: { id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+
+export type DeleteVariantMutationVariables = Exact<{
+  input: DeleteVariantInput;
+  condition?: InputMaybe<ModelVariantConditionInput>;
+}>;
+
+
+export type DeleteVariantMutation = { deleteVariant?: { id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
 
 export type UpdateAdminUserMutationVariables = Exact<{
   input: UpdateAdminUserInput;
@@ -5987,7 +6214,7 @@ export type GetChainProductQueryVariables = Exact<{
 }>;
 
 
-export type GetChainProductQuery = { getChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type GetChainProductQuery = { getChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
 
 export type ListChainProductsQueryVariables = Exact<{
   filter?: InputMaybe<ModelChainProductFilterInput>;
@@ -5996,7 +6223,7 @@ export type ListChainProductsQueryVariables = Exact<{
 }>;
 
 
-export type ListChainProductsQuery = { listChainProducts?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null> } | null };
+export type ListChainProductsQuery = { listChainProducts?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null> } | null };
 
 export type SearchChainProductsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableChainProductFilterInput>;
@@ -6008,14 +6235,14 @@ export type SearchChainProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchChainProductsQuery = { searchChainProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchChainProductsQuery = { searchChainProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetGroupProductQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetGroupProductQuery = { getGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type GetGroupProductQuery = { getGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type ListGroupProductsQueryVariables = Exact<{
   filter?: InputMaybe<ModelGroupProductFilterInput>;
@@ -6024,7 +6251,7 @@ export type ListGroupProductsQueryVariables = Exact<{
 }>;
 
 
-export type ListGroupProductsQuery = { listGroupProducts?: { nextToken?: string | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null> } | null };
+export type ListGroupProductsQuery = { listGroupProducts?: { nextToken?: string | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null> } | null };
 
 export type SearchGroupProductsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableGroupProductFilterInput>;
@@ -6036,14 +6263,14 @@ export type SearchGroupProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchGroupProductsQuery = { searchGroupProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchGroupProductsQuery = { searchGroupProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetUnitProductQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetUnitProductQuery = { getUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type GetUnitProductQuery = { getUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type ListUnitProductsQueryVariables = Exact<{
   filter?: InputMaybe<ModelUnitProductFilterInput>;
@@ -6052,7 +6279,7 @@ export type ListUnitProductsQueryVariables = Exact<{
 }>;
 
 
-export type ListUnitProductsQuery = { listUnitProducts?: { nextToken?: string | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null> } | null };
+export type ListUnitProductsQuery = { listUnitProducts?: { nextToken?: string | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null> } | null };
 
 export type SearchUnitProductsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableUnitProductFilterInput>;
@@ -6064,7 +6291,35 @@ export type SearchUnitProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchUnitProductsQuery = { searchUnitProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchUnitProductsQuery = { searchUnitProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+
+export type GetVariantQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type GetVariantQuery = { getVariant?: { id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+
+export type ListVariantsQueryVariables = Exact<{
+  filter?: InputMaybe<ModelVariantFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type ListVariantsQuery = { listVariants?: { nextToken?: string | null, items: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null };
+
+export type SearchVariantsQueryVariables = Exact<{
+  filter?: InputMaybe<SearchableVariantFilterInput>;
+  sort?: InputMaybe<Array<InputMaybe<SearchableVariantSortInput>> | InputMaybe<SearchableVariantSortInput>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  from?: InputMaybe<Scalars['Int']>;
+  aggregates?: InputMaybe<Array<InputMaybe<SearchableVariantAggregationInput>> | InputMaybe<SearchableVariantAggregationInput>>;
+}>;
+
+
+export type SearchVariantsQuery = { searchVariants?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetAdminUserQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6571,21 +6826,21 @@ export type OnChainProductChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnChainProductChangeSubscription = { onChainProductChange?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnChainProductChangeSubscription = { onChainProductChange?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
 
 export type OnGroupProductChangeSubscriptionVariables = Exact<{
   groupId: Scalars['ID'];
 }>;
 
 
-export type OnGroupProductChangeSubscription = { onGroupProductChange?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnGroupProductChangeSubscription = { onGroupProductChange?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type OnUnitProductChangeSubscriptionVariables = Exact<{
   unitId: Scalars['ID'];
 }>;
 
 
-export type OnUnitProductChangeSubscription = { onUnitProductChange?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnUnitProductChangeSubscription = { onUnitProductChange?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type OnGeneratedProductChangeSubscriptionVariables = Exact<{
   unitId: Scalars['ID'];
@@ -6631,47 +6886,62 @@ export type OnUnitOrdersChangeSubscription = { onUnitOrdersChange?: { id: string
 export type OnCreateChainProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateChainProductSubscription = { onCreateChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnCreateChainProductSubscription = { onCreateChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
 
 export type OnUpdateChainProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateChainProductSubscription = { onUpdateChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnUpdateChainProductSubscription = { onUpdateChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
 
 export type OnDeleteChainProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteChainProductSubscription = { onDeleteChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnDeleteChainProductSubscription = { onDeleteChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
 
 export type OnCreateGroupProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateGroupProductSubscription = { onCreateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnCreateGroupProductSubscription = { onCreateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type OnUpdateGroupProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateGroupProductSubscription = { onUpdateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnUpdateGroupProductSubscription = { onUpdateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type OnDeleteGroupProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteGroupProductSubscription = { onDeleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnDeleteGroupProductSubscription = { onDeleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null };
 
 export type OnCreateUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateUnitProductSubscription = { onCreateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnCreateUnitProductSubscription = { onCreateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type OnUpdateUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateUnitProductSubscription = { onUpdateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnUpdateUnitProductSubscription = { onUpdateUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
 
 export type OnDeleteUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteUnitProductSubscription = { onDeleteUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnDeleteUnitProductSubscription = { onDeleteUnitProduct?: { id: string, parentId: string, chainId: string, groupId: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, groupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, chainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null } | null } | null };
+
+export type OnCreateVariantSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OnCreateVariantSubscription = { onCreateVariant?: { id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+
+export type OnUpdateVariantSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OnUpdateVariantSubscription = { onUpdateVariant?: { id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+
+export type OnDeleteVariantSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OnDeleteVariantSubscription = { onDeleteVariant?: { id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
 
 export type OnUpdateAdminUserSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -8143,6 +8413,8 @@ export const CreateChainProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     allergens
     configSets {
@@ -8209,6 +8481,8 @@ export const UpdateChainProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     allergens
     configSets {
@@ -8275,6 +8549,8 @@ export const DeleteChainProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     allergens
     configSets {
@@ -8332,6 +8608,8 @@ export const CreateGroupProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -8348,6 +8626,70 @@ export const CreateGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8388,6 +8730,8 @@ export const UpdateGroupProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -8404,6 +8748,70 @@ export const UpdateGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8444,6 +8852,8 @@ export const DeleteGroupProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -8460,6 +8870,70 @@ export const DeleteGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8502,6 +8976,8 @@ export const CreateUnitProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -8519,6 +8995,124 @@ export const CreateUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8561,6 +9155,8 @@ export const UpdateUnitProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -8578,6 +9174,124 @@ export const UpdateUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -8620,6 +9334,8 @@ export const DeleteUnitProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -8637,6 +9353,226 @@ export const DeleteUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const CreateVariantDocument = gql`
+    mutation CreateVariant($input: CreateVariantInput!, $condition: ModelVariantConditionInput) {
+  createVariant(input: $input, condition: $condition) {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    refGroupPrice
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const UpdateVariantDocument = gql`
+    mutation UpdateVariant($input: UpdateVariantInput!, $condition: ModelVariantConditionInput) {
+  updateVariant(input: $input, condition: $condition) {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    refGroupPrice
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const DeleteVariantDocument = gql`
+    mutation DeleteVariant($input: DeleteVariantInput!, $condition: ModelVariantConditionInput) {
+  deleteVariant(input: $input, condition: $condition) {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    refGroupPrice
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
     createdAt
     updatedAt
   }
@@ -11547,6 +12483,8 @@ export const GetChainProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     allergens
     configSets {
@@ -11614,6 +12552,8 @@ export const ListChainProductsDocument = gql`
         position
         netPackagingFee
         soldOut
+        ownerProduct
+        externalId
       }
       allergens
       configSets {
@@ -11690,6 +12630,8 @@ export const SearchChainProductsDocument = gql`
         position
         netPackagingFee
         soldOut
+        ownerProduct
+        externalId
       }
       allergens
       configSets {
@@ -11764,6 +12706,8 @@ export const GetGroupProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -11780,6 +12724,70 @@ export const GetGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -11821,6 +12829,8 @@ export const ListGroupProductsDocument = gql`
         position
         netPackagingFee
         soldOut
+        ownerProduct
+        externalId
       }
       configSets {
         productSetId
@@ -11837,6 +12847,70 @@ export const ListGroupProductsDocument = gql`
       externalId
       dirty
       deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -11887,6 +12961,8 @@ export const SearchGroupProductsDocument = gql`
         position
         netPackagingFee
         soldOut
+        ownerProduct
+        externalId
       }
       configSets {
         productSetId
@@ -11903,6 +12979,70 @@ export const SearchGroupProductsDocument = gql`
       externalId
       dirty
       deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -11962,6 +13102,8 @@ export const GetUnitProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -11979,6 +13121,124 @@ export const GetUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -12022,6 +13282,8 @@ export const ListUnitProductsDocument = gql`
         position
         netPackagingFee
         soldOut
+        ownerProduct
+        externalId
       }
       configSets {
         productSetId
@@ -12039,6 +13301,124 @@ export const ListUnitProductsDocument = gql`
       externalId
       dirty
       deletedAt
+      groupProduct {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        takeawayTax
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        chainProduct {
+          id
+          chainId
+          name {
+            en
+            de
+            hu
+          }
+          description {
+            en
+            de
+            hu
+          }
+          productCategoryId
+          productType
+          isVisible
+          image
+          variants {
+            id
+            variantName {
+              en
+              de
+              hu
+            }
+            pack {
+              size
+              unit
+            }
+            refGroupPrice
+            isAvailable
+            price
+            availabilities {
+              type
+              dayFrom
+              dayTo
+              timeFrom
+              timeTo
+              price
+            }
+            position
+            netPackagingFee
+            soldOut
+            ownerProduct
+            externalId
+          }
+          allergens
+          configSets {
+            productSetId
+            items {
+              productComponentId
+              refGroupPrice
+              price
+              position
+              externalId
+              netPackagingFee
+            }
+            position
+          }
+          externalId
+          dirty
+          deletedAt
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -12091,6 +13471,8 @@ export const SearchUnitProductsDocument = gql`
         position
         netPackagingFee
         soldOut
+        ownerProduct
+        externalId
       }
       configSets {
         productSetId
@@ -12108,6 +13490,254 @@ export const SearchUnitProductsDocument = gql`
       externalId
       dirty
       deletedAt
+      groupProduct {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        takeawayTax
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        chainProduct {
+          id
+          chainId
+          name {
+            en
+            de
+            hu
+          }
+          description {
+            en
+            de
+            hu
+          }
+          productCategoryId
+          productType
+          isVisible
+          image
+          variants {
+            id
+            variantName {
+              en
+              de
+              hu
+            }
+            pack {
+              size
+              unit
+            }
+            refGroupPrice
+            isAvailable
+            price
+            availabilities {
+              type
+              dayFrom
+              dayTo
+              timeFrom
+              timeTo
+              price
+            }
+            position
+            netPackagingFee
+            soldOut
+            ownerProduct
+            externalId
+          }
+          allergens
+          configSets {
+            productSetId
+            items {
+              productComponentId
+              refGroupPrice
+              price
+              position
+              externalId
+              netPackagingFee
+            }
+            position
+          }
+          externalId
+          dirty
+          deletedAt
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    nextToken
+    total
+    aggregateItems {
+      name
+      result {
+        ... on SearchableAggregateScalarResult {
+          value
+        }
+        ... on SearchableAggregateBucketResult {
+          buckets {
+            key
+            doc_count
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetVariantDocument = gql`
+    query GetVariant($id: ID!) {
+  getVariant(id: $id) {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    refGroupPrice
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const ListVariantsDocument = gql`
+    query ListVariants($filter: ModelVariantFilterInput, $limit: Int, $nextToken: String) {
+  listVariants(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+      ownerProduct
+      externalId
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchVariantsDocument = gql`
+    query SearchVariants($filter: SearchableVariantFilterInput, $sort: [SearchableVariantSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableVariantAggregationInput]) {
+  searchVariants(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+    aggregates: $aggregates
+  ) {
+    items {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+      ownerProduct
+      externalId
       createdAt
       updatedAt
     }
@@ -16148,6 +17778,8 @@ export const OnChainProductChangeDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     allergens
     configSets {
@@ -16205,6 +17837,8 @@ export const OnGroupProductChangeDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -16221,6 +17855,70 @@ export const OnGroupProductChangeDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -16263,6 +17961,8 @@ export const OnUnitProductChangeDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -16280,6 +17980,124 @@ export const OnUnitProductChangeDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -17687,6 +19505,8 @@ export const OnCreateChainProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     allergens
     configSets {
@@ -17753,6 +19573,8 @@ export const OnUpdateChainProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     allergens
     configSets {
@@ -17819,6 +19641,8 @@ export const OnDeleteChainProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     allergens
     configSets {
@@ -17876,6 +19700,8 @@ export const OnCreateGroupProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -17892,6 +19718,70 @@ export const OnCreateGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -17932,6 +19822,8 @@ export const OnUpdateGroupProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -17948,6 +19840,70 @@ export const OnUpdateGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -17988,6 +19944,8 @@ export const OnDeleteGroupProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -18004,6 +19962,70 @@ export const OnDeleteGroupProductDocument = gql`
     externalId
     dirty
     deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -18046,6 +20068,8 @@ export const OnCreateUnitProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -18063,6 +20087,124 @@ export const OnCreateUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -18105,6 +20247,8 @@ export const OnUpdateUnitProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -18122,6 +20266,124 @@ export const OnUpdateUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -18164,6 +20426,8 @@ export const OnDeleteUnitProductDocument = gql`
       position
       netPackagingFee
       soldOut
+      ownerProduct
+      externalId
     }
     configSets {
       productSetId
@@ -18181,6 +20445,226 @@ export const OnDeleteUnitProductDocument = gql`
     externalId
     dirty
     deletedAt
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        ownerProduct
+        externalId
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          ownerProduct
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnCreateVariantDocument = gql`
+    subscription OnCreateVariant {
+  onCreateVariant {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    refGroupPrice
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnUpdateVariantDocument = gql`
+    subscription OnUpdateVariant {
+  onUpdateVariant {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    refGroupPrice
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnDeleteVariantDocument = gql`
+    subscription OnDeleteVariant {
+  onDeleteVariant {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    refGroupPrice
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
     createdAt
     updatedAt
   }
@@ -20767,6 +23251,15 @@ export function getSdk<C>(requester: Requester<C>) {
     DeleteUnitProduct(variables: DeleteUnitProductMutationVariables, options?: C): Promise<DeleteUnitProductMutation> {
       return requester<DeleteUnitProductMutation, DeleteUnitProductMutationVariables>(DeleteUnitProductDocument, variables, options);
     },
+    CreateVariant(variables: CreateVariantMutationVariables, options?: C): Promise<CreateVariantMutation> {
+      return requester<CreateVariantMutation, CreateVariantMutationVariables>(CreateVariantDocument, variables, options);
+    },
+    UpdateVariant(variables: UpdateVariantMutationVariables, options?: C): Promise<UpdateVariantMutation> {
+      return requester<UpdateVariantMutation, UpdateVariantMutationVariables>(UpdateVariantDocument, variables, options);
+    },
+    DeleteVariant(variables: DeleteVariantMutationVariables, options?: C): Promise<DeleteVariantMutation> {
+      return requester<DeleteVariantMutation, DeleteVariantMutationVariables>(DeleteVariantDocument, variables, options);
+    },
     UpdateAdminUser(variables: UpdateAdminUserMutationVariables, options?: C): Promise<UpdateAdminUserMutation> {
       return requester<UpdateAdminUserMutation, UpdateAdminUserMutationVariables>(UpdateAdminUserDocument, variables, options);
     },
@@ -20931,6 +23424,15 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     SearchUnitProducts(variables?: SearchUnitProductsQueryVariables, options?: C): Promise<SearchUnitProductsQuery> {
       return requester<SearchUnitProductsQuery, SearchUnitProductsQueryVariables>(SearchUnitProductsDocument, variables, options);
+    },
+    GetVariant(variables: GetVariantQueryVariables, options?: C): Promise<GetVariantQuery> {
+      return requester<GetVariantQuery, GetVariantQueryVariables>(GetVariantDocument, variables, options);
+    },
+    ListVariants(variables?: ListVariantsQueryVariables, options?: C): Promise<ListVariantsQuery> {
+      return requester<ListVariantsQuery, ListVariantsQueryVariables>(ListVariantsDocument, variables, options);
+    },
+    SearchVariants(variables?: SearchVariantsQueryVariables, options?: C): Promise<SearchVariantsQuery> {
+      return requester<SearchVariantsQuery, SearchVariantsQueryVariables>(SearchVariantsDocument, variables, options);
     },
     GetAdminUser(variables: GetAdminUserQueryVariables, options?: C): Promise<GetAdminUserQuery> {
       return requester<GetAdminUserQuery, GetAdminUserQueryVariables>(GetAdminUserDocument, variables, options);
@@ -21153,6 +23655,15 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     OnDeleteUnitProduct(variables?: OnDeleteUnitProductSubscriptionVariables, options?: C): Observable<OnDeleteUnitProductSubscription> {
       return requester<OnDeleteUnitProductSubscription, OnDeleteUnitProductSubscriptionVariables>(OnDeleteUnitProductDocument, variables, options);
+    },
+    OnCreateVariant(variables?: OnCreateVariantSubscriptionVariables, options?: C): Observable<OnCreateVariantSubscription> {
+      return requester<OnCreateVariantSubscription, OnCreateVariantSubscriptionVariables>(OnCreateVariantDocument, variables, options);
+    },
+    OnUpdateVariant(variables?: OnUpdateVariantSubscriptionVariables, options?: C): Observable<OnUpdateVariantSubscription> {
+      return requester<OnUpdateVariantSubscription, OnUpdateVariantSubscriptionVariables>(OnUpdateVariantDocument, variables, options);
+    },
+    OnDeleteVariant(variables?: OnDeleteVariantSubscriptionVariables, options?: C): Observable<OnDeleteVariantSubscription> {
+      return requester<OnDeleteVariantSubscription, OnDeleteVariantSubscriptionVariables>(OnDeleteVariantDocument, variables, options);
     },
     OnUpdateAdminUser(variables?: OnUpdateAdminUserSubscriptionVariables, options?: C): Observable<OnUpdateAdminUserSubscription> {
       return requester<OnUpdateAdminUserSubscription, OnUpdateAdminUserSubscriptionVariables>(OnUpdateAdminUserDocument, variables, options);
