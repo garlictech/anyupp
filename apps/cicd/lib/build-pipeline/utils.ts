@@ -12,9 +12,9 @@ import {
 } from 'aws-cdk-lib';
 import * as utils from './utils';
 import { SecretsManagerStack } from './secretsmanager-stack';
-import * as sst from '@serverless-stack/resources';
+import { Stack, StackProps } from '@serverless-stack/resources';
 
-export interface PipelineStackProps extends sst.StackProps {
+export interface PipelineStackProps extends StackProps {
   readonly chatbot: chatbot.SlackChannelConfiguration;
   readonly repoName: string;
   readonly repoOwner: string;
@@ -31,7 +31,7 @@ export const appConfig = {
 export const projectPrefix = (stage: string) => `${stage}-${appConfig.name}`;
 
 export const configurePermissions = (
-  stack: sst.Stack,
+  stack: Stack,
   secretsManager: SecretsManagerStack,
   resources: iam.IGrantable[],
   prefix: string,
@@ -78,7 +78,7 @@ export const getCacheBucketName = (stage: string) =>
   `anyupp-build-cache-${stage}`;
 
 export const createBuildProject = (
-  stack: sst.Stack,
+  stack: Stack,
   cache: codebuild.Cache,
   buildProjectPhases: Record<string, unknown>,
   reports?: Record<string, unknown>,
@@ -116,7 +116,7 @@ export const createBuildProject = (
 };
 
 export const configurePipeline = (
-  stack: sst.Stack,
+  stack: Stack,
   stage: string,
 ): { adminSiteUrl: string } => {
   const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
@@ -129,7 +129,7 @@ export const configurePipeline = (
 };
 
 export const configurePipelineNotifications = (
-  stack: sst.Stack,
+  stack: Stack,
   resourceArn: string,
   chatbot: chatbot.SlackChannelConfiguration,
   stage: string,
@@ -159,7 +159,7 @@ export const configurePipelineNotifications = (
 };
 
 export const configurePRNotifications = (
-  stack: sst.Stack,
+  stack: Stack,
   resourceArn: string,
   chatbot: chatbot.SlackChannelConfiguration,
   stage: string,
@@ -191,7 +191,7 @@ export const copyParameter = (
   paramName: string,
   fromStage: string,
   toStage: string,
-  stack: sst.Stack,
+  stack: Stack,
 ) => {
   const paramNameParam = `${toStage}${paramName}Param`;
 
@@ -219,7 +219,7 @@ export interface BuildPipelineProps extends utils.PipelineStackProps {
 }
 
 export const createPipeline = (
-  scope: sst.Stack,
+  scope: Stack,
   stage: string,
   props: BuildPipelineProps,
 ) => {
@@ -325,7 +325,7 @@ export const createPipeline = (
 };
 
 export const createCommonDevPipeline = (
-  scope: sst.Stack,
+  scope: Stack,
   stage: string,
   props: utils.PipelineStackProps,
 ) => {
