@@ -4,7 +4,6 @@ import {
   aws_route53_targets as targets,
   aws_s3_deployment as s3deploy,
   aws_certificatemanager as acm,
-  aws_cloudfront_origins,
   aws_s3 as s3,
   RemovalPolicy,
   CfnOutput,
@@ -64,7 +63,10 @@ export class WebsiteConstruct extends Construct {
     const webAclArn = webAclParamReader.getParameterValue();
 
     // CloudFront distribution that provides HTTPS
-    /* const distribution = new cloudfront.CloudFrontWebDistribution(this,'SiteDistribution', {
+    const distribution = new cloudfront.CloudFrontWebDistribution(
+      this,
+      'SiteDistribution',
+      {
         viewerCertificate: cloudfront.ViewerCertificate.fromAcmCertificate(
           props.certificate,
           {
@@ -76,7 +78,7 @@ export class WebsiteConstruct extends Construct {
         originConfigs: [
           {
             s3OriginSource: {
-              s3BucketSource: siteBucket, 
+              s3BucketSource: siteBucket,
               originAccessIdentity: oai,
             },
             behaviors: [{ isDefaultBehavior: true, compress: true }],
@@ -84,9 +86,11 @@ export class WebsiteConstruct extends Construct {
         ],
         webACLId: webAclArn,
       },
-    ); */
+    );
 
-    const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
+    // NOTE: this is the new way to create a CF distribution.
+    // It would recreate the distribution resource
+    /* const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
       defaultBehavior: {
         origin: new aws_cloudfront_origins.S3Origin(siteBucket, {
           originAccessIdentity: oai,
@@ -97,9 +101,9 @@ export class WebsiteConstruct extends Construct {
       certificate: props.certificate,
       webAclId: webAclArn,
     });
-    const cfnDistribution = distribution.node
-      .defaultChild as cloudfront.CfnDistribution;
-    //cfnDistribution.overrideLogicalId('MyDistributionCFDistribution3H55TI9Q');
+    const cfnDistribution = distribution.node.defaultChild as cloudfront.CfnDistribution;
+    //cfnDistribution.overrideLogicalId('MyDistributionCFDistribution3H55TI9Q'); 
+    */
 
     new CfnOutput(this, 'DistributionId', {
       value: distribution.distributionId,
@@ -112,6 +116,7 @@ export class WebsiteConstruct extends Construct {
     new CfnOutput(this, 'SiteDomain', {
       value: siteDomain,
     });
+
     //
     // Route53 alias record for the CloudFront distribution
     if (app.stage !== 'prod') {
