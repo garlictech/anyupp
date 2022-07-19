@@ -1,15 +1,11 @@
 import { App, Stack } from '@serverless-stack/resources';
 import { aws_iam as iam, aws_s3, aws_cloudtrail } from 'aws-cdk-lib';
 
-export class CloudTrailStack extends Stack {
+export class AnyuppCloudTrailStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
     const app = this.node.root as App;
 
-    /***
-     * Cloud Trail configurations and trails
-     * NOTE: this should be elevated later to the organizational level
-     */
     const cloudTrailPrincipal = new iam.ServicePrincipal(
       'cloudtrail.amazonaws.com',
     );
@@ -20,7 +16,7 @@ export class CloudTrailStack extends Stack {
       {
         versioned: true,
         enforceSSL: true,
-        encryption: aws_s3.BucketEncryption.S3_MANAGED,
+        encryption: aws_s3.BucketEncryption.KMS_MANAGED,
         blockPublicAccess: aws_s3.BlockPublicAccess.BLOCK_ALL,
       },
     );
@@ -52,6 +48,7 @@ export class CloudTrailStack extends Stack {
       managementEvents: aws_cloudtrail.ReadWriteType.ALL,
       enableFileValidation: true,
       isMultiRegionTrail: true,
+      sendToCloudWatchLogs: false,
     });
   }
 }

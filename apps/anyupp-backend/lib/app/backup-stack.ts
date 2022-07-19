@@ -1,16 +1,16 @@
 import { App, Stack } from '@serverless-stack/resources';
-import { Duration, aws_backup, aws_kms, aws_events } from 'aws-cdk-lib';
+import {
+  Duration,
+  aws_backup,
+  aws_kms,
+  aws_events,
+  aws_iam,
+} from 'aws-cdk-lib';
 
 export class AnyuppBackupStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
     const app = this.node.root as App;
-
-    /**
-     * We only want to enable backup for some environments (environment != account)
-     *
-     * If we are in the dev environment, that means we are in the
-     */
     const stage = app.stage;
 
     const dynamoBackupPlan =
@@ -59,8 +59,19 @@ export class AnyuppBackupStack extends Stack {
       resources: [aws_backup.BackupResource.fromTag('user:Stack', stage)],
     });
 
-    new aws_backup.BackupVault(this, 'AnyUpp-Vault', {
+    const adminUser = aws_iam.User.fromUserName(
+      this,
+      'admin-user-zsolt',
+      'zsolt',
+    );
+
+    const vault = new aws_backup.BackupVault(this, 'AnyUpp-Vault', {
       encryptionKey: backupKey,
     });
+
+    vault.blockRecoveryPointDeletion();
+    vault.grant(adminUser, 'backup:DeleteRecoveryPoint');
+
+    //TODO: copy backups to another region
   }
 }
