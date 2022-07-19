@@ -10,7 +10,6 @@ import {
   RemovalPolicy,
   Duration,
 } from 'aws-cdk-lib';
-import * as utils from './utils';
 import { SecretsManagerStack } from './secretsmanager-stack';
 import { Stack, StackProps } from '@serverless-stack/resources';
 
@@ -212,7 +211,7 @@ export const copyParameter = (
   });
 };
 
-export interface BuildPipelineProps extends utils.PipelineStackProps {
+export interface BuildPipelineProps extends PipelineStackProps {
   finalizationStage?: codepipeline.StageProps;
   buildProjectPhases: Record<string, unknown>;
   reports?: Record<string, unknown>;
@@ -241,13 +240,13 @@ export const createPipeline = (
   });
   const cache = codebuild.Cache.bucket(cacheBucket);
 
-  const build = utils.createBuildProject(
+  const build = createBuildProject(
     scope,
     cache,
     props.buildProjectPhases,
     props.reports,
   );
-  const prefix = utils.projectPrefix(stage);
+  const prefix = projectPrefix(stage);
 
   const buildArtifactBucket = new s3.Bucket(scope, 'ArtifactBucket', {
     bucketName: getAppcenterArtifactBucketName(stage),
@@ -263,7 +262,7 @@ export const createPipeline = (
   });
 
   buildArtifactBucket.grantRead(props.appcenterUser);
-  utils.configurePermissions(scope, props.secretsManager, [build], prefix);
+  configurePermissions(scope, props.secretsManager, [build], prefix);
 
   const stages: codepipeline.StageProps[] = [
     {
@@ -312,7 +311,7 @@ export const createPipeline = (
     stages,
   });
 
-  utils.configurePipelineNotifications(
+  configurePipelineNotifications(
     scope,
     pipeline.pipelineArn,
     props.chatbot,
@@ -327,9 +326,9 @@ export const createPipeline = (
 export const createCommonDevPipeline = (
   scope: Stack,
   stage: string,
-  props: utils.PipelineStackProps,
+  props: PipelineStackProps,
 ) => {
-  const { adminSiteUrl } = utils.configurePipeline(scope, stage);
+  const { adminSiteUrl } = configurePipeline(scope, stage);
 
   return createPipeline(scope, stage, {
     ...props,
@@ -342,7 +341,7 @@ export const createCommonDevPipeline = (
       },
       post_build: {
         commands: [
-          `apps/cicd/scripts/dev-post_build.sh ${stage} ${utils.getAppcenterArtifactBucketName(
+          `apps/cicd/scripts/dev-post_build.sh ${stage} ${getAppcenterArtifactBucketName(
             stage,
           )} ${adminSiteUrl}`,
         ],
