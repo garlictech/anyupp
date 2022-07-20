@@ -50,39 +50,3 @@ export const configureOpenSearchPolicy = () =>
       return of(true);
     }),
   );
-
-export const configureOpenSearchLogging = () =>
-  defer(() =>
-    from(openSearch.describeDomain({ DomainName: domainName }).promise()),
-  ).pipe(
-    map(response => {
-      console.log(response);
-      return response.DomainStatus;
-    }),
-    filter(
-      domainStatus => domainStatus.AdvancedSecurityOptions?.Enabled == true,
-    ),
-    switchMap((domainStatus: DomainStatus) =>
-      from(
-        openSearch
-          .updateDomainConfig({
-            DomainName: domainStatus.DomainName,
-            LogPublishingOptions: {
-              SEARCH_SLOW_LOGS: {
-                Enabled: true,
-                CloudWatchLogsLogGroupArn: `/aws/aes/domains/${domainName}/search-slow-logs`,
-              },
-              INDEX_SLOW_LOGS: {
-                Enabled: true,
-                CloudWatchLogsLogGroupArn: `/aws/aes/domains/${domainName}/index-slow-logs`,
-              },
-            },
-          })
-          .promise(),
-      ),
-    ),
-    catchError(err => {
-      console.warn('Policy attachment was not successful: ', err);
-      return of(true);
-    }),
-  );
