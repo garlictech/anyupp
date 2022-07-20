@@ -1,6 +1,5 @@
-import { aws_logs } from 'aws-cdk-lib';
-import { Stack, App } from '@serverless-stack/resources';
-import { StackProps } from '@serverless-stack/resources';
+import { aws_iam, aws_logs } from 'aws-cdk-lib';
+import { App, Stack, StackProps } from '@serverless-stack/resources';
 
 export interface OpenSearchCustomStackProps extends StackProps {
   openSearchArn: string;
@@ -12,12 +11,25 @@ export class OpenSearchCustomStack extends Stack {
 
     const openSearchDomainName = props.openSearchArn.split('/')[1];
 
-    new aws_logs.LogGroup(this, 'OsSSearchSlowLogsGroup', {
+    const slowLogs = new aws_logs.LogGroup(this, 'OsSSearchSlowLogsGroup', {
       logGroupName: `/aws/aes/domains/${openSearchDomainName}/search-slow-logs`,
     });
 
-    new aws_logs.LogGroup(this, 'OsIndexSlowLOgsGroup', {
+    const indexLogs = new aws_logs.LogGroup(this, 'OsIndexSlowLOgsGroup', {
       logGroupName: `/aws/aes/domains/${openSearchDomainName}/index-slow-logs`,
     });
+
+    const policyStatement = new aws_iam.PolicyStatement({
+      actions: [
+        'logs:PutLogEvents',
+        'logs:PutLogEventsBatch',
+        'logs:CreateLogStream',
+      ],
+      principals: [new aws_iam.ServicePrincipal('es.amazonaws.com')],
+      resources: [slowLogs.logGroupArn, indexLogs.logGroupArn],
+    });
+
+    slowLogs.addToResourcePolicy(policyStatement);
+    indexLogs.addToResourcePolicy(policyStatement);
   }
 }
