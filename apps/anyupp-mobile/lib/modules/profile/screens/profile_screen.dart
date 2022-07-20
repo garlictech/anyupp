@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Profile extends StatelessWidget {
+  final ThemeChainData theme = defaultTheme();
+
   Profile({Key? key});
 
   @override

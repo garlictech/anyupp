@@ -18,7 +18,6 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
 
   ProductListBloc(this._productRepository, this._favoritesRepository)
       : super(NoProductListLoaded()) {
-    on<LoadProductList>(_onLoadProductList);
     on<LoadAllProductList>(_onLoadAllProductList);
     on<RefreshFavoritesInProductList>(_onRefreshFavoritesInProductList);
   }
@@ -26,29 +25,6 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
   List<GeneratedProduct>? _products;
   List<ProductCategory>? _categories;
   List<FavoriteProduct>? _favorites;
-
-  FutureOr<void> _onLoadProductList(
-      LoadProductList event, Emitter<ProductListState> emit) async {
-    try {
-      log.d('********* ProductListBloc.LoadProductList()');
-      emit(ProductListLoading());
-      var response = await _productRepository.getProductList(
-        event.unitId,
-        event.categoryId,
-        event.nextToken,
-      );
-      emit(ProductListLoaded(products: response.data ?? []));
-    } on GraphQLException catch (e) {
-      log.e('********* ProductListBloc.PlatformException()=$e');
-      getIt<ExceptionBloc>().add(ShowException(e));
-    } on Exception catch (e) {
-      log.e('********* ProductListBloc.Exception()=$e');
-      getIt<ExceptionBloc>().add(ShowException(ProductException.fromException(
-        ProductException.ERROR_LOADING_PRODUCT_CATEGORIES,
-        e,
-      )));
-    }
-  }
 
   FutureOr<void> _onLoadAllProductList(
       LoadAllProductList event, Emitter<ProductListState> emit) async {
@@ -60,7 +36,7 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
 
       // Load categories
       var categories =
-          await _productRepository.getProductCategoryList(event.unitId);
+          await _productRepository.getProductCategoryList(event.chainId);
 
       // Load products
       var products = await _productRepository.getAllProductList(

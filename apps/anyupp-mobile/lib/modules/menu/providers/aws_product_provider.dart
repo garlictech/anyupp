@@ -10,15 +10,14 @@ import 'product_provider_interface.dart';
 
 class AwsProductProvider implements IProductProvider {
   @override
-  Future<PageResponse<ProductCategory>> getProductCategoryList(String unitId,
+  Future<PageResponse<ProductCategory>> getProductCategoryList(String chainId,
       [String? nextToken]) async {
-    log.d('***** getProductCategoryList().start().unitId=$unitId');
+    log.d('***** getProductCategoryList().start().chainId=$chainId');
 
     try {
-      var result =
-          await GQL.amplify.execute(ListGeneratedProductCategoriesQuery(
-        variables: ListGeneratedProductCategoriesArguments(
-          unitId: unitId,
+      var result = await GQL.amplify.execute(ListProductCategoriesQuery(
+        variables: ListProductCategoriesArguments(
+          chainId: chainId, // TODO kideriteni miert chainId kell.
           nextToken: nextToken,
         ),
       ));
@@ -30,23 +29,21 @@ class AwsProductProvider implements IProductProvider {
             GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
 
-      if (result.data == null ||
-          result.data?.searchGeneratedProductCategories == null) {
+      if (result.data == null || result.data?.searchProductCategories == null) {
         return PageResponse(data: null);
       }
 
-      int count = result.data?.searchGeneratedProductCategories?.total ?? 0;
-      String? token = result.data?.searchGeneratedProductCategories?.nextToken;
+      int count = result.data?.searchProductCategories?.total ?? 0;
+      String? token = result.data?.searchProductCategories?.nextToken;
       log.d(
           '***** getProductCategoryList().totalCount=$count, nextToken=$token');
 
-      var items = result.data?.searchGeneratedProductCategories?.items;
+      var items = result.data?.searchProductCategories?.items;
 
       List<ProductCategory> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          results.add(GeneratedProductCategory.fromJson(items[i]!.toJson())
-              .productCategory);
+          results.add(ProductCategory.fromJson(items[i]!.toJson()));
         }
       }
       log.d('***** getProductCategoryList().results=${results.length}');
@@ -64,69 +61,15 @@ class AwsProductProvider implements IProductProvider {
   }
 
   @override
-  Future<PageResponse<GeneratedProduct>> getProductList(
-      String unitId, String categoryId,
-      [String? nextToken]) async {
-    try {
-      var result = await GQL.amplify.execute(ListProductsQuery(
-        variables: ListProductsArguments(
-          unitId: unitId,
-          categoryId: categoryId,
-          nextToken: nextToken,
-        ),
-      ));
-
-      if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(
-            GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
-      }
-
-      if (result.data == null || result.data?.searchGeneratedProducts == null) {
-        log.d('***** getProductList().empty results');
-        return PageResponse(data: null);
-      }
-
-      int count = result.data?.searchGeneratedProducts?.total ?? 0;
-      String? token = result.data?.searchGeneratedProducts?.nextToken;
-      var items = result.data?.searchGeneratedProducts?.items;
-      List<GeneratedProduct> results = [];
-      if (items != null) {
-        for (int i = 0; i < items.length; i++) {
-          GeneratedProduct product =
-              GeneratedProduct.fromJson(items[i]!.toJson());
-          product.variants.sort((v1, v2) => v1.position.compareTo(v2.position));
-          product.configSets
-              ?.sort((c1, c2) => c1.position?.compareTo(c2.position ?? 0) ?? 0);
-          product.configSets?.forEach(
-            (configSet) => configSet.items.sort(
-                (i1, i2) => i1.position?.compareTo(i2.position ?? 0) ?? 0),
-          );
-          results.add(product);
-        }
-      }
-      results.sort((a, b) => a.position.compareTo(b.position));
-      // log.d('***** getProductList().items.length=${results.length}');
-
-      return PageResponse(
-        data: results,
-        totalCount: count,
-        nextToken: token,
-      );
-    } on Exception catch (e) {
-      log.e('***** getProductList().error=$e');
-      rethrow;
-    }
-  }
-
-  @override
   Future<PageResponse<GeneratedProduct>> getAllProductList(
       {required String unitId,
       required String chainId,
       String? nextToken}) async {
     try {
+      log.d('***** getAllProductList().unitId=$unitId, chainId=$chainId');
       var result = await GQL.amplify.execute(ListAllProductsQuery(
         variables: ListAllProductsArguments(
-          unitId: unitId,
+          chainId: chainId,
           nextToken: nextToken,
         ),
       ));
@@ -153,6 +96,8 @@ class AwsProductProvider implements IProductProvider {
       );
       // log.d('ComponentSets=${componentSets}');
       // log.d('Components=${components}');
+      log.d(
+          '***** getAllProductList().searchUnitProducts.items.length=${result.data?.searchUnitProducts?.items.length}');
 
       int count = result.data?.searchUnitProducts?.total ?? 0;
       String? token = result.data?.searchUnitProducts?.nextToken;

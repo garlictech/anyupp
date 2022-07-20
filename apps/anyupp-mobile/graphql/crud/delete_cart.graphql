@@ -1,5 +1,0 @@
-mutation DeleteCart($cartId: ID!) {
-  deleteCart(input: { id: $cartId }) {
-    id
-  }
-}

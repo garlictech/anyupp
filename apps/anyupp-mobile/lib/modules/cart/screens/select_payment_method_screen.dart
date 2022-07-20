@@ -116,7 +116,6 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
   }
 
   showStatusModal() async {
-    // Nav.pop(); // TODO miert kell ide ketto?
     Nav.pop();
 
     return showModalBottomSheet(

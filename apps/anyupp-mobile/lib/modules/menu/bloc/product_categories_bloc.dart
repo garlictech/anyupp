@@ -44,7 +44,7 @@ class ProductCategoriesBloc
       LoadProductCategories event, Emitter<ProductCategoriesState> emit) async {
     emit(ProductCategoriesLoading());
     var response =
-        await _productRepository.getProductCategoryList(event.unitId);
+        await _productRepository.getProductCategoryList(event.chainId);
     _categories = response.data;
     emit(ProductCategoriesLoaded(_categories));
   }

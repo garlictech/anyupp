@@ -147,7 +147,7 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   }
   log.d(
       '***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');
-  return SelectUnitChooseMethodScreen(
+  return SelectUnitScreen(
     initialUri: uri,
   );
 }

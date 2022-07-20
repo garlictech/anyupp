@@ -1,3 +1,4 @@
+import 'package:fa_prev/core/logger.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 import 'package:collection/collection.dart';
@@ -109,17 +110,11 @@ _getConfigSet(
   Map<String, ProductComponentSet> componentSets,
 ) {
   var unitProductCS = data.configSets;
-  var groupProductCS = data.groupProduct?.configSets;
-  var chainProductCS = data.groupProduct?.chainProduct?.configSets;
-  if (unitProductCS == null ||
-      groupProductCS == null ||
-      chainProductCS == null) {
+  if (unitProductCS?.isNotEmpty == false) {
     return null;
   }
-  assert(unitProductCS.length == groupProductCS.length);
-  assert(groupProductCS.length == chainProductCS.length);
   List<GeneratedProductConfigSet> results = [];
-  for (int i = 0; i < unitProductCS.length; i++) {
+  for (int i = 0; i < unitProductCS!.length; i++) {
     var componentSet = componentSets[unitProductCS[i]!.productSetId];
     assert(componentSet != null);
     if (componentSet == null) {
@@ -141,7 +136,7 @@ _getConfigSet(
           .items
           .map((item) {
             var component = components[item.productComponentId];
-            assert(component != null);
+            // assert(component != null);
             if (component == null) {
               return null;
             }

@@ -46,6 +46,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     var unit = currentUnit!;
+    var disabled = isDisabled(unit);
     return NetworkConnectionWrapperWidget(
       child: Scaffold(
         key: _key,
@@ -83,10 +84,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       top: kToolbarHeight + 50,
                       bottom: 16.0,
                     ),
-                    child: _ProductDetailsImageWidget(
-                      item: widget.item,
-                      url: widget.item.image!,
-                    ),
+                    child: disabled
+                        ? ColorFiltered(
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.5), BlendMode.dstIn),
+                            child: _ProductDetailsImageWidget(
+                              item: widget.item,
+                              url: widget.item.image!,
+                              disabled: disabled,
+                            ),
+                          )
+                        : _ProductDetailsImageWidget(
+                            item: widget.item,
+                            url: widget.item.image!,
+                            disabled: disabled,
+                          ),
                   ),
                 ),
                 elevation: 4.0,
@@ -139,6 +151,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 unit: unit,
                 displayState: widget.displayState,
                 servingMode: widget.servingMode,
+                disabled: disabled,
               ),
             ],
           ),
@@ -146,6 +159,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
     );
   }
+
+  bool isDisabled(GeoUnit unit) =>
+      widget.displayState == ProductItemDisplayState.DISABLED ||
+      (widget.displayState == ProductItemDisplayState.SOLDOUT &&
+          unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.faded);
+  bool isHidden(GeoUnit unit) =>
+      widget.displayState == ProductItemDisplayState.SOLDOUT &&
+      unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.invisible;
 }
 
 class ProductDetailsWidget extends StatelessWidget {
@@ -153,12 +174,14 @@ class ProductDetailsWidget extends StatelessWidget {
   final GeneratedProduct item;
   final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
+  final bool disabled;
 
   const ProductDetailsWidget({
     Key? key,
     required this.unit,
     required this.item,
     required this.displayState,
+    required this.disabled,
     this.servingMode,
   }) : super(key: key);
 
@@ -189,7 +212,7 @@ class ProductDetailsWidget extends StatelessWidget {
                       servingMode: servingMode,
                       displayState: displayState,
                     ),
-                    if (isDisabled && item.allergens != null)
+                    if (disabled && item.allergens != null)
                       Container(
                         color: theme.secondary12,
                         child: _buildAllergensListWidget(
@@ -263,22 +286,15 @@ class ProductDetailsWidget extends StatelessWidget {
       ),
     );
   }
-
-  bool get isDisabled =>
-      displayState == ProductItemDisplayState.DISABLED ||
-      (displayState == ProductItemDisplayState.SOLDOUT &&
-          unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.faded);
-  bool get isHidden =>
-      displayState == ProductItemDisplayState.SOLDOUT &&
-      unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.invisible;
 }
 
 class _ProductDetailsImageWidget extends StatelessWidget {
   final String url;
   final GeneratedProduct item;
+  final bool disabled;
 
   const _ProductDetailsImageWidget(
-      {Key? key, required this.url, required this.item})
+      {Key? key, required this.url, required this.item, required this.disabled})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -298,7 +314,7 @@ class _ProductDetailsImageWidget extends StatelessWidget {
           url: url,
           fit: BoxFit.fitHeight,
           placeholder: Container(
-            padding: EdgeInsets.all(50.0),
+            // padding: EdgeInsets.all(50.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(14.0),
@@ -308,12 +324,11 @@ class _ProductDetailsImageWidget extends StatelessWidget {
                 color: theme.secondary16.withOpacity(0.4),
               ),
             ),
-            child: CircularProgressIndicator(
+            child: CenterLoadingWidget(
               backgroundColor: theme.secondary12,
             ),
           ),
           errorWidget: Container(
-            padding: EdgeInsets.all(50.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(14.0),
@@ -323,10 +338,12 @@ class _ProductDetailsImageWidget extends StatelessWidget {
                 color: theme.secondary16.withOpacity(0.4),
               ),
             ),
-            child: Icon(
-              Icons.error,
-              color: Colors.red,
-              size: 32.0,
+            child: Center(
+              child: Icon(
+                Icons.error,
+                color: Colors.red,
+                size: 32.0,
+              ),
             ),
           ),
         ),

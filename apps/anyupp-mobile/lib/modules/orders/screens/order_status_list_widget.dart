@@ -360,6 +360,7 @@ class OrderListWidget extends StatelessWidget {
 
 class NoOrderWidget extends StatelessWidget {
   final OrderPolicy orderPolicy;
+  final ThemeChainData theme = defaultTheme();
   NoOrderWidget({required this.orderPolicy});
 
   @override

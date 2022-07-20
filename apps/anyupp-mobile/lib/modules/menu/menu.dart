@@ -11,7 +11,6 @@ export 'repository/product_repository.dart';
 export 'screens/allergen_details_screen.dart';
 export 'screens/product_details_screen.dart';
 export 'screens/product_menu_screen.dart';
-export 'screens/product_menu_tab_screen.dart';
 export 'screens/utils/product_config_ui_utils.dart';
 export 'utils/generated_product_converter.dart';
 export 'utils/geounit_utils.dart';

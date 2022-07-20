@@ -9,48 +9,6 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 class AwsUnitProvider implements IUnitProvider {
   @override
-  Future<List<GeoUnit>> searchUnitsNearLocation(
-      LatLng location, int radius) async {
-    log.d(
-        '***** searchUnitsNearLocation().start(): lat=${location.latitude} lng:${location.longitude}');
-    try {
-      var result = await GQL.amplify.execute(
-        GetUnitsNearLocationQuery(
-          variables: GetUnitsNearLocationArguments(
-            lat: location.latitude,
-            lng: location.longitude,
-          ),
-        ),
-      );
-      log.d('***** searchUnitsNearLocation().result.$result');
-
-      if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(
-            GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
-      }
-
-      if (result.data == null || result.data?.getUnitsNearLocation == null) {
-        log.w('***** searchUnitsNearLocation():No units found.');
-        return [];
-      }
-
-      var items = result.data?.getUnitsNearLocation?.items;
-      log.d('***** searchUnitsNearLocation().items.length=${items?.length}');
-      List<GeoUnit> results = [];
-      if (items != null) {
-        for (int i = 0; i < items.length; i++) {
-          results.add(GeoUnit.fromJson(items[i]!.toJson()));
-        }
-      }
-
-      return results;
-    } on Exception catch (e) {
-      log.e('***** searchUnitsNearLocation().Exception: $e');
-      rethrow;
-    }
-  }
-
-  @override
   Future<List<GeoUnit>> searchUnitsNearRadius(
       LatLng location, int radius) async {
     log.d(
@@ -69,6 +27,7 @@ class AwsUnitProvider implements IUnitProvider {
     log.d('AwsUnitProvider._getGeoUnit().unitId=$unitId');
     var unit = await _getUnit(unitId);
     if (unit == null) {
+      log.e('AwsUnitProvider._getGeoUnit().unitNotFound=$unitId');
       throw GraphQLException.fromException(
         GraphQLException.CODE_QUERY_EXCEPTION,
         Exception('Unit not found: $unitId'),
@@ -139,9 +98,31 @@ class AwsUnitProvider implements IUnitProvider {
     );
 
     if (result.hasErrors) {
-      log.d('AwsUnitProvider._searchByRadius().result.errors=${result.errors}');
-      throw GraphQLException.fromGraphQLError(
-          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+      // log.d('AwsUnitProvider._searchByRadius().result.errors=${result.errors}');
+      // throw GraphQLException.fromGraphQLError(
+      //     GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+      // TODO MOCK DEV:
+      // return [
+      //   'seeded_unit_c1_g1_1_id',
+      //   'seeded_unit_c1_g1_2_id',
+      //   'seeded_unit_c1_g2_1_id',
+      //   'sportbar-rkeeper-unit',
+      //   'unit-ii',
+      //   'unit-it',
+      //   'unit-pi',
+      //   'unit-pt',
+      //   'yellow-rkeeper-unit',
+      // ]; // TODO MOCK!
+      // TODO MOCK STAGING:
+      return [
+        '-MGMw7p0gQsX31ZLZOkK',
+        '213bc500-b0e4-11ec-9a1a-135807c7de07',
+        '42cda216-ded8-4b5a-8e63-6c7d6778534c',
+        '556f8370-7def-11ec-a8cb-155be376300c',
+        '9b1bb994-9de4-4d70-988f-dc67e2963565',
+        'f94bfb40-0675-11ed-a1b8-d1473ba44d83',
+        'fc97ed7f-80ab-49af-a74e-785fc478a337',
+      ];
     }
     var unit_id_list =
         result.data?.searchByRadius?.items?.whereNotNull().toList() ?? [];

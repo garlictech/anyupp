@@ -9,17 +9,6 @@ abstract class ProductListEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class LoadProductList extends ProductListEvent {
-  final String unitId;
-  final String categoryId;
-  final String? nextToken;
-  const LoadProductList(
-      {required this.unitId, required this.categoryId, this.nextToken});
-
-  @override
-  List<Object?> get props => [unitId, categoryId, nextToken];
-}
-
 class LoadAllProductList extends ProductListEvent {
   final String unitId;
   final String chainId;

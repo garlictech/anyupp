@@ -15,7 +15,6 @@ import 'package:fa_prev/shared/utils/format_utils.dart';
 import 'package:fa_prev/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class _CategoryMenuWidgets {
   // final List<Widget> widgets;
@@ -252,7 +251,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       onRefresh: () async => _onRefresh(),
       color: theme.button,
       child: NestedScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           // Animated Unit info
           return <Widget>[

@@ -6,7 +6,6 @@ export 'models/cart_exception.dart';
 export 'models/cart_extension.dart';
 export 'models/payment_method_ext.dart';
 export 'providers/aws_cart_memory_provider.dart';
-export 'providers/aws_cart_provider.dart';
 export 'providers/cart_provider_interface.dart';
 export 'repository/cart_repository.dart';
 export 'screens/cart_screen.dart';

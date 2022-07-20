@@ -197,41 +197,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
-  camera:
-    dependency: "direct main"
-    description:
-      name: camera
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.8+1"
-  camera_android:
-    dependency: transitive
-    description:
-      name: camera_android
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.7+1"
-  camera_avfoundation:
-    dependency: transitive
-    description:
-      name: camera_avfoundation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.7+1"
-  camera_platform_interface:
-    dependency: transitive
-    description:
-      name: camera_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0"
-  camera_web:
-    dependency: transitive
-    description:
-      name: camera_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.1+6"
   carousel_slider:
     dependency: "direct main"
     description:
@@ -393,13 +358,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.1"
-  cross_file:
-    dependency: transitive
-    description:
-      name: cross_file
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.3+1"
   crypto:
     dependency: transitive
     description:
@@ -421,13 +379,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.5"
-  custom_map_markers:
-    dependency: "direct main"
-    description:
-      name: custom_map_markers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.2+1"
   dart_style:
     dependency: transitive
     description:
@@ -505,13 +456,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  effective_dart:
-    dependency: "direct dev"
-    description:
-      name: effective_dart
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.2"
   equatable:
     dependency: "direct main"
     description:
@@ -1073,7 +1017,7 @@ packages:
     source: hosted
     version: "0.3.0"
   modal_bottom_sheet:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: modal_bottom_sheet
       url: "https://pub.dartlang.org"
@@ -1338,13 +1282,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  quiver:
-    dependency: transitive
-    description:
-      name: quiver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0"
   recase:
     dependency: transitive
     description:

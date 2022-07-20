@@ -71,7 +71,7 @@ ThemeChainData generateTheme(Color primary, Color secondary) {
     secondary16: secondary16,
     secondary40: secondary40,
     button: primary,
-    buttonText: secondary,
+    buttonText: secondary0,
     icon: primary,
     highlight: primary,
     light: secondary0.isLight,

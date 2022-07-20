@@ -8,15 +8,9 @@ class ProductRepository {
 
   ProductRepository(this._provider);
 
-  Future<PageResponse<ProductCategory>> getProductCategoryList(String unitId,
+  Future<PageResponse<ProductCategory>> getProductCategoryList(String chainId,
       [String? nextToken]) {
-    return _provider.getProductCategoryList(unitId, nextToken);
-  }
-
-  Future<PageResponse<GeneratedProduct>> getProductList(
-      String unitId, String categoryId,
-      [String? nextToken]) {
-    return _provider.getProductList(unitId, categoryId, nextToken);
+    return _provider.getProductCategoryList(chainId, nextToken);
   }
 
   Future<PageResponse<GeneratedProduct>> getAllProductList({
