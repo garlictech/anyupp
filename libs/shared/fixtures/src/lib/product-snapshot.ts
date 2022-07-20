@@ -83,42 +83,7 @@ const chainProduct_1 = {
     },
   ],
   productType: ProductType.food,
-  variants: [
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 11,
-      availabilities: [] as AvailabilityInput[],
-      id: 'seeded_chain_product_variant_c1_p1_1_id',
-      position: 10,
-      variantName: {
-        de: 'normal',
-        en: 'normal',
-        hu: 'normál',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'ec84f130-528b-11ec-afe3-15e1afd659e2',
-      position: 0,
-      variantName: {
-        de: 'double',
-        en: 'double',
-        hu: 'dupla',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-  ],
+  variants: [],
   isVisible: true,
   productCategoryId: 'seeded_product_category_c1_1_id',
   name: {
@@ -173,42 +138,7 @@ const chainProduct_2 = {
     },
   ],
   productType: ProductType.food,
-  variants: [
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '16853de0-528d-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'normal',
-        en: 'normal',
-        hu: 'normál',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '1ce35690-528d-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'double',
-        en: 'double',
-        hu: 'dupla',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-  ],
+  variants: [],
   isVisible: true,
   productCategoryId: 'seeded_product_category_c1_1_id',
   name: {
@@ -264,42 +194,7 @@ const chainProduct_3 = {
     },
   ],
   productType: ProductType.food,
-  variants: [
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'd22dee40-528b-11ec-afe3-15e1afd659e2',
-      position: 0,
-      variantName: {
-        de: 'normal',
-        en: 'normal',
-        hu: 'normál',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'de590330-528b-11ec-afe3-15e1afd659e2',
-      position: 0,
-      variantName: {
-        de: 'double',
-        en: 'double',
-        hu: 'dupla',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-  ],
+  variants: [],
   isVisible: true,
   productCategoryId: 'seeded_product_category_c1_1_id',
   name: {
@@ -340,59 +235,7 @@ const chainProduct_4 = {
     },
   ],
   productType: ProductType.drink,
-  variants: [
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '85322620-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '858b1b90-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 3,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '86353e40-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 4,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   isVisible: true,
   productCategoryId: 'seeded_product_category_c1_3_id',
   name: {
@@ -433,59 +276,7 @@ const chainProduct_5 = {
     },
   ],
   productType: ProductType.drink,
-  variants: [
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '4d498eb0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '4dc8a9c0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 3,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '4e2fa8f0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 4,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   isVisible: true,
   productCategoryId: 'seeded_product_category_c1_3_id',
   name: {
@@ -544,42 +335,7 @@ const chainProduct_6 = {
     },
   ],
   productType: ProductType.food,
-  variants: [
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 11,
-      availabilities: [] as AvailabilityInput[],
-      id: 'seeded_chain_product_variant_c1_p3_1_id',
-      position: 10,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '3a20c280-528b-11ec-afe3-15e1afd659e2',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'üveg',
-      },
-      pack: {
-        size: 5,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   isVisible: true,
   productCategoryId: 'seeded_product_category_c1_2_id',
   name: {
@@ -638,42 +394,7 @@ const chainProduct_7 = {
     },
   ],
   productType: ProductType.drink,
-  variants: [
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'f1200050-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'f1c6a090-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'üveg',
-      },
-      pack: {
-        size: 5,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   isVisible: true,
   productCategoryId: 'seeded_product_category_c1_2_id',
   name: {
@@ -714,59 +435,7 @@ const chainProduct_8 = {
     },
   ],
   productType: ProductType.drink,
-  variants: [
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '065caaa0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '0c565c30-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 3,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '13eaaaf0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 4,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   isVisible: true,
   productCategoryId: 'seeded_product_category_c1_3_id',
   name: {
@@ -825,42 +494,7 @@ const chainProduct_9 = {
     },
   ],
   productType: ProductType.drink,
-  variants: [
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 11,
-      availabilities: [] as AvailabilityInput[],
-      id: 'seeded_chain_product_variant_c1_p2_1_id',
-      position: 10,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 0,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'af36ee60-528a-11ec-afe3-15e1afd659e2',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'üveg',
-      },
-      pack: {
-        size: 5,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   isVisible: true,
   productCategoryId: 'seeded_product_category_c1_2_id',
   name: {
@@ -907,42 +541,7 @@ const groupProduct_1 = {
     },
   ],
   takeawayTax: 20,
-  variants: [
-    {
-      refGroupPrice: 1200,
-      isAvailable: true,
-      price: 11,
-      availabilities: [] as AvailabilityInput[],
-      id: 'seeded_chain_product_variant_c1_p1_1_id',
-      position: 1,
-      variantName: {
-        de: 'normal',
-        en: 'normal',
-        hu: 'normál',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-    {
-      refGroupPrice: 1500,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'ec84f130-528b-11ec-afe3-15e1afd659e2',
-      position: 2,
-      variantName: {
-        de: 'double',
-        en: 'double',
-        hu: 'dupla',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-  ],
+  variants: [],
   groupId: 'seeded_group_c1_1_id',
   tax: 27,
   parentId: chainProductId_01,
@@ -991,42 +590,7 @@ const groupProduct_2 = {
     },
   ],
   takeawayTax: 20,
-  variants: [
-    {
-      refGroupPrice: 300,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'f1200050-528f-11ec-90c0-fdfe82b3802d',
-      position: 1,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 500,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'f1c6a090-528f-11ec-90c0-fdfe82b3802d',
-      position: 2,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'üveg',
-      },
-      pack: {
-        size: 5,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   groupId: 'seeded_group_c1_1_id',
   tax: 27,
   parentId: chainProductId_07,
@@ -1075,42 +639,7 @@ const groupProduct_3 = {
     },
   ],
   takeawayTax: 20,
-  variants: [
-    {
-      refGroupPrice: 300,
-      isAvailable: true,
-      price: 11,
-      availabilities: [] as AvailabilityInput[],
-      id: 'seeded_chain_product_variant_c1_p3_1_id',
-      position: 1,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 500,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '3a20c280-528b-11ec-afe3-15e1afd659e2',
-      position: 2,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'üveg',
-      },
-      pack: {
-        size: 5,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   groupId: 'seeded_group_c1_1_id',
   tax: 27,
   parentId: chainProductId_06,
@@ -1141,59 +670,7 @@ const groupProduct_4 = {
     },
   ],
   takeawayTax: 20,
-  variants: [
-    {
-      refGroupPrice: 400,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '85322620-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 500,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '858b1b90-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 3,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 600,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '86353e40-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 4,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   groupId: 'seeded_group_c1_1_id',
   tax: 27,
   parentId: chainProductId_04,
@@ -1242,42 +719,7 @@ const groupProduct_5 = {
     },
   ],
   takeawayTax: 20,
-  variants: [
-    {
-      refGroupPrice: 300,
-      isAvailable: true,
-      price: 11,
-      availabilities: [] as AvailabilityInput[],
-      id: 'seeded_chain_product_variant_c1_p2_1_id',
-      position: 1,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 500,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'af36ee60-528a-11ec-afe3-15e1afd659e2',
-      position: 2,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'üveg',
-      },
-      pack: {
-        size: 5,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   groupId: 'seeded_group_c1_1_id',
   tax: 27,
   parentId: chainProductId_09,
@@ -1308,59 +750,7 @@ const groupProduct_6 = {
     },
   ],
   takeawayTax: 20,
-  variants: [
-    {
-      refGroupPrice: 400,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '065caaa0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 500,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '0c565c30-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 3,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 600,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '13eaaaf0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 4,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   groupId: 'seeded_group_c1_1_id',
   tax: 27,
   parentId: chainProductId_08,
@@ -1397,42 +787,7 @@ const groupProduct_7 = {
     },
   ],
   takeawayTax: 20,
-  variants: [
-    {
-      refGroupPrice: 1200,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'd22dee40-528b-11ec-afe3-15e1afd659e2',
-      position: 0,
-      variantName: {
-        de: 'normal',
-        en: 'normal',
-        hu: 'normál',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-    {
-      refGroupPrice: 1500,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: 'de590330-528b-11ec-afe3-15e1afd659e2',
-      position: 0,
-      variantName: {
-        de: 'double',
-        en: 'double',
-        hu: 'dupla',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-  ],
+  variants: [],
   groupId: 'seeded_group_c1_1_id',
   tax: 27,
   parentId: chainProductId_03,
@@ -1463,59 +818,7 @@ const groupProduct_8 = {
     },
   ],
   takeawayTax: 20,
-  variants: [
-    {
-      refGroupPrice: 400,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '4d498eb0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 2,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 500,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '4dc8a9c0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 3,
-        unit: 'dl',
-      },
-    },
-    {
-      refGroupPrice: 600,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '4e2fa8f0-528f-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'glass',
-        en: 'glass',
-        hu: 'pohár',
-      },
-      pack: {
-        size: 4,
-        unit: 'dl',
-      },
-    },
-  ],
+  variants: [],
   groupId: 'seeded_group_c1_1_id',
   tax: 27,
   parentId: chainProductId_05,
@@ -1552,42 +855,7 @@ const groupProduct_9 = {
     },
   ],
   takeawayTax: 20,
-  variants: [
-    {
-      refGroupPrice: 1200,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '16853de0-528d-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'normal',
-        en: 'normal',
-        hu: 'normál',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-    {
-      refGroupPrice: 1500,
-      isAvailable: true,
-      price: 0,
-      availabilities: [] as AvailabilityInput[],
-      id: '1ce35690-528d-11ec-90c0-fdfe82b3802d',
-      position: 0,
-      variantName: {
-        de: 'double',
-        en: 'double',
-        hu: 'dupla',
-      },
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-    },
-  ],
+  variants: [],
   groupId: 'seeded_group_c1_1_id',
   tax: 27,
   parentId: chainProductId_02,
@@ -1651,7 +919,6 @@ const unitProduct_1 = {
           price: 300,
         },
       ],
-      id: 'seeded_chain_product_variant_c1_p2_1_id',
       position: 1,
       variantName: {
         de: 'glass',
@@ -1677,7 +944,6 @@ const unitProduct_1 = {
           price: 500,
         },
       ],
-      id: 'af36ee60-528a-11ec-afe3-15e1afd659e2',
       position: 2,
       variantName: {
         de: 'glass',
@@ -1744,7 +1010,6 @@ const unitProduct_2 = {
           price: 1200,
         },
       ],
-      id: 'seeded_chain_product_variant_c1_p1_1_id',
       position: 1,
       variantName: {
         de: 'normal',
@@ -1770,7 +1035,6 @@ const unitProduct_2 = {
           price: 1500,
         },
       ],
-      id: 'ec84f130-528b-11ec-afe3-15e1afd659e2',
       position: 2,
       variantName: {
         de: 'double',
@@ -1831,7 +1095,6 @@ const unitProduct_3 = {
           price: 400,
         },
       ],
-      id: '85322620-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'glass',
@@ -1857,7 +1120,6 @@ const unitProduct_3 = {
           price: 500,
         },
       ],
-      id: '858b1b90-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'glass',
@@ -1883,7 +1145,6 @@ const unitProduct_3 = {
           price: 600,
         },
       ],
-      id: '86353e40-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'glass',
@@ -1950,7 +1211,6 @@ const unitProduct_4 = {
           price: 1200,
         },
       ],
-      id: '16853de0-528d-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'normal',
@@ -1976,7 +1236,6 @@ const unitProduct_4 = {
           price: 1500,
         },
       ],
-      id: '1ce35690-528d-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'double',
@@ -2037,7 +1296,6 @@ const unitProduct_5 = {
           price: 400,
         },
       ],
-      id: '4d498eb0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'glass',
@@ -2063,7 +1321,6 @@ const unitProduct_5 = {
           price: 500,
         },
       ],
-      id: '4dc8a9c0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'glass',
@@ -2089,7 +1346,6 @@ const unitProduct_5 = {
           price: 600,
         },
       ],
-      id: '4e2fa8f0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'glass',
@@ -2150,7 +1406,6 @@ const unitProduct_6 = {
           price: 400,
         },
       ],
-      id: '065caaa0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'glass',
@@ -2176,7 +1431,6 @@ const unitProduct_6 = {
           price: 500,
         },
       ],
-      id: '0c565c30-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'glass',
@@ -2202,7 +1456,6 @@ const unitProduct_6 = {
           price: 600,
         },
       ],
-      id: '13eaaaf0-528f-11ec-90c0-fdfe82b3802d',
       position: 0,
       variantName: {
         de: 'glass',
@@ -2281,7 +1534,6 @@ const unitProduct_7 = {
           price: 300,
         },
       ],
-      id: 'f1200050-528f-11ec-90c0-fdfe82b3802d',
       position: 1,
       variantName: {
         de: 'glass',
@@ -2307,7 +1559,6 @@ const unitProduct_7 = {
           price: 500,
         },
       ],
-      id: 'f1c6a090-528f-11ec-90c0-fdfe82b3802d',
       position: 2,
       variantName: {
         de: 'glass',
@@ -2386,7 +1637,6 @@ const unitProduct_8 = {
           price: 300,
         },
       ],
-      id: 'seeded_chain_product_variant_c1_p3_1_id',
       position: 1,
       variantName: {
         de: 'glass',
@@ -2412,7 +1662,6 @@ const unitProduct_8 = {
           price: 500,
         },
       ],
-      id: '3a20c280-528b-11ec-afe3-15e1afd659e2',
       position: 2,
       variantName: {
         de: 'glass',
@@ -2479,7 +1728,6 @@ const unitProduct_9 = {
           price: 1200,
         },
       ],
-      id: 'd22dee40-528b-11ec-afe3-15e1afd659e2',
       position: 0,
       variantName: {
         de: 'normal',
@@ -2505,7 +1753,6 @@ const unitProduct_9 = {
           price: 1500,
         },
       ],
-      id: 'de590330-528b-11ec-afe3-15e1afd659e2',
       position: 0,
       variantName: {
         de: 'double',

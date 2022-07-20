@@ -36,7 +36,7 @@ export type AnyuppRequest<SOURCE = undefined> = {
     username?: string;
   };
   arguments: unknown;
-  source: SOURCE;
+  source?: SOURCE;
 };
 
 const consumerUserPoolId = config.ConsumerUserPoolId;

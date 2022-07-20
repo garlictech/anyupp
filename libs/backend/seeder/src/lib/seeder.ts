@@ -202,6 +202,4 @@ export const seedAll = (deps: SeederDependencies) =>
     delay(2000),
     switchMap(() => seedYellowRKeeperUnit(deps)),
     switchMap(() => seedSportbarRKeeperUnit(deps)),
-    delay(5000),
-    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
   );

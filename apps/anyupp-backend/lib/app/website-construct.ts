@@ -47,7 +47,7 @@ export class WebsiteConstruct extends Construct {
 
     new CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
 
-    const webAclParamReader = new SSMParameterReader(
+    /*const webAclParamReader = new SSMParameterReader(
       this,
       'WebAclParamReader',
       {
@@ -56,11 +56,11 @@ export class WebsiteConstruct extends Construct {
         account: app.account,
       },
     );
-
+*/
     /* NOTE: if the stored parameter changes, it will not trigger a cloudformation update. In theory, it is possible
        that the web acl changes, but this stack is unaware of the change.
      */
-    const webAclArn = webAclParamReader.getParameterValue();
+    //const webAclArn = webAclParamReader.getParameterValue();
 
     // CloudFront distribution that provides HTTPS
     const distribution = new cloudfront.CloudFrontWebDistribution(
@@ -84,7 +84,7 @@ export class WebsiteConstruct extends Construct {
             behaviors: [{ isDefaultBehavior: true, compress: true }],
           },
         ],
-        webACLId: webAclArn,
+        //webACLId: webAclArn,
       },
     );
 
