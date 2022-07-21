@@ -272,7 +272,7 @@ export class AnyuppConfigStack extends Stack {
           config.ManagedRuleIdentifiers.CLOUD_TRAIL_CLOUD_WATCH_LOGS_ENABLED,
       },
     );
-    const cloudFrontDefaultRootObjectConfiguredRule = new config.ManagedRule(
+    /*const cloudFrontDefaultRootObjectConfiguredRule = new config.ManagedRule(
       this,
       'CLOUDFRONT_DEFAULT_ROOT_OBJECT_CONFIGURED',
       {
@@ -297,7 +297,7 @@ export class AnyuppConfigStack extends Stack {
         identifier:
           config.ManagedRuleIdentifiers.CLOUDFRONT_VIEWER_POLICY_HTTPS,
       },
-    );
+    );*/
     const dynamoDbAutoscalingEnabledRule = new config.ManagedRule(
       this,
       'DYNAMODB_AUTOSCALING_ENABLED',
