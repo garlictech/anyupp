@@ -9014,10 +9014,10 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
-"@types/fabric@4.5.10":
-  version "4.5.10"
-  resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-4.5.10.tgz#2325d012fc8dc3f8ef0a582b777dcc3af5774d39"
-  integrity sha512-5FYXVfDoQ8R6IGI9slyIvKwqCOVVX4VOxcIEqr49viMyRTFtFEDMNXu1ljOXsqa4VRxDLix0d1k73SNCgVFXSQ==
+"@types/fabric@4.5.11":
+  version "4.5.11"
+  resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-4.5.11.tgz#ca7be016c6d803bf1066ce7072836ac1e7f2350d"
+  integrity sha512-JgOnbIm03EDYI+X5/hjstMZUbQ9W3704BQ4Dlu7t9JwWzNSdJE4cTV/4XtIHFCCfiFpcL756re+qCazTA84InA==
 
 "@types/file-saver@2.0.5":
   version "2.0.5"
