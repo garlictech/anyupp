@@ -170,7 +170,7 @@
     "@nrwl/tao": "14.4.3",
     "@nrwl/workspace": "14.4.3",
     "@nxrocks/nx-flutter": "3.0.2",
-    "@serverless-stack/cli": "1.6.0",
+    "@serverless-stack/cli": "1.0.4",
     "@serverless-stack/resources": "0.69.7",
     "@storybook/addon-actions": "6.5.9",
     "@storybook/addon-essentials": "6.5.9",
@@ -244,9 +244,7 @@
       "@commitlint/config-conventional"
     ]
   },
-  "resolutions": {
-    "graphql": "15.8.0"
-  },
+  "resolutions": {},
   "browser": {
     "fs": false,
     "path": false,
