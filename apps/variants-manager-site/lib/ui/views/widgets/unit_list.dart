@@ -55,20 +55,22 @@ class UnitListWidget extends ConsumerWidget {
 
     return working
         ? const CircularProgressIndicator()
-        : Table(
-            defaultColumnWidth: const IntrinsicColumnWidth(),
-            border: TableBorder.all(color: Colors.grey, width: 1),
-            children: [_header] +
-                unitListState.users
-                    .map((unit) => TableRow(
-                          children: [
-                            UnitListTableCell(Text(unit.id)),
-                            UnitListTableCell(Text(unit.name)),
-                            UnitEditHandles(
-                              onEdit: () => presenter.onEditClicked(unit),
-                            )
-                          ],
-                        ))
-                    .toList());
+        : SingleChildScrollView(
+            controller: ScrollController(),
+            child: Table(
+                defaultColumnWidth: const IntrinsicColumnWidth(),
+                border: TableBorder.all(color: Colors.grey, width: 1),
+                children: [_header] +
+                    unitListState.users
+                        .map((unit) => TableRow(
+                              children: [
+                                UnitListTableCell(Text(unit.id)),
+                                UnitListTableCell(Text(unit.name)),
+                                UnitEditHandles(
+                                  onEdit: () => presenter.onEditClicked(unit),
+                                )
+                              ],
+                            ))
+                        .toList()));
   }
 }

@@ -960,6 +960,9 @@ type Unit
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+  currency: String
+  style: ChainStyle
+  categoryOrders: [NestedSortItem]
 }
 
 type DateIntervalOpen {
