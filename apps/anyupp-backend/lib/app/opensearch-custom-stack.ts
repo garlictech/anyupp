@@ -5,6 +5,15 @@ export interface OpenSearchCustomStackProps extends StackProps {
   openSearchArn: string;
 }
 
+/**
+ * The Amplify managed OpenSearch cluster requires these log groups in order
+ * to be able to log slow search queries and slow indexes
+ *
+ * NOTE: The log group association with the OS domain is a destructive process despite
+ * what the documentation says. Thus setting the logpublishing options are
+ * done via `amplify override api`
+ * https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-elasticsearch-domain.html#cfn-elasticsearch-domain-logpublishingoptions
+ */
 export class OpenSearchCustomStack extends Stack {
   constructor(scope: App, id: string, props: OpenSearchCustomStackProps) {
     super(scope, id);

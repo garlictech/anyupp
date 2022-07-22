@@ -1,6 +1,9 @@
 import { App, Stack } from '@serverless-stack/resources';
 import { aws_securityhub, aws_accessanalyzer } from 'aws-cdk-lib';
 
+/**
+ * Core services. They need to created once per an account
+ */
 export class AnyuppAccountServicesStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);

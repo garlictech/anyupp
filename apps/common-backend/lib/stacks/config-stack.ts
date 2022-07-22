@@ -2,6 +2,18 @@
 import { App, Stack } from '@serverless-stack/resources';
 import { aws_config as config } from 'aws-cdk-lib';
 
+/**
+ * AWS Config requires a one-time setup per account, which creates some resources:
+ * ConfigurationRecorder and a DeliveryChannel. CDK should be capable doing it, but
+ * as it tries to create some IAM roles under the hood, they either failed or the update
+ * failed so essentially it is not really possible to bootstrap AWS Config with CDK.
+ *
+ * https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_config.CfnConfigurationRecorder.html
+ *
+ * See related issues here: https://github.com/aws/aws-cdk/issues/5872
+ * and here: https://github.com/aws/aws-cdk/issues/3577#issue-478181378
+ *
+ */
 export class AnyuppConfigStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
