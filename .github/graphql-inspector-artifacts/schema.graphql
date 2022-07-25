@@ -173,9 +173,9 @@ type GroupProduct @aws_iam @aws_cognito_user_pools {
 
 type UnitProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
-  parentId: ID!
-  chainId: ID!
-  groupId: ID!
+  parentId: ID
+  chainId: ID
+  groupId: ID
   unitId: ID!
   isVisible: Boolean!
   takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
@@ -187,7 +187,13 @@ type UnitProduct @aws_iam @aws_cognito_user_pools {
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
-  groupProduct: GroupProduct
+  tax: Int!
+  takeawayTax: Int
+  name: LocalizedItem!
+  productCategoryId: ID!
+  productType: ProductType!
+  image: String
+  allergens: [Allergen]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -383,7 +389,7 @@ type AdminUserSettings @aws_iam @aws_cognito_user_pools {
   selectedHistoryDate: Int
 }
 
-type NestedSortItem @aws_iam @aws_cognito_user_pools {
+type NestedSortItem @aws_iam @aws_cognito_user_pools @aws_api_key {
   id: ID!
   parentId: ID
 }
@@ -879,8 +885,8 @@ type Unit @aws_iam @aws_cognito_user_pools {
   adBannersEnabled: Boolean
   coverBanners: [ImageAsset!]
   coverBannersEnabled: Boolean
-  groupId: ID!
-  chainId: ID!
+  groupId: ID
+  chainId: ID
   lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
@@ -911,6 +917,9 @@ type Unit @aws_iam @aws_cognito_user_pools {
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+  currency: String!
+  style: ChainStyle!
+  categoryOrders: [NestedSortItem]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2029,6 +2038,12 @@ input ModelUnitProductFilterInput {
   externalId: ModelStringInput
   dirty: ModelBooleanInput
   deletedAt: ModelStringInput
+  tax: ModelIntInput
+  takeawayTax: ModelIntInput
+  productCategoryId: ModelIDInput
+  productType: ModelProductTypeInput
+  image: ModelStringInput
+  allergens: ModelAllergenListInput
   and: [ModelUnitProductFilterInput]
   or: [ModelUnitProductFilterInput]
   not: ModelUnitProductFilterInput
@@ -2047,6 +2062,12 @@ input ModelUnitProductConditionInput {
   externalId: ModelStringInput
   dirty: ModelBooleanInput
   deletedAt: ModelStringInput
+  tax: ModelIntInput
+  takeawayTax: ModelIntInput
+  productCategoryId: ModelIDInput
+  productType: ModelProductTypeInput
+  image: ModelStringInput
+  allergens: ModelAllergenListInput
   and: [ModelUnitProductConditionInput]
   or: [ModelUnitProductConditionInput]
   not: ModelUnitProductConditionInput
@@ -2054,9 +2075,9 @@ input ModelUnitProductConditionInput {
 
 input CreateUnitProductInput {
   id: ID
-  parentId: ID!
-  chainId: ID!
-  groupId: ID!
+  parentId: ID
+  chainId: ID
+  groupId: ID
   unitId: ID!
   isVisible: Boolean!
   takeaway: Boolean
@@ -2068,6 +2089,13 @@ input CreateUnitProductInput {
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
+  tax: Int!
+  takeawayTax: Int
+  name: LocalizedItemInput!
+  productCategoryId: ID!
+  productType: ProductType!
+  image: String
+  allergens: [Allergen]
 }
 
 input UpdateUnitProductInput {
@@ -2086,6 +2114,13 @@ input UpdateUnitProductInput {
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
+  tax: Int
+  takeawayTax: Int
+  name: LocalizedItemInput
+  productCategoryId: ID
+  productType: ProductType
+  image: String
+  allergens: [Allergen]
 }
 
 input CardChecksInput {
@@ -2840,6 +2875,7 @@ input ModelUnitFilterInput {
   canRequestVatInvoice: ModelBooleanInput
   canCallWaiter: ModelBooleanInput
   isVisibleInApp: ModelBooleanInput
+  currency: ModelStringInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2868,6 +2904,7 @@ input ModelUnitConditionInput {
   canRequestVatInvoice: ModelBooleanInput
   canCallWaiter: ModelBooleanInput
   isVisibleInApp: ModelBooleanInput
+  currency: ModelStringInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput
@@ -3443,9 +3480,15 @@ input SearchableUnitProductFilterInput {
   externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
   deletedAt: SearchableStringFilterInput
+  tax: SearchableIntFilterInput
+  takeawayTax: SearchableIntFilterInput
+  productCategoryId: SearchableIDFilterInput
+  image: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
+  productType: SearchableStringFilterInput
+  allergens: SearchableStringFilterInput
   and: [SearchableUnitProductFilterInput]
   or: [SearchableUnitProductFilterInput]
   not: SearchableUnitProductFilterInput
@@ -3464,6 +3507,10 @@ enum SearchableUnitProductSortableFields {
   externalId
   dirty
   deletedAt
+  tax
+  takeawayTax
+  productCategoryId
+  image
   createdAt
   updatedAt
 }
@@ -3487,6 +3534,12 @@ enum SearchableUnitProductAggregateField {
   externalId
   dirty
   deletedAt
+  tax
+  takeawayTax
+  productCategoryId
+  productType
+  image
+  allergens
   createdAt
   updatedAt
 }
@@ -4032,6 +4085,7 @@ input SearchableUnitFilterInput {
   canRequestVatInvoice: SearchableBooleanFilterInput
   canCallWaiter: SearchableBooleanFilterInput
   isVisibleInApp: SearchableBooleanFilterInput
+  currency: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
@@ -4063,6 +4117,7 @@ enum SearchableUnitSortableFields {
   canRequestVatInvoice
   canCallWaiter
   isVisibleInApp
+  currency
   createdAt
   updatedAt
 }
@@ -4096,6 +4151,7 @@ enum SearchableUnitAggregateField {
   canRequestVatInvoice
   canCallWaiter
   isVisibleInApp
+  currency
   createdAt
   updatedAt
 }

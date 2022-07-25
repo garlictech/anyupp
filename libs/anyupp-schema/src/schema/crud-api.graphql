@@ -177,9 +177,9 @@ type UnitProduct
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  parentId: ID!
-  chainId: ID!
-  groupId: ID!
+  parentId: ID
+  chainId: ID
+  groupId: ID
   unitId: ID!
   isVisible: Boolean!
   takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
@@ -191,8 +191,14 @@ type UnitProduct
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
-  # For removing generated product
-  groupProduct: GroupProduct @hasOne(fields: ["parentId"])
+
+  tax: Int!
+  takeawayTax: Int
+  name: LocalizedItem!
+  productCategoryId: ID!
+  productType: ProductType!
+  image: String
+  allergens: [Allergen]
 }
 
 type ProductConfigComponent {
@@ -905,8 +911,8 @@ type Unit
   adBannersEnabled: Boolean
   coverBanners: [ImageAsset!]
   coverBannersEnabled: Boolean
-  groupId: ID!
-  chainId: ID!
+  groupId: ID
+  chainId: ID
   lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
@@ -937,6 +943,10 @@ type Unit
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+
+  currency: String!
+  style: ChainStyle!
+  categoryOrders: [NestedSortItem]
 }
 
 type DateIntervalOpen {
