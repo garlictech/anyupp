@@ -97,7 +97,10 @@ export class RKeeperStack extends sst.Stack {
 
     // The s3 bucket passing the menu json to fargate
     const menuBucket = new s3.Bucket(this, 'AnyuppRkeeperMenuBucket', {
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      enforceSSL: true,
       removalPolicy: RemovalPolicy.DESTROY,
+      encryption: s3.BucketEncryption.S3_MANAGED,
       autoDeleteObjects: true,
       lifecycleRules: [
         {

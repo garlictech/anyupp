@@ -10,11 +10,10 @@ import {
   RemovalPolicy,
   Duration,
 } from 'aws-cdk-lib';
-import * as utils from './utils';
 import { SecretsManagerStack } from './secretsmanager-stack';
-import * as sst from '@serverless-stack/resources';
+import { Stack, StackProps } from '@serverless-stack/resources';
 
-export interface PipelineStackProps extends sst.StackProps {
+export interface PipelineStackProps extends StackProps {
   readonly chatbot: chatbot.SlackChannelConfiguration;
   readonly repoName: string;
   readonly repoOwner: string;
@@ -31,7 +30,7 @@ export const appConfig = {
 export const projectPrefix = (stage: string) => `${stage}-${appConfig.name}`;
 
 export const configurePermissions = (
-  stack: sst.Stack,
+  stack: Stack,
   secretsManager: SecretsManagerStack,
   resources: iam.IGrantable[],
   prefix: string,
@@ -78,7 +77,7 @@ export const getCacheBucketName = (stage: string) =>
   `anyupp-build-cache-${stage}`;
 
 export const createBuildProject = (
-  stack: sst.Stack,
+  stack: Stack,
   cache: codebuild.Cache,
   buildProjectPhases: Record<string, unknown>,
   reports?: Record<string, unknown>,
@@ -116,7 +115,7 @@ export const createBuildProject = (
 };
 
 export const configurePipeline = (
-  stack: sst.Stack,
+  stack: Stack,
   stage: string,
 ): { adminSiteUrl: string } => {
   const adminSiteUrl = ssm.StringParameter.fromStringParameterName(
@@ -129,7 +128,7 @@ export const configurePipeline = (
 };
 
 export const configurePipelineNotifications = (
-  stack: sst.Stack,
+  stack: Stack,
   resourceArn: string,
   chatbot: chatbot.SlackChannelConfiguration,
   stage: string,
@@ -159,7 +158,7 @@ export const configurePipelineNotifications = (
 };
 
 export const configurePRNotifications = (
-  stack: sst.Stack,
+  stack: Stack,
   resourceArn: string,
   chatbot: chatbot.SlackChannelConfiguration,
   stage: string,
@@ -191,7 +190,7 @@ export const copyParameter = (
   paramName: string,
   fromStage: string,
   toStage: string,
-  stack: sst.Stack,
+  stack: Stack,
 ) => {
   const paramNameParam = `${toStage}${paramName}Param`;
 
@@ -212,14 +211,14 @@ export const copyParameter = (
   });
 };
 
-export interface BuildPipelineProps extends utils.PipelineStackProps {
+export interface BuildPipelineProps extends PipelineStackProps {
   finalizationStage?: codepipeline.StageProps;
   buildProjectPhases: Record<string, unknown>;
   reports?: Record<string, unknown>;
 }
 
 export const createPipeline = (
-  scope: sst.Stack,
+  scope: Stack,
   stage: string,
   props: BuildPipelineProps,
 ) => {
@@ -228,7 +227,11 @@ export const createPipeline = (
 
   const cacheBucket = new s3.Bucket(scope, 'CacheBucket', {
     bucketName: getCacheBucketName(stage),
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    enforceSSL: true,
+    encryption: s3.BucketEncryption.S3_MANAGED,
     removalPolicy: RemovalPolicy.DESTROY,
+
     lifecycleRules: [
       {
         expiration: Duration.days(7),
@@ -237,16 +240,19 @@ export const createPipeline = (
   });
   const cache = codebuild.Cache.bucket(cacheBucket);
 
-  const build = utils.createBuildProject(
+  const build = createBuildProject(
     scope,
     cache,
     props.buildProjectPhases,
     props.reports,
   );
-  const prefix = utils.projectPrefix(stage);
+  const prefix = projectPrefix(stage);
 
   const buildArtifactBucket = new s3.Bucket(scope, 'ArtifactBucket', {
     bucketName: getAppcenterArtifactBucketName(stage),
+    blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+    enforceSSL: true,
+    encryption: s3.BucketEncryption.S3_MANAGED,
     removalPolicy: RemovalPolicy.DESTROY, // NOT recommended for production code
     lifecycleRules: [
       {
@@ -256,7 +262,7 @@ export const createPipeline = (
   });
 
   buildArtifactBucket.grantRead(props.appcenterUser);
-  utils.configurePermissions(scope, props.secretsManager, [build], prefix);
+  configurePermissions(scope, props.secretsManager, [build], prefix);
 
   const stages: codepipeline.StageProps[] = [
     {
@@ -305,7 +311,7 @@ export const createPipeline = (
     stages,
   });
 
-  utils.configurePipelineNotifications(
+  configurePipelineNotifications(
     scope,
     pipeline.pipelineArn,
     props.chatbot,
@@ -318,11 +324,11 @@ export const createPipeline = (
 };
 
 export const createCommonDevPipeline = (
-  scope: sst.Stack,
+  scope: Stack,
   stage: string,
-  props: utils.PipelineStackProps,
+  props: PipelineStackProps,
 ) => {
-  const { adminSiteUrl } = utils.configurePipeline(scope, stage);
+  const { adminSiteUrl } = configurePipeline(scope, stage);
 
   return createPipeline(scope, stage, {
     ...props,
@@ -335,7 +341,7 @@ export const createCommonDevPipeline = (
       },
       post_build: {
         commands: [
-          `apps/cicd/scripts/dev-post_build.sh ${stage} ${utils.getAppcenterArtifactBucketName(
+          `apps/cicd/scripts/dev-post_build.sh ${stage} ${getAppcenterArtifactBucketName(
             stage,
           )} ${adminSiteUrl}`,
         ],

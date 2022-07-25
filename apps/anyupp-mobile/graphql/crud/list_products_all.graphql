@@ -31,6 +31,14 @@ query ListAllProducts($chainId: ID!, $nextToken: String, $limit: Int) {
         soldOut
         isAvailable
         refGroupPrice
+        availabilities {
+          dayTo
+          dayFrom
+          price
+          timeFrom
+          timeTo
+          type
+        }
       }
       configSets {
         productSetId

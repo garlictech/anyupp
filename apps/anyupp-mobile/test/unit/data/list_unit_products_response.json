@@ -281,7 +281,17 @@
               "netPackagingFee": null,
               "soldOut": null,
               "isAvailable": true,
-              "refGroupPrice": 300.0
+              "refGroupPrice": 300.0,
+              "availabilities": [
+                {
+                  "dayTo": "",
+                  "dayFrom": "",
+                  "price": 300.0,
+                  "timeFrom": "",
+                  "timeTo": "",
+                  "type": "A"
+                }
+              ]
             },
             {
               "id": "3a20c280-528b-11ec-afe3-15e1afd659e2",
@@ -367,7 +377,17 @@
                   "en": "glass",
                   "hu": "pohár"
                 },
-                "refGroupPrice": 300.0
+                "refGroupPrice": 300.0,
+                "availabilities": [
+                  {
+                    "dayTo": "",
+                    "dayFrom": "",
+                    "price": 300.0,
+                    "timeFrom": "",
+                    "timeTo": "",
+                    "type": "A"
+                  }
+                ]
               },
               {
                 "isAvailable": true,
@@ -579,7 +599,17 @@
               "netPackagingFee": null,
               "soldOut": null,
               "isAvailable": true,
-              "refGroupPrice": 300.0
+              "refGroupPrice": 300.0,
+              "availabilities": [
+                {
+                  "dayTo": "",
+                  "dayFrom": "",
+                  "price": 300.0,
+                  "timeFrom": "",
+                  "timeTo": "",
+                  "type": "A"
+                }
+              ]
             },
             {
               "id": "f1c6a090-528f-11ec-90c0-fdfe82b3802d",
@@ -665,7 +695,17 @@
                   "en": "glass",
                   "hu": "pohár"
                 },
-                "refGroupPrice": 300.0
+                "refGroupPrice": 300.0,
+                "availabilities": [
+                  {
+                    "dayTo": "",
+                    "dayFrom": "",
+                    "price": 300.0,
+                    "timeFrom": "",
+                    "timeTo": "",
+                    "type": "A"
+                  }
+                ]
               },
               {
                 "isAvailable": true,
@@ -2261,7 +2301,17 @@
               "netPackagingFee": null,
               "soldOut": null,
               "isAvailable": true,
-              "refGroupPrice": 300.0
+              "refGroupPrice": 300.0,
+              "availabilities": [
+                {
+                  "dayTo": "",
+                  "dayFrom": "",
+                  "price": 300.0,
+                  "timeFrom": "",
+                  "timeTo": "",
+                  "type": "A"
+                }
+              ]
             },
             {
               "id": "af36ee60-528a-11ec-afe3-15e1afd659e2",
@@ -2279,7 +2329,17 @@
               "netPackagingFee": null,
               "soldOut": null,
               "isAvailable": true,
-              "refGroupPrice": 500.0
+              "refGroupPrice": 500.0,
+              "availabilities": [
+                {
+                  "dayTo": "",
+                  "dayFrom": "",
+                  "price": 500.0,
+                  "timeFrom": "",
+                  "timeTo": "",
+                  "type": "A"
+                }
+              ]
             }
           ],
           "configSets": [
@@ -2347,7 +2407,17 @@
                   "en": "glass",
                   "hu": "pohár"
                 },
-                "refGroupPrice": 300.0
+                "refGroupPrice": 300.0,
+                "availabilities": [
+                  {
+                    "dayTo": "",
+                    "dayFrom": "",
+                    "price": 300.0,
+                    "timeFrom": "",
+                    "timeTo": "",
+                    "type": "A"
+                  }
+                ]
               },
               {
                 "isAvailable": true,
@@ -2438,7 +2508,17 @@
                     "en": "glass",
                     "hu": "pohár"
                   },
-                  "refGroupPrice": 300.0
+                  "refGroupPrice": 300.0,
+                  "availabilities": [
+                    {
+                      "dayTo": "",
+                      "dayFrom": "",
+                      "price": 300.0,
+                      "timeFrom": "",
+                      "timeTo": "",
+                      "type": "A"
+                    }
+                  ]
                 },
                 {
                   "isAvailable": true,
@@ -2456,7 +2536,17 @@
                     "en": "glass",
                     "hu": "üveg"
                   },
-                  "refGroupPrice": 0
+                  "refGroupPrice": 0,
+                  "availabilities": [
+                    {
+                      "dayTo": "",
+                      "dayFrom": "",
+                      "price": 0,
+                      "timeFrom": "",
+                      "timeTo": "",
+                      "type": "A"
+                    }
+                  ]
                 }
               ],
               "image": "https://picsum.photos/200?random=9",

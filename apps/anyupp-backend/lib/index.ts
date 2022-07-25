@@ -14,6 +14,10 @@ import { RKeeperStack } from './app/rkeeper-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
+import { AnyuppBackupStack } from './app/backup-stack';
+import { CrudApiConfig } from '@bgap/crud-gql/api';
+import { OpenSearchCustomStack } from './app/opensearch-custom-stack';
+import { WafStack } from './app/waf-stack';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
@@ -58,6 +62,10 @@ export class AnyUppStack extends Stack {
       certificateArn,
     );
 
+    if (scope.stage === ('dev' || 'prod')) {
+      new AnyuppBackupStack(scope, 'backups');
+    }
+
     const sites = new SiteStack(scope, 'sites', {
       rootDomain,
       certificate,
@@ -82,7 +90,7 @@ export class AnyUppStack extends Stack {
       securityGroupId,
     });
 
-    new AppsyncAppStack(scope, 'appsync', {
+    const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
       consumerUserPool: cognitoStack.consumerUserPool,
       adminUserPool: cognitoStack.adminUserPool,
       stripeSecretKey: secretsManagerStack.stripeSecretKey,
@@ -118,6 +126,7 @@ export class AnyUppStack extends Stack {
 
     new ConfiguratorStack(scope, 'configurator', {
       consumerUserPoolId: cognitoStack.consumerUserPool.userPoolId,
+      appSynclogPublisherRoleArn: appsyncStack.appSyncLogPublisherRole.roleArn,
     });
 
     new RKeeperStack(scope, 'rkeeper', {
@@ -128,6 +137,14 @@ export class AnyUppStack extends Stack {
       zone,
       certificate,
       rootDomain,
+    });
+
+    new OpenSearchCustomStack(scope, 'opensearch-custom', {
+      openSearchArn: CrudApiConfig.openSearchArn,
+    });
+
+    new WafStack(scope, 'waf', {
+      graphqlApiId: CrudApiConfig.appsyncApiId,
     });
   }
 }

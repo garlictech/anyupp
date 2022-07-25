@@ -11,7 +11,9 @@ if [ "$ENVNAME" = "dev" ]; then
 fi
 
 yarn nx deploy crud-backend --env=${ENVNAME}
+yarn nx deploy anyupp-global --env=${ENVNAME}
 yarn nx deploy anyupp-backend --env=${ENVNAME}
+
 yarn deleteAllTableData
 yarn seed
 yarn nx buildAppbundle-ci anyupp-mobile

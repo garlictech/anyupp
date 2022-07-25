@@ -8,14 +8,15 @@ import {
   RemovalPolicy,
   CfnOutput,
 } from 'aws-cdk-lib';
-import * as sst from '@serverless-stack/resources';
+import { App, StackProps } from '@serverless-stack/resources';
 import { Construct } from 'constructs';
+import { SSMParameterReader } from './utils/ssm-parameter-reader';
 
-export interface WebsiteProps extends sst.StackProps {
+export interface WebsiteProps extends StackProps {
   domainName: string;
   siteSubDomain: string;
   distDir: string;
-  certificate: acm.ICertificate;
+  certificate: acm.Certificate;
 }
 
 export class WebsiteConstruct extends Construct {
@@ -23,7 +24,7 @@ export class WebsiteConstruct extends Construct {
 
   constructor(scope: Construct, id: string, props: WebsiteProps) {
     super(scope, id);
-    const app = this.node.root as sst.App;
+    const app = this.node.root as App;
 
     const siteDomain = props.siteSubDomain + '.' + props.domainName;
 
@@ -35,11 +36,31 @@ export class WebsiteConstruct extends Construct {
       bucketName: siteDomain,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
-      publicReadAccess: true,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       removalPolicy: RemovalPolicy.RETAIN,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      enforceSSL: true,
     });
 
+    const oai = new cloudfront.OriginAccessIdentity(this, 's3-bucket-oai');
+    siteBucket.grantRead(oai);
+
     new CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
+
+    const webAclParamReader = new SSMParameterReader(
+      this,
+      'WebAclParamReader',
+      {
+        parameterName: `${app.stage}_GLOBAL_WAF_ACL_ARN`,
+        region: 'us-east-1',
+        account: app.account,
+      },
+    );
+
+    /* NOTE: if the stored parameter changes, it will not trigger a cloudformation update. In theory, it is possible
+       that the web acl changes, but this stack is unaware of the change.
+     */
+    const webAclArn = webAclParamReader.getParameterValue();
 
     // CloudFront distribution that provides HTTPS
     const distribution = new cloudfront.CloudFrontWebDistribution(
@@ -51,20 +72,38 @@ export class WebsiteConstruct extends Construct {
           {
             aliases: [siteDomain],
             sslMethod: cloudfront.SSLMethod.SNI,
-            securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_1_2016,
+            securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2019,
           },
         ),
         originConfigs: [
           {
-            customOriginSource: {
-              domainName: siteBucket.bucketWebsiteDomainName,
-              originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTP_ONLY,
+            s3OriginSource: {
+              s3BucketSource: siteBucket,
+              originAccessIdentity: oai,
             },
             behaviors: [{ isDefaultBehavior: true, compress: true }],
           },
         ],
+        webACLId: webAclArn,
       },
     );
+
+    // NOTE: this is the new way to create a CF distribution.
+    // It would recreate the distribution resource
+    /* const distribution = new cloudfront.Distribution(this, 'SiteDistribution', {
+      defaultBehavior: {
+        origin: new aws_cloudfront_origins.S3Origin(siteBucket, {
+          originAccessIdentity: oai,
+        }),
+        compress: true,
+      },
+      domainNames: [siteDomain],
+      certificate: props.certificate,
+      webAclId: webAclArn,
+    });
+    const cfnDistribution = distribution.node.defaultChild as cloudfront.CfnDistribution;
+    //cfnDistribution.overrideLogicalId('MyDistributionCFDistribution3H55TI9Q'); 
+    */
 
     new CfnOutput(this, 'DistributionId', {
       value: distribution.distributionId,
@@ -77,6 +116,7 @@ export class WebsiteConstruct extends Construct {
     new CfnOutput(this, 'SiteDomain', {
       value: siteDomain,
     });
+
     //
     // Route53 alias record for the CloudFront distribution
     if (app.stage !== 'prod') {

@@ -8,6 +8,7 @@ import { CiStack } from './build-pipeline/ci-stack';
 import { QABuildPipelineStack } from './build-pipeline/qa-pipeline-stack';
 import { StagingBuildPipelineStack } from './build-pipeline/staging-pipeline-stack';
 import { ProdBuildPipelineStack } from './build-pipeline/prod-pipeline-stack';
+import { TestBuildPipelineStack } from './build-pipeline/test-pipeline-stack';
 
 export default function main(app: App): void {
   const slackChannel = new SlackNotificationsStack(app, 'SlackNotifications');
@@ -18,7 +19,7 @@ export default function main(app: App): void {
     chatbot: slackChannel.chatbot,
   };
 
-  if (app.stage !== 'prod') {
+  function createStacksForDevStages() {
     const pipelineSecretsManagerArn =
       'arn:aws:secretsmanager:eu-west-1:568276182587:secret:codebuild-Z12nwS';
     const githubSecretsManagerArn =
@@ -65,11 +66,17 @@ export default function main(app: App): void {
         githubSecretsManagerArn,
       },
     );
-    const devPullRequestConfig: PipelineStackProps = {
-      repoBranch: 'dev',
-      secretsManager: devSecretsManagerStack,
-      ...commonConfig,
-    };
+
+    const testSecretManagerStack = new SecretsManagerStack(
+      app,
+      'testsecretsmanager',
+      {
+        projectSecretsManagerArn:
+          'arn:aws:secretsmanager:eu-west-1:568276182587:secret:anyupp-test-secrets-6yLLKo',
+        pipelineSecretsManagerArn,
+        githubSecretsManagerArn,
+      },
+    );
 
     const devBuildPipelineConfig: PipelineStackProps = {
       repoBranch: 'dev',
@@ -82,6 +89,12 @@ export default function main(app: App): void {
       'DevBuildPipelineStack',
       devBuildPipelineConfig,
     );
+
+    const devPullRequestConfig: PipelineStackProps = {
+      repoBranch: 'dev',
+      secretsManager: devSecretsManagerStack,
+      ...commonConfig,
+    };
 
     const prStack = new DevPullRequestBuildStack(
       app,
@@ -102,7 +115,15 @@ export default function main(app: App): void {
       secretsManager: stagingSecretsManagerStack,
       ...commonConfig,
     });
-  } else {
+
+    new TestBuildPipelineStack(app, 'TestBuildStack', {
+      repoBranch: 'test',
+      secretsManager: testSecretManagerStack,
+      ...commonConfig,
+    });
+  }
+
+  function createStacksForProdStage() {
     const secretsManager = new SecretsManagerStack(app, 'prodsecretsmanager', {
       projectSecretsManagerArn:
         'arn:aws:secretsmanager:eu-west-1:486782650003:secret:anyupp-prod-secrets-OQjuwn',
@@ -126,5 +147,11 @@ export default function main(app: App): void {
       secretsManager,
       ...commonConfig,
     });
+  }
+
+  if (app.stage !== 'prod') {
+    createStacksForDevStages();
+  } else {
+    createStacksForProdStage();
   }
 }

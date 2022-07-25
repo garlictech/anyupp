@@ -9,7 +9,7 @@ AWS_ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
 aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com
 
 yarn nx run-many --target=config --all --skip-nx-cache --env=$ENVNAME
-yarn nx run-many --target=build --projects=crud-backend,anyupp-backend,anyupp-mobile --env=$ENVNAME --mode=$MODE
+yarn nx run-many --target=build --projects=crud-backend,anyupp-global,anyupp-backend,anyupp-mobile --env=$ENVNAME --mode=$MODE
 
 
 if [ $ENVNAME = 'dev' ]; then
@@ -22,3 +22,4 @@ else
   yarn nx build admin
 fi
 
+  

@@ -112,16 +112,18 @@ done
 RESULT+="\"_closing_tag\": \"dont use me\"}"
 echo $RESULT > ${TABLE_CONFIG_NAME}
 
-OS_ENDPOINT=$(aws cloudformation list-exports | \
+CF_EXPORTS=$(aws cloudformation list-exports)
+
+OS_ENDPOINT=$(echo $CF_EXPORTS | \
   jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainEndpoint\")" | \
   jq ".Value")
 
-OS_ARN=$(aws cloudformation list-exports | \
+OS_ARN=$(echo $CF_EXPORTS | \
   jq ".Exports[] | select(.Name == \"$API_ID:GetAtt:OpenSearch:DomainArn\")" | \
   jq ".Value")
 
 echo "OS domain endpoint: ${OS_ENDPOINT}"
-echo "OS domain ARN: ${OS_ARN}"  
+echo "OS domain ARN: ${OS_ARN}"
 
 echo "Table config generated in $PWD/$TABLE_CONFIG_NAME"
 
@@ -136,7 +138,8 @@ echo "
 export const CrudApiConfig = {
   appId: '${APPID}',
   appsyncApiId: '${API_ID}',
-  openSearchEndpoint: ${OS_ENDPOINT}
+  openSearchEndpoint: ${OS_ENDPOINT},
+  openSearchArn: ${OS_ARN}
 }
 " > ${CRUD_CONFIG_FILE}
 
@@ -151,6 +154,6 @@ mv -f ../../libs/crud-gql/api/src/lib/generated/aws-exports.js ../../libs/crud-g
 # ----------------------------------------------------------
 # Generate global config
 # ----------------------------------------------------------
-pushd ../.. 
+pushd ../..
 yarn ts-node ./tools/fetch-configuration.ts $ENVNAME
 popd
