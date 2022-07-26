@@ -5,7 +5,6 @@ import 'package:fa_prev/graphql/graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:collection/collection.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 class AwsUnitProvider implements IUnitProvider {
   @override
@@ -41,35 +40,7 @@ class AwsUnitProvider implements IUnitProvider {
       return null;
     }
 
-    log.d('AwsUnitProvider._getGeoUnit().unit=${unit.toJson()}');
-    GetGroupById$Query$GetGroup? group;
-    GetChainById$Query$GetChain? chain;
-    await Future.wait(
-      [
-        (() async => chain = await _getChain(unit.chainId))(),
-        (() async => group = await _getGroup(unit.groupId))(),
-      ],
-    );
-
-    if (group == null) {
-      throw GraphQLException.fromException(
-        GraphQLException.CODE_QUERY_EXCEPTION,
-        Exception('Group not found: ${unit.groupId}'),
-      );
-    }
-
-    if (chain == null) {
-      throw GraphQLException.fromException(
-        GraphQLException.CODE_QUERY_EXCEPTION,
-        Exception('Chain not found: ${unit.chainId}'),
-      );
-    }
-    // log.d('AwsUnitProvider._getGeoUnit().group=${group?.toJson()}');
-    // log.d('AwsUnitProvider._getGeoUnit().chain=${chain?.toJson()}');
-
     Map<String, dynamic> merged = unit.toJson();
-    merged['currency'] = group!.toJson()['currency'];
-    merged['style'] = chain!.style.toJson();
     var geoUnit = GeoUnit.fromJson(merged);
     // log.d('AwsUnitProvider._getGeoUnit().geoUnit=$geoUnit');
     return geoUnit.copyWith(
@@ -147,43 +118,5 @@ class AwsUnitProvider implements IUnitProvider {
     }
 
     return result.data?.getUnit;
-  }
-
-  Future<GetGroupById$Query$GetGroup?> _getGroup(String groupId) async {
-    var result = await GQL.amplify.execute(
-      GetGroupByIdQuery(
-        variables: GetGroupByIdArguments(
-          groupId: groupId,
-        ),
-      ),
-      fetchPolicy: FetchPolicy.cacheFirst,
-    );
-
-    if (result.hasErrors) {
-      log.d('AwsUnitProvider._getGroup().result.errors=${result.errors}');
-      throw GraphQLException.fromGraphQLError(
-          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
-    }
-
-    return result.data?.getGroup;
-  }
-
-  Future<GetChainById$Query$GetChain?> _getChain(String chainId) async {
-    var result = await GQL.amplify.execute(
-      GetChainByIdQuery(
-        variables: GetChainByIdArguments(
-          chainId: chainId,
-        ),
-      ),
-      fetchPolicy: FetchPolicy.cacheFirst,
-    );
-
-    if (result.hasErrors) {
-      log.d('AwsUnitProvider._getChain().result.errors=${result.errors}');
-      throw GraphQLException.fromGraphQLError(
-          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
-    }
-
-    return result.data?.getChain;
   }
 }

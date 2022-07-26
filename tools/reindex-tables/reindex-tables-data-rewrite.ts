@@ -1,6 +1,6 @@
 // ############
 // execute with:
-// yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/reindex-tables.ts
+// yarn ts-node --project ./tools/tsconfig.json -r tsconfig-paths/register ./tools/reindex-tables.ts
 
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';

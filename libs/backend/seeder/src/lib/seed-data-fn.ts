@@ -675,6 +675,30 @@ export const createTestUnitProduct =
       takeaway: false,
       supportedServingModes: [ServingMode.takeaway],
       position: productIdx,
+      takeawayTax: 20,
+      tax: 27,
+      image: 'https://picsum.photos/200?random=1',
+      name: {
+        de: 'Hamburger',
+        en: 'Hamburger',
+        hu: 'Hamburger',
+      },
+      productCategoryId: 'seeded_product_category_c1_1_id',
+      productType: ProductType.food,
+      allergens: [
+        Allergen.egg,
+        Allergen.gluten,
+        Allergen.mustard,
+        Allergen.milk,
+        Allergen.soya,
+        Allergen.fish,
+        Allergen.sesame,
+      ],
+      description: {
+        de: 'laktató szendvics',
+        en: 'laktató szendvics',
+        hu: 'laktató szendvics',
+      },
       variants: [
         {
           id: seedUtils.generateVariantId(chainIdx, productIdx, 1, 'unit'),

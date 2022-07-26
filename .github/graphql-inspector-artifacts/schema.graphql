@@ -190,6 +190,7 @@ type UnitProduct @aws_iam @aws_cognito_user_pools {
   tax: Int!
   takeawayTax: Int
   name: LocalizedItem!
+  description: LocalizedItem
   productCategoryId: ID!
   productType: ProductType!
   image: String
@@ -1292,6 +1293,41 @@ input CreateUnitInput {
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+  currency: String
+  style: ChainStyleInput
+  categoryOrders: [NestedSortItemInput]
+}
+
+input NestedSortItemInput {
+  id: ID
+  parentId: ID
+}
+
+input ChainStyleInput {
+  colors: ChainStyleColorsInput!
+  images: ChainStyleImagesInput
+}
+
+input ChainStyleColorsInput {
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  indicator: String
+  textLight: String
+  textDark: String
+  primary: String
+  secondary: String
+  button: String
+  buttonText: String
+  icon: String
+  highlight: String
+}
+
+input ChainStyleImagesInput {
+  header: String
+  logo: String
 }
 
 input UpdateUnitInput {
@@ -1332,6 +1368,9 @@ input UpdateUnitInput {
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+  currency: String
+  style: ChainStyleInput
+  categoryOrders: [NestedSortItemInput]
 }
 
 type CreateAnonymUserOutput {
@@ -2092,6 +2131,7 @@ input CreateUnitProductInput {
   tax: Int!
   takeawayTax: Int
   name: LocalizedItemInput!
+  description: LocalizedItemInput
   productCategoryId: ID!
   productType: ProductType!
   image: String
@@ -2117,6 +2157,7 @@ input UpdateUnitProductInput {
   tax: Int
   takeawayTax: Int
   name: LocalizedItemInput
+  description: LocalizedItemInput
   productCategoryId: ID
   productType: ProductType
   image: String
@@ -2169,38 +2210,6 @@ input ModelAdminUserConditionInput {
   and: [ModelAdminUserConditionInput]
   or: [ModelAdminUserConditionInput]
   not: ModelAdminUserConditionInput
-}
-
-input ChainStyleInput {
-  colors: ChainStyleColorsInput!
-  images: ChainStyleImagesInput
-}
-
-input ChainStyleColorsInput {
-  backgroundLight: String
-  backgroundDark: String
-  borderLight: String
-  borderDark: String
-  disabled: String
-  indicator: String
-  textLight: String
-  textDark: String
-  primary: String
-  secondary: String
-  button: String
-  buttonText: String
-  icon: String
-  highlight: String
-}
-
-input ChainStyleImagesInput {
-  header: String
-  logo: String
-}
-
-input NestedSortItemInput {
-  id: ID
-  parentId: ID
 }
 
 type ModelChainConnection @aws_iam @aws_cognito_user_pools {

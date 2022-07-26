@@ -195,6 +195,7 @@ type UnitProduct
   tax: Int!
   takeawayTax: Int
   name: LocalizedItem!
+  description: LocalizedItem
   productCategoryId: ID!
   productType: ProductType!
   image: String
@@ -1328,6 +1329,41 @@ input CreateUnitInput {
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+  currency: String
+  style: ChainStyleInput
+  categoryOrders: [NestedSortItemInput]
+}
+
+input NestedSortItemInput {
+  id: ID
+  parentId: ID
+}
+
+input ChainStyleInput {
+  colors: ChainStyleColorsInput!
+  images: ChainStyleImagesInput
+}
+
+input ChainStyleColorsInput {
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  indicator: String
+  textLight: String
+  textDark: String
+  primary: String
+  secondary: String
+  button: String
+  buttonText: String
+  icon: String
+  highlight: String
+}
+
+input ChainStyleImagesInput {
+  header: String
+  logo: String
 }
 
 input UpdateUnitInput {
@@ -1368,6 +1404,9 @@ input UpdateUnitInput {
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+  currency: String
+  style: ChainStyleInput
+  categoryOrders: [NestedSortItemInput]
 }
 
 type CreateAnonymUserOutput {

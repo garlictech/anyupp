@@ -125,7 +125,7 @@ Both systems have some minimal data seeded at deploy/creation time.
 dependencies deployed/modified!
 
 To execute the seeder locally run the following command:
-`yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts`
+`yarn ts-node --project ./tools/tsconfig.json -r tsconfig-paths/register ./tools/seed-execute.ts`
 
 ### Test user
 

@@ -1,6 +1,6 @@
 // ############
 // execute from project root with:
-// yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/yellow-menusync.ts
+// yarn ts-node --project ./tools/tsconfig.json -r tsconfig-paths/register ./tools/yellow-menusync.ts
 import * as fs from 'fs';
 import { handleRkeeperProducts } from '../libs/rkeeper-api/src/';
 

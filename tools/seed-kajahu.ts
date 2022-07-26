@@ -1,6 +1,6 @@
 //#########
 // execute with:
-// yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-kajahu.ts
+// yarn ts-node --project ./tools/tsconfig.json -r tsconfig-paths/register ./tools/seed-kajahu.ts
 
 import assert from 'assert';
 import CognitoIdentityServiceProvider from 'aws-sdk/clients/cognitoidentityserviceprovider';

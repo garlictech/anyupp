@@ -1,7 +1,5 @@
-import 'package:fa_prev/core/logger.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:collection/collection.dart';
 
 typedef UnitProduct = ListAllProducts$Query$SearchUnitProducts$Items;
 // = ListAllProducts$Query$SearchableUnitProductConnection$UnitProduct;

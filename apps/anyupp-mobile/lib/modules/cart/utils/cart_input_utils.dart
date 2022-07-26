@@ -1,9 +1,7 @@
-import 'package:fa_prev/app-config.dart';
 import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/modules/cart/cart.dart';
 import 'package:fa_prev/modules/cart/utils/cart_to_order_calculations.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
 
 CreateOrderFromCartArguments createOrderFromCartArguments(
   GeoUnit unit,

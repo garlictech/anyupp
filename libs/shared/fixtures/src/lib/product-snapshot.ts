@@ -1,8 +1,10 @@
 import {
   Allergen,
   AvailabilityInput,
+  CreateUnitProductInput,
   ProductType,
   ServingMode,
+  UnitProduct,
 } from '@bgap/domain';
 import { seededIdPrefix } from './common';
 
@@ -1595,8 +1597,32 @@ const groupProduct_9 = {
   chainId: 'seeded_chain_1_id',
 };
 
-const unitProduct_1 = {
+const unitProduct_1: CreateUnitProductInput = {
   id: unitProductId_01,
+  takeawayTax: 20,
+  tax: 27,
+  image: 'https://picsum.photos/200?random=1',
+  name: {
+    de: 'Hamburger',
+    en: 'Hamburger',
+    hu: 'Hamburger',
+  },
+  productCategoryId: 'seeded_product_category_c1_1_id',
+  productType: ProductType.food,
+  allergens: [
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
+  ],
+  description: {
+    de: 'laktató szendvics',
+    en: 'laktató szendvics',
+    hu: 'laktató szendvics',
+  },
   configSets: [
     {
       items: [
@@ -1702,6 +1728,30 @@ const unitProduct_1 = {
 
 const unitProduct_2 = {
   id: unitProductId_02,
+  takeawayTax: 20,
+  tax: 27,
+  image: 'https://picsum.photos/200?random=1',
+  name: {
+    de: 'Hamburger',
+    en: 'Hamburger',
+    hu: 'Hamburger',
+  },
+  productCategoryId: 'seeded_product_category_c1_1_id',
+  productType: ProductType.food,
+  allergens: [
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
+  ],
+  description: {
+    de: 'laktató szendvics',
+    en: 'laktató szendvics',
+    hu: 'laktató szendvics',
+  },
   configSets: [
     {
       items: [
@@ -1795,6 +1845,30 @@ const unitProduct_2 = {
 
 const unitProduct_3 = {
   id: unitProductId_03,
+  takeawayTax: 20,
+  tax: 27,
+  image: 'https://picsum.photos/200?random=1',
+  name: {
+    de: 'Hamburger',
+    en: 'Hamburger',
+    hu: 'Hamburger',
+  },
+  productCategoryId: 'seeded_product_category_c1_1_id',
+  productType: ProductType.food,
+  allergens: [
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
+  ],
+  description: {
+    de: 'laktató szendvics',
+    en: 'laktató szendvics',
+    hu: 'laktató szendvics',
+  },
   configSets: [
     {
       items: [
@@ -1908,6 +1982,30 @@ const unitProduct_3 = {
 
 const unitProduct_4 = {
   id: unitProductId_04,
+  takeawayTax: 20,
+  tax: 27,
+  image: 'https://picsum.photos/200?random=1',
+  name: {
+    de: 'Hamburger',
+    en: 'Hamburger',
+    hu: 'Hamburger',
+  },
+  productCategoryId: 'seeded_product_category_c1_1_id',
+  productType: ProductType.food,
+  allergens: [
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
+  ],
+  description: {
+    de: 'laktató szendvics',
+    en: 'laktató szendvics',
+    hu: 'laktató szendvics',
+  },
   configSets: [
     {
       items: [
@@ -2001,6 +2099,30 @@ const unitProduct_4 = {
 
 const unitProduct_5 = {
   id: unitProductId_05,
+  takeawayTax: 20,
+  tax: 27,
+  image: 'https://picsum.photos/200?random=1',
+  name: {
+    de: 'Hamburger',
+    en: 'Hamburger',
+    hu: 'Hamburger',
+  },
+  productCategoryId: 'seeded_product_category_c1_1_id',
+  productType: ProductType.food,
+  allergens: [
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
+  ],
+  description: {
+    de: 'laktató szendvics',
+    en: 'laktató szendvics',
+    hu: 'laktató szendvics',
+  },
   configSets: [
     {
       items: [
@@ -2114,6 +2236,30 @@ const unitProduct_5 = {
 
 const unitProduct_6 = {
   id: unitProductId_06,
+  takeawayTax: 20,
+  tax: 27,
+  image: 'https://picsum.photos/200?random=1',
+  name: {
+    de: 'Hamburger',
+    en: 'Hamburger',
+    hu: 'Hamburger',
+  },
+  productCategoryId: 'seeded_product_category_c1_1_id',
+  productType: ProductType.food,
+  allergens: [
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
+  ],
+  description: {
+    de: 'laktató szendvics',
+    en: 'laktató szendvics',
+    hu: 'laktató szendvics',
+  },
   configSets: [
     {
       items: [
@@ -2227,6 +2373,30 @@ const unitProduct_6 = {
 
 const unitProduct_7 = {
   id: unitProductId_07,
+  takeawayTax: 20,
+  tax: 27,
+  image: 'https://picsum.photos/200?random=1',
+  name: {
+    de: 'Hamburger',
+    en: 'Hamburger',
+    hu: 'Hamburger',
+  },
+  productCategoryId: 'seeded_product_category_c1_1_id',
+  productType: ProductType.food,
+  allergens: [
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
+  ],
+  description: {
+    de: 'laktató szendvics',
+    en: 'laktató szendvics',
+    hu: 'laktató szendvics',
+  },
   configSets: [
     {
       items: [
@@ -2332,6 +2502,30 @@ const unitProduct_7 = {
 
 const unitProduct_8 = {
   id: unitProductId_08,
+  takeawayTax: 20,
+  tax: 27,
+  image: 'https://picsum.photos/200?random=1',
+  name: {
+    de: 'Hamburger',
+    en: 'Hamburger',
+    hu: 'Hamburger',
+  },
+  productCategoryId: 'seeded_product_category_c1_1_id',
+  productType: ProductType.food,
+  allergens: [
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
+  ],
+  description: {
+    de: 'laktató szendvics',
+    en: 'laktató szendvics',
+    hu: 'laktató szendvics',
+  },
   configSets: [
     {
       items: [
@@ -2437,6 +2631,30 @@ const unitProduct_8 = {
 
 const unitProduct_9 = {
   id: unitProductId_09,
+  takeawayTax: 20,
+  tax: 27,
+  image: 'https://picsum.photos/200?random=1',
+  name: {
+    de: 'Hamburger',
+    en: 'Hamburger',
+    hu: 'Hamburger',
+  },
+  productCategoryId: 'seeded_product_category_c1_1_id',
+  productType: ProductType.food,
+  allergens: [
+    Allergen.egg,
+    Allergen.gluten,
+    Allergen.mustard,
+    Allergen.milk,
+    Allergen.soya,
+    Allergen.fish,
+    Allergen.sesame,
+  ],
+  description: {
+    de: 'laktató szendvics',
+    en: 'laktató szendvics',
+    hu: 'laktató szendvics',
+  },
   configSets: [
     {
       items: [

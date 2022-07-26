@@ -1,6 +1,6 @@
 // ############
 // execute with:
-// yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/delete-all-table-data.ts
+// yarn ts-node --project ./tools/tsconfig.json -r tsconfig-paths/register ./tools/delete-all-table-data.ts
 import { deleteInAllTables } from '../libs/backend/seeder/src/';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
 import { combineLatest, defer, from } from 'rxjs';

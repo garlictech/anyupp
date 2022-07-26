@@ -35,3 +35,4 @@ cat ../../libs/anyupp-schema/src/schema/aws.graphql \
   ../../apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql \
   > ../../.github/graphql-inspector-artifacts/schema.graphql
 
+cp ../../libs/crud-gql/api/src/lib/generated/api.ts ../../libs/domain/src/lib/entities/generated

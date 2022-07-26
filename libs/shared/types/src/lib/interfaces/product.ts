@@ -34,9 +34,6 @@ export interface ProductComponentMap {
   [key: string]: Required<ProductComponent>;
 }
 
-export interface Product
-  extends Partial<ChainProduct>,
-    Partial<GroupProduct>,
-    Partial<UnitProduct> {
+export interface Product extends Partial<UnitProduct> {
   pending?: boolean;
 }

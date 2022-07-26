@@ -69,4 +69,8 @@ export const mockUnit: Unit = {
   },
   supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
   supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
+  currency: 'HUF',
+  style: {
+    colors: {},
+  },
 };

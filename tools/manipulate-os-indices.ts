@@ -1,4 +1,4 @@
-// EXECUTE: yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/manipulate-os-indices.ts
+// EXECUTE: yarn ts-node --project ./tools/tsconfig.json -r tsconfig-paths/register ./tools/manipulate-os-indices.ts
 import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '../libs/crud-gql/api/src';
 import { catchError, mergeMap, switchMap } from 'rxjs/operators';
