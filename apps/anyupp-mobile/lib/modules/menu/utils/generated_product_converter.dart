@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
 
@@ -11,24 +12,15 @@ typedef ProductComponent
     = ListChainProductComponents$Query$SearchProductComponents$Items;
 // = ListChainProductComponents$Query$SearchableProductComponentConnection$ProductComponent;
 
-typedef Variant
-    = ListAllProducts$Query$SearchableUnitProductConnection$UnitProduct$ProductVariant;
+typedef Variant = ListAllProducts$Query$SearchUnitProducts$Items$Variants;
 
 GeneratedProduct? getProductFromQuery(
   UnitProduct data,
   Map<String, ProductComponentSet> componentSets,
   Map<String, ProductComponent> components,
 ) {
-  var chainProduct = data.groupProduct?.chainProduct!;
-  var groupProduct = data.groupProduct;
-
-  // If no chain or group product => return null
-  if (chainProduct == null || groupProduct == null) {
-    return null;
-  }
-
   // If product is not visible in any level => return null
-  if (!data.isVisible && !groupProduct.isVisible && !chainProduct.isVisible) {
+  if (!data.isVisible) {
     return null;
   }
 
@@ -36,34 +28,34 @@ GeneratedProduct? getProductFromQuery(
   return GeneratedProduct(
       id: data.id,
       unitId: data.unitId,
-      productCategoryId: chainProduct.productCategoryId,
+      productCategoryId: data.productCategoryId,
       name: LocalizedItem(
-        hu: chainProduct.name.hu,
-        en: chainProduct.name.en,
-        de: chainProduct.name.de,
+        hu: data.name.hu,
+        en: data.name.en,
+        de: data.name.de,
       ),
-      description: chainProduct.description != null
+      description: data.description != null
           ? LocalizedItem(
-              hu: chainProduct.description?.hu,
-              en: chainProduct.description?.en,
-              de: chainProduct.description?.de,
+              hu: data.description?.hu,
+              en: data.description?.en,
+              de: data.description?.de,
             )
           : null,
-      productType: chainProduct.productType,
-      tax: groupProduct.tax,
+      productType: data.productType,
+      tax: data.tax,
       position: data.position,
-      image: chainProduct.image,
+      image: data.image,
       supportedServingModes:
           data.supportedServingModes ?? [ServingMode.inPlace],
-      allergens: chainProduct.allergens?.whereNotNull().toList(),
+      allergens: data.allergens?.whereNotNull().toList(),
       soldOut: false,
       variants: data.variants!
           .asMap()
           .entries
           .map((entry) {
             var variant = entry.value;
-            var groupVariant = groupProduct.variants?[entry.key];
-            var chainVariant = chainProduct.variants?[entry.key];
+            var groupVariant = data.variants?[entry.key];
+            var chainVariant = data.variants?[entry.key];
 
             if (variant == null ||
                 groupVariant == null ||

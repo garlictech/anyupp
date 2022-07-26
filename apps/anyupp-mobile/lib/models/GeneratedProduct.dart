@@ -1,23 +1,40 @@
-import 'package:collection/collection.dart';
 import 'package:fa_prev/models.dart';
-import 'package:flutter/foundation.dart';
 import 'package:fa_prev/graphql/generated/crud-api.dart';
+import 'package:functional_data/functional_data.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-@immutable
-class GeneratedProduct {
+part 'GeneratedProduct.g.dart';
+
+@FunctionalData()
+@JsonSerializable(explicitToJson: true)
+class GeneratedProduct extends $GeneratedProduct {
+  @override
   final String id;
+  @override
   final String unitId;
+  @override
   final String productCategoryId;
+  @override
   final LocalizedItem name;
+  @override
   final LocalizedItem? description;
+  @override
   final ProductType productType;
+  @override
   final int tax;
+  @override
   final int position;
+  @override
   final String? image;
+  @override
   final List<ProductVariant> variants;
+  @override
   final List<Allergen>? allergens;
+  @override
   final List<GeneratedProductConfigSet>? configSets;
+  @override
   final List<ServingMode> supportedServingModes;
+  @override
   final bool soldOut;
 
   GeneratedProduct({
@@ -37,140 +54,8 @@ class GeneratedProduct {
     this.soldOut = false,
   });
 
-  GeneratedProduct copyWith({
-    String? id,
-    String? unitId,
-    String? productCategoryId,
-    LocalizedItem? name,
-    LocalizedItem? description,
-    ProductType? productType,
-    int? tax,
-    int? position,
-    String? image,
-    List<ProductVariant>? variants,
-    List<Allergen>? allergens,
-    List<GeneratedProductConfigSet>? configSets,
-    List<ServingMode>? supportedServingModes,
-    bool? soldOut,
-  }) {
-    return GeneratedProduct(
-      id: id ?? this.id,
-      unitId: unitId ?? this.unitId,
-      productCategoryId: productCategoryId ?? this.productCategoryId,
-      name: name ?? this.name,
-      description: description ?? this.description,
-      productType: productType ?? this.productType,
-      tax: tax ?? this.tax,
-      position: position ?? this.position,
-      image: image ?? this.image,
-      variants: variants ?? this.variants,
-      allergens: allergens ?? this.allergens,
-      configSets: configSets ?? this.configSets,
-      supportedServingModes:
-          supportedServingModes ?? this.supportedServingModes,
-      soldOut: soldOut ?? this.soldOut,
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'unitId': unitId,
-      'productCategoryId': productCategoryId,
-      'name': name.toJson(),
-      'description': description?.toJson(),
-      'productType': enumToString(productType),
-      'tax': tax,
-      'position': position,
-      'image': image,
-      'variants': variants.map((x) => x.toJson()).toList(),
-      'allergens': allergens,
-      'configSets': configSets?.map((x) => x.toJson()).toList(),
-      'supportedServingModes':
-          supportedServingModes.map((x) => enumToString(x)).toList(),
-      'soldOut': soldOut,
-    };
-  }
-
-  factory GeneratedProduct.fromJson(Map<String, dynamic> map) {
-    return GeneratedProduct(
-      id: map['id'],
-      unitId: map['unitId'],
-      productCategoryId: map['productCategoryId'],
-      name: LocalizedItem.fromJson(map['name']),
-      description: map['description'] != null
-          ? LocalizedItem.fromJson(map['description'])
-          : null,
-      productType: enumFromString(map['productType'], ProductType.values),
-      tax: map['tax'],
-      position: map['position'],
-      image: map['image'],
-      variants: List<ProductVariant>.from(
-          map['variants']?.map((x) => ProductVariant.fromJson(x))),
-      allergens: map['allergens'] != null
-          ? List<Allergen>.from(
-              map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
-          : null,
-      configSets: map['configSets'] != null
-          ? List<GeneratedProductConfigSet>.from(map['configSets']
-              ?.map((x) => GeneratedProductConfigSet?.fromJson(x)))
-          : null,
-      supportedServingModes: map['supportedServingModes'] != null
-          ? List<ServingMode>.from(
-              map['supportedServingModes']?.map(
-                (x) => enumFromString(
-                  x,
-                  ServingMode.values,
-                ),
-              ),
-            )
-          : [],
-      soldOut: map['soldOut'] ?? false,
-    );
-  }
-
   @override
   String toString() {
     return 'GeneratedProduct(id: $id, unitId: $unitId, supportedServingModes: $supportedServingModes, soldOut: $soldOut, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    final listEquals = const DeepCollectionEquality().equals;
-
-    return other is GeneratedProduct &&
-        other.id == id &&
-        other.unitId == unitId &&
-        other.productCategoryId == productCategoryId &&
-        other.name == name &&
-        other.description == description &&
-        other.productType == productType &&
-        other.tax == tax &&
-        other.position == position &&
-        other.image == image &&
-        other.soldOut == soldOut &&
-        listEquals(other.variants, variants) &&
-        listEquals(other.allergens, allergens) &&
-        listEquals(other.configSets, configSets) &&
-        listEquals(other.supportedServingModes, supportedServingModes);
-  }
-
-  @override
-  int get hashCode {
-    return id.hashCode ^
-        unitId.hashCode ^
-        productCategoryId.hashCode ^
-        name.hashCode ^
-        description.hashCode ^
-        productType.hashCode ^
-        tax.hashCode ^
-        position.hashCode ^
-        image.hashCode ^
-        variants.hashCode ^
-        allergens.hashCode ^
-        configSets.hashCode ^
-        supportedServingModes.hashCode ^
-        soldOut.hashCode;
   }
 }

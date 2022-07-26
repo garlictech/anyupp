@@ -55,10 +55,15 @@ query ListAllProducts($chainId: ID!, $nextToken: String, $limit: Int) {
       supportedServingModes
       dirty
       isVisible
-      parentId
-      chainId
-      groupId
       externalId
+      tax
+      takeawayTax
+      name
+      description
+      productCategoryId
+      productType
+      image
+      allergens
       createdAt
       deletedAt
       updatedAt

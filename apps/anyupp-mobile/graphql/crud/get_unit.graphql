@@ -2,6 +2,7 @@ query GetUnitById($unitId: ID!) {
   getUnit(id: $unitId) {
     chainId
     id
+    currency
     groupId
     description {
       de

@@ -4,6 +4,7 @@ import {
   CreateUnitProductInput,
   ProductType,
   ServingMode,
+  UnitProduct,
 } from '@bgap/domain';
 import { seededIdPrefix } from './common';
 

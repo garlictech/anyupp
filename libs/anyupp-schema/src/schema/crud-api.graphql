@@ -168,8 +168,6 @@ type GroupProduct
   externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
-  # For removing generated product
-  chainProduct: ChainProduct @hasOne(fields: ["parentId"])
 }
 
 type UnitProduct

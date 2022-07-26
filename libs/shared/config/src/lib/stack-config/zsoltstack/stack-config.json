@@ -36,7 +36,7 @@
     "stripewebhookEndpoint": "https://stripe-webhook-zsoltstack.anyupp.com/zsoltstack",
     "StripeWebhookEndpointE83D65EB": "https://t32kvtns8l.execute-api.eu-west-1.amazonaws.com/zsoltstack/"
   },
-  "zsoltstack-anyupp-backend-rkeeper": {
+  "anyupp-backend-rkeeper": {
     "RKeeperWebhookEndpointCBC72BD4": "https://dadq12h6fl.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-zsoltstack.anyupp.com/zsoltstack",
     "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-3c8swgmphrt6",

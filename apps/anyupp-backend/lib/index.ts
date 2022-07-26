@@ -143,9 +143,11 @@ export class AnyUppStack extends Stack {
       openSearchArn: CrudApiConfig.openSearchArn,
     });
 
-    new WafStack(scope, 'waf', {
-      graphqlApiId: CrudApiConfig.appsyncApiId,
-    });
+    if (['prod', 'qa', 'dev', 'staging'].includes(scope.stage)) {
+      new WafStack(scope, 'waf', {
+        graphqlApiId: CrudApiConfig.appsyncApiId,
+      });
+    }
   }
 }
 

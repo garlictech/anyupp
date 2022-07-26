@@ -80,6 +80,7 @@ dependencies:
   animated_toggle_switch: ^0.5.2
   bubble_box: ^0.5.2
   modal_bottom_sheet: ^2.1.0
+  functional_data: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -99,6 +100,8 @@ dev_dependencies:
   http_mock_adapter: ^0.3.2
   mockito: ^5.0.15
   mocktail: ^0.3.0
+  functional_data_generator: ^1.1.4
+  json_annotation: ^4.6.0
   # dependency_validator: ^3.0.0
 
 # dependency_overrides:
