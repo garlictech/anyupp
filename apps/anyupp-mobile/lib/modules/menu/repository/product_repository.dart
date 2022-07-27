@@ -1,7 +1,7 @@
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/modules/menu/menu.dart';
+import '/shared/pagination/pagination.dart';
 
 class ProductRepository {
   final IProductProvider _provider;

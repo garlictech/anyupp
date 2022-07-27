@@ -1,4 +1,4 @@
-import 'package:fa_prev/modules/login/login.dart';
+import '/modules/login/login.dart';
 
 abstract class ISocialLoginProvider {
   // Future<ProviderLoginResponse> signInWithProvider(LoginMethod method);

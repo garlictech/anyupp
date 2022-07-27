@@ -1,7 +1,7 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models/Transaction.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/pdf_utils.dart';
+import '/core/theme/theme.dart';
+import '/models/Transaction.dart';
+import '/shared/locale.dart';
+import '/shared/utils/pdf_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 

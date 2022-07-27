@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/locale.dart';
+import '/core/theme/theme.dart';
+import '/models.dart';
+import '/shared/locale.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailVariantItemWidget extends StatelessWidget {

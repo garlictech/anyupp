@@ -1,15 +1,15 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/cart/widgets/payment/payment_success_widget.dart';
-import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/modules/selectunit/widgets/flutter_qr_code_scanner.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/user-details/user_details.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/cart/widgets/payment/payment_success_widget.dart';
+import '/modules/payment/stripe/stripe.dart';
+import '/modules/selectunit/widgets/flutter_qr_code_scanner.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/user-details/user_details.dart';
+import '/shared/utils/unit_utils.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

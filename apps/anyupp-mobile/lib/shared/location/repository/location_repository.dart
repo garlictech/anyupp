@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/location/location.dart';
-import 'package:fa_prev/shared/location/repository/geoip_location_repository.dart';
+import '/core/core.dart';
+import '/shared/location/location.dart';
+import '/shared/location/repository/geoip_location_repository.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';

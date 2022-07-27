@@ -1,8 +1,8 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
+import '/models.dart';
+import '/modules/menu/menu.dart';
+import '/modules/takeaway/takeaway.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 typedef OnExtraSetItemSelected = void Function(
     String extraSetId, String extraComponentId, bool selected);

@@ -1,5 +1,5 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/pagination/model/page_response.dart';
+import '/models.dart';
+import '/shared/pagination/model/page_response.dart';
 
 abstract class IFavoritesProvider {
   Future<PageResponse<FavoriteProduct>> getFavoritesList(String unitId, [String? nextToken]);

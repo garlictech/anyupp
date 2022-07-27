@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:fa_prev/models/core/parsers.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
+import '/models/core/parsers.dart';
+import '/modules/takeaway/takeaway.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TakeAwayBloc extends Bloc<TakeAwayEvent, TakeAwayState> {

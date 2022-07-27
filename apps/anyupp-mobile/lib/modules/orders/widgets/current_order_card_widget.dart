@@ -1,15 +1,15 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
+import '/core/core.dart';
+import '/core/theme/theme.dart';
+import '/graphql/utils/graphql_coercers.dart';
+import '/models.dart';
+import '/modules/orders/orders.dart';
+import '/modules/screens.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/shared/locale/locale.dart';
+import '/shared/nav.dart';
+import '/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 class CurrentOrderCardWidget extends StatelessWidget {
   final Order order;

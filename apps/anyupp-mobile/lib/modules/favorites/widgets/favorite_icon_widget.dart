@@ -1,10 +1,10 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/widgets/loading_widget.dart';
+import '/core/core.dart';
+import '/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
+import '/models.dart';
+import '/modules/favorites/favorites.dart';
 
 class FavoriteIconWidget extends StatefulWidget {
   const FavoriteIconWidget({

@@ -1,5 +1,5 @@
 import 'package:awesome_card/credit_card.dart';
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';

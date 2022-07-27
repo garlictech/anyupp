@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/shared/widgets/loading_widget.dart';
+import '/app-config.dart';
+import '/core/theme/theme.dart';
+import '/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 
 class S3ImageWidget extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/auth.dart';
+import '/core/core.dart';
+import '/shared/auth.dart';
 
 import 'common_login_provider_interface.dart';
 

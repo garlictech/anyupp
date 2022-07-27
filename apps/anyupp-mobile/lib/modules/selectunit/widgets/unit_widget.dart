@@ -1,8 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/selectunit/widgets/no_unit_image_widget.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/theme/theme.dart';
+import '/modules/selectunit/widgets/no_unit_image_widget.dart';
+import '/shared/locale.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 class UnitWidget extends StatefulWidget {

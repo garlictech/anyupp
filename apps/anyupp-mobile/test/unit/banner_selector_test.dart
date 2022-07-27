@@ -1,5 +1,5 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/adbanner/adbanner.dart';
+import '/models.dart';
+import '/modules/adbanner/adbanner.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

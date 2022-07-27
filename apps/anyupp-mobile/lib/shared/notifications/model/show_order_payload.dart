@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fa_prev/shared/notifications/model/payload_data.dart';
+import '/shared/notifications/model/payload_data.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable

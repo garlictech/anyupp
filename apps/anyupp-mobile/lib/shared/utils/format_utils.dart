@@ -1,8 +1,8 @@
-import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
-import 'package:fa_prev/shared/locale/extensions/locale_extension.dart';
+import '/graphql/utils/graphql_coercers.dart';
+import '/shared/locale/extensions/locale_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:fa_prev/core/logger.dart';
+import '/core/logger.dart';
 
 // ignore: non_constant_identifier_names
 final DF_SHORT = DateFormat('yyyy.MM.dd HH:mm');

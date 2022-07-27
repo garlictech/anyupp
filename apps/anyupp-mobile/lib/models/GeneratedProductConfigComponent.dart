@@ -1,5 +1,5 @@
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable

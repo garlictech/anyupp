@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets/app_bar.dart';
+import '/core/theme/theme.dart';
+import '/shared/locale.dart';
+import '/shared/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 
 import 'package:package_info/package_info.dart';

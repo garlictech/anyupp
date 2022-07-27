@@ -1,7 +1,7 @@
-import 'package:fa_prev/shared/locale/extensions/locale_extension.dart';
+import '/shared/locale/extensions/locale_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import '/core/theme/theme.dart';
 
 class LoginFormUtils {
   static const double TEXTFIELD_HEIGHT = 60.0;

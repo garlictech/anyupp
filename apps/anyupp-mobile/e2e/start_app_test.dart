@@ -1,8 +1,8 @@
-import 'package:fa_prev/core/logger.dart';
+import '/core/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:fa_prev/main.dart' as app;
+import '/main.dart' as app;
 
 final IntegrationTestWidgetsFlutterBinding binding =
     IntegrationTestWidgetsFlutterBinding();

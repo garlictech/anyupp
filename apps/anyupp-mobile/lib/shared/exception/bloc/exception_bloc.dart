@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fa_prev/shared/exception.dart';
+import '/shared/exception.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ExceptionBloc extends Bloc<ExceptionEvent, ExceptionState> {

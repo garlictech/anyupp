@@ -1,8 +1,8 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/graphql/generated/crud-api.dart';
+import '/modules/cart/cart.dart';
+import '/modules/takeaway/takeaway.dart';
 
 import 'place_preferences.dart';
 

@@ -3,12 +3,12 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models/Order.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/shared/notifications/notifications.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models/Order.dart';
+import '/modules/orders/orders.dart';
+import '/modules/rating_tipping/rating_tipping.dart';
+import '/shared/notifications/notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

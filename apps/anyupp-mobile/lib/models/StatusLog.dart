@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 import 'core/parsers.dart';
 

@@ -1,13 +1,13 @@
 import 'package:expandable/expandable.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/core/theme/theme.dart';
+import '/models.dart';
+import '/modules/menu/menu.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/shared/locale.dart';
+import '/shared/utils/format_utils.dart';
+import '/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 typedef OnModifiersSelected = void Function(
     Map<String, String> selectedModifiers);

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models/core/parsers.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/modules/transactions/screens/transaction_order_details_screen.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/notifications/notifications.dart';
+import '/core/core.dart';
+import '/models/core/parsers.dart';
+import '/modules/rating_tipping/rating_tipping.dart';
+import '/modules/transactions/screens/transaction_order_details_screen.dart';
+import '/shared/nav.dart';
+import '/shared/notifications/notifications.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

@@ -1,5 +1,5 @@
-import 'package:fa_prev/core/context/app_context.dart';
-import 'package:fa_prev/core/logger.dart';
+import '/core/context/app_context.dart';
+import '/core/logger.dart';
 import 'package:flutter/material.dart';
 
 enum NavAnim {

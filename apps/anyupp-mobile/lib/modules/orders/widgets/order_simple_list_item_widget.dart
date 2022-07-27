@@ -1,7 +1,7 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
+import '/core/theme/theme.dart';
+import '/models.dart';
+import '/shared/locale.dart';
+import '/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 
 class OrderSimpleListItemWidget extends StatelessWidget {

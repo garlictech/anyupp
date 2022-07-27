@@ -1,6 +1,6 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/transactions/transactions.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/models.dart';
+import '/modules/transactions/transactions.dart';
+import '/shared/pagination/pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';

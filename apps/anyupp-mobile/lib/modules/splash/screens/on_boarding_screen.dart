@@ -1,9 +1,9 @@
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/connectivity.dart';
-import 'package:fa_prev/shared/exception.dart';
+import '/app-config.dart';
+import '/core/core.dart';
+import '/modules/screens.dart';
+import '/shared/auth.dart';
+import '/shared/connectivity.dart';
+import '/shared/exception.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';

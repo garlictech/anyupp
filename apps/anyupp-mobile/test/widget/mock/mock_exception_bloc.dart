@@ -1,4 +1,4 @@
-import 'package:fa_prev/shared/exception.dart';
+import '/shared/exception.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class MockExceptionBloc extends Fake implements ExceptionBloc {

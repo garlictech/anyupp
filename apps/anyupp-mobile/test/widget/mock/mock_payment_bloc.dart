@@ -1,5 +1,5 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/payment/payment.dart';
+import '/models.dart';
+import '/modules/payment/payment.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'mocks.dart';

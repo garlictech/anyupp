@@ -1,6 +1,6 @@
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
+import '/modules/takeaway/takeaway.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 // class MockTakeAwayBloc extends Fake implements TakeAwayBloc {
 //   final ServingMode servingMode;

@@ -1,8 +1,8 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/units/provider/unit_filter_utils.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
+import '/core/core.dart';
+import '/core/units/provider/unit_filter_utils.dart';
+import '/graphql/generated/crud-api.graphql.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:collection/collection.dart';
 

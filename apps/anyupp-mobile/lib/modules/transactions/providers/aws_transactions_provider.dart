@@ -1,12 +1,12 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models/Transaction.dart';
-import 'package:fa_prev/models/User.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/transactions/transactions.dart';
-import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/graphql/graphql.dart';
+import '/models/Transaction.dart';
+import '/models/User.dart';
+import '/modules/login/login.dart';
+import '/modules/transactions/transactions.dart';
+import '/shared/auth/providers/auth_provider_interface.dart';
+import '/shared/pagination/pagination.dart';
 
 class AwsTransactionsProvider implements ITransactionProvider {
   final IAuthProvider _authProvider;

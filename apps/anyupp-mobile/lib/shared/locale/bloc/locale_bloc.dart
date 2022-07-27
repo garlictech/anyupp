@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/shared/locale.dart';
+import '/shared/locale.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocaleBloc extends Bloc<LocaleEvent, LocaleState> {

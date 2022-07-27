@@ -1,9 +1,9 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/profile/profile.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
-import 'package:fa_prev/shared/utils/md5_hash.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/theme/theme.dart';
+import '/models.dart';
+import '/modules/profile/profile.dart';
+import '/shared/locale/locale.dart';
+import '/shared/utils/md5_hash.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ProfileViewScreen extends StatelessWidget {

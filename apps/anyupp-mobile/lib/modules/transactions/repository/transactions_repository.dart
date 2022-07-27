@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:fa_prev/models/Transaction.dart';
-import 'package:fa_prev/modules/transactions/providers/transactions_provider_interface.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/models/Transaction.dart';
+import '/modules/transactions/providers/transactions_provider_interface.dart';
+import '/shared/pagination/pagination.dart';
 
 class TransactionsRepository {
   final ITransactionProvider _provider;

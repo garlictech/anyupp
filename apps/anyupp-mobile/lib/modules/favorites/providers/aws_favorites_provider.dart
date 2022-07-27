@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
+import '/modules/login/login.dart';
+import '/shared/auth.dart';
+import '/shared/pagination/pagination.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'favorites_provider_interface.dart';

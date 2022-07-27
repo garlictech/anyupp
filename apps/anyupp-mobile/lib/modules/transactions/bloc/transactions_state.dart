@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/models/Transaction.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/models/Transaction.dart';
+import '/shared/pagination/pagination.dart';
 
 abstract class TransactionsState extends Equatable {
   const TransactionsState();

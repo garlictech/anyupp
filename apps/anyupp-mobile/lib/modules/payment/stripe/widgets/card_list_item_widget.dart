@@ -1,5 +1,5 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
+import '/core/core.dart';
+import '/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

@@ -1,7 +1,7 @@
-import 'package:fa_prev/shared/locale.dart';
+import '/shared/locale.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/nav.dart';
+import '/modules/login/login.dart';
+import '/shared/nav.dart';
 
 typedef OnCountrySelected = void Function(Country country);
 

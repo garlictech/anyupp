@@ -1,4 +1,4 @@
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 import 'package:flutter/material.dart';
 
 Widget createOptionMenu(String text, GestureTapCallback onTap, bool divider) {

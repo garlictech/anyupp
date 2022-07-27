@@ -1,4 +1,4 @@
-import 'package:fa_prev/shared/locale.dart';
+import '/shared/locale.dart';
 import 'package:flutter/material.dart';
 
 extension TranslateStateExtension on State {

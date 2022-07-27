@@ -1,16 +1,16 @@
 import 'dart:io';
 
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/cart/utils/invoice_form_utils.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/user-details/user_details.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/dependency_indjection/dependency_injection.dart';
+import '/core/theme/theme.dart';
+import '/core/units/units.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/cart/utils/invoice_form_utils.dart';
+import '/modules/screens.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/user-details/user_details.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

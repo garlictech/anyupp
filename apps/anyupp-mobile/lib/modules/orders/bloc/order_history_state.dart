@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/models/Order.dart';
+import '/models/Order.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable

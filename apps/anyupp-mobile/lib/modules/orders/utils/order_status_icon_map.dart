@@ -1,4 +1,4 @@
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 import 'package:flutter/material.dart';
 
 const Map<OrderStatus, IconData> STATUS_ICON_MAP = {

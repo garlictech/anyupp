@@ -58,8 +58,16 @@ query ListAllProducts($chainId: ID!, $nextToken: String, $limit: Int) {
       externalId
       tax
       takeawayTax
-      name
-      description
+      name {
+        de
+        en
+        hu
+      }
+      description {
+        de
+        en
+        hu
+      }
       productCategoryId
       productType
       image

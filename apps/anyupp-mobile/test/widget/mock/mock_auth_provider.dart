@@ -1,5 +1,5 @@
-// import 'package:fa_prev/models.dart';
-// import 'package:fa_prev/shared/auth.dart';
+// import '/models.dart';
+// import '/shared/auth.dart';
 // import 'package:flutter_test/flutter_test.dart';
 
 // class MockAuthProvider extends Fake implements IAuthProvider {

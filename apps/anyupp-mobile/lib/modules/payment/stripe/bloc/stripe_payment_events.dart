@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 import 'package:stripe_sdk/src/models/card.dart';
 
 abstract class StripePaymentEvent extends Equatable {

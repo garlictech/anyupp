@@ -1,8 +1,8 @@
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 import 'package:flutter/material.dart';
 
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/modules/login/login.dart';
+import '/shared/locale.dart';
+import '/modules/login/login.dart';
 
 void showSelectAccountToLinkDialog(
     BuildContext context, NeedAccountLinking state) {

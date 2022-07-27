@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/exception.dart';
+import '/core/core.dart';
+import '/graphql/graphql.dart';
+import '/modules/favorites/favorites.dart';
+import '/modules/menu/menu.dart';
+import '/models.dart';
+import '/shared/exception.dart';
 
 part 'product_list_event.dart';
 part 'product_list_state.dart';

@@ -1,6 +1,6 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/models.dart';
+import '/graphql/generated/crud-api.dart';
+import '/shared/utils/unit_utils.dart';
 
 extension CartExtension on Cart {
   int get totalCount {

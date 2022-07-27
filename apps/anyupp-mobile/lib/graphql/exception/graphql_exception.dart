@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 import 'package:flutter/services.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 

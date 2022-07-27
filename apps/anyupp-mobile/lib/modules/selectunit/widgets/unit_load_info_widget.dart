@@ -1,4 +1,4 @@
-import 'package:fa_prev/shared/locale/locale.dart';
+import '/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 
 class UnitLoadInfoWidget extends StatelessWidget {

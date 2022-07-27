@@ -1,11 +1,11 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models/GeoUnit.dart';
-import 'package:fa_prev/models/extensions/OpeningHoursExtension.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/models/GeoUnit.dart';
+import '/models/extensions/OpeningHoursExtension.dart';
+import '/modules/menu/menu.dart';
+import '/shared/locale.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 import 'package:flutter_svg/svg.dart';
 
 class UnitCardWidget extends StatelessWidget {

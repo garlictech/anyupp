@@ -1,6 +1,6 @@
-import 'package:fa_prev/models/core/parsers.dart';
+import '/models/core/parsers.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 Future<bool> setOrderStatusPref(String orderId, OrderStatus status) async {
   //log.d('**** setOrderStatusPref["$orderId"]=$status');

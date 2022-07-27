@@ -1,4 +1,4 @@
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 abstract class IExternalPaymentProvider {
   /// Start external payment with order creation

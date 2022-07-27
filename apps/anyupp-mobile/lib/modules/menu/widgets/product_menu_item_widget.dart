@@ -1,12 +1,12 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
+import '/core/core.dart';
+import '/core/theme/theme.dart';
+import '/models.dart';
+import '/modules/menu/menu.dart';
+import '/shared/locale.dart';
+import '/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/shared/nav.dart';
+import '/graphql/generated/crud-api.dart';
+import '/shared/nav.dart';
 
 // Representing each sandwich in menu list (Menu page)
 class ProductMenuItemWidget extends StatelessWidget {

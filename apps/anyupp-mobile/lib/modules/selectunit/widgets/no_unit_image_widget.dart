@@ -1,5 +1,5 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
+import '/core/core.dart';
+import '/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 
 class NoUnitImageWidget extends StatelessWidget {

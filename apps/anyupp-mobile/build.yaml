@@ -6,11 +6,11 @@ targets:
       - lib/models/**
       - $package$
     builders:
-      # json_serializable:
-      #   options:
-      #     include_if_null: false
-      #     # explicit_to_json: true
-      #     # checked: false
+      json_serializable:
+        options:
+          include_if_null: false
+          explicit_to_json: true
+          checked: false
       artemis:
         options:
           schema_mapping:
@@ -26,7 +26,7 @@ targets:
               output: lib/../test/graphql/generated/crud-api.dart
               naming_scheme: pathedWithFields
           scalar_mapping:
-            - custom_parser_import: 'package:fa_prev/graphql/utils/graphql_coercers.dart'
+            - custom_parser_import: '/graphql/utils/graphql_coercers.dart'
               graphql_type: AWSDateTime
               dart_type: DateTime
           generate_helpers: true

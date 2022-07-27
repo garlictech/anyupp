@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';

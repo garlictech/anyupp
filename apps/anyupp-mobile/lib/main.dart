@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fa_prev/app.dart';
+import '/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 

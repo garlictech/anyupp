@@ -1,4 +1,4 @@
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 User MOCK_USER([String? id]) => User(
       id: id ?? 'test@anyupp.com',

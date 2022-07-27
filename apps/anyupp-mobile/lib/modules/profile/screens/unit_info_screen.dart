@@ -1,8 +1,8 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/models.dart';
+import '/shared/locale/locale.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import '/core/theme/theme.dart';
 
 class UnitInfoScreen extends StatelessWidget {
   final GeoUnit unit;

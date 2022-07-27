@@ -1,15 +1,15 @@
 import 'dart:async';
 
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/graphql/generated/crud-api.graphql.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/login/login.dart';
+import '/shared/auth.dart';
+import '/shared/utils/unit_utils.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fa_prev/core/logger.dart';
+import '/core/logger.dart';
 
 class AwsCartMemoryProvider implements ICartProvider {
   late final IAuthProvider _authProvider;

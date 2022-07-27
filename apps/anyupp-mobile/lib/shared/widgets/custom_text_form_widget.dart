@@ -1,5 +1,5 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/utils/form_style_utils.dart';
+import '/core/core.dart';
+import '/shared/utils/form_style_utils.dart';
 import 'package:flutter/material.dart';
 
 Widget customTextFormWidget(

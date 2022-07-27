@@ -1,5 +1,5 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/models.dart';
+import '/shared/pagination/pagination.dart';
 
 abstract class IProductProvider {
   Future<PageResponse<ProductCategory>> getProductCategoryList(String chainId,

@@ -1,5 +1,5 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/core/logger.dart';
+import '/models.dart';
+import '/core/logger.dart';
 
 void debugOrder(Order order) {
   log.d('debugOrder[${order.id}:');

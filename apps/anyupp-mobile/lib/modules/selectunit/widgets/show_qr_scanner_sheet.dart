@@ -1,4 +1,4 @@
-import 'package:fa_prev/modules/selectunit/widgets/flutter_qr_code_scanner.dart';
+import '/modules/selectunit/widgets/flutter_qr_code_scanner.dart';
 import 'package:flutter/material.dart';
 
 void showQRScannerModal(BuildContext context, bool navigateToCart,

@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:fa_prev/shared/widgets/tooltip/tooltip.dart';
+import '/shared/widgets/tooltip/tooltip.dart';
 import 'package:flutter/material.dart';
 
 class ObfuscateTooltipItem extends StatefulWidget {

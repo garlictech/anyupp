@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/cart/utils/cart_to_order_calculations.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth/auth.dart';
-import 'package:fa_prev/shared/utils/md5_hash.dart';
-import 'package:fa_prev/shared/utils/place_preferences.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/cart/utils/cart_to_order_calculations.dart';
+import '/modules/login/login.dart';
+import '/shared/auth/auth.dart';
+import '/shared/utils/md5_hash.dart';
+import '/shared/utils/place_preferences.dart';
 
 class CartRepository implements ICartProvider {
   final IAuthProvider _authProvider;

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/user-details/user_details.dart';
+import '/models.dart';
+import '/shared/user-details/user_details.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserDetailsBloc extends Bloc<UserDetailsEvent, UserDetailsState> {

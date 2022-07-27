@@ -1,7 +1,7 @@
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/models.dart';
+import '/app-config.dart';
+import '/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
+import '/graphql/generated/crud-api.graphql.dart';
 
 Duration calculateNotificationScheduleDelay(Order order, DateTime now) {
   return order.updatedAt.add(AppConfig.ratingNotificationTimer).difference(now);

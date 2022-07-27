@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth.dart';
+import '/app-config.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/login/login.dart';
+import '/shared/auth.dart';
 import 'package:http/http.dart' as http;
 
 class AwsSocialLoginProvider implements ISocialLoginProvider {

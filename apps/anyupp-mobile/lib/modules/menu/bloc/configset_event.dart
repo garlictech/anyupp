@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/models/GeoUnit.dart';
-import 'package:fa_prev/models/OrderItem.dart';
+import '/models/GeoUnit.dart';
+import '/models/OrderItem.dart';
 
 abstract class ConfigsetEvent extends Equatable {
   const ConfigsetEvent();

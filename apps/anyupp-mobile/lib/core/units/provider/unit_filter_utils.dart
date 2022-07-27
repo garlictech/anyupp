@@ -1,9 +1,9 @@
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:fa_prev/core/logger.dart';
+import '/core/logger.dart';
 
 final _dateFormatter = DateFormat('yyyy-MM-dd');
 

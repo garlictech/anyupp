@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 import 'package:flutter/foundation.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 @immutable
 abstract class BaseCartAction extends Equatable {

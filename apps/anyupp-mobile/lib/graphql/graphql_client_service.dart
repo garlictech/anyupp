@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/auth/auth.dart';
+import '/core/core.dart';
+import '/shared/auth/auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gql_dio_link/gql_dio_link.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';

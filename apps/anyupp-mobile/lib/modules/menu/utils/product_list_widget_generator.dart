@@ -1,10 +1,10 @@
 import 'dart:collection';
 
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/adbanner/adbanner.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/adbanner/adbanner.dart';
+import '/modules/menu/menu.dart';
+import '/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 
 class GeneratedMenu {

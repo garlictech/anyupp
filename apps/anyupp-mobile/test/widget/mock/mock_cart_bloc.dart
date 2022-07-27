@@ -1,5 +1,5 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
 
 import 'mocks.dart';
 

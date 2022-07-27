@@ -1,4 +1,4 @@
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 class TakeAwaySession {
   final ServingMode servingMode;

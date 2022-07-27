@@ -1,4 +1,4 @@
-import 'package:fa_prev/graphql/graphql.dart';
+import '/graphql/graphql.dart';
 
 import '../../test_logger.dart';
 import '../generated/crud-api.dart';

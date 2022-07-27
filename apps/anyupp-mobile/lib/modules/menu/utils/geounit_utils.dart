@@ -1,4 +1,4 @@
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 class GeoUnitUtils {
   static bool isClosed(GeoUnit unit) {

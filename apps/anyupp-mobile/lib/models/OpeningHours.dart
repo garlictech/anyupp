@@ -1,8 +1,11 @@
-import 'package:fa_prev/models.dart';
-import 'package:flutter/foundation.dart';
+import 'package:functional_data/functional_data.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-@immutable
-class OpeningHours {
+part "OpeningHours.g.dart";
+
+@FunctionalData()
+@JsonSerializable()
+class OpeningHours extends $OpeningHours {
   final double? to;
   final double? from;
   final String date;
@@ -29,48 +32,8 @@ class OpeningHours {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'to': to,
-      'from': from,
-      'date': date,
-      'closed': closed,
-    };
-  }
+  factory OpeningHours.fromJson(Map<String, dynamic> json) =>
+      _$OpeningHoursFromJson(json);
 
-  factory OpeningHours.fromJson(Map<String, dynamic> map) {
-    return OpeningHours(
-      to: map['to'],
-      from: map['from'],
-      date: map['date'],
-      closed: map['closed'],
-    );
-  }
-
-  @override
-  String toString() {
-    return 'OpeningHours(date: $date, from: ${_getDateString(from)}, to: ${_getDateString(to)}, closed: $closed)';
-  }
-
-  String _getDateString(double? ms) {
-    return ms != null
-        ? ohHourFormat.format(DateTime.fromMillisecondsSinceEpoch(to!.toInt()))
-        : ms?.toString() ?? '-';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is OpeningHours &&
-        other.to == to &&
-        other.from == from &&
-        other.date == date &&
-        other.closed == closed;
-  }
-
-  @override
-  int get hashCode {
-    return to.hashCode ^ from.hashCode ^ date.hashCode ^ closed.hashCode;
-  }
+  Map<String, dynamic> toJson() => _$OpeningHoursToJson(this);
 }

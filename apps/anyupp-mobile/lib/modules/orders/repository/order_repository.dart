@@ -1,7 +1,7 @@
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 import 'dart:async';
 
-import 'package:fa_prev/modules/orders/orders.dart';
+import '/modules/orders/orders.dart';
 
 class OrderRepository implements IOrdersProvider {
   final IOrdersProvider _provider;

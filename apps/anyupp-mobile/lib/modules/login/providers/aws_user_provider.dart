@@ -1,4 +1,4 @@
-import 'package:fa_prev/models/User.dart';
+import '/models/User.dart';
 import 'user_provider_interface.dart';
 
 class AwsUserProvider implements IUserProvider {

@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/locale/extensions/locale_extension.dart';
-import 'package:fa_prev/shared/nav.dart';
+import '/core/core.dart';
+import '/shared/locale/extensions/locale_extension.dart';
+import '/shared/nav.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

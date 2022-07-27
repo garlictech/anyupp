@@ -1,6 +1,6 @@
-import 'package:fa_prev/shared/widgets/tooltip/simple_tooltip.dart';
+import '/shared/widgets/tooltip/simple_tooltip.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import '/core/theme/theme.dart';
 
 class TooltipWidget extends StatefulWidget {
   final String text;

@@ -1,6 +1,6 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/locale.dart';
+import '/models.dart';
+import '/modules/menu/menu.dart';
+import '/shared/locale.dart';
 import 'package:flutter/material.dart';
 
 String getOpeningText(BuildContext context, GeoUnit unit) {

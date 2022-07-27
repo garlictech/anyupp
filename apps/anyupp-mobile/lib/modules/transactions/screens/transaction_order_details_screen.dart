@@ -1,9 +1,9 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/orders/screens/order_details_screen.dart';
-import 'package:fa_prev/modules/rating_tipping/bloc/rating_bloc.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/orders/orders.dart';
+import '/modules/orders/screens/order_details_screen.dart';
+import '/modules/rating_tipping/bloc/rating_bloc.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

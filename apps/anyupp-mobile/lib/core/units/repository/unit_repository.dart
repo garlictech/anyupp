@@ -1,5 +1,5 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
+import '/core/core.dart';
+import '/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class UnitRepository {

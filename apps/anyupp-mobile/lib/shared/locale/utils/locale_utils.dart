@@ -1,4 +1,4 @@
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 import 'package:flutter/material.dart';
 
 String getLocalizedText(BuildContext context, LocalizedItem localizedItem) {

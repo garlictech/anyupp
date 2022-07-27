@@ -1,8 +1,8 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
+import '/core/core.dart';
+import '/modules/cart/cart.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-import 'package:fa_prev/shared/locale.dart';
+import '/shared/locale.dart';
 
 class FormTextFieldWidget extends StatelessWidget {
   final String labelKey;

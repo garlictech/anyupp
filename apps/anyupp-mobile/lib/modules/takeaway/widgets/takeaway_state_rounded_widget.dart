@@ -1,9 +1,9 @@
-import 'package:fa_prev/shared/widgets.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/core/theme/theme.dart';
+import '/graphql/generated/crud-api.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:fa_prev/shared/locale.dart';
+import '/shared/locale.dart';
 
 class TakeawayStatusWidget extends StatelessWidget {
   final ServingMode servingMode;

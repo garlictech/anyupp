@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 
 abstract class ExceptionState extends Equatable {
   const ExceptionState();

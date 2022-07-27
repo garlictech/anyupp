@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:catcher/catcher.dart';
-import 'package:fa_prev/shared/auth.dart';
+import '/shared/auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthBloc extends Bloc<BaseAuthEvent, BaseAuthState> {

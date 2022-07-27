@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 final Random RND = Random();
 

@@ -1,5 +1,5 @@
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
-import 'package:fa_prev/models.dart';
+import '/graphql/generated/crud-api.graphql.dart';
+import '/models.dart';
 
 abstract class IRatingProvider {
   Future<bool> rateOrder(

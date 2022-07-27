@@ -1,7 +1,7 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
+import '/models.dart';
+import '/modules/menu/menu.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fa_prev/core/logger.dart';
+import '/core/logger.dart';
 
 import 'utils/json_loader.dart';
 

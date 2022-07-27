@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/shared/widgets/back_button_widget.dart';
+import '/core/core.dart';
+import '/shared/widgets.dart';
+import '/shared/widgets/back_button_widget.dart';
 import 'package:flutter/material.dart';
 
 class ModalTopWidget extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:fa_prev/core/theme/font/font.dart';
+import '/core/theme/font/font.dart';
 import 'package:flutter/src/painting/text_style.dart';
 
 class SatoshiFont implements FontHandler {

@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/connectivity.dart';
+import '/core/core.dart';
+import '/shared/connectivity.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NetworkStatusBloc extends Bloc<NetworkStatusEvent, NetworkState> {

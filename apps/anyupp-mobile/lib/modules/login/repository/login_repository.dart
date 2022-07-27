@@ -1,5 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fa_prev/modules/login/login.dart';
+import '/modules/login/login.dart';
 
 class LoginRepository implements ISocialLoginProvider, IEmailLoginProvider {
   final ICommonLoginProvider _commonLoginProvider;

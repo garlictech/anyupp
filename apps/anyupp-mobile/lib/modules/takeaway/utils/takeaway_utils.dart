@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/modules/takeaway/takeaway.dart';
 
 ServingMode get takeAwayMode =>
     getIt<TakeAwayBloc>().state is ServingModeSelectedState

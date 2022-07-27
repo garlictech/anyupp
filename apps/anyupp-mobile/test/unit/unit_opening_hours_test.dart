@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/units/provider/unit_filter_utils.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/core/logger.dart';
+import '/core/units/provider/unit_filter_utils.dart';
+import '/graphql/generated/crud-api.dart';
+import '/core/logger.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../utils/file_utils.dart';

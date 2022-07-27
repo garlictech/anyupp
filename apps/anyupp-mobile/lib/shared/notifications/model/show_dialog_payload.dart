@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:fa_prev/shared/notifications/model/payload_data.dart';
+import '/shared/notifications/model/payload_data.dart';
 
 @immutable
 class ShowDialogPayload extends PayloadData {

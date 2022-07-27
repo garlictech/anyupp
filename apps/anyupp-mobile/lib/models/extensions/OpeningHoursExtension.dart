@@ -1,4 +1,4 @@
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 import 'package:intl/intl.dart';
 
 DateFormat ohDateFormat = DateFormat('yyyy-MM-dd');

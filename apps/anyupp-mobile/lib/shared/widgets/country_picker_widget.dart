@@ -1,6 +1,6 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
+import '/core/core.dart';
+import '/modules/cart/cart.dart';
 import 'package:flutter/material.dart';
 
 Widget customCountryPickerWidget(

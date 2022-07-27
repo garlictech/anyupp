@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/exception.dart';
+import '/core/core.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/orders/orders.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/shared/exception.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

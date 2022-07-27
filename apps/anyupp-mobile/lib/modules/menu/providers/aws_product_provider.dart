@@ -1,9 +1,9 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/utils/generated_product_converter.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
+import '/modules/menu/utils/generated_product_converter.dart';
+import '/shared/pagination/pagination.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'product_provider_interface.dart';

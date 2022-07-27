@@ -123,5 +123,17 @@ query GetUnitById($unitId: ID!) {
       }
     }
     timeZone
+    style {
+      colors {
+        button
+        buttonText
+        icon
+        highlight
+      }
+      images {
+        header
+        logo
+      }
+    }
   }
 }

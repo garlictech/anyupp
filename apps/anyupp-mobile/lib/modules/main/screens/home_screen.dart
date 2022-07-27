@@ -1,9 +1,9 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/main/main.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/connectivity/connectivity.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
+import '/core/core.dart';
+import '/modules/main/main.dart';
+import '/modules/screens.dart';
+import '/shared/connectivity/connectivity.dart';
+import '/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
