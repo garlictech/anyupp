@@ -2,4 +2,4 @@ import { ChainProduct, GroupProduct, UnitProduct } from '@bgap/domain';
 
 export interface ExtendedGroupProduct extends ChainProduct, GroupProduct {}
 
-export type ExtendedUnitProduct = UnitProduct
+export type ExtendedUnitProduct = UnitProduct;

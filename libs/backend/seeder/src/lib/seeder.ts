@@ -110,15 +110,6 @@ export const seedBusinessData = (deps: SeederDependencies) =>
     )
     .pipe(ce('### seedBusinessData'));
 
-const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
-  of('start').pipe(
-    switchMap(() =>
-      deps.crudSdk.RegenerateUnitData({
-        input: { id: unitFixture.unitId_seeded_01 },
-      }),
-    ),
-  );
-
 interface ConsumerUser {
   username: string;
   email: string;
