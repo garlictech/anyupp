@@ -49,18 +49,4 @@
     <nb-icon icon="image-outline"></nb-icon>
     {{ 'units.editBanners' | translate }}
   </button>
-
-  <button
-    [nbSpinner]="workingGenerateStatus"
-    nbSpinnerStatus="control"
-    nbButton
-    type="button"
-    shape="round"
-    status="danger"
-    size="tiny"
-    class="float-right me-4"
-    (click)="regenerateData()"
-  >
-    {{ 'units.regenerateMenu' | translate }}
-  </button>
 </div>

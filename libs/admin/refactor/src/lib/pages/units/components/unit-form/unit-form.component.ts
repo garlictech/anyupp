@@ -9,7 +9,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { UntypedFormArray } from '@angular/forms';
+import { UntypedFormArray, UntypedFormControl } from '@angular/forms';
 import { PaymentMode, PosType, Unit } from '@bgap/domain';
 import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -57,6 +57,7 @@ export class UnitFormComponent
   public soldOutPolicyOptions: KeyValue[] = soldOutPolicyOptions;
   public orderPaymentPolicyOptions: KeyValue[] = orderPaymentPolicyOptions;
   public isInitiallyRkeeper = false;
+  public currencyOptions: KeyValue[] = [];
 
   constructor(
     protected override _injector: Injector,
@@ -75,8 +76,21 @@ export class UnitFormComponent
     this.groupOptions$ = this._unitFormService.getGroupOptions$();
   }
 
+  get logoImage() {
+    return this.unit?.style?.images?.logo;
+  }
+
+  get headerImage() {
+    return this.unit?.style?.images?.header;
+  }
+
   ngOnInit() {
     this.dialogForm = this._unitFormService.createUnitFormGroup();
+
+    this.currencyOptions = ['EUR', 'HUF'].map(currency => ({
+      key: currency,
+      value: currency,
+    }));
 
     if (this.unit) {
       this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
@@ -224,4 +238,36 @@ export class UnitFormComponent
       this.dialogForm?.get('pos.rkeeper.anyuppPassword')?.patchValue(makeId(8));
     }
   }
+
+  public logoUploadCallback = (image: string, param: string) => {
+    (<UntypedFormControl>(
+      this.dialogForm?.get('style')?.get('images')?.get(param)
+    )).setValue(image);
+
+    if (this.unit?.id) {
+      this._unitFormService
+        .updateImageStyles$(this.unit?.id, param, image)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageUpload');
+        });
+    } else {
+      this._toasterService.showSimpleSuccess('imageUpload');
+    }
+  };
+
+  public logoRemoveCallback = (param: string) => {
+    (<UntypedFormControl>(
+      this.dialogForm?.get('style')?.get('images')?.get(param)
+    )).setValue('');
+
+    if (this.unit?.id) {
+      this._unitFormService
+        .updateImageStyles$(this.unit?.id, param)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageRemove');
+        });
+    } else {
+      this._toasterService.showSimpleSuccess('imageRemove');
+    }
+  };
 }

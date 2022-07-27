@@ -28,6 +28,8 @@ import { UnitListComponent } from './components/unit-list/unit-list.component';
 import { UnitListService } from './services/unit-list.service';
 import { AppsAdminModule } from '@bgap/apps/admin';
 import { UnitBannersComponent } from './components/unit-banners/unit-banners.component';
+import { AdminPagesChainsModule } from '../chains/admin-pages-chains.module';
+import { StyleColorPreviewModule } from '../chains/components/style-color-preview/style-color-preview.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -62,6 +64,7 @@ const NB_MODULES = [
     AdminSharedPipesModule,
     AdminSharedFloorMapModule,
     AppsAdminModule,
+    StyleColorPreviewModule,
     RouterModule.forChild([
       {
         component: UnitListComponent,

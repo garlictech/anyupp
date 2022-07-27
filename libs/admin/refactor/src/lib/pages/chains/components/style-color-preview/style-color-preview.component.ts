@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   Input,
+  NgModule,
   OnChanges,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -30,3 +31,10 @@ export class StyleColorPreviewComponent implements OnChanges {
     }
   }
 }
+
+@NgModule({
+  declarations: [StyleColorPreviewComponent],
+
+  exports: [StyleColorPreviewComponent],
+})
+export class StyleColorPreviewModule {}

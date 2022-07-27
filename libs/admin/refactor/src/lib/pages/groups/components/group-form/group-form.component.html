@@ -69,19 +69,6 @@
         [contactFormGroup]="dialogForm | asFormGroup"
         [showLocationForm]="false"
       ></bgap-form-contact-group>
-
-      <div class="mt-20">
-        <button
-          nbButton
-          size="small"
-          type="submit"
-          fullWidth
-          status="primary"
-          [disabled]="dialogForm?.invalid || (working$ | async)"
-        >
-          {{ 'common.submit' | translate }}
-        </button>
-      </div>
     </form>
   </nb-card-body>
 </nb-card>

@@ -163,6 +163,16 @@
             suffix="%"
           ></bgap-form-text-input>
         </div>
+
+        <div class="col-md-2">
+          <bgap-form-select
+            caption="common.currency"
+            [localize]="false"
+            [options]="currencyOptions"
+            [control]="dialogForm?.get('currency') | asFormControl"
+            inputId="currency"
+          ></bgap-form-select>
+        </div>
       </div>
 
       <div class="row">
@@ -266,6 +276,94 @@
         (changePasswordEmitter)="generatePassword()"
       ></bgap-form-unit-pos>
 
+      <fieldset class="form" formGroupName="style">
+        <legend class="label">{{ 'chains.style.style' | translate }}</legend>
+
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <bgap-form-color-picker
+                  [control]="
+                    dialogForm.get('style.colors.button')! | asFormControl
+                  "
+                  [caption]="'chains.style.colors.button'"
+                >
+                </bgap-form-color-picker>
+              </div>
+              <div class="col-12 col-md-6">
+                <bgap-form-color-picker
+                  [control]="
+                    dialogForm.get('style.colors.buttonText')! | asFormControl
+                  "
+                  [caption]="'chains.style.colors.buttonText'"
+                >
+                </bgap-form-color-picker>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <bgap-form-color-picker
+                  [control]="
+                    dialogForm.get('style.colors.icon')! | asFormControl
+                  "
+                  [caption]="'chains.style.colors.icon'"
+                >
+                </bgap-form-color-picker>
+              </div>
+              <div class="col-12 col-md-6">
+                <bgap-form-color-picker
+                  [control]="
+                    dialogForm.get('style.colors.highlight')! | asFormControl
+                  "
+                  [caption]="'chains.style.colors.highlight'"
+                >
+                </bgap-form-color-picker>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <bgap-style-color-preview
+              [colors]="dialogForm.get('style.colors')?.value"
+            ></bgap-style-color-preview>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-6 col-md-3">
+            <bgap-form-clickable-image-input
+              [image]="logoImage"
+              [uploadCallbackFn]="logoUploadCallback"
+              [removeCallbackFn]="logoRemoveCallback"
+              [callbackParam]="'logo'"
+              [maxSize]="160"
+              caption="chains.style.images.logo"
+              uploadFolderPath="chains"
+              width="200px"
+              height="200px"
+              borderRadius="0.25rem"
+            ></bgap-form-clickable-image-input>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <bgap-form-clickable-image-input
+              [image]="headerImage"
+              [uploadCallbackFn]="logoUploadCallback"
+              [removeCallbackFn]="logoRemoveCallback"
+              [callbackParam]="'header'"
+              [maxSize]="800"
+              caption="chains.style.images.header"
+              uploadFolderPath="chains"
+              width="80%"
+              height="100px"
+              borderRadius="0.25rem"
+            ></bgap-form-clickable-image-input>
+          </div>
+        </div>
+      </fieldset>
       <div class="mt-20">
         <button
           nbButton
