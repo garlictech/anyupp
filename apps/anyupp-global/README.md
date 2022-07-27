@@ -1,3 +1,13 @@
+# Global stack (us-east-1)
+
+Global means, that these resources are to be created in us-east-1 exclusively. AWS WAF for Cloudfront, certificates and some other resources
+are only allowed to be created in the us-east-1 region, thus created this separate app and stack.
+
+These resources are global per environment, not per account.
+For example:
+a CloudFront WebAcl(WAF) created in this stack in the 'test' environment in the 'dev' account belongs to the 'test' environment.
+In one account as many webacl will be created as many environments (test,dev,qa,staging ... etc) are created.
+
 # Getting Started with Serverless Stack Toolkit
 
 This project was bootstrapped with [Create Serverless Stack](https://github.com/serverless-stack/serverless-stack/tree/master/packages/create-serverless-stack).

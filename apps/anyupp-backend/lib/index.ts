@@ -14,6 +14,7 @@ import { RKeeperStack } from './app/rkeeper-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SiteStack } from './app/site-stack';
 import { StripeStack } from './app/stripe-stack';
+import { AnyuppBackupStack } from './app/backup-stack';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
 import { OpenSearchCustomStack } from './app/opensearch-custom-stack';
 import { WafStack } from './app/waf-stack';
@@ -60,6 +61,10 @@ export class AnyUppStack extends Stack {
       'AnyuppCertificate',
       certificateArn,
     );
+
+    if (scope.stage === ('dev' || 'prod')) {
+      new AnyuppBackupStack(scope, 'backups');
+    }
 
     const sites = new SiteStack(scope, 'sites', {
       rootDomain,

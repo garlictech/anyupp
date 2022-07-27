@@ -1,6 +1,6 @@
 // ignore_for_file: must_call_super
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:fa_prev/shared/connectivity.dart';
 
 class MockNetworkStatusBloc extends NetworkStatusBloc {
