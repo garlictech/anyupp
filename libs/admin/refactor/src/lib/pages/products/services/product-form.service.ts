@@ -30,7 +30,6 @@ import {
 import { catchGqlError } from '../../../store/app-core';
 import { ProductCategoryCollectionService } from '../../../store/product-categories';
 import { UnitProductCollectionService } from '../../../store/products';
-import { handleEmptyPackaginFees } from '../fn';
 
 @Injectable({ providedIn: 'root' })
 export class ProductFormService {
