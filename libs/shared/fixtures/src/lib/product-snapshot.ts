@@ -1,6 +1,5 @@
 import {
   Allergen,
-  AvailabilityInput,
   CreateUnitProductInput,
   ProductType,
   ServingMode,
