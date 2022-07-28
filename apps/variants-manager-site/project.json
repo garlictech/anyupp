@@ -1,0 +1,98 @@
+{
+  "projectType": "application",
+  "root": "apps/variants-manager-site",
+  "sourceRoot": "apps/variants-manager-site/src",
+  "implicitDependencies": ["crud-backend"],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "flutter build web --release",
+          "mkdir -p ../../dist/apps/variants-manager",
+          "cp -r build/web/* ../../dist/apps/variants-manager"
+        ],
+        "cwd": "apps/variants-manager-site"
+      },
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ],
+      "outputs": ["dist/apps/variants-manager"]
+    },
+    "analyze": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter analyze",
+        "cwd": "apps/variants-manager-site"
+      }
+    },
+    "clean": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter clean",
+        "cwd": "apps/variants-manager-site"
+      }
+    },
+    "format": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter format apps/variants-manager-site/*",
+        "cwd": "apps/variants-manager-site"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter test",
+        "cwd": "apps/variants-manager-site"
+      }
+    },
+    "assemble": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter assemble",
+        "cwd": "apps/variants-manager-site"
+      }
+    },
+    "attach": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter attach",
+        "cwd": "apps/variants-manager-site"
+      }
+    },
+    "drive": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter drive",
+        "cwd": "apps/variants-manager-site"
+      }
+    },
+    "genL10n": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter gen-l10n",
+        "cwd": "apps/variants-manager-site"
+      }
+    },
+    "install": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter install",
+        "cwd": "apps/variants-manager-site"
+      }
+    },
+    "run": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "flutter run",
+        "cwd": "apps/variants-manager-site"
+      }
+    }
+  },
+  "tags": []
+}

@@ -33,12 +33,12 @@ Array [
     "variants": Array [
       Object {
         "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
+          "de": "unused",
+          "en": "unused",
+          "hu": "unused",
         },
         "quantity": 5,
-        "variantId": "seeded_chain_product_variant_c1_p1_1_id",
+        "variantId": "",
       },
     ],
   },
@@ -65,12 +65,12 @@ Array [
     "variants": Array [
       Object {
         "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
+          "de": "unused",
+          "en": "unused",
+          "hu": "unused",
         },
         "quantity": 5,
-        "variantId": "16853de0-528d-11ec-90c0-fdfe82b3802d",
+        "variantId": "",
       },
     ],
   },
@@ -97,12 +97,12 @@ Array [
     "variants": Array [
       Object {
         "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
+          "de": "unused",
+          "en": "unused",
+          "hu": "unused",
         },
         "quantity": 5,
-        "variantId": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+        "variantId": "",
       },
     ],
   },
@@ -134,12 +134,12 @@ Array [
     "variants": Array [
       Object {
         "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
+          "de": "unused",
+          "en": "unused",
+          "hu": "unused",
         },
         "quantity": 115,
-        "variantId": "seeded_chain_product_variant_c1_p1_1_id",
+        "variantId": "",
       },
     ],
   },
@@ -166,12 +166,12 @@ Array [
     "variants": Array [
       Object {
         "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
+          "de": "unused",
+          "en": "unused",
+          "hu": "unused",
         },
         "quantity": 115,
-        "variantId": "16853de0-528d-11ec-90c0-fdfe82b3802d",
+        "variantId": "",
       },
     ],
   },
@@ -198,12 +198,12 @@ Array [
     "variants": Array [
       Object {
         "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
+          "de": "unused",
+          "en": "unused",
+          "hu": "unused",
         },
         "quantity": 115,
-        "variantId": "d22dee40-528b-11ec-afe3-15e1afd659e2",
+        "variantId": "",
       },
     ],
   },

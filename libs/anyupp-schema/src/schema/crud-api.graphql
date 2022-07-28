@@ -183,7 +183,7 @@ type UnitProduct
   takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
-  variants: [ProductVariant]
+  variants: [ProductVariant] @function(name: "${env}-anyupp-graphql-resolvers")
   configSets: [ProductConfigSet]
   supportedServingModes: [ServingMode!]
   externalId: String
@@ -215,6 +215,9 @@ type ProductConfigSet {
   position: Int!
 }
 
+# ProductVariant was (is) the old embedded type, Variant is the sema one
+# but it is a model. We need this two types as amplify does not handle
+# field resolvers if they are models as well.
 type ProductVariant {
   id: ID!
   variantName: LocalizedItem!
@@ -226,6 +229,26 @@ type ProductVariant {
   position: Int!
   netPackagingFee: Float
   soldOut: Boolean
+  ownerProduct: ID
+  externalId: String
+}
+
+type Variant
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float! # Gross
+  availabilities: [Availability]
+  position: Int!
+  netPackagingFee: Float
+  soldOut: Boolean
+  ownerProduct: String!
+  externalId: String
 }
 
 type ProductVariantPack {

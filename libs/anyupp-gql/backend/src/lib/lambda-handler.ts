@@ -27,15 +27,17 @@ const { createConnector } = require('aws-elasticsearch-js');
 import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
 import { searchByRadiusResolver } from '@bgap/backend/search';
+import { productVariantsResolver } from '@bgap/backend/products';
 
-export interface AnyuppRequest {
+export type AnyuppRequest<SOURCE = undefined> = {
   typeName: string;
   fieldName: string;
   identity?: {
     username?: string;
   };
   arguments: unknown;
-}
+  source?: SOURCE;
+};
 
 const consumerUserPoolId = config.ConsumerUserPoolId;
 const userPoolId = process.env.userPoolId || '';
@@ -129,9 +131,15 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       getUnitsNearLocation: unitRequestHandlers.getUnitsNearLocation,
       searchByRadius: searchByRadiusResolver(searchDeps),
     },
+    UnitProduct: {
+      variants: productVariantsResolver({ crudSdk }),
+    },
   };
 
-  const op = resolverMap[event.typeName]?.[event.fieldName]?.(event.arguments);
+  const op = resolverMap[event.typeName]?.[event.fieldName]?.(
+    event.arguments,
+    event.source,
+  );
 
   if (op === undefined) {
     return Promise.reject(

@@ -1,4 +1,3 @@
-import { App, Stack } from '@serverless-stack/resources';
 import {
   Duration,
   aws_backup,
@@ -6,7 +5,11 @@ import {
   aws_events,
   aws_iam,
 } from 'aws-cdk-lib';
+import { App, Stack } from '@serverless-stack/resources';
 
+/**
+ *
+ */
 export class AnyuppBackupStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
@@ -44,6 +47,9 @@ export class AnyuppBackupStack extends Stack {
       resources: [aws_backup.BackupResource.fromTag('user:Stack', stage)],
     });
 
+    /**
+     * This requires an extra one-time setup in every account/region.
+     */
     const s3BackupPlan = aws_backup.BackupPlan.dailyWeeklyMonthly5YearRetention(
       this,
       `${stage}-S3BackupPlan`,

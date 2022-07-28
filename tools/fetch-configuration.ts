@@ -31,6 +31,7 @@ const generatedParams = [
   'ConsumerUserPoolDomain',
   'ConsumerUserPoolId',
   'AdminUserPoolId',
+  'AdminWebUserPoolClientId',
   'RkeeperWebhookEndpoint',
   'RkeeperWebhookEndpoint',
   'RkeeperTaskDefinitionArn',

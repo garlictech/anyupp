@@ -27,6 +27,7 @@ import {
   pipe as rxPipe,
   throwError,
   UnaryFunction,
+  forkJoin,
 } from 'rxjs';
 import {
   filterNullishElements,
@@ -162,16 +163,23 @@ const getFirstFoundItem = <T>(): UnaryFunction<
 
 export const searchExternalUnitProduct =
   (sdk: CrudSdk) =>
-  (rkeeperProductGuid: string): Observable<Maybe<UnitProduct>> =>
+  (rkeeperProductGuid: string): Observable<Maybe<UnitProduct> | undefined> =>
     sdk
-      .SearchUnitProducts({
+      .SearchVariants({
         filter: {
           externalId: {
             eq: externalProductIdMaker(rkeeperProductGuid),
           },
         },
       })
-      .pipe(getFirstFoundItem());
+      .pipe(
+        getFirstFoundItem(),
+        switchMap(variant =>
+          variant?.ownerProduct
+            ? sdk.GetUnitProduct({ id: variant.ownerProduct })
+            : of(null),
+        ),
+      );
 
 export interface RKeeperBusinessEntityInfo {
   chainId: string;
@@ -216,18 +224,7 @@ export const createRkeeperProduct =
           productType: ProductType.dish,
           isVisible: true,
           dirty: true,
-          variants: [
-            {
-              id: 'id',
-              variantName: {
-                hu: 'foobar',
-              },
-
-              price: dish.price,
-              isAvailable: true,
-              position: -1,
-            },
-          ],
+          variants: [],
         },
       })
       .pipe(
@@ -241,17 +238,7 @@ export const createRkeeperProduct =
               isVisible: true,
               tax: -1,
               dirty: true,
-              variants: [
-                {
-                  id: 'id',
-                  variantName: {
-                    hu: 'foobar',
-                  },
-                  price: dish.price,
-                  isAvailable: true,
-                  position: -1,
-                },
-              ],
+              variants: [],
             },
           }),
         ),
@@ -263,10 +250,9 @@ export const createRkeeperProduct =
               chainId: businessEntity.chainId,
               groupId: businessEntity.groupId,
               unitId: businessEntity.unitId,
-              isVisible: dish.active,
+              isVisible: true,
               position: -1,
               supportedServingModes: [ServingMode.inplace],
-              externalId: externalProductIdMaker(dish.id.toString()),
               variants: [
                 {
                   id: 'id',
@@ -286,6 +272,7 @@ export const createRkeeperProduct =
                     size: 1,
                     unit: 'zsák',
                   },
+                  externalId: externalProductIdMaker(dish.id.toString()),
                 },
               ],
               dirty: true,
@@ -302,31 +289,44 @@ export const updateRkeeperProduct =
     foundUnitProduct: UnitProduct,
     configSets: ProductConfigSet[] | null,
   ) =>
-    sdk.UpdateUnitProduct({
-      input: {
-        id: foundUnitProduct.id,
-        isVisible: dish.active,
-        configSets,
-        variants: [
-          {
-            ...(foundUnitProduct?.variants?.[0] ?? {}),
-            id: 'id',
-            variantName: {
-              hu: foundUnitProduct?.variants?.[0]?.variantName?.hu ?? dish.name,
-            },
-            isAvailable: dish.active,
-            price: dish.price,
-            position: -1,
-            availabilities: [
-              {
-                type: 'A',
-                price: dish.price,
-              },
-            ],
-          },
-        ],
-      },
-    });
+    forkJoin([
+      sdk.UpdateUnitProduct({
+        input: {
+          id: foundUnitProduct.id,
+          configSets,
+        },
+      }),
+      pipe(
+        foundUnitProduct.variants || [],
+        R.reject(variant => R.isNil(variant)),
+        R.find(variant => variant!.externalId === dish.id.toString()),
+        variant =>
+          variant?.id
+            ? sdk.UpdateVariant({
+                input: {
+                  id: variant!.id,
+                  variantName: {
+                    hu: dish.name,
+                  },
+                  isAvailable: dish.active,
+                  price: dish.price,
+                  availabilities: [
+                    {
+                      type: 'A',
+                      price: dish.price,
+                    },
+                  ],
+                },
+              })
+            : of(false).pipe(
+                tap(() =>
+                  console.warn(
+                    `The variant with external id ${dish.id} cannot be found. It should exist!`,
+                  ),
+                ),
+              ),
+      ),
+    ]);
 
 // This is a placeholder product category
 export const defaultProductCategoryId = (businessEntityInfo: {
@@ -406,7 +406,7 @@ export const handleRkeeperProducts =
                 searchExternalUnitProduct(sdk)(dish.id.toString()),
               ).pipe(
                 switchMap(([configSets, unitProduct]) =>
-                  unitProduct === null
+                  R.isNil(unitProduct)
                     ? createRkeeperProduct(sdk)(
                         businessEntityInfo,
                         dish,
@@ -635,7 +635,6 @@ const resolveComponentSetsHelper = R.memoizeWith(
           ),
           (modifierGroups: Observable<ModifierGroup>[]) =>
             R.isEmpty(modifierGroups) ? of([]) : combineLatest(modifierGroups),
-
           switchMap(upsertConfigSets(sdk, chainId)),
           catchError(err => {
             console.warn(

@@ -18,6 +18,7 @@
         "libs/crud-gql/backend/src/generated/table-config.json",
         "libs/crud-gql/backend/src/generated/table-config.json",
         "apps/anyupp-mobile/lib/awsconfiguration.dart",
+        "apps/variants-manager-site/lib/awsconfiguration.dart",
         "libs/shared/config/src/lib/generated/config.json"
       ]
     },

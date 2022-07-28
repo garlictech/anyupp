@@ -4,8 +4,6 @@ import {
   otherAdminUsernames,
   testAdminUsername,
   testAdminUserPassword,
-  //transactionFixture,
-  unitFixture,
 } from '@bgap/shared/fixtures';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';

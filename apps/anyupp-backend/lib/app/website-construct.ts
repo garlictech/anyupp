@@ -10,7 +10,6 @@ import {
 } from 'aws-cdk-lib';
 import { App, StackProps } from '@serverless-stack/resources';
 import { Construct } from 'constructs';
-import { SSMParameterReader } from './utils/ssm-parameter-reader';
 
 export interface WebsiteProps extends StackProps {
   domainName: string;
@@ -36,7 +35,7 @@ export class WebsiteConstruct extends Construct {
       bucketName: siteDomain,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL, // Cloudfront can still access it through the originAccess Identity
       removalPolicy: RemovalPolicy.RETAIN,
       encryption: s3.BucketEncryption.S3_MANAGED,
       enforceSSL: true,
@@ -47,7 +46,7 @@ export class WebsiteConstruct extends Construct {
 
     new CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
 
-    const webAclParamReader = new SSMParameterReader(
+    /*const webAclParamReader = new SSMParameterReader(
       this,
       'WebAclParamReader',
       {
@@ -56,11 +55,12 @@ export class WebsiteConstruct extends Construct {
         account: app.account,
       },
     );
-
+*/
     /* NOTE: if the stored parameter changes, it will not trigger a cloudformation update. In theory, it is possible
        that the web acl changes, but this stack is unaware of the change.
+       This is needed, since all WAF WebAcls created for Cloudfront needs to be created in us-east-1 region.
      */
-    const webAclArn = webAclParamReader.getParameterValue();
+    //const webAclArn = webAclParamReader.getParameterValue();
 
     // CloudFront distribution that provides HTTPS
     const distribution = new cloudfront.CloudFrontWebDistribution(
@@ -84,7 +84,7 @@ export class WebsiteConstruct extends Construct {
             behaviors: [{ isDefaultBehavior: true, compress: true }],
           },
         ],
-        webACLId: webAclArn,
+        //webACLId: webAclArn,
       },
     );
 
@@ -102,7 +102,7 @@ export class WebsiteConstruct extends Construct {
       webAclId: webAclArn,
     });
     const cfnDistribution = distribution.node.defaultChild as cloudfront.CfnDistribution;
-    //cfnDistribution.overrideLogicalId('MyDistributionCFDistribution3H55TI9Q'); 
+    //cfnDistribution.overrideLogicalId('MyDistributionCFDistribution3H55TI9Q');
     */
 
     new CfnOutput(this, 'DistributionId', {

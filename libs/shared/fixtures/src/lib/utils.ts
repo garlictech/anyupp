@@ -49,3 +49,11 @@ export const maskAll = flow(
   maskDate,
   maskPasswords,
 );
+
+export const sanitizeField =
+  <T>(fieldPath: (number | string)[]) =>
+  (data: T) =>
+    pipe(
+      R.clone(data),
+      R.assocPath(fieldPath, maskAll(R.path(fieldPath)(data))),
+    );

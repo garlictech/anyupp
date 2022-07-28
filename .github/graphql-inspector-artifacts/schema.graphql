@@ -224,6 +224,25 @@ type ProductVariant @aws_iam @aws_cognito_user_pools @aws_api_key {
   position: Int!
   netPackagingFee: Float
   soldOut: Boolean
+  ownerProduct: ID
+  externalId: String
+}
+
+type Variant @aws_iam @aws_cognito_user_pools {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [Availability]
+  position: Int!
+  netPackagingFee: Float
+  soldOut: Boolean
+  ownerProduct: String!
+  externalId: String
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
 }
 
 type ProductVariantPack @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -1430,6 +1449,9 @@ type Query {
   getUnitProduct(id: ID!): UnitProduct @aws_iam @aws_cognito_user_pools
   listUnitProducts(filter: ModelUnitProductFilterInput, limit: Int, nextToken: String): ModelUnitProductConnection @aws_iam @aws_cognito_user_pools
   searchUnitProducts(filter: SearchableUnitProductFilterInput, sort: [SearchableUnitProductSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableUnitProductAggregationInput]): SearchableUnitProductConnection @aws_iam @aws_cognito_user_pools
+  getVariant(id: ID!): Variant @aws_iam @aws_cognito_user_pools
+  listVariants(filter: ModelVariantFilterInput, limit: Int, nextToken: String): ModelVariantConnection @aws_iam @aws_cognito_user_pools
+  searchVariants(filter: SearchableVariantFilterInput, sort: [SearchableVariantSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableVariantAggregationInput]): SearchableVariantConnection @aws_iam @aws_cognito_user_pools
   getAdminUser(id: ID!): AdminUser @aws_iam @aws_cognito_user_pools
   listAdminUsers(filter: ModelAdminUserFilterInput, limit: Int, nextToken: String): ModelAdminUserConnection @aws_iam @aws_cognito_user_pools
   searchAdminUsers(filter: SearchableAdminUserFilterInput, sort: [SearchableAdminUserSortInput], limit: Int, nextToken: String, from: Int, aggregates: [SearchableAdminUserAggregationInput]): SearchableAdminUserConnection @aws_iam @aws_cognito_user_pools
@@ -1505,6 +1527,9 @@ type Mutation {
   createUnitProduct(input: CreateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
   updateUnitProduct(input: UpdateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
   deleteUnitProduct(input: DeleteUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
+  createVariant(input: CreateVariantInput!, condition: ModelVariantConditionInput): Variant @aws_iam @aws_cognito_user_pools
+  updateVariant(input: UpdateVariantInput!, condition: ModelVariantConditionInput): Variant @aws_iam @aws_cognito_user_pools
+  deleteVariant(input: DeleteVariantInput!, condition: ModelVariantConditionInput): Variant @aws_iam @aws_cognito_user_pools
   updateAdminUser(input: UpdateAdminUserInput!, condition: ModelAdminUserConditionInput): AdminUser @aws_iam @aws_cognito_user_pools
   createChain(input: CreateChainInput!, condition: ModelChainConditionInput): Chain @aws_iam @aws_cognito_user_pools
   updateChain(input: UpdateChainInput!, condition: ModelChainConditionInput): Chain @aws_iam @aws_cognito_user_pools
@@ -1577,6 +1602,9 @@ type Subscription {
   onCreateUnitProduct: UnitProduct @aws_subscribe(mutations: ["createUnitProduct"]) @aws_iam @aws_cognito_user_pools
   onUpdateUnitProduct: UnitProduct @aws_subscribe(mutations: ["updateUnitProduct"]) @aws_iam @aws_cognito_user_pools
   onDeleteUnitProduct: UnitProduct @aws_subscribe(mutations: ["deleteUnitProduct"]) @aws_iam @aws_cognito_user_pools
+  onCreateVariant: Variant @aws_subscribe(mutations: ["createVariant"]) @aws_iam @aws_cognito_user_pools
+  onUpdateVariant: Variant @aws_subscribe(mutations: ["updateVariant"]) @aws_iam @aws_cognito_user_pools
+  onDeleteVariant: Variant @aws_subscribe(mutations: ["deleteVariant"]) @aws_iam @aws_cognito_user_pools
   onUpdateAdminUser: AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_iam @aws_cognito_user_pools
   onCreateChain: Chain @aws_subscribe(mutations: ["createChain"]) @aws_iam @aws_cognito_user_pools
   onUpdateChain: Chain @aws_subscribe(mutations: ["updateChain"]) @aws_iam @aws_cognito_user_pools
@@ -1658,6 +1686,13 @@ type SearchableGroupProductConnection @aws_iam @aws_cognito_user_pools {
 
 type SearchableUnitProductConnection @aws_iam @aws_cognito_user_pools {
   items: [UnitProduct]!
+  nextToken: String
+  total: Int
+  aggregateItems: [SearchableAggregateResult]!
+}
+
+type SearchableVariantConnection @aws_iam @aws_cognito_user_pools {
+  items: [Variant]!
   nextToken: String
   total: Int
   aggregateItems: [SearchableAggregateResult]!
@@ -1877,6 +1912,8 @@ input ProductVariantInput {
   position: Int!
   netPackagingFee: Float
   soldOut: Boolean
+  ownerProduct: ID
+  externalId: String
 }
 
 input ProductConfigSetInput {
@@ -2161,6 +2198,74 @@ input UpdateUnitProductInput {
   productType: ProductType
   image: String
   allergens: [Allergen]
+}
+
+type ModelVariantConnection @aws_iam @aws_cognito_user_pools {
+  items: [Variant]!
+  nextToken: String
+}
+
+input ModelVariantFilterInput {
+  id: ModelIDInput
+  refGroupPrice: ModelFloatInput
+  isAvailable: ModelBooleanInput
+  price: ModelFloatInput
+  position: ModelIntInput
+  netPackagingFee: ModelFloatInput
+  soldOut: ModelBooleanInput
+  ownerProduct: ModelStringInput
+  externalId: ModelStringInput
+  and: [ModelVariantFilterInput]
+  or: [ModelVariantFilterInput]
+  not: ModelVariantFilterInput
+}
+
+input ModelVariantConditionInput {
+  refGroupPrice: ModelFloatInput
+  isAvailable: ModelBooleanInput
+  price: ModelFloatInput
+  position: ModelIntInput
+  netPackagingFee: ModelFloatInput
+  soldOut: ModelBooleanInput
+  ownerProduct: ModelStringInput
+  externalId: ModelStringInput
+  and: [ModelVariantConditionInput]
+  or: [ModelVariantConditionInput]
+  not: ModelVariantConditionInput
+}
+
+input CreateVariantInput {
+  id: ID
+  variantName: LocalizedItemInput!
+  pack: ProductVariantPackInput
+  refGroupPrice: Float
+  isAvailable: Boolean!
+  price: Float!
+  availabilities: [AvailabilityInput]
+  position: Int!
+  netPackagingFee: Float
+  soldOut: Boolean
+  ownerProduct: String!
+  externalId: String
+}
+
+input UpdateVariantInput {
+  id: ID!
+  variantName: LocalizedItemInput
+  pack: ProductVariantPackInput
+  refGroupPrice: Float
+  isAvailable: Boolean
+  price: Float
+  availabilities: [AvailabilityInput]
+  position: Int
+  netPackagingFee: Float
+  soldOut: Boolean
+  ownerProduct: String
+  externalId: String
+}
+
+input DeleteVariantInput {
+  id: ID!
 }
 
 input CardChecksInput {
@@ -3556,6 +3661,62 @@ input SearchableUnitProductAggregationInput {
   name: String!
   type: SearchableAggregateType!
   field: SearchableUnitProductAggregateField!
+}
+
+input SearchableVariantFilterInput {
+  id: SearchableIDFilterInput
+  refGroupPrice: SearchableFloatFilterInput
+  isAvailable: SearchableBooleanFilterInput
+  price: SearchableFloatFilterInput
+  position: SearchableIntFilterInput
+  netPackagingFee: SearchableFloatFilterInput
+  soldOut: SearchableBooleanFilterInput
+  ownerProduct: SearchableStringFilterInput
+  externalId: SearchableStringFilterInput
+  createdAt: SearchableStringFilterInput
+  updatedAt: SearchableStringFilterInput
+  and: [SearchableVariantFilterInput]
+  or: [SearchableVariantFilterInput]
+  not: SearchableVariantFilterInput
+}
+
+enum SearchableVariantSortableFields {
+  id
+  refGroupPrice
+  isAvailable
+  price
+  position
+  netPackagingFee
+  soldOut
+  ownerProduct
+  externalId
+  createdAt
+  updatedAt
+}
+
+input SearchableVariantSortInput {
+  field: SearchableVariantSortableFields
+  direction: SearchableSortDirection
+}
+
+enum SearchableVariantAggregateField {
+  id
+  refGroupPrice
+  isAvailable
+  price
+  position
+  netPackagingFee
+  soldOut
+  ownerProduct
+  externalId
+  createdAt
+  updatedAt
+}
+
+input SearchableVariantAggregationInput {
+  name: String!
+  type: SearchableAggregateType!
+  field: SearchableVariantAggregateField!
 }
 
 input SearchableAdminUserFilterInput {
