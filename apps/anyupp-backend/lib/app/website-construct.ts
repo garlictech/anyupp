@@ -10,7 +10,6 @@ import {
 } from 'aws-cdk-lib';
 import { App, StackProps } from '@serverless-stack/resources';
 import { Construct } from 'constructs';
-import { SSMParameterReader } from './utils/ssm-parameter-reader';
 
 export interface WebsiteProps extends StackProps {
   domainName: string;

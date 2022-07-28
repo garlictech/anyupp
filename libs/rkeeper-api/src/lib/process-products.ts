@@ -175,7 +175,7 @@ export const searchExternalUnitProduct =
       .pipe(
         getFirstFoundItem(),
         switchMap(variant =>
-          !!variant?.ownerProduct
+          variant?.ownerProduct
             ? sdk.GetUnitProduct({ id: variant.ownerProduct })
             : of(null),
         ),
@@ -301,7 +301,7 @@ export const updateRkeeperProduct =
         R.reject(variant => R.isNil(variant)),
         R.find(variant => variant!.externalId === dish.id.toString()),
         variant =>
-          !!variant?.id
+          variant?.id
             ? sdk.UpdateVariant({
                 input: {
                   id: variant!.id,

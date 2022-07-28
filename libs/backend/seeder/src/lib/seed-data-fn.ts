@@ -37,7 +37,7 @@ import {
 } from '@bgap/domain';
 import { DateTime } from 'luxon';
 import * as R from 'ramda';
-import { combineLatest, from, Observable, of, throwError } from 'rxjs';
+import { combineLatest, from, Observable, of } from 'rxjs';
 import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { seedUtils } from './utils';
 

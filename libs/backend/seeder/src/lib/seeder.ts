@@ -4,8 +4,6 @@ import {
   otherAdminUsernames,
   testAdminUsername,
   testAdminUserPassword,
-  //transactionFixture,
-  unitFixture,
 } from '@bgap/shared/fixtures';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
@@ -109,15 +107,6 @@ export const seedBusinessData = (deps: SeederDependencies) =>
       toArray(),
     )
     .pipe(ce('### seedBusinessData'));
-
-const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
-  of('start').pipe(
-    switchMap(() =>
-      deps.crudSdk.RegenerateUnitData({
-        input: { id: unitFixture.unitId_seeded_01 },
-      }),
-    ),
-  );
 
 interface ConsumerUser {
   username: string;

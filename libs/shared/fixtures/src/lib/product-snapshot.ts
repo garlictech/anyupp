@@ -1,9 +1,4 @@
-import {
-  Allergen,
-  AvailabilityInput,
-  ProductType,
-  ServingMode,
-} from '@bgap/domain';
+import { Allergen, ProductType, ServingMode } from '@bgap/domain';
 import { seededIdPrefix } from './common';
 
 const chainProductId_01 = `${seededIdPrefix}chain_product_c1_1_id`;

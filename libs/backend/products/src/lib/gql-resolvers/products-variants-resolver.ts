@@ -1,17 +1,14 @@
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import * as R from 'ramda';
-import { UnitProduct, UpdateUnitProductInput } from '@bgap/domain';
 import { pipe } from 'fp-ts/lib/function';
 
 import {
-  ProductVariant,
   CrudSdk,
-  CreateUnitProductInput,
   CreateVariantInput,
   UpdateVariantInput,
 } from '@bgap/crud-gql/api';
-import { Observable, of, iif, forkJoin } from 'rxjs';
-import { tap, switchMap, map } from 'rxjs/operators';
+import { iif, forkJoin } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
 
 export interface ProductVariantsResolverDeps {
   crudSdk: CrudSdk;
@@ -91,7 +88,7 @@ export const productVariantsResolver =
     // alos exists, then it is an update.
     //
     // see: https://www.apollographql.com/docs/apollo-server/data/resolvers/#resolver-chains
-    const selectHandler = (): Function =>
+    const selectHandler = () =>
       R.cond([
         [
           () => source.__operation === 'Mutation',

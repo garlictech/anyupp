@@ -402,7 +402,7 @@ type AdminUserSettings @aws_iam @aws_cognito_user_pools {
   selectedHistoryDate: Int
 }
 
-type NestedSortItem @aws_iam @aws_cognito_user_pools {
+type NestedSortItem @aws_iam @aws_cognito_user_pools @aws_api_key {
   id: ID!
   parentId: ID
 }
@@ -930,6 +930,9 @@ type Unit @aws_iam @aws_cognito_user_pools {
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+  currency: String
+  style: ChainStyle
+  categoryOrders: [NestedSortItem]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2945,6 +2948,7 @@ input ModelUnitFilterInput {
   canRequestVatInvoice: ModelBooleanInput
   canCallWaiter: ModelBooleanInput
   isVisibleInApp: ModelBooleanInput
+  currency: ModelStringInput
   and: [ModelUnitFilterInput]
   or: [ModelUnitFilterInput]
   not: ModelUnitFilterInput
@@ -2973,6 +2977,7 @@ input ModelUnitConditionInput {
   canRequestVatInvoice: ModelBooleanInput
   canCallWaiter: ModelBooleanInput
   isVisibleInApp: ModelBooleanInput
+  currency: ModelStringInput
   and: [ModelUnitConditionInput]
   or: [ModelUnitConditionInput]
   not: ModelUnitConditionInput
@@ -4193,6 +4198,7 @@ input SearchableUnitFilterInput {
   canRequestVatInvoice: SearchableBooleanFilterInput
   canCallWaiter: SearchableBooleanFilterInput
   isVisibleInApp: SearchableBooleanFilterInput
+  currency: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   supportedServingModes: SearchableStringFilterInput
@@ -4224,6 +4230,7 @@ enum SearchableUnitSortableFields {
   canRequestVatInvoice
   canCallWaiter
   isVisibleInApp
+  currency
   createdAt
   updatedAt
 }
@@ -4257,6 +4264,7 @@ enum SearchableUnitAggregateField {
   canRequestVatInvoice
   canCallWaiter
   isVisibleInApp
+  currency
   createdAt
   updatedAt
 }
