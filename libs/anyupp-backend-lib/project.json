@@ -1,5 +1,4 @@
 {
-  "root": "libs/anyupp-backend-lib",
   "sourceRoot": "libs/anyupp-backend-lib/src",
   "projectType": "library",
   "targets": {

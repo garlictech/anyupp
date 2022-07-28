@@ -13,7 +13,6 @@ import { UntypedFormArray } from '@angular/forms';
 import { AdminUserSettings } from '@bgap/domain';
 import {
   EImageType,
-  EProductLevel,
   KeyValue,
   Product,
   UpsertResponse,
@@ -39,7 +38,6 @@ export class ProductFormComponent
 {
   public eImageType = EImageType;
   public product?: Product;
-  public productLevel!: EProductLevel;
   public productCategories$: Observable<KeyValue[]>;
   public productTypes: KeyValue[] = PRODUCT_TYPES;
 
@@ -101,10 +99,9 @@ export class ProductFormComponent
       this.setWorking$(true)
         .pipe(
           switchMap(() =>
-            this._productFormService.saveChainForm$(
+            this._productFormService.saveUnitForm$(
               {
                 ...this.dialogForm?.value,
-                chainId: this._userSettings?.selectedChainId || '',
                 dirty: this.product?.dirty ? false : undefined,
               },
               this.product?.id || undefined,

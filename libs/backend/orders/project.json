@@ -1,5 +1,4 @@
 {
-  "root": "libs/backend/orders",
   "sourceRoot": "libs/backend/orders/src",
   "projectType": "library",
   "targets": {

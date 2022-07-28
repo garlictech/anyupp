@@ -35,7 +35,7 @@
         </div>
 
         <div class="row">
-          <div class="col-3" *ngIf="productLevel === eProductLevel.GROUP">
+          <div class="col-3">
             <bgap-form-text-input
               caption="common.taxPercent"
               type="number"
@@ -44,7 +44,7 @@
               suffix="%"
             ></bgap-form-text-input>
           </div>
-          <div class="col-3" *ngIf="productLevel === eProductLevel.GROUP">
+          <div class="col-3">
             <bgap-form-text-input
               caption="common.takeawayTaxPercent"
               type="number"
@@ -53,7 +53,7 @@
               suffix="%"
             ></bgap-form-text-input>
           </div>
-          <div class="col-3" *ngIf="productLevel === eProductLevel.UNIT">
+          <div class="col-3">
             <bgap-form-select
               [control]="dialogForm?.get('laneId') | asFormControl"
               caption="products.lane"
@@ -76,13 +76,11 @@
       </fieldset>
 
       <bgap-form-serving-mode
-        *ngIf="productLevel === eProductLevel.UNIT"
         [control]="dialogForm?.get('supportedServingModes') | asFormControl"
         [servingModes]="servingModes"
       ></bgap-form-serving-mode>
 
       <bgap-form-product-variants
-        [productLevel]="productLevel"
         [variantFormArray]="dialogForm?.get('variants') | asFormArray"
         [allowAddVariant]="false"
         [currency]="currency"
@@ -91,7 +89,6 @@
       ></bgap-form-product-variants>
 
       <bgap-form-product-components
-        [productLevel]="productLevel"
         [componentFormArray]="dialogForm?.get('configSets') | asFormArray"
         [currency]="currency"
       ></bgap-form-product-components>

@@ -16,9 +16,9 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
 import { AbstractFormDialogComponent } from '../../../../shared/forms';
-import { chainsSelectors } from '../../../../store/chains';
 import { loggedUserSelectors } from '../../../../store/logged-user';
 import { ModifiersAndExtrasFormService } from '../../services/modifiers-and-extras-form.service';
+import { unitsSelectors } from '../../../../store/units';
 
 @UntilDestroy()
 @Component({
@@ -31,7 +31,7 @@ export class ProductComponentFormComponent
   implements OnInit
 {
   public productComponent!: ProductComponent;
-  public chainOptions$: Observable<KeyValue[]>;
+  public unitOptions$: Observable<KeyValue[]>;
 
   constructor(
     protected override _injector: Injector,
@@ -43,21 +43,19 @@ export class ProductComponentFormComponent
     this.dialogForm =
       this._modifiersAndExtrasFormService.createProductComponentFormGroup();
 
-    this.chainOptions$ = this._store.select(
-      chainsSelectors.getAllChainOptions(),
-    );
+    this.unitOptions$ = this._store.select(unitsSelectors.getAllUnitOptions());
   }
 
   ngOnInit() {
     if (this.productComponent) {
       this.dialogForm?.patchValue(cleanObject(this.productComponent));
     } else {
-      // Patch ChainId
+      // Patch unitId
       this._store
-        .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
-        .subscribe((selectedChainId: string | undefined | null) => {
-          if (selectedChainId) {
-            this.dialogForm?.controls['chainId'].patchValue(selectedChainId);
+        .pipe(select(loggedUserSelectors.getSelectedUnitId), take(1))
+        .subscribe((selectedunitId: string | undefined | null) => {
+          if (selectedunitId) {
+            this.dialogForm?.controls['unitId'].patchValue(selectedunitId);
           }
         });
     }

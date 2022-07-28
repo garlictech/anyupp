@@ -37,7 +37,7 @@ import {
 } from '@bgap/domain';
 import { DateTime } from 'luxon';
 import * as R from 'ramda';
-import { combineLatest, from, Observable, of } from 'rxjs';
+import { forkJoin, from, Observable, of } from 'rxjs';
 import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { seedUtils } from './utils';
 
@@ -382,7 +382,7 @@ export const createTestUnitsForOrderHandling =
           () => deps.crudSdk.CreateUnit({ input }),
         ),
       ),
-      combineLatest,
+      x => forkJoin(x),
     );
   };
 
@@ -396,7 +396,7 @@ export const createTestProductCategory =
 
     const input: DeletableInput<CreateProductCategoryInput> = {
       id: seedUtils.generateProductCategoryId(chainIdx, productCategoryId),
-      chainId: seedUtils.generateChainId(chainIdx),
+      ownerEntity: seedUtils.generateChainId(chainIdx),
       name: {
         hu: `Teszt termék kategória #${productCategoryId}`,
         en: `Test product category #${productCategoryId}`,
@@ -464,7 +464,7 @@ export const createChainProductsFromSnapshot = (deps: SeederDependencies) => {
       () => deps.crudSdk.CreateChainProduct({ input }),
     );
 
-  return combineLatest([
+  return forkJoin([
     deleteCreateChainProduct(productSnapshotFixture.chainProduct_1),
     deleteCreateChainProduct(productSnapshotFixture.chainProduct_2),
     deleteCreateChainProduct(productSnapshotFixture.chainProduct_3),
@@ -490,7 +490,7 @@ export const createGroupProductsFromSnapshot = (deps: SeederDependencies) => {
       () => deps.crudSdk.CreateGroupProduct({ input }),
     );
 
-  return combineLatest([
+  return forkJoin([
     deleteCreateGroupProduct(productSnapshotFixture.groupProduct_1),
     deleteCreateGroupProduct(productSnapshotFixture.groupProduct_2),
     deleteCreateGroupProduct(productSnapshotFixture.groupProduct_3),
@@ -516,7 +516,7 @@ export const createUnitProductsFromSnapshot = (deps: SeederDependencies) => {
       () => deps.crudSdk.CreateUnitProduct({ input }),
     );
 
-  return combineLatest([
+  return forkJoin([
     deleteCreateUnitProduct(productSnapshotFixture.unitProduct_1),
     deleteCreateUnitProduct(productSnapshotFixture.unitProduct_2),
     deleteCreateUnitProduct(productSnapshotFixture.unitProduct_3),
@@ -920,7 +920,7 @@ export const createComponentSets = (deps: SeederDependencies) => {
 };
 
 export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
-  combineLatest(
+  forkJoin([
     deleteCreate(
       () => deps.crudSdk.DeleteUnit({ input: { id: 'sportbar-rkeeper-unit' } }),
       () =>
@@ -974,10 +974,10 @@ export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
           },
         }),
     ),
-  );
+  ]);
 
 export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
-  combineLatest(
+  forkJoin([
     deleteCreate(
       () => deps.crudSdk.DeleteUnit({ input: { id: 'yellow-rkeeper-unit' } }),
       () =>
@@ -1027,7 +1027,7 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
           },
         }),
     ),
-  );
+  ]);
 
 export const placeOrderToSeat = (
   orderInput: CreateOrderInput,

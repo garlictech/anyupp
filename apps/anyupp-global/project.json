@@ -1,5 +1,4 @@
 {
-  "root": "apps/anyupp-global",
   "sourceRoot": "apps/anyupp-global/src",
   "projectType": "application",
   "prefix": "anyupp-global",

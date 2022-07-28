@@ -1,5 +1,4 @@
 {
-  "root": "apps/anyupp-backend",
   "sourceRoot": "apps/anyupp-backend/src",
   "projectType": "application",
   "prefix": "anyupp-backend",

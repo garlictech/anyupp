@@ -15,10 +15,15 @@
     "vpcIdOutput": "vpc-0880d26d0165c9f7f"
   },
   "anyupp-backend-sites": {
+    "VariantsBucket8636AB76": "zsoltstack-variants-anyupp-backend.anyupp.com",
+    "VariantsDistributionDomainName64CED8FD": "d19l43lc6k016w.cloudfront.net",
     "AdminSiteDomainA75B4E32": "zsoltstack-admin-anyupp-backend.anyupp.com",
+    "VariantsSiteDomain720640AD": "zsoltstack-variants-anyupp-backend.anyupp.com",
     "AdminDistributionDomainNameA4A4FE5B": "d3ooy6w4xhs0hy.cloudfront.net",
     "AdminSiteEAA17C78": "https://zsoltstack-admin-anyupp-backend.anyupp.com",
     "AdminDistributionIdB4DE25AB": "E6K44SMX7URKC",
+    "VariantsSite8C170134": "https://zsoltstack-variants-anyupp-backend.anyupp.com",
+    "VariantsDistributionIdEF1CC563": "E2612Q4E6RH7VJ",
     "AdminBucketCA57896C": "zsoltstack-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {

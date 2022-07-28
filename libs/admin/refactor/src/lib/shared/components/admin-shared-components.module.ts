@@ -20,8 +20,6 @@ import {
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ActiveChainSelectorComponent } from './components/active-chain-selector';
-import { ActiveGroupSelectorComponent } from './components/active-group-selector';
 import { ActiveProductCategorySelectorComponent } from './components/active-product-category-selector';
 import { ActiveUnitSelectorComponent } from './components/active-unit-selector';
 import { AddressComponent } from './components/address';
@@ -56,8 +54,6 @@ const NB_MODULES = [
 const COMPONENTS = [
   ContactComponent,
   AddressComponent,
-  ActiveChainSelectorComponent,
-  ActiveGroupSelectorComponent,
   ActiveUnitSelectorComponent,
   ActiveProductCategorySelectorComponent,
   GoogleMapComponent,

@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { isRejectedOrder, orderHasIncome } from '@bgap/crud-gql/api';
-import { Group, Order, PaymentStatus, Unit } from '@bgap/domain';
+import { Order, PaymentStatus, Unit } from '@bgap/domain';
 import { KeyValueObject, ProducMixArrayItem } from '@bgap/shared/types';
 import { filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -20,7 +20,6 @@ import {
   dashboardActions,
   dashboardSelectors,
 } from '../../../../store/dashboard';
-import { groupsSelectors } from '../../../../store/groups';
 import { OrderHistoryCollectionService } from '../../../../store/orders';
 import { unitsSelectors } from '../../../../store/units';
 
@@ -60,12 +59,12 @@ export class ReportsBodyComponent implements OnInit {
 
     this._store
       .pipe(
-        select(groupsSelectors.getSeletedGroup),
-        skipWhile((group): boolean => !group),
+        select(unitsSelectors.getSelectedUnit),
+        skipWhile((unit): boolean => !unit),
         untilDestroyed(this),
       )
-      .subscribe((group: Group | undefined) => {
-        this.groupCurrency = group?.currency || '';
+      .subscribe((unit: Unit | undefined) => {
+        this.groupCurrency = unit?.currency || '';
       });
 
     this.selectedUnit$ = this._store.pipe(

@@ -10,7 +10,7 @@ const chainId_01 = chainFixture.chainId_seeded_01;
 
 const productCategoryBase: RequiredId<CreateProductCategoryInput> = {
   id: `${testIdPrefix}generatedProduct_id_`,
-  chainId: chainId_01,
+  ownerEntity: chainId_01,
   name: { en: 'PRODUCT_CATEGORY' },
   description: { en: 'DESCRIPTION' },
   image: 'IMAGE',
@@ -19,7 +19,7 @@ const productCategoryBase: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_01: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_01,
-  chainId: chainId_01,
+  ownerEntity: chainId_01,
   name: {
     hu: `Hamburgerek`,
     en: `Hamburgers`,
@@ -34,7 +34,7 @@ const seededProductCategory_01: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_02: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_02,
-  chainId: chainId_01,
+  ownerEntity: chainId_01,
   name: {
     hu: `Alkoholmententes italok`,
     en: `Non-alcoholic drinks`,
@@ -49,7 +49,7 @@ const seededProductCategory_02: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_03: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_03,
-  chainId: chainId_01,
+  ownerEntity: chainId_01,
   name: {
     hu: `Sörök`,
     en: `Beers`,

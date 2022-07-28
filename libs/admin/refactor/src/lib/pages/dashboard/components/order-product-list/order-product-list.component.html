@@ -17,7 +17,7 @@
     </nb-select>
 
     <cdk-virtual-scroll-viewport style="height: 100%" itemSize="70">
-      <ng-container *cdkVirtualFor="let product of generatedUnitProducts">
+      <ng-container *cdkVirtualFor="let product of unitProducts">
         <nb-list-item
           class="d-block"
           *ngIf="product.productCategoryId === selectedProductCategoryId"

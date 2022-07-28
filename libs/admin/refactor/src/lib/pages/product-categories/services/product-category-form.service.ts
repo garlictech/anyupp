@@ -2,7 +2,7 @@ import { iif } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
@@ -23,6 +23,7 @@ export class ProductCategoryFormService {
 
   public createProductCategoryFormGroup() {
     return this._formBuilder.group({
+      ownerEntity: ['', [Validators.required]],
       name: this._formBuilder.group(
         {
           hu: [''],

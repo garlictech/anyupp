@@ -30,7 +30,7 @@ echo '=============================='
 yarn graphql-codegen --config tools/graphql-codegen-crud.yml
 # Remove this duplication of files
 mkdir -p ../../libs/domain/src/lib/entities/generated
-cp ../../libs/crud-gql/api/src/lib/generated/api.ts ../../libs/domain/src/lib/entities/generated/api.ts
+cp -f ../../libs/crud-gql/api/src/lib/generated/api.ts ../../libs/domain/src/lib/entities/generated/api.ts
 echo 'Done.'
 
 echo "Preparing schema for graphql schema checker..."
@@ -38,4 +38,3 @@ cat ../../libs/anyupp-schema/src/schema/aws.graphql \
   ../../apps/crud-backend/amplify/backend/api/anyuppbackend/build/schema.graphql \
   > ../../.github/graphql-inspector-artifacts/schema.graphql
 
-cp ../../libs/crud-gql/api/src/lib/generated/api.ts ../../libs/domain/src/lib/entities/generated

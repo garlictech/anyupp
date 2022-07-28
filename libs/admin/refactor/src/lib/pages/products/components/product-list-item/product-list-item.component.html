@@ -9,12 +9,9 @@
 
 <bgap-status-led class="ms-1" [status]="product?.isVisible"></bgap-status-led>
 
-<bgap-colorized-lane-icon
-  *ngIf="productLevel === EProductLevel.UNIT"
-  [laneId]="product?.laneId"
-></bgap-colorized-lane-icon>
+<bgap-colorized-lane-icon [laneId]="product?.laneId"></bgap-colorized-lane-icon>
 
-<ng-container *ngIf="hasRoleToEdit$ | async">
+<ng-container>
   <div *ngIf="!product?.pending">
     <button
       nbButton
@@ -41,13 +38,7 @@
       {{ 'common.edit' | translate }}
     </button>
 
-    <ng-container
-      *ngIf="
-        productLevel === EProductLevel.UNIT &&
-        !product?.pending &&
-        !product?.dirty
-      "
-    >
+    <ng-container *ngIf="!product?.pending && !product?.dirty">
       <button
         [hidden]="isLast"
         nbButton
@@ -129,7 +120,6 @@
     ></bgap-status-led>
 
     <bgap-status-led
-      *ngIf="productLevel === EProductLevel.UNIT"
       class="ms-1"
       [status]="!variant?.soldOut"
     ></bgap-status-led>

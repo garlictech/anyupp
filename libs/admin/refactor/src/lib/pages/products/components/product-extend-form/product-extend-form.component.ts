@@ -1,5 +1,5 @@
 import * as fp from 'lodash/fp';
-import { iif, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
@@ -15,12 +15,7 @@ import {
   ServingMode,
   Unit,
 } from '@bgap/domain';
-import {
-  EProductLevel,
-  KeyValue,
-  Product,
-  UpsertResponse,
-} from '@bgap/shared/types';
+import { KeyValue, Product, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
@@ -43,8 +38,6 @@ export class ProductExtendFormComponent
   implements OnInit
 {
   public product?: Product;
-  public productLevel!: EProductLevel;
-  public eProductLevel = EProductLevel;
   public editing = false;
   public currency!: string;
   public productCategories$: Observable<ProductCategory[]>;
@@ -52,8 +45,6 @@ export class ProductExtendFormComponent
   public servingModes = SERVING_MODES;
   public selectedUnit?: Unit;
 
-  private _selectedChainId = '';
-  private _selectedGroupId = '';
   private _selectedUnitId = '';
 
   constructor(
@@ -70,8 +61,6 @@ export class ProductExtendFormComponent
         filterNullish(),
       )
       .subscribe((userSettings: AdminUserSettings) => {
-        this._selectedChainId = userSettings?.selectedChainId || '';
-        this._selectedGroupId = userSettings?.selectedGroupId || '';
         this._selectedUnitId = userSettings?.selectedUnitId || '';
       });
 
@@ -92,9 +81,7 @@ export class ProductExtendFormComponent
   }
 
   ngOnInit() {
-    this.dialogForm = this._productFormService.createProductExtendFormGroup(
-      this.productLevel,
-    );
+    this.dialogForm = this._productFormService.createProductExtendFormGroup();
 
     if (this.product) {
       this.dialogForm.patchValue(
@@ -121,47 +108,18 @@ export class ProductExtendFormComponent
         <string[]>this.dialogForm.value.supportedServingModes || []
       ).includes(ServingMode.takeaway);
 
-      const parentInfo = {
-        parentId: this.product?.id || '',
-        chainId: this._selectedChainId,
-        groupId: this._selectedGroupId,
-      };
-
       this.setWorking$(true)
         .pipe(
           switchMap(() =>
-            iif(
-              () => this.productLevel === EProductLevel.UNIT,
-              this._productFormService.saveUnitExtendForm$(
-                {
-                  ...this.dialogForm?.value,
-                  ...parentInfo,
-                  unitId: this._selectedUnitId,
-                  position: 0,
-                  takeaway,
-                },
-                {
-                  ...this.dialogForm?.value,
-                  id: this.product?.id || '',
-                  dirty: this.product?.dirty ? false : undefined,
-                  takeaway,
-                },
-                this.editing,
-              ),
-              this._productFormService.saveGroupExtendForm$(
-                {
-                  ...this.dialogForm?.value,
-                  ...parentInfo,
-                  takeawayTax: this.dialogForm?.value.takeawayTax || null, // save or remove
-                },
-                {
-                  ...this.dialogForm?.value,
-                  id: this.product?.id || '',
-                  dirty: this.product?.dirty ? false : undefined, // save or leave
-                  takeawayTax: this.dialogForm?.value.takeawayTax || null, // save or remove
-                },
-                this.editing,
-              ),
+            this._productFormService.saveUnitForm$(
+              {
+                ...this.dialogForm?.value,
+                id: this.product?.id,
+                position: 0,
+                dirty: this.product?.dirty,
+                takeaway,
+              },
+              this._selectedUnitId,
             ),
           ),
           tap(() => this.setWorking$(false)),

@@ -1,10 +1,9 @@
 import { cloneDeep, omit, pick } from 'lodash/fp';
 import { Observable } from 'rxjs';
-import { delay, switchMap, take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Injector,
   OnInit,
@@ -51,7 +50,7 @@ export class UnitFormComponent
   public paymentModes = PAYMENT_MODES;
   public servingModes = SERVING_MODES;
   public orderModes = ORDER_MODES;
-  public groupOptions$: Observable<KeyValue[]>;
+  public unitOptions$: Observable<KeyValue[]>;
   public timeZoneOptions: KeyValue[] = [];
   public orderPolicyOptions: KeyValue[] = orderPolicyOptions;
   public soldOutPolicyOptions: KeyValue[] = soldOutPolicyOptions;
@@ -63,7 +62,6 @@ export class UnitFormComponent
     protected override _injector: Injector,
     private _formsService: FormsService,
     private _nbDialogService: NbDialogService,
-    private _changeDetectorRef: ChangeDetectorRef,
     private _unitFormService: UnitFormService,
   ) {
     super(_injector);
@@ -73,7 +71,7 @@ export class UnitFormComponent
       value: n,
     }));
 
-    this.groupOptions$ = this._unitFormService.getGroupOptions$();
+    this.unitOptions$ = this._unitFormService.getUnitOptions$();
   }
 
   get logoImage() {
@@ -114,13 +112,13 @@ export class UnitFormComponent
       if (custom) {
         custom.forEach(day => {
           if (day) {
-            const dayGroup =
+            const dayunit =
               this._formsService.createCustomDailyScheduleFormGroup();
-            dayGroup.patchValue(day);
+            dayunit.patchValue(day);
 
             (<UntypedFormArray>(
               this.dialogForm?.get('openingHours')?.get('custom')
-            )).push(dayGroup);
+            )).push(dayunit);
           }
         });
       }
@@ -128,33 +126,18 @@ export class UnitFormComponent
       // Patch lanes array
       (this.unit.lanes || []).forEach(lane => {
         if (lane) {
-          const laneGroup = this._formsService.createLaneFormGroup();
-          laneGroup.patchValue(lane);
-          (<UntypedFormArray>this.dialogForm?.get('lanes')).push(laneGroup);
+          const laneunit = this._formsService.createLaneFormGroup();
+          laneunit.patchValue(lane);
+          (<UntypedFormArray>this.dialogForm?.get('lanes')).push(laneunit);
         }
       });
     } else {
-      // Patch ChainId
+      // Patch unitId
       this._store
-        .pipe(
-          select(loggedUserSelectors.getSelectedChainId),
-          take(1),
-          delay(200),
-        )
-        .subscribe((selectedChainId: string | undefined | null) => {
-          if (selectedChainId) {
-            this.dialogForm?.patchValue({ chainId: selectedChainId });
-
-            this._changeDetectorRef.detectChanges();
-          }
-        });
-
-      // Patch GroupId
-      this._store
-        .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
-        .subscribe((selectedGroupId: string | undefined | null) => {
-          if (selectedGroupId) {
-            this.dialogForm?.patchValue({ groupId: selectedGroupId });
+        .pipe(select(loggedUserSelectors.getSelectedUnitId), take(1))
+        .subscribe((selectedUnitId: string | undefined | null) => {
+          if (selectedUnitId) {
+            this.dialogForm?.patchValue({ unitId: selectedUnitId });
           }
         });
 

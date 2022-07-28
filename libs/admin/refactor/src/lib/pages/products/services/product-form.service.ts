@@ -10,18 +10,14 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  CreateChainProductInput,
-  CreateGroupProductInput,
   CreateUnitProductInput,
   Maybe,
   ProductCategory,
   ProductConfigSet,
   ProductVariant,
-  UpdateChainProductInput,
-  UpdateGroupProductInput,
   UpdateUnitProductInput,
 } from '@bgap/domain';
-import { EProductLevel, KeyValue, UpsertResponse } from '@bgap/shared/types';
+import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
 import { Store } from '@ngrx/store';
 
@@ -33,11 +29,7 @@ import {
 } from '../../../shared/utils';
 import { catchGqlError } from '../../../store/app-core';
 import { ProductCategoryCollectionService } from '../../../store/product-categories';
-import {
-  ChainProductCollectionService,
-  GroupProductCollectionService,
-  UnitProductCollectionService,
-} from '../../../store/products';
+import { UnitProductCollectionService } from '../../../store/products';
 import { handleEmptyPackaginFees } from '../fn';
 
 @Injectable({ providedIn: 'root' })
@@ -47,8 +39,6 @@ export class ProductFormService {
     private _formsService: FormsService,
     private _store: Store,
     private _unitProductCollectionService: UnitProductCollectionService,
-    private _groupProductCollectionService: GroupProductCollectionService,
-    private _chainProductCollectionService: ChainProductCollectionService,
     private _productCategoryCollectionService: ProductCategoryCollectionService,
   ) {}
 
@@ -93,31 +83,27 @@ export class ProductFormService {
     });
   }
 
-  public createProductExtendFormGroup(productLevel: EProductLevel) {
+  public createProductExtendFormGroup() {
     const dialogForm = this._formBuilder.group({
       isVisible: [''],
       variants: this._formBuilder.array([]),
       configSets: this._formBuilder.array([]),
     });
 
-    if (productLevel === EProductLevel.GROUP) {
-      dialogForm.addControl(
-        'tax',
-        this._formBuilder.control('', Validators.required),
-      );
-      dialogForm.addControl(
-        'takeawayTax',
-        this._formBuilder.control('', optionalValueValidator),
-      );
-    }
+    dialogForm.addControl(
+      'tax',
+      this._formBuilder.control('', Validators.required),
+    );
+    dialogForm.addControl(
+      'takeawayTax',
+      this._formBuilder.control('', optionalValueValidator),
+    );
 
-    if (productLevel === EProductLevel.UNIT) {
-      dialogForm.addControl('laneId', this._formBuilder.control(''));
-      dialogForm.addControl(
-        'supportedServingModes',
-        this._formBuilder.control([], { validators: notEmptyArray }),
-      );
-    }
+    dialogForm.addControl('laneId', this._formBuilder.control(''));
+    dialogForm.addControl(
+      'supportedServingModes',
+      this._formBuilder.control([], { validators: notEmptyArray }),
+    );
 
     return dialogForm;
   }
@@ -192,91 +178,23 @@ export class ProductFormService {
   }
 
   public updateImageStyles$(id: string, image: string | null) {
-    return this.updateChainProduct$({
+    return this.updateUnitProduct$({
       id,
       image,
     });
   }
 
-  //
-  // CHAIN PRODUCT
-  //
-
-  public saveChainForm$(
-    formValue: CreateChainProductInput | UpdateChainProductInput,
-    chainId?: string,
+  public saveUnitForm$(
+    formValue: CreateUnitProductInput | UpdateUnitProductInput,
+    unitId?: string,
   ) {
     return iif(
-      () => !chainId,
-      this.createChainProduct$(<CreateChainProductInput>formValue),
-      this.updateChainProduct$({
+      () => !unitId,
+      this.createUnitProduct$(<CreateUnitProductInput>formValue),
+      this.updateUnitProduct$({
         ...formValue,
-        id: chainId || '',
+        id: unitId!,
       }),
-    );
-  }
-
-  public createChainProduct$(input: CreateChainProductInput) {
-    return this._chainProductCollectionService.add$(input).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'insert' })),
-    );
-  }
-
-  public updateChainProduct$(input: UpdateChainProductInput) {
-    return this._chainProductCollectionService.update$(input).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'update' })),
-    );
-  }
-
-  //
-  // GROUP PRODUCT
-  //
-
-  public saveGroupExtendForm$(
-    createFormValue: CreateGroupProductInput,
-    updateFormValue: UpdateGroupProductInput,
-    isEditing: boolean,
-  ) {
-    return iif(
-      () => !isEditing,
-      this.createGroupProduct$(createFormValue),
-      this.updateGroupProduct$(updateFormValue),
-    );
-  }
-
-  public createGroupProduct$(input: CreateGroupProductInput) {
-    return this._groupProductCollectionService.add$(input).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'insert' })),
-    );
-  }
-
-  public updateGroupProduct$(input: UpdateGroupProductInput) {
-    return this._groupProductCollectionService.update$(input).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'update' })),
-    );
-  }
-
-  //
-  // UNIT PRODUCT
-  //
-
-  public saveUnitExtendForm$(
-    createFormValue: CreateUnitProductInput,
-    updateFormValue: UpdateUnitProductInput,
-    isEditing: boolean,
-  ) {
-    return iif(
-      () => !isEditing,
-      this.createUnitProduct$(
-        <CreateUnitProductInput>handleEmptyPackaginFees(createFormValue),
-      ),
-      this.updateUnitProduct$(
-        <UpdateUnitProductInput>handleEmptyPackaginFees(updateFormValue),
-      ),
     );
   }
 

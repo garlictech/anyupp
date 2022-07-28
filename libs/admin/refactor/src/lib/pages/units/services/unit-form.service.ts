@@ -13,7 +13,6 @@ import { Maybe } from '@bgap/crud-gql/api';
 import {
   ChainStyleImages,
   CreateUnitInput,
-  Group,
   OrderPaymentPolicy,
   OrderPolicy,
   PosType,
@@ -26,7 +25,6 @@ import {
 import {
   defaultOrderMode,
   defaultServingMode,
-  KeyValue,
   UpsertResponse,
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -48,7 +46,6 @@ import {
   TIME_FORMAT_PATTERN,
 } from '../../../shared/utils';
 import { catchGqlError } from '../../../store/app-core';
-import { GroupCollectionService } from '../../../store/groups';
 import { UnitCollectionService } from '../../../store/units';
 
 @Injectable({ providedIn: 'root' })
@@ -61,7 +58,6 @@ export class UnitFormService {
     private _nbDialogService: NbDialogService,
     private _translateService: TranslateService,
     private _unitCollectionService: UnitCollectionService,
-    private _groupCollectionService: GroupCollectionService,
   ) {}
 
   public createUnitFormGroup() {
@@ -191,15 +187,13 @@ export class UnitFormService {
     });
   }
 
-  public getGroupOptions$() {
-    return this._groupCollectionService.filteredEntities$.pipe(
-      map((groups: Group[]) =>
-        groups.map(
-          (group: Group): KeyValue => ({
-            key: group.id,
-            value: group.name,
-          }),
-        ),
+  public getUnitOptions$() {
+    return this._unitCollectionService.filteredEntities$.pipe(
+      map(units =>
+        units.map(unit => ({
+          key: unit.id,
+          value: unit.name,
+        })),
       ),
     );
   }

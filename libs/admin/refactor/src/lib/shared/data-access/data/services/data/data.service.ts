@@ -29,9 +29,7 @@ import { CrudSdkService } from '../../../../../shared/data-access/sdk';
 import { DEFAULT_LANG } from '../../../../../shared/utils';
 import { AdminUserCollectionService } from '../../../../../store/admin-users';
 import { appCoreActions, catchGqlError } from '../../../../../store/app-core';
-import { ChainCollectionService } from '../../../../../store/chains';
 import { dashboardActions } from '../../../../../store/dashboard';
-import { GroupCollectionService } from '../../../../../store/groups';
 import {
   loggedUserActions,
   loggedUserSelectors,
@@ -44,12 +42,7 @@ import {
 import { ProductCategoryCollectionService } from '../../../../../store/product-categories';
 import { ProductComponentSetCollectionService } from '../../../../../store/product-component-sets';
 import { ProductComponentCollectionService } from '../../../../../store/product-components';
-import {
-  ChainProductCollectionService,
-  GeneratedProductCollectionService,
-  GroupProductCollectionService,
-  UnitProductCollectionService,
-} from '../../../../../store/products';
+import { UnitProductCollectionService } from '../../../../../store/products';
 import { UnitCollectionService } from '../../../../../store/units';
 
 @Injectable({
@@ -66,14 +59,9 @@ export class DataService {
     private _translateService: TranslateService,
     private _crudSdk: CrudSdkService,
     private _logger: NGXLogger,
-    private _chainCollectionService: ChainCollectionService,
-    private _groupCollectionService: GroupCollectionService,
     private _unitCollectionService: UnitCollectionService,
     private _adminUserCollectionService: AdminUserCollectionService,
-    private _chainProductCollectionService: ChainProductCollectionService,
-    private _groupProductCollectionService: GroupProductCollectionService,
     private _unitProductCollectionService: UnitProductCollectionService,
-    private _generatedProductCollectionService: GeneratedProductCollectionService,
     private _productCategoryCollectionService: ProductCategoryCollectionService,
     private _productComponentCollectionService: ProductComponentCollectionService,
     private _productComponentSetCollectionService: ProductComponentSetCollectionService,
@@ -114,8 +102,6 @@ export class DataService {
         //  filterNullish(),
         distinctUntilChanged(
           (prev, curr): boolean =>
-            prev?.selectedChainId === curr?.selectedChainId &&
-            prev?.selectedGroupId === curr?.selectedGroupId &&
             prev?.selectedUnitId === curr?.selectedUnitId,
         ),
         takeUntil(this._destroyConnection$),
@@ -143,15 +129,9 @@ export class DataService {
       });
 
     // Collection Services
-    this._chainCollectionService.init(this._destroyConnection$);
-    this._groupCollectionService.init(this._destroyConnection$);
-    this._unitCollectionService.init(this._destroyConnection$);
     this._orderCollectionService.init(this._destroyConnection$);
     this._orderHistoryCollectionService.init(this._destroyConnection$);
-    this._chainProductCollectionService.init(this._destroyConnection$);
-    this._groupProductCollectionService.init(this._destroyConnection$);
     this._unitProductCollectionService.init(this._destroyConnection$);
-    this._generatedProductCollectionService.init(this._destroyConnection$);
     this._productCategoryCollectionService.init(this._destroyConnection$);
     this._productComponentCollectionService.init(this._destroyConnection$);
     this._productComponentSetCollectionService.init(this._destroyConnection$);
@@ -194,14 +174,9 @@ export class DataService {
     this._rolesChanged$.next(true);
 
     // Clear store
-    this._chainCollectionService.clearCache();
-    this._groupCollectionService.clearCache();
     this._unitCollectionService.clearCache();
     this._adminUserCollectionService.clearCache();
-    this._chainProductCollectionService.clearCache();
-    this._groupProductCollectionService.clearCache();
     this._unitProductCollectionService.clearCache();
-    this._generatedProductCollectionService.clearCache();
     this._productCategoryCollectionService.clearCache();
     this._productComponentCollectionService.clearCache();
     this._productComponentSetCollectionService.clearCache();

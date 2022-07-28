@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/integration-tests/angular",
   "sourceRoot": "libs/integration-tests/angular/src",
   "prefix": "bgap",
   "targets": {

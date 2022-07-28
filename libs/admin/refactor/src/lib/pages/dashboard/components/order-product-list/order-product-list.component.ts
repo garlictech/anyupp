@@ -1,5 +1,4 @@
 import { combineLatest } from 'rxjs';
-import { skipWhile } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -8,16 +7,15 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { ProductCategory } from '@bgap/crud-gql/api';
-import { GeneratedProduct, Group, Order } from '@bgap/domain';
+import { ProductCategory, UnitProduct } from '@bgap/crud-gql/api';
+import { GeneratedProduct, Order } from '@bgap/domain';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
 
 import { dashboardSelectors } from '../../../../store/dashboard';
-import { groupsSelectors } from '../../../../store/groups';
 import { ProductCategoryCollectionService } from '../../../../store/product-categories';
-import { GeneratedProductCollectionService } from '../../../../store/products';
+import { UnitProductCollectionService } from '../../../../store/products';
 
 @UntilDestroy()
 @Component({
@@ -28,7 +26,7 @@ import { GeneratedProductCollectionService } from '../../../../store/products';
 })
 export class OrderProductListComponent implements OnInit {
   @Input() selectedOrder?: Order;
-  public generatedUnitProducts: GeneratedProduct[];
+  public unitProducts: UnitProduct[];
   public productCategories: ProductCategory[] = [];
   public selectedProductCategoryId = '';
   public groupCurrency = '';
@@ -38,24 +36,12 @@ export class OrderProductListComponent implements OnInit {
     private _store: Store,
     private _changeDetectorRef: ChangeDetectorRef,
     private _productCategoryCollectionService: ProductCategoryCollectionService,
-    private _generatedProductCollectionService: GeneratedProductCollectionService,
+    private _unitProductCollectionService: UnitProductCollectionService,
   ) {
-    this.generatedUnitProducts = [];
+    this.unitProducts = [];
   }
 
   ngOnInit() {
-    this._store
-      .select(groupsSelectors.getSeletedGroup)
-      .pipe(
-        skipWhile((group): boolean => !group),
-        untilDestroyed(this),
-      )
-      .subscribe((group: Group | undefined) => {
-        this.groupCurrency = group?.currency || '';
-
-        this._changeDetectorRef.detectChanges();
-      });
-
     this._store
       .select(dashboardSelectors.getSize)
       .pipe(untilDestroyed(this))
@@ -70,17 +56,16 @@ export class OrderProductListComponent implements OnInit {
 
     combineLatest([
       this._productCategoryCollectionService.filteredEntities$,
-      this._generatedProductCollectionService.filteredEntities$,
+      this._unitProductCollectionService.filteredEntities$,
     ])
       .pipe(untilDestroyed(this))
-      .subscribe(([productCategories, generatedUnitProducts]) => {
-        this.generatedUnitProducts = generatedUnitProducts;
+      .subscribe(([productCategories, unitProducts]) => {
+        this.unitProducts = unitProducts;
 
         this.productCategories = productCategories.filter(
           (category: ProductCategory) =>
-            this.generatedUnitProducts.filter(
-              p => p.productCategoryId === category.id,
-            ).length > 0,
+            this.unitProducts.filter(p => p.productCategoryId === category.id)
+              .length > 0,
         );
 
         this.selectedProductCategoryId = this.productCategories?.[0]?.id;

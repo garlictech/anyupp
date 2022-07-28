@@ -1,5 +1,4 @@
 {
-  "root": "libs/crud-gql/api",
   "sourceRoot": "libs/crud-gql/api/src",
   "projectType": "library",
   "targets": {

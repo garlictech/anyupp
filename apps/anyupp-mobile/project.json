@@ -1,6 +1,5 @@
 {
   "projectType": "application",
-  "root": "apps/anyupp-mobile",
   "sourceRoot": "apps/anyupp-mobile/lib",
   "implicitDependencies": ["crud-backend"],
   "targets": {

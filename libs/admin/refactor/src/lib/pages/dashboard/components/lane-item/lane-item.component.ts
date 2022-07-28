@@ -49,9 +49,7 @@ export class LaneItemComponent implements OnInit {
       this._store
         .pipe(
           select(
-            productsSelectors.getGeneratedProductImageById(
-              this.orderItem.productId,
-            ),
+            productsSelectors.getUnitProductImageById(this.orderItem.productId),
           ),
           take(1),
         )

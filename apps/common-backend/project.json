@@ -1,5 +1,4 @@
 {
-  "root": "apps/common-backend",
   "sourceRoot": "apps/common-backend/src",
   "projectType": "application",
   "targets": {

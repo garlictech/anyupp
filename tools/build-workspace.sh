@@ -12,7 +12,6 @@ yarn nx run-many --target=config --all --skip-nx-cache --env=$ENVNAME
 yarn nx run-many --target=build --projects=crud-backend,anyupp-global,anyupp-backend,anyupp-mobile --env=$ENVNAME --mode=$MODE
 yarn nx run-many --target=build --projects=variants-manager-site
 
-
 if [ $ENVNAME = 'dev' ]; then
   yarn nx build admin 
 elif [ $ENVNAME = 'prod' ]; then

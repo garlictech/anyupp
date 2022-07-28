@@ -9,7 +9,6 @@
       shape="round"
       size="small"
       class="float-right"
-      [disabled]="(hasSelectedGroupId$ | async) === false"
       (click)="addUnit()"
       [title]="'units.addUnit' | translate"
     >

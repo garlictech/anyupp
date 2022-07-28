@@ -38,7 +38,7 @@ const getProductComponent = ({
 
 const productComponentBase: RequiredId<CreateProductComponentInput> = {
   id: `${testIdPrefix}product_component_id_`,
-  chainId: 'chainId_',
+  ownerEntity: 'chainId_',
   name: {
     en: 'PRODUCT_COMPONENT',
     de: 'PRODUCT_COMPONENT',
@@ -67,7 +67,7 @@ const getComponentSet = ({
   id,
   items: itemIds,
   maxSelection: itemIds.length,
-  chainId,
+  ownerEntity: chainId,
   name: {
     en: `PRODUCT_COMPONENT_SET_${id}`,
     de: `PRODUCT_COMPONENT_SET_${id}`,
@@ -78,7 +78,7 @@ const getComponentSet = ({
 
 const productComponentSetBase: Omit<
   RequiredId<CreateProductComponentSetInput>,
-  'chainId'
+  'ownerEntity'
 > = {
   id: `${testIdPrefix}product_component_set_id_`,
   name: { en: 'COMPONENT_SET', de: 'COMPONENT_SET', hu: 'KOMPONENS_SET' },
@@ -98,7 +98,7 @@ const seededProdComp_11: RequiredId<CreateProductComponentInput> = {
     hu: 'Szobahőmérsékletű',
   },
   description: '20-25 °C',
-  chainId: chainFixture.chainId_seeded_01,
+  ownerEntity: chainFixture.chainId_seeded_01,
 };
 
 const seededProdComp_12: RequiredId<CreateProductComponentInput> = {
@@ -111,7 +111,7 @@ const seededProdComp_12: RequiredId<CreateProductComponentInput> = {
     hu: 'Hideg',
   },
   description: '10-20 °C',
-  chainId: chainFixture.chainId_seeded_01,
+  ownerEntity: chainFixture.chainId_seeded_01,
 };
 
 const seededProdComp_21: RequiredId<CreateProductComponentInput> = {
@@ -124,7 +124,7 @@ const seededProdComp_21: RequiredId<CreateProductComponentInput> = {
     hu: 'Szívószál',
   },
   description: 'Papír szívócső',
-  chainId: chainFixture.chainId_seeded_01,
+  ownerEntity: chainFixture.chainId_seeded_01,
   allergens: [],
 };
 
@@ -138,7 +138,7 @@ const seededProdComp_22: RequiredId<CreateProductComponentInput> = {
     hu: 'Menta levél',
   },
   description: 'Dekoráció',
-  chainId: chainFixture.chainId_seeded_01,
+  ownerEntity: chainFixture.chainId_seeded_01,
   allergens: [],
 };
 
@@ -152,7 +152,7 @@ const seededProdComp_31: RequiredId<CreateProductComponentInput> = {
     hu: 'Hasábburgonya',
   },
   description: 'Frissen szeletelve',
-  chainId: chainFixture.chainId_seeded_01,
+  ownerEntity: chainFixture.chainId_seeded_01,
   allergens: [Allergen.mustard],
 };
 
@@ -166,7 +166,7 @@ const seededProdComp_32: RequiredId<CreateProductComponentInput> = {
     hu: 'Főtt krumpli',
   },
   description: 'Frissen főzve',
-  chainId: chainFixture.chainId_seeded_01,
+  ownerEntity: chainFixture.chainId_seeded_01,
   allergens: [Allergen.mustard],
 };
 
@@ -180,7 +180,7 @@ const seededProdComp_33: RequiredId<CreateProductComponentInput> = {
     hu: 'Rizs',
   },
   description: 'Frissen főzve',
-  chainId: chainFixture.chainId_seeded_01,
+  ownerEntity: chainFixture.chainId_seeded_01,
   allergens: [Allergen.mustard],
 };
 

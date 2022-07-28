@@ -1,6 +1,5 @@
 {
   "projectType": "library",
-  "root": "libs/admin/refactor",
   "sourceRoot": "libs/admin/refactor/src",
   "prefix": "bgap",
   "targets": {

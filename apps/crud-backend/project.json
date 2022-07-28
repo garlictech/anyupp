@@ -1,5 +1,4 @@
 {
-  "root": "apps/crud-backend",
   "sourceRoot": "apps/crud-backend/src",
   "projectType": "application",
   "prefix": "crud-api",

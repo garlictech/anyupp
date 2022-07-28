@@ -1,12 +1,7 @@
 export enum ENTITY_NAME {
-  CHAIN = 'Chain',
-  GROUP = 'Group',
   UNIT = 'Unit',
   ADMIN_USER = 'AdminUser',
-  CHAIN_PRODUCT = 'ChainProduct',
-  GROUP_PRODUCT = 'GroupProduct',
   UNIT_PRODUCT = 'UnitProduct',
-  GENERATED_PRODUCT = 'GeneratedProduct',
   PRODUCT_CATEGORY = 'ProductCategory',
   PRODUCT_COMPONENT = 'ProductComponent',
   PRODUCT_COMPONENT_SET = 'ProductComponentSet',

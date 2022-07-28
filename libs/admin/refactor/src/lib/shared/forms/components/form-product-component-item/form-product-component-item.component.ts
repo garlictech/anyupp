@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { UntypedFormArray } from '@angular/forms';
-import { EProductLevel } from '@bgap/shared/types';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -11,7 +10,5 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 })
 export class FormProductComponentItemComponent {
   @Input() itemFormArray?: UntypedFormArray;
-  @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
-  public eProductLevel = EProductLevel;
 }

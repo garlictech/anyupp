@@ -24,11 +24,11 @@
       <div class="row">
         <div class="col-md-4">
           <bgap-form-select
-            caption="common.chain"
+            caption="common.unit"
             [localize]="false"
-            [options]="(chainOptions$ | async) || []"
-            [control]="dialogForm?.get('chainId') | asFormControl"
-            inputId="chainId"
+            [options]="(unitOptions$ | async) || []"
+            [control]="dialogForm?.get('unitId') | asFormControl"
+            inputId="unitId"
           ></bgap-form-select>
         </div>
         <div class="col-md-4">

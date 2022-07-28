@@ -46,8 +46,6 @@ export interface AdminUser {
 }
 
 export interface AdminUserSettings {
-  selectedChainId?: Maybe<Scalars['String']>;
-  selectedGroupId?: Maybe<Scalars['String']>;
   selectedHistoryDate?: Maybe<Scalars['Int']>;
   selectedLanguage?: Maybe<Scalars['String']>;
   selectedProductCategoryId?: Maybe<Scalars['String']>;
@@ -55,8 +53,6 @@ export interface AdminUserSettings {
 }
 
 export interface AdminUserSettingsInput {
-  selectedChainId?: InputMaybe<Scalars['String']>;
-  selectedGroupId?: InputMaybe<Scalars['String']>;
   selectedHistoryDate?: InputMaybe<Scalars['Int']>;
   selectedLanguage?: InputMaybe<Scalars['String']>;
   selectedProductCategoryId?: InputMaybe<Scalars['String']>;
@@ -178,39 +174,6 @@ export interface Cart {
   version?: Maybe<Scalars['Int']>;
 }
 
-export interface Chain {
-  address?: Maybe<Address>;
-  categoryOrders?: Maybe<Array<Maybe<NestedSortItem>>>;
-  createdAt: Scalars['AWSDateTime'];
-  description?: Maybe<LocalizedItem>;
-  email?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  isActive?: Maybe<Scalars['Boolean']>;
-  name: Scalars['String'];
-  phone?: Maybe<Scalars['String']>;
-  style: ChainStyle;
-  updatedAt: Scalars['AWSDateTime'];
-}
-
-export interface ChainProduct {
-  allergens?: Maybe<Array<Maybe<Allergen>>>;
-  chainId: Scalars['ID'];
-  configSets?: Maybe<Array<Maybe<ProductConfigSet>>>;
-  createdAt: Scalars['AWSDateTime'];
-  deletedAt?: Maybe<Scalars['AWSDateTime']>;
-  description?: Maybe<LocalizedItem>;
-  dirty?: Maybe<Scalars['Boolean']>;
-  externalId?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  image?: Maybe<Scalars['String']>;
-  isVisible: Scalars['Boolean'];
-  name: LocalizedItem;
-  productCategoryId: Scalars['ID'];
-  productType: ProductType;
-  updatedAt: Scalars['AWSDateTime'];
-  variants?: Maybe<Array<Maybe<ProductVariant>>>;
-}
-
 export interface ChainStyle {
   colors: ChainStyleColors;
   images?: Maybe<ChainStyleImages>;
@@ -304,92 +267,11 @@ export interface CreateCartInput {
   version?: InputMaybe<Scalars['Int']>;
 }
 
-export interface CreateChainInput {
-  address?: InputMaybe<AddressInput>;
-  categoryOrders?: InputMaybe<Array<InputMaybe<NestedSortItemInput>>>;
-  description?: InputMaybe<LocalizedItemInput>;
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  isActive?: InputMaybe<Scalars['Boolean']>;
-  name: Scalars['String'];
-  phone?: InputMaybe<Scalars['String']>;
-  style: ChainStyleInput;
-}
-
-export interface CreateChainProductInput {
-  allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
-  chainId: Scalars['ID'];
-  configSets?: InputMaybe<Array<InputMaybe<ProductConfigSetInput>>>;
-  deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  description?: InputMaybe<LocalizedItemInput>;
-  dirty?: InputMaybe<Scalars['Boolean']>;
-  externalId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  image?: InputMaybe<Scalars['String']>;
-  isVisible: Scalars['Boolean'];
-  name: LocalizedItemInput;
-  productCategoryId: Scalars['ID'];
-  productType: ProductType;
-  variants?: InputMaybe<Array<InputMaybe<ProductVariantInput>>>;
-}
-
 export interface CreateFavoriteProductInput {
-  favoriteProductProductId: Scalars['ID'];
   id?: InputMaybe<Scalars['ID']>;
+  product: GeneratedProductInput;
   unitId: Scalars['ID'];
   userId: Scalars['ID'];
-}
-
-export interface CreateGeneratedProductCategoryInput {
-  id?: InputMaybe<Scalars['ID']>;
-  position?: InputMaybe<Scalars['Int']>;
-  productCategoryId: Scalars['ID'];
-  productNum: Scalars['Int'];
-  unitId: Scalars['ID'];
-}
-
-export interface CreateGeneratedProductInput {
-  allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
-  configSets?: InputMaybe<Array<InputMaybe<GeneratedProductConfigSetInput>>>;
-  description?: InputMaybe<LocalizedItemInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  image?: InputMaybe<Scalars['String']>;
-  name: LocalizedItemInput;
-  position: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
-  productType: ProductType;
-  soldOut?: InputMaybe<Scalars['Boolean']>;
-  supportedServingModes?: InputMaybe<Array<ServingMode>>;
-  takeawayTax?: InputMaybe<Scalars['Int']>;
-  tax: Scalars['Int'];
-  unitId: Scalars['ID'];
-  variants: Array<GeneratedProductVariantInput>;
-}
-
-export interface CreateGroupInput {
-  address?: InputMaybe<AddressInput>;
-  chainId: Scalars['ID'];
-  currency: Scalars['String'];
-  description?: InputMaybe<LocalizedItemInput>;
-  email?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  name: Scalars['String'];
-  phone?: InputMaybe<Scalars['String']>;
-}
-
-export interface CreateGroupProductInput {
-  chainId: Scalars['ID'];
-  configSets?: InputMaybe<Array<InputMaybe<ProductConfigSetInput>>>;
-  deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  dirty?: InputMaybe<Scalars['Boolean']>;
-  externalId?: InputMaybe<Scalars['String']>;
-  groupId: Scalars['ID'];
-  id?: InputMaybe<Scalars['ID']>;
-  isVisible: Scalars['Boolean'];
-  parentId: Scalars['ID'];
-  takeawayTax?: InputMaybe<Scalars['Int']>;
-  tax: Scalars['Int'];
-  variants?: InputMaybe<Array<InputMaybe<ProductVariantInput>>>;
 }
 
 export interface CreateInvoiceInput {
@@ -446,28 +328,27 @@ export interface CreateOrderInput {
 }
 
 export interface CreateProductCategoryInput {
-  chainId: Scalars['ID'];
   description?: InputMaybe<LocalizedItemInput>;
   id?: InputMaybe<Scalars['ID']>;
   image?: InputMaybe<Scalars['String']>;
   name: LocalizedItemInput;
+  ownerEntity: Scalars['ID'];
   position: Scalars['Int'];
 }
 
 export interface CreateProductComponentInput {
   allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
-  chainId: Scalars['ID'];
   deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
   description?: InputMaybe<Scalars['String']>;
   dirty?: InputMaybe<Scalars['Boolean']>;
   externalId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['ID']>;
   name: LocalizedItemInput;
+  ownerEntity: Scalars['ID'];
   soldOut?: InputMaybe<Scalars['Boolean']>;
 }
 
 export interface CreateProductComponentSetInput {
-  chainId: Scalars['ID'];
   deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
   description: Scalars['String'];
   dirty?: InputMaybe<Scalars['Boolean']>;
@@ -476,6 +357,7 @@ export interface CreateProductComponentSetInput {
   items: Array<Scalars['ID']>;
   maxSelection?: InputMaybe<Scalars['Int']>;
   name: LocalizedItemInput;
+  ownerEntity: Scalars['ID'];
   supportedServingModes?: InputMaybe<Array<ServingMode>>;
   type: ProductComponentSetType;
 }
@@ -653,31 +535,7 @@ export interface DeleteCartInput {
   id: Scalars['ID'];
 }
 
-export interface DeleteChainInput {
-  id: Scalars['ID'];
-}
-
-export interface DeleteChainProductInput {
-  id: Scalars['ID'];
-}
-
 export interface DeleteFavoriteProductInput {
-  id: Scalars['ID'];
-}
-
-export interface DeleteGeneratedProductCategoryInput {
-  id: Scalars['ID'];
-}
-
-export interface DeleteGeneratedProductInput {
-  id: Scalars['ID'];
-}
-
-export interface DeleteGroupInput {
-  id: Scalars['ID'];
-}
-
-export interface DeleteGroupProductInput {
   id: Scalars['ID'];
 }
 
@@ -727,7 +585,6 @@ export interface DeleteVariantInput {
 
 export interface FavoriteProduct {
   createdAt: Scalars['AWSDateTime'];
-  favoriteProductProductId: Scalars['ID'];
   id: Scalars['ID'];
   product: GeneratedProduct;
   unitId: Scalars['ID'];
@@ -778,7 +635,6 @@ export interface FloorMapDataObjectInput {
 export interface GeneratedProduct {
   allergens?: Maybe<Array<Maybe<Allergen>>>;
   configSets?: Maybe<Array<Maybe<GeneratedProductConfigSet>>>;
-  createdAt: Scalars['AWSDateTime'];
   description?: Maybe<LocalizedItem>;
   id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
@@ -791,19 +647,16 @@ export interface GeneratedProduct {
   takeawayTax?: Maybe<Scalars['Int']>;
   tax: Scalars['Int'];
   unitId: Scalars['ID'];
-  updatedAt: Scalars['AWSDateTime'];
   variants: Array<GeneratedProductVariant>;
 }
 
 export interface GeneratedProductCategory {
-  createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
   position?: Maybe<Scalars['Int']>;
   productCategory: ProductCategory;
   productCategoryId: Scalars['ID'];
   productNum: Scalars['Int'];
   unitId: Scalars['ID'];
-  updatedAt: Scalars['AWSDateTime'];
 }
 
 export interface GeneratedProductConfigComponent {
@@ -848,6 +701,24 @@ export interface GeneratedProductConfigSetInput {
   type: ProductComponentSetType;
 }
 
+export interface GeneratedProductInput {
+  allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
+  configSets?: InputMaybe<Array<InputMaybe<GeneratedProductConfigSetInput>>>;
+  description?: InputMaybe<LocalizedItemInput>;
+  id?: InputMaybe<Scalars['ID']>;
+  image?: InputMaybe<Scalars['String']>;
+  name: LocalizedItemInput;
+  position: Scalars['Int'];
+  productCategoryId: Scalars['ID'];
+  productType: ProductType;
+  soldOut?: InputMaybe<Scalars['Boolean']>;
+  supportedServingModes?: InputMaybe<Array<ServingMode>>;
+  takeawayTax?: InputMaybe<Scalars['Int']>;
+  tax: Scalars['Int'];
+  unitId: Scalars['ID'];
+  variants: Array<GeneratedProductVariantInput>;
+}
+
 export interface GeneratedProductVariant {
   id: Scalars['ID'];
   netPackagingFee?: Maybe<Scalars['Float']>;
@@ -880,12 +751,9 @@ export enum GeoSearchableObjectType {
 
 export interface GeoUnit {
   address: Address;
-  chain?: Maybe<Chain>;
   chainId: Scalars['ID'];
-  createdAt: Scalars['AWSDateTime'];
   currency: Scalars['String'];
   distance: Scalars['Int'];
-  group?: Maybe<Group>;
   groupId: Scalars['ID'];
   id: Scalars['ID'];
   isAcceptingOrders: Scalars['Boolean'];
@@ -903,7 +771,6 @@ export interface GeoUnit {
   supportedServingModes?: Maybe<Array<ServingMode>>;
   tipPolicy?: Maybe<TipPolicy>;
   unit?: Maybe<Unit>;
-  updatedAt: Scalars['AWSDateTime'];
 }
 
 export interface GeoUnitList {
@@ -912,36 +779,6 @@ export interface GeoUnitList {
 
 export interface GetUnitsNearLocationInput {
   location: LocationLatLngInput;
-}
-
-export interface Group {
-  address?: Maybe<Address>;
-  chainId: Scalars['ID'];
-  createdAt: Scalars['AWSDateTime'];
-  currency: Scalars['String'];
-  description?: Maybe<LocalizedItem>;
-  email?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name: Scalars['String'];
-  phone?: Maybe<Scalars['String']>;
-  updatedAt: Scalars['AWSDateTime'];
-}
-
-export interface GroupProduct {
-  chainId: Scalars['ID'];
-  configSets?: Maybe<Array<Maybe<ProductConfigSet>>>;
-  createdAt: Scalars['AWSDateTime'];
-  deletedAt?: Maybe<Scalars['AWSDateTime']>;
-  dirty?: Maybe<Scalars['Boolean']>;
-  externalId?: Maybe<Scalars['String']>;
-  groupId: Scalars['ID'];
-  id: Scalars['ID'];
-  isVisible: Scalars['Boolean'];
-  parentId: Scalars['ID'];
-  takeawayTax?: Maybe<Scalars['Int']>;
-  tax: Scalars['Int'];
-  updatedAt: Scalars['AWSDateTime'];
-  variants?: Maybe<Array<Maybe<ProductVariant>>>;
 }
 
 export interface ImageAsset {
@@ -1108,71 +945,8 @@ export interface ModelCartFilterInput {
   version?: InputMaybe<ModelIntInput>;
 }
 
-export interface ModelChainConditionInput {
-  and?: InputMaybe<Array<InputMaybe<ModelChainConditionInput>>>;
-  email?: InputMaybe<ModelStringInput>;
-  isActive?: InputMaybe<ModelBooleanInput>;
-  name?: InputMaybe<ModelStringInput>;
-  not?: InputMaybe<ModelChainConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelChainConditionInput>>>;
-  phone?: InputMaybe<ModelStringInput>;
-}
-
-export interface ModelChainConnection {
-  items: Array<Maybe<Chain>>;
-  nextToken?: Maybe<Scalars['String']>;
-}
-
-export interface ModelChainFilterInput {
-  and?: InputMaybe<Array<InputMaybe<ModelChainFilterInput>>>;
-  email?: InputMaybe<ModelStringInput>;
-  id?: InputMaybe<ModelIdInput>;
-  isActive?: InputMaybe<ModelBooleanInput>;
-  name?: InputMaybe<ModelStringInput>;
-  not?: InputMaybe<ModelChainFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelChainFilterInput>>>;
-  phone?: InputMaybe<ModelStringInput>;
-}
-
-export interface ModelChainProductConditionInput {
-  allergens?: InputMaybe<ModelAllergenListInput>;
-  and?: InputMaybe<Array<InputMaybe<ModelChainProductConditionInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
-  deletedAt?: InputMaybe<ModelStringInput>;
-  dirty?: InputMaybe<ModelBooleanInput>;
-  externalId?: InputMaybe<ModelStringInput>;
-  image?: InputMaybe<ModelStringInput>;
-  isVisible?: InputMaybe<ModelBooleanInput>;
-  not?: InputMaybe<ModelChainProductConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelChainProductConditionInput>>>;
-  productCategoryId?: InputMaybe<ModelIdInput>;
-  productType?: InputMaybe<ModelProductTypeInput>;
-}
-
-export interface ModelChainProductConnection {
-  items: Array<Maybe<ChainProduct>>;
-  nextToken?: Maybe<Scalars['String']>;
-}
-
-export interface ModelChainProductFilterInput {
-  allergens?: InputMaybe<ModelAllergenListInput>;
-  and?: InputMaybe<Array<InputMaybe<ModelChainProductFilterInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
-  deletedAt?: InputMaybe<ModelStringInput>;
-  dirty?: InputMaybe<ModelBooleanInput>;
-  externalId?: InputMaybe<ModelStringInput>;
-  id?: InputMaybe<ModelIdInput>;
-  image?: InputMaybe<ModelStringInput>;
-  isVisible?: InputMaybe<ModelBooleanInput>;
-  not?: InputMaybe<ModelChainProductFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelChainProductFilterInput>>>;
-  productCategoryId?: InputMaybe<ModelIdInput>;
-  productType?: InputMaybe<ModelProductTypeInput>;
-}
-
 export interface ModelFavoriteProductConditionInput {
   and?: InputMaybe<Array<InputMaybe<ModelFavoriteProductConditionInput>>>;
-  favoriteProductProductId?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelFavoriteProductConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelFavoriteProductConditionInput>>>;
   unitId?: InputMaybe<ModelIdInput>;
@@ -1186,7 +960,6 @@ export interface ModelFavoriteProductConnection {
 
 export interface ModelFavoriteProductFilterInput {
   and?: InputMaybe<Array<InputMaybe<ModelFavoriteProductFilterInput>>>;
-  favoriteProductProductId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelFavoriteProductFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelFavoriteProductFilterInput>>>;
@@ -1204,134 +977,6 @@ export interface ModelFloatInput {
   le?: InputMaybe<Scalars['Float']>;
   lt?: InputMaybe<Scalars['Float']>;
   ne?: InputMaybe<Scalars['Float']>;
-}
-
-export interface ModelGeneratedProductCategoryConditionInput {
-  and?: InputMaybe<Array<InputMaybe<ModelGeneratedProductCategoryConditionInput>>>;
-  not?: InputMaybe<ModelGeneratedProductCategoryConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelGeneratedProductCategoryConditionInput>>>;
-  position?: InputMaybe<ModelIntInput>;
-  productCategoryId?: InputMaybe<ModelIdInput>;
-  productNum?: InputMaybe<ModelIntInput>;
-  unitId?: InputMaybe<ModelIdInput>;
-}
-
-export interface ModelGeneratedProductCategoryConnection {
-  items: Array<Maybe<GeneratedProductCategory>>;
-  nextToken?: Maybe<Scalars['String']>;
-}
-
-export interface ModelGeneratedProductCategoryFilterInput {
-  and?: InputMaybe<Array<InputMaybe<ModelGeneratedProductCategoryFilterInput>>>;
-  id?: InputMaybe<ModelIdInput>;
-  not?: InputMaybe<ModelGeneratedProductCategoryFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelGeneratedProductCategoryFilterInput>>>;
-  position?: InputMaybe<ModelIntInput>;
-  productCategoryId?: InputMaybe<ModelIdInput>;
-  productNum?: InputMaybe<ModelIntInput>;
-  unitId?: InputMaybe<ModelIdInput>;
-}
-
-export interface ModelGeneratedProductConditionInput {
-  allergens?: InputMaybe<ModelAllergenListInput>;
-  and?: InputMaybe<Array<InputMaybe<ModelGeneratedProductConditionInput>>>;
-  image?: InputMaybe<ModelStringInput>;
-  not?: InputMaybe<ModelGeneratedProductConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelGeneratedProductConditionInput>>>;
-  position?: InputMaybe<ModelIntInput>;
-  productCategoryId?: InputMaybe<ModelIdInput>;
-  productType?: InputMaybe<ModelProductTypeInput>;
-  soldOut?: InputMaybe<ModelBooleanInput>;
-  supportedServingModes?: InputMaybe<ModelServingModeListInput>;
-  takeawayTax?: InputMaybe<ModelIntInput>;
-  tax?: InputMaybe<ModelIntInput>;
-  unitId?: InputMaybe<ModelIdInput>;
-}
-
-export interface ModelGeneratedProductConnection {
-  items: Array<Maybe<GeneratedProduct>>;
-  nextToken?: Maybe<Scalars['String']>;
-}
-
-export interface ModelGeneratedProductFilterInput {
-  allergens?: InputMaybe<ModelAllergenListInput>;
-  and?: InputMaybe<Array<InputMaybe<ModelGeneratedProductFilterInput>>>;
-  id?: InputMaybe<ModelIdInput>;
-  image?: InputMaybe<ModelStringInput>;
-  not?: InputMaybe<ModelGeneratedProductFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelGeneratedProductFilterInput>>>;
-  position?: InputMaybe<ModelIntInput>;
-  productCategoryId?: InputMaybe<ModelIdInput>;
-  productType?: InputMaybe<ModelProductTypeInput>;
-  soldOut?: InputMaybe<ModelBooleanInput>;
-  supportedServingModes?: InputMaybe<ModelServingModeListInput>;
-  takeawayTax?: InputMaybe<ModelIntInput>;
-  tax?: InputMaybe<ModelIntInput>;
-  unitId?: InputMaybe<ModelIdInput>;
-}
-
-export interface ModelGroupConditionInput {
-  and?: InputMaybe<Array<InputMaybe<ModelGroupConditionInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
-  currency?: InputMaybe<ModelStringInput>;
-  email?: InputMaybe<ModelStringInput>;
-  name?: InputMaybe<ModelStringInput>;
-  not?: InputMaybe<ModelGroupConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelGroupConditionInput>>>;
-  phone?: InputMaybe<ModelStringInput>;
-}
-
-export interface ModelGroupConnection {
-  items: Array<Maybe<Group>>;
-  nextToken?: Maybe<Scalars['String']>;
-}
-
-export interface ModelGroupFilterInput {
-  and?: InputMaybe<Array<InputMaybe<ModelGroupFilterInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
-  currency?: InputMaybe<ModelStringInput>;
-  email?: InputMaybe<ModelStringInput>;
-  id?: InputMaybe<ModelIdInput>;
-  name?: InputMaybe<ModelStringInput>;
-  not?: InputMaybe<ModelGroupFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelGroupFilterInput>>>;
-  phone?: InputMaybe<ModelStringInput>;
-}
-
-export interface ModelGroupProductConditionInput {
-  and?: InputMaybe<Array<InputMaybe<ModelGroupProductConditionInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
-  deletedAt?: InputMaybe<ModelStringInput>;
-  dirty?: InputMaybe<ModelBooleanInput>;
-  externalId?: InputMaybe<ModelStringInput>;
-  groupId?: InputMaybe<ModelIdInput>;
-  isVisible?: InputMaybe<ModelBooleanInput>;
-  not?: InputMaybe<ModelGroupProductConditionInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelGroupProductConditionInput>>>;
-  parentId?: InputMaybe<ModelIdInput>;
-  takeawayTax?: InputMaybe<ModelIntInput>;
-  tax?: InputMaybe<ModelIntInput>;
-}
-
-export interface ModelGroupProductConnection {
-  items: Array<Maybe<GroupProduct>>;
-  nextToken?: Maybe<Scalars['String']>;
-}
-
-export interface ModelGroupProductFilterInput {
-  and?: InputMaybe<Array<InputMaybe<ModelGroupProductFilterInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
-  deletedAt?: InputMaybe<ModelStringInput>;
-  dirty?: InputMaybe<ModelBooleanInput>;
-  externalId?: InputMaybe<ModelStringInput>;
-  groupId?: InputMaybe<ModelIdInput>;
-  id?: InputMaybe<ModelIdInput>;
-  isVisible?: InputMaybe<ModelBooleanInput>;
-  not?: InputMaybe<ModelGroupProductFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<ModelGroupProductFilterInput>>>;
-  parentId?: InputMaybe<ModelIdInput>;
-  takeawayTax?: InputMaybe<ModelIntInput>;
-  tax?: InputMaybe<ModelIntInput>;
 }
 
 export interface ModelIdInput {
@@ -1519,10 +1164,10 @@ export interface ModelPaymentStatusInput {
 
 export interface ModelProductCategoryConditionInput {
   and?: InputMaybe<Array<InputMaybe<ModelProductCategoryConditionInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
   image?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelProductCategoryConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductCategoryConditionInput>>>;
+  ownerEntity?: InputMaybe<ModelIdInput>;
   position?: InputMaybe<ModelIntInput>;
 }
 
@@ -1533,24 +1178,24 @@ export interface ModelProductCategoryConnection {
 
 export interface ModelProductCategoryFilterInput {
   and?: InputMaybe<Array<InputMaybe<ModelProductCategoryFilterInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
   id?: InputMaybe<ModelIdInput>;
   image?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelProductCategoryFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductCategoryFilterInput>>>;
+  ownerEntity?: InputMaybe<ModelIdInput>;
   position?: InputMaybe<ModelIntInput>;
 }
 
 export interface ModelProductComponentConditionInput {
   allergens?: InputMaybe<ModelAllergenListInput>;
   and?: InputMaybe<Array<InputMaybe<ModelProductComponentConditionInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
   deletedAt?: InputMaybe<ModelStringInput>;
   description?: InputMaybe<ModelStringInput>;
   dirty?: InputMaybe<ModelBooleanInput>;
   externalId?: InputMaybe<ModelStringInput>;
   not?: InputMaybe<ModelProductComponentConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductComponentConditionInput>>>;
+  ownerEntity?: InputMaybe<ModelIdInput>;
   soldOut?: InputMaybe<ModelBooleanInput>;
 }
 
@@ -1562,7 +1207,6 @@ export interface ModelProductComponentConnection {
 export interface ModelProductComponentFilterInput {
   allergens?: InputMaybe<ModelAllergenListInput>;
   and?: InputMaybe<Array<InputMaybe<ModelProductComponentFilterInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
   deletedAt?: InputMaybe<ModelStringInput>;
   description?: InputMaybe<ModelStringInput>;
   dirty?: InputMaybe<ModelBooleanInput>;
@@ -1570,12 +1214,12 @@ export interface ModelProductComponentFilterInput {
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelProductComponentFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductComponentFilterInput>>>;
+  ownerEntity?: InputMaybe<ModelIdInput>;
   soldOut?: InputMaybe<ModelBooleanInput>;
 }
 
 export interface ModelProductComponentSetConditionInput {
   and?: InputMaybe<Array<InputMaybe<ModelProductComponentSetConditionInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
   deletedAt?: InputMaybe<ModelStringInput>;
   description?: InputMaybe<ModelStringInput>;
   dirty?: InputMaybe<ModelBooleanInput>;
@@ -1584,6 +1228,7 @@ export interface ModelProductComponentSetConditionInput {
   maxSelection?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelProductComponentSetConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductComponentSetConditionInput>>>;
+  ownerEntity?: InputMaybe<ModelIdInput>;
   supportedServingModes?: InputMaybe<ModelServingModeListInput>;
   type?: InputMaybe<ModelProductComponentSetTypeInput>;
 }
@@ -1595,7 +1240,6 @@ export interface ModelProductComponentSetConnection {
 
 export interface ModelProductComponentSetFilterInput {
   and?: InputMaybe<Array<InputMaybe<ModelProductComponentSetFilterInput>>>;
-  chainId?: InputMaybe<ModelIdInput>;
   deletedAt?: InputMaybe<ModelStringInput>;
   description?: InputMaybe<ModelStringInput>;
   dirty?: InputMaybe<ModelBooleanInput>;
@@ -1605,6 +1249,7 @@ export interface ModelProductComponentSetFilterInput {
   maxSelection?: InputMaybe<ModelIntInput>;
   not?: InputMaybe<ModelProductComponentSetFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductComponentSetFilterInput>>>;
+  ownerEntity?: InputMaybe<ModelIdInput>;
   supportedServingModes?: InputMaybe<ModelServingModeListInput>;
   type?: InputMaybe<ModelProductComponentSetTypeInput>;
 }
@@ -1935,13 +1580,7 @@ export interface Mutation {
   createAdminUser?: Maybe<AdminUser>;
   createAnonymUser?: Maybe<CreateAnonymUserOutput>;
   createCart?: Maybe<Cart>;
-  createChain?: Maybe<Chain>;
-  createChainProduct?: Maybe<ChainProduct>;
   createFavoriteProduct?: Maybe<FavoriteProduct>;
-  createGeneratedProduct?: Maybe<GeneratedProduct>;
-  createGeneratedProductCategory?: Maybe<GeneratedProductCategory>;
-  createGroup?: Maybe<Group>;
-  createGroupProduct?: Maybe<GroupProduct>;
   createInvoice?: Maybe<Invoice>;
   createOrder?: Maybe<Order>;
   createOrderFromCart?: Maybe<Scalars['ID']>;
@@ -1957,13 +1596,7 @@ export interface Mutation {
   createVariant?: Maybe<Variant>;
   deleteAdminUser?: Maybe<AdminUser>;
   deleteCart?: Maybe<Cart>;
-  deleteChain?: Maybe<Chain>;
-  deleteChainProduct?: Maybe<ChainProduct>;
   deleteFavoriteProduct?: Maybe<FavoriteProduct>;
-  deleteGeneratedProduct?: Maybe<GeneratedProduct>;
-  deleteGeneratedProductCategory?: Maybe<GeneratedProductCategory>;
-  deleteGroup?: Maybe<Group>;
-  deleteGroupProduct?: Maybe<GroupProduct>;
   deleteInvoice?: Maybe<Invoice>;
   deleteMyStripeCard?: Maybe<Scalars['Boolean']>;
   deleteOrder?: Maybe<Order>;
@@ -1982,13 +1615,7 @@ export interface Mutation {
   startStripePaymentConnected?: Maybe<StartStripePaymentOutput>;
   updateAdminUser?: Maybe<AdminUser>;
   updateCart?: Maybe<Cart>;
-  updateChain?: Maybe<Chain>;
-  updateChainProduct?: Maybe<ChainProduct>;
   updateFavoriteProduct?: Maybe<FavoriteProduct>;
-  updateGeneratedProduct?: Maybe<GeneratedProduct>;
-  updateGeneratedProductCategory?: Maybe<GeneratedProductCategory>;
-  updateGroup?: Maybe<Group>;
-  updateGroupProduct?: Maybe<GroupProduct>;
   updateInvoice?: Maybe<Invoice>;
   updateMyStripeCard?: Maybe<StripeCard>;
   updateOrder?: Maybe<Order>;
@@ -2016,45 +1643,9 @@ export interface MutationCreateCartArgs {
 }
 
 
-export interface MutationCreateChainArgs {
-  condition?: InputMaybe<ModelChainConditionInput>;
-  input: CreateChainInput;
-}
-
-
-export interface MutationCreateChainProductArgs {
-  condition?: InputMaybe<ModelChainProductConditionInput>;
-  input: CreateChainProductInput;
-}
-
-
 export interface MutationCreateFavoriteProductArgs {
   condition?: InputMaybe<ModelFavoriteProductConditionInput>;
   input: CreateFavoriteProductInput;
-}
-
-
-export interface MutationCreateGeneratedProductArgs {
-  condition?: InputMaybe<ModelGeneratedProductConditionInput>;
-  input: CreateGeneratedProductInput;
-}
-
-
-export interface MutationCreateGeneratedProductCategoryArgs {
-  condition?: InputMaybe<ModelGeneratedProductCategoryConditionInput>;
-  input: CreateGeneratedProductCategoryInput;
-}
-
-
-export interface MutationCreateGroupArgs {
-  condition?: InputMaybe<ModelGroupConditionInput>;
-  input: CreateGroupInput;
-}
-
-
-export interface MutationCreateGroupProductArgs {
-  condition?: InputMaybe<ModelGroupProductConditionInput>;
-  input: CreateGroupProductInput;
 }
 
 
@@ -2143,45 +1734,9 @@ export interface MutationDeleteCartArgs {
 }
 
 
-export interface MutationDeleteChainArgs {
-  condition?: InputMaybe<ModelChainConditionInput>;
-  input: DeleteChainInput;
-}
-
-
-export interface MutationDeleteChainProductArgs {
-  condition?: InputMaybe<ModelChainProductConditionInput>;
-  input: DeleteChainProductInput;
-}
-
-
 export interface MutationDeleteFavoriteProductArgs {
   condition?: InputMaybe<ModelFavoriteProductConditionInput>;
   input: DeleteFavoriteProductInput;
-}
-
-
-export interface MutationDeleteGeneratedProductArgs {
-  condition?: InputMaybe<ModelGeneratedProductConditionInput>;
-  input: DeleteGeneratedProductInput;
-}
-
-
-export interface MutationDeleteGeneratedProductCategoryArgs {
-  condition?: InputMaybe<ModelGeneratedProductCategoryConditionInput>;
-  input: DeleteGeneratedProductCategoryInput;
-}
-
-
-export interface MutationDeleteGroupArgs {
-  condition?: InputMaybe<ModelGroupConditionInput>;
-  input: DeleteGroupInput;
-}
-
-
-export interface MutationDeleteGroupProductArgs {
-  condition?: InputMaybe<ModelGroupProductConditionInput>;
-  input: DeleteGroupProductInput;
 }
 
 
@@ -2288,45 +1843,9 @@ export interface MutationUpdateCartArgs {
 }
 
 
-export interface MutationUpdateChainArgs {
-  condition?: InputMaybe<ModelChainConditionInput>;
-  input: UpdateChainInput;
-}
-
-
-export interface MutationUpdateChainProductArgs {
-  condition?: InputMaybe<ModelChainProductConditionInput>;
-  input: UpdateChainProductInput;
-}
-
-
 export interface MutationUpdateFavoriteProductArgs {
   condition?: InputMaybe<ModelFavoriteProductConditionInput>;
   input: UpdateFavoriteProductInput;
-}
-
-
-export interface MutationUpdateGeneratedProductArgs {
-  condition?: InputMaybe<ModelGeneratedProductConditionInput>;
-  input: UpdateGeneratedProductInput;
-}
-
-
-export interface MutationUpdateGeneratedProductCategoryArgs {
-  condition?: InputMaybe<ModelGeneratedProductCategoryConditionInput>;
-  input: UpdateGeneratedProductCategoryInput;
-}
-
-
-export interface MutationUpdateGroupArgs {
-  condition?: InputMaybe<ModelGroupConditionInput>;
-  input: UpdateGroupInput;
-}
-
-
-export interface MutationUpdateGroupProductArgs {
-  condition?: InputMaybe<ModelGroupProductConditionInput>;
-  input: UpdateGroupProductInput;
 }
 
 
@@ -2419,13 +1938,6 @@ export interface OpeningHoursByDate {
   date: Scalars['String'];
   from?: Maybe<Scalars['Float']>;
   to?: Maybe<Scalars['Float']>;
-}
-
-export interface OpeningHoursByDateInput {
-  closed: Scalars['Boolean'];
-  date: Scalars['String'];
-  from?: InputMaybe<Scalars['Float']>;
-  to?: InputMaybe<Scalars['Float']>;
 }
 
 export interface Order {
@@ -2670,19 +2182,18 @@ export interface PriceShownInput {
 }
 
 export interface ProductCategory {
-  chainId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   description?: Maybe<LocalizedItem>;
   id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
   name: LocalizedItem;
+  ownerEntity: Scalars['ID'];
   position: Scalars['Int'];
   updatedAt: Scalars['AWSDateTime'];
 }
 
 export interface ProductComponent {
   allergens?: Maybe<Array<Maybe<Allergen>>>;
-  chainId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   deletedAt?: Maybe<Scalars['AWSDateTime']>;
   description?: Maybe<Scalars['String']>;
@@ -2690,12 +2201,12 @@ export interface ProductComponent {
   externalId?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   name: LocalizedItem;
+  ownerEntity: Scalars['ID'];
   soldOut?: Maybe<Scalars['Boolean']>;
   updatedAt: Scalars['AWSDateTime'];
 }
 
 export interface ProductComponentSet {
-  chainId: Scalars['ID'];
   createdAt: Scalars['AWSDateTime'];
   deletedAt?: Maybe<Scalars['AWSDateTime']>;
   description: Scalars['String'];
@@ -2705,6 +2216,7 @@ export interface ProductComponentSet {
   items: Array<Scalars['ID']>;
   maxSelection?: Maybe<Scalars['Int']>;
   name: LocalizedItem;
+  ownerEntity: Scalars['ID'];
   supportedServingModes?: Maybe<Array<ServingMode>>;
   type: ProductComponentSetType;
   updatedAt: Scalars['AWSDateTime'];
@@ -2796,13 +2308,7 @@ export interface ProductVariantPackInput {
 export interface Query {
   getAdminUser?: Maybe<AdminUser>;
   getCart?: Maybe<Cart>;
-  getChain?: Maybe<Chain>;
-  getChainProduct?: Maybe<ChainProduct>;
   getFavoriteProduct?: Maybe<FavoriteProduct>;
-  getGeneratedProduct?: Maybe<GeneratedProduct>;
-  getGeneratedProductCategory?: Maybe<GeneratedProductCategory>;
-  getGroup?: Maybe<Group>;
-  getGroupProduct?: Maybe<GroupProduct>;
   getInvoice?: Maybe<Invoice>;
   getOrder?: Maybe<Order>;
   getProductCategory?: Maybe<ProductCategory>;
@@ -2817,13 +2323,7 @@ export interface Query {
   getVariant?: Maybe<Variant>;
   listAdminUsers?: Maybe<ModelAdminUserConnection>;
   listCarts?: Maybe<ModelCartConnection>;
-  listChainProducts?: Maybe<ModelChainProductConnection>;
-  listChains?: Maybe<ModelChainConnection>;
   listFavoriteProducts?: Maybe<ModelFavoriteProductConnection>;
-  listGeneratedProductCategories?: Maybe<ModelGeneratedProductCategoryConnection>;
-  listGeneratedProducts?: Maybe<ModelGeneratedProductConnection>;
-  listGroupProducts?: Maybe<ModelGroupProductConnection>;
-  listGroups?: Maybe<ModelGroupConnection>;
   listInvoices?: Maybe<ModelInvoiceConnection>;
   listOrders?: Maybe<ModelOrderConnection>;
   listProductCategories?: Maybe<ModelProductCategoryConnection>;
@@ -2839,13 +2339,7 @@ export interface Query {
   searchAdminUsers?: Maybe<SearchableAdminUserConnection>;
   searchByRadius?: Maybe<GeoSearchConnection>;
   searchCarts?: Maybe<SearchableCartConnection>;
-  searchChainProducts?: Maybe<SearchableChainProductConnection>;
-  searchChains?: Maybe<SearchableChainConnection>;
   searchFavoriteProducts?: Maybe<SearchableFavoriteProductConnection>;
-  searchGeneratedProductCategories?: Maybe<SearchableGeneratedProductCategoryConnection>;
-  searchGeneratedProducts?: Maybe<SearchableGeneratedProductConnection>;
-  searchGroupProducts?: Maybe<SearchableGroupProductConnection>;
-  searchGroups?: Maybe<SearchableGroupConnection>;
   searchInvoices?: Maybe<SearchableInvoiceConnection>;
   searchOrders?: Maybe<SearchableOrderConnection>;
   searchProductCategories?: Maybe<SearchableProductCategoryConnection>;
@@ -2870,37 +2364,7 @@ export interface QueryGetCartArgs {
 }
 
 
-export interface QueryGetChainArgs {
-  id: Scalars['ID'];
-}
-
-
-export interface QueryGetChainProductArgs {
-  id: Scalars['ID'];
-}
-
-
 export interface QueryGetFavoriteProductArgs {
-  id: Scalars['ID'];
-}
-
-
-export interface QueryGetGeneratedProductArgs {
-  id: Scalars['ID'];
-}
-
-
-export interface QueryGetGeneratedProductCategoryArgs {
-  id: Scalars['ID'];
-}
-
-
-export interface QueryGetGroupArgs {
-  id: Scalars['ID'];
-}
-
-
-export interface QueryGetGroupProductArgs {
   id: Scalars['ID'];
 }
 
@@ -2979,50 +2443,8 @@ export interface QueryListCartsArgs {
 }
 
 
-export interface QueryListChainProductsArgs {
-  filter?: InputMaybe<ModelChainProductFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}
-
-
-export interface QueryListChainsArgs {
-  filter?: InputMaybe<ModelChainFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}
-
-
 export interface QueryListFavoriteProductsArgs {
   filter?: InputMaybe<ModelFavoriteProductFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}
-
-
-export interface QueryListGeneratedProductCategoriesArgs {
-  filter?: InputMaybe<ModelGeneratedProductCategoryFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}
-
-
-export interface QueryListGeneratedProductsArgs {
-  filter?: InputMaybe<ModelGeneratedProductFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}
-
-
-export interface QueryListGroupProductsArgs {
-  filter?: InputMaybe<ModelGroupProductFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}
-
-
-export interface QueryListGroupsArgs {
-  filter?: InputMaybe<ModelGroupFilterInput>;
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
 }
@@ -3130,26 +2552,6 @@ export interface QuerySearchCartsArgs {
 }
 
 
-export interface QuerySearchChainProductsArgs {
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableChainProductAggregationInput>>>;
-  filter?: InputMaybe<SearchableChainProductFilterInput>;
-  from?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableChainProductSortInput>>>;
-}
-
-
-export interface QuerySearchChainsArgs {
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableChainAggregationInput>>>;
-  filter?: InputMaybe<SearchableChainFilterInput>;
-  from?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableChainSortInput>>>;
-}
-
-
 export interface QuerySearchFavoriteProductsArgs {
   aggregates?: InputMaybe<Array<InputMaybe<SearchableFavoriteProductAggregationInput>>>;
   filter?: InputMaybe<SearchableFavoriteProductFilterInput>;
@@ -3157,46 +2559,6 @@ export interface QuerySearchFavoriteProductsArgs {
   limit?: InputMaybe<Scalars['Int']>;
   nextToken?: InputMaybe<Scalars['String']>;
   sort?: InputMaybe<Array<InputMaybe<SearchableFavoriteProductSortInput>>>;
-}
-
-
-export interface QuerySearchGeneratedProductCategoriesArgs {
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductCategoryAggregationInput>>>;
-  filter?: InputMaybe<SearchableGeneratedProductCategoryFilterInput>;
-  from?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductCategorySortInput>>>;
-}
-
-
-export interface QuerySearchGeneratedProductsArgs {
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductAggregationInput>>>;
-  filter?: InputMaybe<SearchableGeneratedProductFilterInput>;
-  from?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductSortInput>>>;
-}
-
-
-export interface QuerySearchGroupProductsArgs {
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableGroupProductAggregationInput>>>;
-  filter?: InputMaybe<SearchableGroupProductFilterInput>;
-  from?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGroupProductSortInput>>>;
-}
-
-
-export interface QuerySearchGroupsArgs {
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableGroupAggregationInput>>>;
-  filter?: InputMaybe<SearchableGroupFilterInput>;
-  from?: InputMaybe<Scalars['Int']>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGroupSortInput>>>;
 }
 
 
@@ -3541,124 +2903,8 @@ export enum SearchableCartSortableFields {
   version = 'version'
 }
 
-export enum SearchableChainAggregateField {
-  createdat = 'createdAt',
-  email = 'email',
-  id = 'id',
-  isactive = 'isActive',
-  name = 'name',
-  phone = 'phone',
-  updatedat = 'updatedAt'
-}
-
-export interface SearchableChainAggregationInput {
-  field: SearchableChainAggregateField;
-  name: Scalars['String'];
-  type: SearchableAggregateType;
-}
-
-export interface SearchableChainConnection {
-  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
-  items: Array<Maybe<Chain>>;
-  nextToken?: Maybe<Scalars['String']>;
-  total?: Maybe<Scalars['Int']>;
-}
-
-export interface SearchableChainFilterInput {
-  and?: InputMaybe<Array<InputMaybe<SearchableChainFilterInput>>>;
-  createdAt?: InputMaybe<SearchableStringFilterInput>;
-  email?: InputMaybe<SearchableStringFilterInput>;
-  id?: InputMaybe<SearchableIdFilterInput>;
-  isActive?: InputMaybe<SearchableBooleanFilterInput>;
-  name?: InputMaybe<SearchableStringFilterInput>;
-  not?: InputMaybe<SearchableChainFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<SearchableChainFilterInput>>>;
-  phone?: InputMaybe<SearchableStringFilterInput>;
-  updatedAt?: InputMaybe<SearchableStringFilterInput>;
-}
-
-export enum SearchableChainProductAggregateField {
-  allergens = 'allergens',
-  chainid = 'chainId',
-  createdat = 'createdAt',
-  deletedat = 'deletedAt',
-  dirty = 'dirty',
-  externalid = 'externalId',
-  id = 'id',
-  image = 'image',
-  isvisible = 'isVisible',
-  productcategoryid = 'productCategoryId',
-  producttype = 'productType',
-  updatedat = 'updatedAt'
-}
-
-export interface SearchableChainProductAggregationInput {
-  field: SearchableChainProductAggregateField;
-  name: Scalars['String'];
-  type: SearchableAggregateType;
-}
-
-export interface SearchableChainProductConnection {
-  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
-  items: Array<Maybe<ChainProduct>>;
-  nextToken?: Maybe<Scalars['String']>;
-  total?: Maybe<Scalars['Int']>;
-}
-
-export interface SearchableChainProductFilterInput {
-  allergens?: InputMaybe<SearchableStringFilterInput>;
-  and?: InputMaybe<Array<InputMaybe<SearchableChainProductFilterInput>>>;
-  chainId?: InputMaybe<SearchableIdFilterInput>;
-  createdAt?: InputMaybe<SearchableStringFilterInput>;
-  deletedAt?: InputMaybe<SearchableStringFilterInput>;
-  dirty?: InputMaybe<SearchableBooleanFilterInput>;
-  externalId?: InputMaybe<SearchableStringFilterInput>;
-  id?: InputMaybe<SearchableIdFilterInput>;
-  image?: InputMaybe<SearchableStringFilterInput>;
-  isVisible?: InputMaybe<SearchableBooleanFilterInput>;
-  not?: InputMaybe<SearchableChainProductFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<SearchableChainProductFilterInput>>>;
-  productCategoryId?: InputMaybe<SearchableIdFilterInput>;
-  productType?: InputMaybe<SearchableStringFilterInput>;
-  updatedAt?: InputMaybe<SearchableStringFilterInput>;
-}
-
-export interface SearchableChainProductSortInput {
-  direction?: InputMaybe<SearchableSortDirection>;
-  field?: InputMaybe<SearchableChainProductSortableFields>;
-}
-
-export enum SearchableChainProductSortableFields {
-  chainid = 'chainId',
-  createdat = 'createdAt',
-  deletedat = 'deletedAt',
-  dirty = 'dirty',
-  externalid = 'externalId',
-  id = 'id',
-  image = 'image',
-  isvisible = 'isVisible',
-  productcategoryid = 'productCategoryId',
-  updatedat = 'updatedAt'
-}
-
-export interface SearchableChainSortInput {
-  direction?: InputMaybe<SearchableSortDirection>;
-  field?: InputMaybe<SearchableChainSortableFields>;
-}
-
-export enum SearchableChainSortableFields {
-  createdat = 'createdAt',
-  email = 'email',
-  id = 'id',
-  isactive = 'isActive',
-  name = 'name',
-  phone = 'phone',
-  updatedat = 'updatedAt'
-}
-
 export enum SearchableFavoriteProductAggregateField {
   createdat = 'createdAt',
-  favoriteproductproductid = 'favoriteProductProductId',
   id = 'id',
   unitid = 'unitId',
   updatedat = 'updatedAt',
@@ -3681,7 +2927,6 @@ export interface SearchableFavoriteProductConnection {
 export interface SearchableFavoriteProductFilterInput {
   and?: InputMaybe<Array<InputMaybe<SearchableFavoriteProductFilterInput>>>;
   createdAt?: InputMaybe<SearchableStringFilterInput>;
-  favoriteProductProductId?: InputMaybe<SearchableIdFilterInput>;
   id?: InputMaybe<SearchableIdFilterInput>;
   not?: InputMaybe<SearchableFavoriteProductFilterInput>;
   or?: InputMaybe<Array<InputMaybe<SearchableFavoriteProductFilterInput>>>;
@@ -3697,7 +2942,6 @@ export interface SearchableFavoriteProductSortInput {
 
 export enum SearchableFavoriteProductSortableFields {
   createdat = 'createdAt',
-  favoriteproductproductid = 'favoriteProductProductId',
   id = 'id',
   unitid = 'unitId',
   updatedat = 'updatedAt',
@@ -3712,243 +2956,6 @@ export interface SearchableFloatFilterInput {
   lte?: InputMaybe<Scalars['Float']>;
   ne?: InputMaybe<Scalars['Float']>;
   range?: InputMaybe<Array<InputMaybe<Scalars['Float']>>>;
-}
-
-export enum SearchableGeneratedProductAggregateField {
-  allergens = 'allergens',
-  createdat = 'createdAt',
-  id = 'id',
-  image = 'image',
-  position = 'position',
-  productcategoryid = 'productCategoryId',
-  producttype = 'productType',
-  soldout = 'soldOut',
-  supportedservingmodes = 'supportedServingModes',
-  takeawaytax = 'takeawayTax',
-  tax = 'tax',
-  unitid = 'unitId',
-  updatedat = 'updatedAt'
-}
-
-export interface SearchableGeneratedProductAggregationInput {
-  field: SearchableGeneratedProductAggregateField;
-  name: Scalars['String'];
-  type: SearchableAggregateType;
-}
-
-export enum SearchableGeneratedProductCategoryAggregateField {
-  createdat = 'createdAt',
-  id = 'id',
-  position = 'position',
-  productcategoryid = 'productCategoryId',
-  productnum = 'productNum',
-  unitid = 'unitId',
-  updatedat = 'updatedAt'
-}
-
-export interface SearchableGeneratedProductCategoryAggregationInput {
-  field: SearchableGeneratedProductCategoryAggregateField;
-  name: Scalars['String'];
-  type: SearchableAggregateType;
-}
-
-export interface SearchableGeneratedProductCategoryConnection {
-  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
-  items: Array<Maybe<GeneratedProductCategory>>;
-  nextToken?: Maybe<Scalars['String']>;
-  total?: Maybe<Scalars['Int']>;
-}
-
-export interface SearchableGeneratedProductCategoryFilterInput {
-  and?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductCategoryFilterInput>>>;
-  createdAt?: InputMaybe<SearchableStringFilterInput>;
-  id?: InputMaybe<SearchableIdFilterInput>;
-  not?: InputMaybe<SearchableGeneratedProductCategoryFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductCategoryFilterInput>>>;
-  position?: InputMaybe<SearchableIntFilterInput>;
-  productCategoryId?: InputMaybe<SearchableIdFilterInput>;
-  productNum?: InputMaybe<SearchableIntFilterInput>;
-  unitId?: InputMaybe<SearchableIdFilterInput>;
-  updatedAt?: InputMaybe<SearchableStringFilterInput>;
-}
-
-export interface SearchableGeneratedProductCategorySortInput {
-  direction?: InputMaybe<SearchableSortDirection>;
-  field?: InputMaybe<SearchableGeneratedProductCategorySortableFields>;
-}
-
-export enum SearchableGeneratedProductCategorySortableFields {
-  createdat = 'createdAt',
-  id = 'id',
-  position = 'position',
-  productcategoryid = 'productCategoryId',
-  productnum = 'productNum',
-  unitid = 'unitId',
-  updatedat = 'updatedAt'
-}
-
-export interface SearchableGeneratedProductConnection {
-  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
-  items: Array<Maybe<GeneratedProduct>>;
-  nextToken?: Maybe<Scalars['String']>;
-  total?: Maybe<Scalars['Int']>;
-}
-
-export interface SearchableGeneratedProductFilterInput {
-  allergens?: InputMaybe<SearchableStringFilterInput>;
-  and?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductFilterInput>>>;
-  createdAt?: InputMaybe<SearchableStringFilterInput>;
-  id?: InputMaybe<SearchableIdFilterInput>;
-  image?: InputMaybe<SearchableStringFilterInput>;
-  not?: InputMaybe<SearchableGeneratedProductFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductFilterInput>>>;
-  position?: InputMaybe<SearchableIntFilterInput>;
-  productCategoryId?: InputMaybe<SearchableIdFilterInput>;
-  productType?: InputMaybe<SearchableStringFilterInput>;
-  soldOut?: InputMaybe<SearchableBooleanFilterInput>;
-  supportedServingModes?: InputMaybe<SearchableStringFilterInput>;
-  takeawayTax?: InputMaybe<SearchableIntFilterInput>;
-  tax?: InputMaybe<SearchableIntFilterInput>;
-  unitId?: InputMaybe<SearchableIdFilterInput>;
-  updatedAt?: InputMaybe<SearchableStringFilterInput>;
-}
-
-export interface SearchableGeneratedProductSortInput {
-  direction?: InputMaybe<SearchableSortDirection>;
-  field?: InputMaybe<SearchableGeneratedProductSortableFields>;
-}
-
-export enum SearchableGeneratedProductSortableFields {
-  createdat = 'createdAt',
-  id = 'id',
-  image = 'image',
-  position = 'position',
-  productcategoryid = 'productCategoryId',
-  soldout = 'soldOut',
-  takeawaytax = 'takeawayTax',
-  tax = 'tax',
-  unitid = 'unitId',
-  updatedat = 'updatedAt'
-}
-
-export enum SearchableGroupAggregateField {
-  chainid = 'chainId',
-  createdat = 'createdAt',
-  currency = 'currency',
-  email = 'email',
-  id = 'id',
-  name = 'name',
-  phone = 'phone',
-  updatedat = 'updatedAt'
-}
-
-export interface SearchableGroupAggregationInput {
-  field: SearchableGroupAggregateField;
-  name: Scalars['String'];
-  type: SearchableAggregateType;
-}
-
-export interface SearchableGroupConnection {
-  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
-  items: Array<Maybe<Group>>;
-  nextToken?: Maybe<Scalars['String']>;
-  total?: Maybe<Scalars['Int']>;
-}
-
-export interface SearchableGroupFilterInput {
-  and?: InputMaybe<Array<InputMaybe<SearchableGroupFilterInput>>>;
-  chainId?: InputMaybe<SearchableIdFilterInput>;
-  createdAt?: InputMaybe<SearchableStringFilterInput>;
-  currency?: InputMaybe<SearchableStringFilterInput>;
-  email?: InputMaybe<SearchableStringFilterInput>;
-  id?: InputMaybe<SearchableIdFilterInput>;
-  name?: InputMaybe<SearchableStringFilterInput>;
-  not?: InputMaybe<SearchableGroupFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<SearchableGroupFilterInput>>>;
-  phone?: InputMaybe<SearchableStringFilterInput>;
-  updatedAt?: InputMaybe<SearchableStringFilterInput>;
-}
-
-export enum SearchableGroupProductAggregateField {
-  chainid = 'chainId',
-  createdat = 'createdAt',
-  deletedat = 'deletedAt',
-  dirty = 'dirty',
-  externalid = 'externalId',
-  groupid = 'groupId',
-  id = 'id',
-  isvisible = 'isVisible',
-  parentid = 'parentId',
-  takeawaytax = 'takeawayTax',
-  tax = 'tax',
-  updatedat = 'updatedAt'
-}
-
-export interface SearchableGroupProductAggregationInput {
-  field: SearchableGroupProductAggregateField;
-  name: Scalars['String'];
-  type: SearchableAggregateType;
-}
-
-export interface SearchableGroupProductConnection {
-  aggregateItems: Array<Maybe<SearchableAggregateResult>>;
-  items: Array<Maybe<GroupProduct>>;
-  nextToken?: Maybe<Scalars['String']>;
-  total?: Maybe<Scalars['Int']>;
-}
-
-export interface SearchableGroupProductFilterInput {
-  and?: InputMaybe<Array<InputMaybe<SearchableGroupProductFilterInput>>>;
-  chainId?: InputMaybe<SearchableIdFilterInput>;
-  createdAt?: InputMaybe<SearchableStringFilterInput>;
-  deletedAt?: InputMaybe<SearchableStringFilterInput>;
-  dirty?: InputMaybe<SearchableBooleanFilterInput>;
-  externalId?: InputMaybe<SearchableStringFilterInput>;
-  groupId?: InputMaybe<SearchableIdFilterInput>;
-  id?: InputMaybe<SearchableIdFilterInput>;
-  isVisible?: InputMaybe<SearchableBooleanFilterInput>;
-  not?: InputMaybe<SearchableGroupProductFilterInput>;
-  or?: InputMaybe<Array<InputMaybe<SearchableGroupProductFilterInput>>>;
-  parentId?: InputMaybe<SearchableIdFilterInput>;
-  takeawayTax?: InputMaybe<SearchableIntFilterInput>;
-  tax?: InputMaybe<SearchableIntFilterInput>;
-  updatedAt?: InputMaybe<SearchableStringFilterInput>;
-}
-
-export interface SearchableGroupProductSortInput {
-  direction?: InputMaybe<SearchableSortDirection>;
-  field?: InputMaybe<SearchableGroupProductSortableFields>;
-}
-
-export enum SearchableGroupProductSortableFields {
-  chainid = 'chainId',
-  createdat = 'createdAt',
-  deletedat = 'deletedAt',
-  dirty = 'dirty',
-  externalid = 'externalId',
-  groupid = 'groupId',
-  id = 'id',
-  isvisible = 'isVisible',
-  parentid = 'parentId',
-  takeawaytax = 'takeawayTax',
-  tax = 'tax',
-  updatedat = 'updatedAt'
-}
-
-export interface SearchableGroupSortInput {
-  direction?: InputMaybe<SearchableSortDirection>;
-  field?: InputMaybe<SearchableGroupSortableFields>;
-}
-
-export enum SearchableGroupSortableFields {
-  chainid = 'chainId',
-  createdat = 'createdAt',
-  currency = 'currency',
-  email = 'email',
-  id = 'id',
-  name = 'name',
-  phone = 'phone',
-  updatedat = 'updatedAt'
 }
 
 export interface SearchableIdFilterInput {
@@ -4150,10 +3157,10 @@ export enum SearchableOrderSortableFields {
 }
 
 export enum SearchableProductCategoryAggregateField {
-  chainid = 'chainId',
   createdat = 'createdAt',
   id = 'id',
   image = 'image',
+  ownerentity = 'ownerEntity',
   position = 'position',
   updatedat = 'updatedAt'
 }
@@ -4173,12 +3180,12 @@ export interface SearchableProductCategoryConnection {
 
 export interface SearchableProductCategoryFilterInput {
   and?: InputMaybe<Array<InputMaybe<SearchableProductCategoryFilterInput>>>;
-  chainId?: InputMaybe<SearchableIdFilterInput>;
   createdAt?: InputMaybe<SearchableStringFilterInput>;
   id?: InputMaybe<SearchableIdFilterInput>;
   image?: InputMaybe<SearchableStringFilterInput>;
   not?: InputMaybe<SearchableProductCategoryFilterInput>;
   or?: InputMaybe<Array<InputMaybe<SearchableProductCategoryFilterInput>>>;
+  ownerEntity?: InputMaybe<SearchableIdFilterInput>;
   position?: InputMaybe<SearchableIntFilterInput>;
   updatedAt?: InputMaybe<SearchableStringFilterInput>;
 }
@@ -4189,23 +3196,23 @@ export interface SearchableProductCategorySortInput {
 }
 
 export enum SearchableProductCategorySortableFields {
-  chainid = 'chainId',
   createdat = 'createdAt',
   id = 'id',
   image = 'image',
+  ownerentity = 'ownerEntity',
   position = 'position',
   updatedat = 'updatedAt'
 }
 
 export enum SearchableProductComponentAggregateField {
   allergens = 'allergens',
-  chainid = 'chainId',
   createdat = 'createdAt',
   deletedat = 'deletedAt',
   description = 'description',
   dirty = 'dirty',
   externalid = 'externalId',
   id = 'id',
+  ownerentity = 'ownerEntity',
   soldout = 'soldOut',
   updatedat = 'updatedAt'
 }
@@ -4226,7 +3233,6 @@ export interface SearchableProductComponentConnection {
 export interface SearchableProductComponentFilterInput {
   allergens?: InputMaybe<SearchableStringFilterInput>;
   and?: InputMaybe<Array<InputMaybe<SearchableProductComponentFilterInput>>>;
-  chainId?: InputMaybe<SearchableIdFilterInput>;
   createdAt?: InputMaybe<SearchableStringFilterInput>;
   deletedAt?: InputMaybe<SearchableStringFilterInput>;
   description?: InputMaybe<SearchableStringFilterInput>;
@@ -4235,12 +3241,12 @@ export interface SearchableProductComponentFilterInput {
   id?: InputMaybe<SearchableIdFilterInput>;
   not?: InputMaybe<SearchableProductComponentFilterInput>;
   or?: InputMaybe<Array<InputMaybe<SearchableProductComponentFilterInput>>>;
+  ownerEntity?: InputMaybe<SearchableIdFilterInput>;
   soldOut?: InputMaybe<SearchableBooleanFilterInput>;
   updatedAt?: InputMaybe<SearchableStringFilterInput>;
 }
 
 export enum SearchableProductComponentSetAggregateField {
-  chainid = 'chainId',
   createdat = 'createdAt',
   deletedat = 'deletedAt',
   description = 'description',
@@ -4249,6 +3255,7 @@ export enum SearchableProductComponentSetAggregateField {
   id = 'id',
   items = 'items',
   maxselection = 'maxSelection',
+  ownerentity = 'ownerEntity',
   supportedservingmodes = 'supportedServingModes',
   type = 'type',
   updatedat = 'updatedAt'
@@ -4269,7 +3276,6 @@ export interface SearchableProductComponentSetConnection {
 
 export interface SearchableProductComponentSetFilterInput {
   and?: InputMaybe<Array<InputMaybe<SearchableProductComponentSetFilterInput>>>;
-  chainId?: InputMaybe<SearchableIdFilterInput>;
   createdAt?: InputMaybe<SearchableStringFilterInput>;
   deletedAt?: InputMaybe<SearchableStringFilterInput>;
   description?: InputMaybe<SearchableStringFilterInput>;
@@ -4280,6 +3286,7 @@ export interface SearchableProductComponentSetFilterInput {
   maxSelection?: InputMaybe<SearchableIntFilterInput>;
   not?: InputMaybe<SearchableProductComponentSetFilterInput>;
   or?: InputMaybe<Array<InputMaybe<SearchableProductComponentSetFilterInput>>>;
+  ownerEntity?: InputMaybe<SearchableIdFilterInput>;
   supportedServingModes?: InputMaybe<SearchableStringFilterInput>;
   type?: InputMaybe<SearchableStringFilterInput>;
   updatedAt?: InputMaybe<SearchableStringFilterInput>;
@@ -4291,7 +3298,6 @@ export interface SearchableProductComponentSetSortInput {
 }
 
 export enum SearchableProductComponentSetSortableFields {
-  chainid = 'chainId',
   createdat = 'createdAt',
   deletedat = 'deletedAt',
   description = 'description',
@@ -4300,6 +3306,7 @@ export enum SearchableProductComponentSetSortableFields {
   id = 'id',
   items = 'items',
   maxselection = 'maxSelection',
+  ownerentity = 'ownerEntity',
   updatedat = 'updatedAt'
 }
 
@@ -4309,13 +3316,13 @@ export interface SearchableProductComponentSortInput {
 }
 
 export enum SearchableProductComponentSortableFields {
-  chainid = 'chainId',
   createdat = 'createdAt',
   deletedat = 'deletedAt',
   description = 'description',
   dirty = 'dirty',
   externalid = 'externalId',
   id = 'id',
+  ownerentity = 'ownerEntity',
   soldout = 'soldOut',
   updatedat = 'updatedAt'
 }
@@ -4871,16 +3878,8 @@ export interface StripeCardUpdateInput {
 export interface Subscription {
   onAdminUserChange?: Maybe<AdminUser>;
   onAdminUsersChange?: Maybe<AdminUser>;
-  onChainProductChange?: Maybe<ChainProduct>;
-  onChainsChange?: Maybe<Chain>;
   onCreateCart?: Maybe<Cart>;
-  onCreateChain?: Maybe<Chain>;
-  onCreateChainProduct?: Maybe<ChainProduct>;
   onCreateFavoriteProduct?: Maybe<FavoriteProduct>;
-  onCreateGeneratedProduct?: Maybe<GeneratedProduct>;
-  onCreateGeneratedProductCategory?: Maybe<GeneratedProductCategory>;
-  onCreateGroup?: Maybe<Group>;
-  onCreateGroupProduct?: Maybe<GroupProduct>;
   onCreateInvoice?: Maybe<Invoice>;
   onCreateProductCategory?: Maybe<ProductCategory>;
   onCreateProductComponent?: Maybe<ProductComponent>;
@@ -4891,13 +3890,7 @@ export interface Subscription {
   onCreateUser?: Maybe<User>;
   onCreateVariant?: Maybe<Variant>;
   onDeleteCart?: Maybe<Cart>;
-  onDeleteChain?: Maybe<Chain>;
-  onDeleteChainProduct?: Maybe<ChainProduct>;
   onDeleteFavoriteProduct?: Maybe<FavoriteProduct>;
-  onDeleteGeneratedProduct?: Maybe<GeneratedProduct>;
-  onDeleteGeneratedProductCategory?: Maybe<GeneratedProductCategory>;
-  onDeleteGroup?: Maybe<Group>;
-  onDeleteGroupProduct?: Maybe<GroupProduct>;
   onDeleteInvoice?: Maybe<Invoice>;
   onDeleteOrder?: Maybe<Order>;
   onDeleteProductCategory?: Maybe<ProductCategory>;
@@ -4909,14 +3902,10 @@ export interface Subscription {
   onDeleteUnitProduct?: Maybe<UnitProduct>;
   onDeleteUser?: Maybe<User>;
   onDeleteVariant?: Maybe<Variant>;
-  onGeneratedProductChange?: Maybe<GeneratedProduct>;
-  onGroupProductChange?: Maybe<GroupProduct>;
-  onGroupsChange?: Maybe<Group>;
   onOrderChanged?: Maybe<Order>;
   onOrdersChange?: Maybe<Order>;
   onOrdersDelete?: Maybe<Order>;
   onProductCategoriesChange?: Maybe<ProductCategory>;
-  onProductChanged?: Maybe<GeneratedProduct>;
   onProductComponentSetsChange?: Maybe<ProductComponentSet>;
   onProductComponentsChange?: Maybe<ProductComponent>;
   onUnitOrdersChange?: Maybe<Order>;
@@ -4924,13 +3913,7 @@ export interface Subscription {
   onUnitsChange?: Maybe<Unit>;
   onUpdateAdminUser?: Maybe<AdminUser>;
   onUpdateCart?: Maybe<Cart>;
-  onUpdateChain?: Maybe<Chain>;
-  onUpdateChainProduct?: Maybe<ChainProduct>;
   onUpdateFavoriteProduct?: Maybe<FavoriteProduct>;
-  onUpdateGeneratedProduct?: Maybe<GeneratedProduct>;
-  onUpdateGeneratedProductCategory?: Maybe<GeneratedProductCategory>;
-  onUpdateGroup?: Maybe<Group>;
-  onUpdateGroupProduct?: Maybe<GroupProduct>;
   onUpdateInvoice?: Maybe<Invoice>;
   onUpdateOrder?: Maybe<Order>;
   onUpdateProductCategory?: Maybe<ProductCategory>;
@@ -4949,26 +3932,6 @@ export interface SubscriptionOnAdminUserChangeArgs {
 }
 
 
-export interface SubscriptionOnChainProductChangeArgs {
-  chainId: Scalars['ID'];
-}
-
-
-export interface SubscriptionOnGeneratedProductChangeArgs {
-  unitId: Scalars['ID'];
-}
-
-
-export interface SubscriptionOnGroupProductChangeArgs {
-  groupId: Scalars['ID'];
-}
-
-
-export interface SubscriptionOnGroupsChangeArgs {
-  chainId: Scalars['ID'];
-}
-
-
 export interface SubscriptionOnOrderChangedArgs {
   archived?: InputMaybe<Scalars['Boolean']>;
   unitId?: InputMaybe<Scalars['String']>;
@@ -4978,11 +3941,6 @@ export interface SubscriptionOnOrderChangedArgs {
 
 export interface SubscriptionOnProductCategoriesChangeArgs {
   chainId: Scalars['ID'];
-}
-
-
-export interface SubscriptionOnProductChangedArgs {
-  unitId?: InputMaybe<Scalars['String']>;
 }
 
 
@@ -5181,92 +4139,11 @@ export interface UpdateCartInput {
   version?: InputMaybe<Scalars['Int']>;
 }
 
-export interface UpdateChainInput {
-  address?: InputMaybe<AddressInput>;
-  categoryOrders?: InputMaybe<Array<InputMaybe<NestedSortItemInput>>>;
-  description?: InputMaybe<LocalizedItemInput>;
-  email?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
-  isActive?: InputMaybe<Scalars['Boolean']>;
-  name?: InputMaybe<Scalars['String']>;
-  phone?: InputMaybe<Scalars['String']>;
-  style?: InputMaybe<ChainStyleInput>;
-}
-
-export interface UpdateChainProductInput {
-  allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
-  chainId?: InputMaybe<Scalars['ID']>;
-  configSets?: InputMaybe<Array<InputMaybe<ProductConfigSetInput>>>;
-  deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  description?: InputMaybe<LocalizedItemInput>;
-  dirty?: InputMaybe<Scalars['Boolean']>;
-  externalId?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
-  image?: InputMaybe<Scalars['String']>;
-  isVisible?: InputMaybe<Scalars['Boolean']>;
-  name?: InputMaybe<LocalizedItemInput>;
-  productCategoryId?: InputMaybe<Scalars['ID']>;
-  productType?: InputMaybe<ProductType>;
-  variants?: InputMaybe<Array<InputMaybe<ProductVariantInput>>>;
-}
-
 export interface UpdateFavoriteProductInput {
-  favoriteProductProductId?: InputMaybe<Scalars['ID']>;
   id: Scalars['ID'];
+  product?: InputMaybe<GeneratedProductInput>;
   unitId?: InputMaybe<Scalars['ID']>;
   userId?: InputMaybe<Scalars['ID']>;
-}
-
-export interface UpdateGeneratedProductCategoryInput {
-  id: Scalars['ID'];
-  position?: InputMaybe<Scalars['Int']>;
-  productCategoryId?: InputMaybe<Scalars['ID']>;
-  productNum?: InputMaybe<Scalars['Int']>;
-  unitId?: InputMaybe<Scalars['ID']>;
-}
-
-export interface UpdateGeneratedProductInput {
-  allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
-  configSets?: InputMaybe<Array<InputMaybe<GeneratedProductConfigSetInput>>>;
-  description?: InputMaybe<LocalizedItemInput>;
-  id: Scalars['ID'];
-  image?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<LocalizedItemInput>;
-  position?: InputMaybe<Scalars['Int']>;
-  productCategoryId?: InputMaybe<Scalars['ID']>;
-  productType?: InputMaybe<ProductType>;
-  soldOut?: InputMaybe<Scalars['Boolean']>;
-  supportedServingModes?: InputMaybe<Array<ServingMode>>;
-  takeawayTax?: InputMaybe<Scalars['Int']>;
-  tax?: InputMaybe<Scalars['Int']>;
-  unitId?: InputMaybe<Scalars['ID']>;
-  variants?: InputMaybe<Array<GeneratedProductVariantInput>>;
-}
-
-export interface UpdateGroupInput {
-  address?: InputMaybe<AddressInput>;
-  chainId?: InputMaybe<Scalars['ID']>;
-  currency?: InputMaybe<Scalars['String']>;
-  description?: InputMaybe<LocalizedItemInput>;
-  email?: InputMaybe<Scalars['String']>;
-  id: Scalars['ID'];
-  name?: InputMaybe<Scalars['String']>;
-  phone?: InputMaybe<Scalars['String']>;
-}
-
-export interface UpdateGroupProductInput {
-  chainId?: InputMaybe<Scalars['ID']>;
-  configSets?: InputMaybe<Array<InputMaybe<ProductConfigSetInput>>>;
-  deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
-  dirty?: InputMaybe<Scalars['Boolean']>;
-  externalId?: InputMaybe<Scalars['String']>;
-  groupId?: InputMaybe<Scalars['ID']>;
-  id: Scalars['ID'];
-  isVisible?: InputMaybe<Scalars['Boolean']>;
-  parentId?: InputMaybe<Scalars['ID']>;
-  takeawayTax?: InputMaybe<Scalars['Int']>;
-  tax?: InputMaybe<Scalars['Int']>;
-  variants?: InputMaybe<Array<InputMaybe<ProductVariantInput>>>;
 }
 
 export interface UpdateInvoiceInput {
@@ -5326,28 +4203,27 @@ export interface UpdateOrderInput {
 }
 
 export interface UpdateProductCategoryInput {
-  chainId?: InputMaybe<Scalars['ID']>;
   description?: InputMaybe<LocalizedItemInput>;
   id: Scalars['ID'];
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<LocalizedItemInput>;
+  ownerEntity?: InputMaybe<Scalars['ID']>;
   position?: InputMaybe<Scalars['Int']>;
 }
 
 export interface UpdateProductComponentInput {
   allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
-  chainId?: InputMaybe<Scalars['ID']>;
   deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
   description?: InputMaybe<Scalars['String']>;
   dirty?: InputMaybe<Scalars['Boolean']>;
   externalId?: InputMaybe<Scalars['String']>;
   id: Scalars['ID'];
   name?: InputMaybe<LocalizedItemInput>;
+  ownerEntity?: InputMaybe<Scalars['ID']>;
   soldOut?: InputMaybe<Scalars['Boolean']>;
 }
 
 export interface UpdateProductComponentSetInput {
-  chainId?: InputMaybe<Scalars['ID']>;
   deletedAt?: InputMaybe<Scalars['AWSDateTime']>;
   description?: InputMaybe<Scalars['String']>;
   dirty?: InputMaybe<Scalars['Boolean']>;
@@ -5356,6 +4232,7 @@ export interface UpdateProductComponentSetInput {
   items?: InputMaybe<Array<Scalars['ID']>>;
   maxSelection?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<LocalizedItemInput>;
+  ownerEntity?: InputMaybe<Scalars['ID']>;
   supportedServingModes?: InputMaybe<Array<ServingMode>>;
   type?: InputMaybe<ProductComponentSetType>;
 }
@@ -5561,13 +4438,6 @@ export interface WeeklyScheduleInput {
   wed?: InputMaybe<DateIntervalInput>;
 }
 
-export type GetGroupCurrencyQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type GetGroupCurrencyQuery = { getGroup?: { currency: string } | null };
-
 export type SearchReportOrdersQueryVariables = Exact<{
   filter?: InputMaybe<SearchableOrderFilterInput>;
   sort?: InputMaybe<Array<InputMaybe<SearchableOrderSortInput>> | InputMaybe<SearchableOrderSortInput>>;
@@ -5578,28 +4448,6 @@ export type SearchReportOrdersQueryVariables = Exact<{
 
 
 export type SearchReportOrdersQuery = { searchOrders?: { nextToken?: string | null, items: Array<{ createdAt: string, userId: string, sumPriceShown: { currency: string, priceSum: number } } | null> } | null };
-
-export type SearchChainIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableChainFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableChainSortInput>> | InputMaybe<SearchableChainSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchChainIdsQuery = { searchChains?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchGroupIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGroupFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGroupSortInput>> | InputMaybe<SearchableGroupSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchGroupIdsQuery = { searchGroups?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
 
 export type SearchUnitIdsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableUnitFilterInput>;
@@ -5612,28 +4460,6 @@ export type SearchUnitIdsQueryVariables = Exact<{
 
 export type SearchUnitIdsQuery = { searchUnits?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
 
-export type SearchChainProductIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableChainProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableChainProductSortInput>> | InputMaybe<SearchableChainProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchChainProductIdsQuery = { searchChainProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchGroupProductIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGroupProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGroupProductSortInput>> | InputMaybe<SearchableGroupProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchGroupProductIdsQuery = { searchGroupProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
 export type SearchUnitProductIdsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableUnitProductFilterInput>;
   sort?: InputMaybe<Array<InputMaybe<SearchableUnitProductSortInput>> | InputMaybe<SearchableUnitProductSortInput>>;
@@ -5644,17 +4470,6 @@ export type SearchUnitProductIdsQueryVariables = Exact<{
 
 
 export type SearchUnitProductIdsQuery = { searchUnitProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
-
-export type SearchGeneratedProductIdsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGeneratedProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductSortInput>> | InputMaybe<SearchableGeneratedProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-}>;
-
-
-export type SearchGeneratedProductIdsQuery = { searchGeneratedProducts?: { nextToken?: string | null, items: Array<{ id: string } | null> } | null };
 
 export type SearchProductCategoryIdsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableProductCategoryFilterInput>;
@@ -5737,14 +4552,14 @@ export type CreateAdminUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateAdminUserMutation = { createAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedChainId?: string | null, selectedGroupId?: string | null, selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
+export type CreateAdminUserMutation = { createAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
 
 export type DeleteAdminUserMutationVariables = Exact<{
   input: DeleteAdminUserInput;
 }>;
 
 
-export type DeleteAdminUserMutation = { deleteAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedChainId?: string | null, selectedGroupId?: string | null, selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
+export type DeleteAdminUserMutation = { deleteAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
 
 export type CreateAnonymUserMutationVariables = Exact<{ [key: string]: never; }>;
 
@@ -5814,54 +4629,6 @@ export type DeleteMyStripeCardMutationVariables = Exact<{
 
 export type DeleteMyStripeCardMutation = { deleteMyStripeCard?: boolean | null };
 
-export type CreateChainProductMutationVariables = Exact<{
-  input: CreateChainProductInput;
-  condition?: InputMaybe<ModelChainProductConditionInput>;
-}>;
-
-
-export type CreateChainProductMutation = { createChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type UpdateChainProductMutationVariables = Exact<{
-  input: UpdateChainProductInput;
-  condition?: InputMaybe<ModelChainProductConditionInput>;
-}>;
-
-
-export type UpdateChainProductMutation = { updateChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type DeleteChainProductMutationVariables = Exact<{
-  input: DeleteChainProductInput;
-  condition?: InputMaybe<ModelChainProductConditionInput>;
-}>;
-
-
-export type DeleteChainProductMutation = { deleteChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type CreateGroupProductMutationVariables = Exact<{
-  input: CreateGroupProductInput;
-  condition?: InputMaybe<ModelGroupProductConditionInput>;
-}>;
-
-
-export type CreateGroupProductMutation = { createGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type UpdateGroupProductMutationVariables = Exact<{
-  input: UpdateGroupProductInput;
-  condition?: InputMaybe<ModelGroupProductConditionInput>;
-}>;
-
-
-export type UpdateGroupProductMutation = { updateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type DeleteGroupProductMutationVariables = Exact<{
-  input: DeleteGroupProductInput;
-  condition?: InputMaybe<ModelGroupProductConditionInput>;
-}>;
-
-
-export type DeleteGroupProductMutation = { deleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
 export type CreateUnitProductMutationVariables = Exact<{
   input: CreateUnitProductInput;
   condition?: InputMaybe<ModelUnitProductConditionInput>;
@@ -5916,55 +4683,7 @@ export type UpdateAdminUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateAdminUserMutation = { updateAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedChainId?: string | null, selectedGroupId?: string | null, selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
-
-export type CreateChainMutationVariables = Exact<{
-  input: CreateChainInput;
-  condition?: InputMaybe<ModelChainConditionInput>;
-}>;
-
-
-export type CreateChainMutation = { createChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
-
-export type UpdateChainMutationVariables = Exact<{
-  input: UpdateChainInput;
-  condition?: InputMaybe<ModelChainConditionInput>;
-}>;
-
-
-export type UpdateChainMutation = { updateChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
-
-export type DeleteChainMutationVariables = Exact<{
-  input: DeleteChainInput;
-  condition?: InputMaybe<ModelChainConditionInput>;
-}>;
-
-
-export type DeleteChainMutation = { deleteChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
-
-export type CreateGroupMutationVariables = Exact<{
-  input: CreateGroupInput;
-  condition?: InputMaybe<ModelGroupConditionInput>;
-}>;
-
-
-export type CreateGroupMutation = { createGroup?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
-
-export type UpdateGroupMutationVariables = Exact<{
-  input: UpdateGroupInput;
-  condition?: InputMaybe<ModelGroupConditionInput>;
-}>;
-
-
-export type UpdateGroupMutation = { updateGroup?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
-
-export type DeleteGroupMutationVariables = Exact<{
-  input: DeleteGroupInput;
-  condition?: InputMaybe<ModelGroupConditionInput>;
-}>;
-
-
-export type DeleteGroupMutation = { deleteGroup?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type UpdateAdminUserMutation = { updateAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
 
 export type UpdateOrderMutationVariables = Exact<{
   input: UpdateOrderInput;
@@ -5988,7 +4707,7 @@ export type CreateProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductCategoryMutation = { createProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type CreateProductCategoryMutation = { createProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type UpdateProductCategoryMutationVariables = Exact<{
   input: UpdateProductCategoryInput;
@@ -5996,7 +4715,7 @@ export type UpdateProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProductCategoryMutation = { updateProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type UpdateProductCategoryMutation = { updateProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type DeleteProductCategoryMutationVariables = Exact<{
   input: DeleteProductCategoryInput;
@@ -6004,7 +4723,7 @@ export type DeleteProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type DeleteProductCategoryMutation = { deleteProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type DeleteProductCategoryMutation = { deleteProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type CreateProductComponentMutationVariables = Exact<{
   input: CreateProductComponentInput;
@@ -6012,7 +4731,7 @@ export type CreateProductComponentMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductComponentMutation = { createProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type CreateProductComponentMutation = { createProductComponent?: { id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type UpdateProductComponentMutationVariables = Exact<{
   input: UpdateProductComponentInput;
@@ -6020,7 +4739,7 @@ export type UpdateProductComponentMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProductComponentMutation = { updateProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type UpdateProductComponentMutation = { updateProductComponent?: { id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type DeleteProductComponentMutationVariables = Exact<{
   input: DeleteProductComponentInput;
@@ -6028,7 +4747,7 @@ export type DeleteProductComponentMutationVariables = Exact<{
 }>;
 
 
-export type DeleteProductComponentMutation = { deleteProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type DeleteProductComponentMutation = { deleteProductComponent?: { id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type CreateProductComponentSetMutationVariables = Exact<{
   input: CreateProductComponentSetInput;
@@ -6036,7 +4755,7 @@ export type CreateProductComponentSetMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductComponentSetMutation = { createProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type CreateProductComponentSetMutation = { createProductComponentSet?: { id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type UpdateProductComponentSetMutationVariables = Exact<{
   input: UpdateProductComponentSetInput;
@@ -6044,7 +4763,7 @@ export type UpdateProductComponentSetMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProductComponentSetMutation = { updateProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type UpdateProductComponentSetMutation = { updateProductComponentSet?: { id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type DeleteProductComponentSetMutationVariables = Exact<{
   input: DeleteProductComponentSetInput;
@@ -6052,55 +4771,7 @@ export type DeleteProductComponentSetMutationVariables = Exact<{
 }>;
 
 
-export type DeleteProductComponentSetMutation = { deleteProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
-
-export type CreateGeneratedProductCategoryMutationVariables = Exact<{
-  input: CreateGeneratedProductCategoryInput;
-  condition?: InputMaybe<ModelGeneratedProductCategoryConditionInput>;
-}>;
-
-
-export type CreateGeneratedProductCategoryMutation = { createGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
-
-export type UpdateGeneratedProductCategoryMutationVariables = Exact<{
-  input: UpdateGeneratedProductCategoryInput;
-  condition?: InputMaybe<ModelGeneratedProductCategoryConditionInput>;
-}>;
-
-
-export type UpdateGeneratedProductCategoryMutation = { updateGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
-
-export type DeleteGeneratedProductCategoryMutationVariables = Exact<{
-  input: DeleteGeneratedProductCategoryInput;
-  condition?: InputMaybe<ModelGeneratedProductCategoryConditionInput>;
-}>;
-
-
-export type DeleteGeneratedProductCategoryMutation = { deleteGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
-
-export type CreateGeneratedProductMutationVariables = Exact<{
-  input: CreateGeneratedProductInput;
-  condition?: InputMaybe<ModelGeneratedProductConditionInput>;
-}>;
-
-
-export type CreateGeneratedProductMutation = { createGeneratedProduct?: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null };
-
-export type UpdateGeneratedProductMutationVariables = Exact<{
-  input: UpdateGeneratedProductInput;
-  condition?: InputMaybe<ModelGeneratedProductConditionInput>;
-}>;
-
-
-export type UpdateGeneratedProductMutation = { updateGeneratedProduct?: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null };
-
-export type DeleteGeneratedProductMutationVariables = Exact<{
-  input: DeleteGeneratedProductInput;
-  condition?: InputMaybe<ModelGeneratedProductConditionInput>;
-}>;
-
-
-export type DeleteGeneratedProductMutation = { deleteGeneratedProduct?: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null };
+export type DeleteProductComponentSetMutation = { deleteProductComponentSet?: { id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type CreateFavoriteProductMutationVariables = Exact<{
   input: CreateFavoriteProductInput;
@@ -6108,7 +4779,7 @@ export type CreateFavoriteProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateFavoriteProductMutation = { createFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, favoriteProductProductId: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type CreateFavoriteProductMutation = { createFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
 
 export type UpdateFavoriteProductMutationVariables = Exact<{
   input: UpdateFavoriteProductInput;
@@ -6116,7 +4787,7 @@ export type UpdateFavoriteProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateFavoriteProductMutation = { updateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, favoriteProductProductId: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type UpdateFavoriteProductMutation = { updateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
 
 export type DeleteFavoriteProductMutationVariables = Exact<{
   input: DeleteFavoriteProductInput;
@@ -6124,7 +4795,7 @@ export type DeleteFavoriteProductMutationVariables = Exact<{
 }>;
 
 
-export type DeleteFavoriteProductMutation = { deleteFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, favoriteProductProductId: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type DeleteFavoriteProductMutation = { deleteFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
 
 export type DeleteUnitMutationVariables = Exact<{
   input: DeleteUnitInput;
@@ -6264,7 +4935,7 @@ export type GetUnitsNearLocationQueryVariables = Exact<{
 }>;
 
 
-export type GetUnitsNearLocationQuery = { getUnitsNearLocation?: { items?: Array<{ id: string, groupId: string, chainId: string, name: string, distance: number, currency: string, isAcceptingOrders: boolean, openingHours?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, createdAt: string, updatedAt: string, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, openingHoursNext7: Array<{ date: string, closed: boolean, from?: number | null, to?: number | null }>, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, unit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId?: string | null, chainId?: string | null, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, currency: string, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null, chain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null, group?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null } | null> | null } | null };
+export type GetUnitsNearLocationQuery = { getUnitsNearLocation?: { items?: Array<{ id: string, groupId: string, chainId: string, name: string, distance: number, currency: string, isAcceptingOrders: boolean, openingHours?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, openingHoursNext7: Array<{ date: string, closed: boolean, from?: number | null, to?: number | null }>, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, unit?: { id: string, adBannersEnabled?: boolean | null, coverBannersEnabled?: boolean | null, groupId?: string | null, chainId?: string | null, lastOrderNum?: number | null, isActive: boolean, isAcceptingOrders: boolean, name: string, email?: string | null, phone?: string | null, merchantId?: string | null, timeZone?: string | null, externalId?: string | null, supportedServingModes?: Array<ServingMode> | null, supportedOrderModes?: Array<OrderMode> | null, orderPolicy?: OrderPolicy | null, packagingTaxPercentage?: number | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, orderPaymentPolicy?: OrderPaymentPolicy | null, canRequestVatInvoice?: boolean | null, canCallWaiter?: boolean | null, isVisibleInApp?: boolean | null, currency: string, createdAt: string, updatedAt: string, adBanners?: Array<{ imageUrl: string }> | null, coverBanners?: Array<{ imageUrl: string }> | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } }, paymentModes?: Array<{ type: PaymentType, caption?: string | null, method: PaymentMethod } | null> | null, floorMap?: { w: number, h: number, objects?: Array<{ id: string, t: UnitMapObjectType, c?: string | null, w?: number | null, h?: number | null, r?: number | null, a?: number | null, x: number, y: number, tID?: string | null, sID?: string | null }> | null } | null, lanes?: Array<{ id: string, name: string, color: string } | null> | null, open?: { from?: string | null, to?: string | null } | null, openingHours?: { mon?: { from: string, to: string } | null, tue?: { from: string, to: string } | null, wed?: { from: string, to: string } | null, thu?: { from: string, to: string } | null, fri?: { from: string, to: string } | null, sat?: { from: string, to: string } | null, sun?: { from: string, to: string } | null, custom?: Array<{ date: string, from: string, to: string } | null> | null } | null, pos?: { type: PosType, rkeeper?: { endpointUri: string, rkeeperUsername: string, rkeeperPassword: string, anyuppUsername: string, anyuppPassword: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null, location?: { lat: number, lon: number } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null } | null> | null } | null };
 
 export type SearchByRadiusQueryVariables = Exact<{
   input: SearchByRadiusInput;
@@ -6272,62 +4943,6 @@ export type SearchByRadiusQueryVariables = Exact<{
 
 
 export type SearchByRadiusQuery = { searchByRadius?: { items?: Array<string | null> | null, nextToken?: string | null, total?: number | null } | null };
-
-export type GetChainProductQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type GetChainProductQuery = { getChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type ListChainProductsQueryVariables = Exact<{
-  filter?: InputMaybe<ModelChainProductFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type ListChainProductsQuery = { listChainProducts?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null> } | null };
-
-export type SearchChainProductsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableChainProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableChainProductSortInput>> | InputMaybe<SearchableChainProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableChainProductAggregationInput>> | InputMaybe<SearchableChainProductAggregationInput>>;
-}>;
-
-
-export type SearchChainProductsQuery = { searchChainProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
-
-export type GetGroupProductQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type GetGroupProductQuery = { getGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type ListGroupProductsQueryVariables = Exact<{
-  filter?: InputMaybe<ModelGroupProductFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type ListGroupProductsQuery = { listGroupProducts?: { nextToken?: string | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null> } | null };
-
-export type SearchGroupProductsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGroupProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGroupProductSortInput>> | InputMaybe<SearchableGroupProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableGroupProductAggregationInput>> | InputMaybe<SearchableGroupProductAggregationInput>>;
-}>;
-
-
-export type SearchGroupProductsQuery = { searchGroupProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetUnitProductQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6390,7 +5005,7 @@ export type GetAdminUserQueryVariables = Exact<{
 }>;
 
 
-export type GetAdminUserQuery = { getAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedChainId?: string | null, selectedGroupId?: string | null, selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
+export type GetAdminUserQuery = { getAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
 
 export type ListAdminUsersQueryVariables = Exact<{
   filter?: InputMaybe<ModelAdminUserFilterInput>;
@@ -6399,7 +5014,7 @@ export type ListAdminUsersQueryVariables = Exact<{
 }>;
 
 
-export type ListAdminUsersQuery = { listAdminUsers?: { nextToken?: string | null, items: Array<{ id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedChainId?: string | null, selectedGroupId?: string | null, selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null> } | null };
+export type ListAdminUsersQuery = { listAdminUsers?: { nextToken?: string | null, items: Array<{ id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null> } | null };
 
 export type SearchAdminUsersQueryVariables = Exact<{
   filter?: InputMaybe<SearchableAdminUserFilterInput>;
@@ -6411,63 +5026,7 @@ export type SearchAdminUsersQueryVariables = Exact<{
 }>;
 
 
-export type SearchAdminUsersQuery = { searchAdminUsers?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedChainId?: string | null, selectedGroupId?: string | null, selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
-
-export type GetChainQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type GetChainQuery = { getChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
-
-export type ListChainsQueryVariables = Exact<{
-  filter?: InputMaybe<ModelChainFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type ListChainsQuery = { listChains?: { nextToken?: string | null, items: Array<{ id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null> } | null };
-
-export type SearchChainsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableChainFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableChainSortInput>> | InputMaybe<SearchableChainSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableChainAggregationInput>> | InputMaybe<SearchableChainAggregationInput>>;
-}>;
-
-
-export type SearchChainsQuery = { searchChains?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
-
-export type GetGroupQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type GetGroupQuery = { getGroup?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
-
-export type ListGroupsQueryVariables = Exact<{
-  filter?: InputMaybe<ModelGroupFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type ListGroupsQuery = { listGroups?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null> } | null };
-
-export type SearchGroupsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGroupFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGroupSortInput>> | InputMaybe<SearchableGroupSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableGroupAggregationInput>> | InputMaybe<SearchableGroupAggregationInput>>;
-}>;
-
-
-export type SearchGroupsQuery = { searchGroups?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchAdminUsersQuery = { searchAdminUsers?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetOrderQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6502,7 +5061,7 @@ export type GetProductCategoryQueryVariables = Exact<{
 }>;
 
 
-export type GetProductCategoryQuery = { getProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type GetProductCategoryQuery = { getProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type ListProductCategoriesQueryVariables = Exact<{
   filter?: InputMaybe<ModelProductCategoryFilterInput>;
@@ -6511,7 +5070,7 @@ export type ListProductCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type ListProductCategoriesQuery = { listProductCategories?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
+export type ListProductCategoriesQuery = { listProductCategories?: { nextToken?: string | null, items: Array<{ id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
 
 export type SearchProductCategoriesQueryVariables = Exact<{
   filter?: InputMaybe<SearchableProductCategoryFilterInput>;
@@ -6523,14 +5082,14 @@ export type SearchProductCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type SearchProductCategoriesQuery = { searchProductCategories?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchProductCategoriesQuery = { searchProductCategories?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetProductComponentQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetProductComponentQuery = { getProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type GetProductComponentQuery = { getProductComponent?: { id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type ListProductComponentsQueryVariables = Exact<{
   filter?: InputMaybe<ModelProductComponentFilterInput>;
@@ -6539,7 +5098,7 @@ export type ListProductComponentsQueryVariables = Exact<{
 }>;
 
 
-export type ListProductComponentsQuery = { listProductComponents?: { nextToken?: string | null, items: Array<{ id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
+export type ListProductComponentsQuery = { listProductComponents?: { nextToken?: string | null, items: Array<{ id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
 
 export type SearchProductComponentsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableProductComponentFilterInput>;
@@ -6551,14 +5110,14 @@ export type SearchProductComponentsQueryVariables = Exact<{
 }>;
 
 
-export type SearchProductComponentsQuery = { searchProductComponents?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchProductComponentsQuery = { searchProductComponents?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetProductComponentSetQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetProductComponentSetQuery = { getProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type GetProductComponentSetQuery = { getProductComponentSet?: { id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type ListProductComponentSetsQueryVariables = Exact<{
   filter?: InputMaybe<ModelProductComponentSetFilterInput>;
@@ -6567,7 +5126,7 @@ export type ListProductComponentSetsQueryVariables = Exact<{
 }>;
 
 
-export type ListProductComponentSetsQuery = { listProductComponentSets?: { nextToken?: string | null, items: Array<{ id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
+export type ListProductComponentSetsQuery = { listProductComponentSets?: { nextToken?: string | null, items: Array<{ id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
 
 export type SearchProductComponentSetsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableProductComponentSetFilterInput>;
@@ -6579,70 +5138,14 @@ export type SearchProductComponentSetsQueryVariables = Exact<{
 }>;
 
 
-export type SearchProductComponentSetsQuery = { searchProductComponentSets?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
-
-export type GetGeneratedProductCategoryQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type GetGeneratedProductCategoryQuery = { getGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
-
-export type ListGeneratedProductCategoriesQueryVariables = Exact<{
-  filter?: InputMaybe<ModelGeneratedProductCategoryFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type ListGeneratedProductCategoriesQuery = { listGeneratedProductCategories?: { nextToken?: string | null, items: Array<{ id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null> } | null };
-
-export type SearchGeneratedProductCategoriesQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGeneratedProductCategoryFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductCategorySortInput>> | InputMaybe<SearchableGeneratedProductCategorySortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductCategoryAggregationInput>> | InputMaybe<SearchableGeneratedProductCategoryAggregationInput>>;
-}>;
-
-
-export type SearchGeneratedProductCategoriesQuery = { searchGeneratedProductCategories?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
-
-export type GetGeneratedProductQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type GetGeneratedProductQuery = { getGeneratedProduct?: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null };
-
-export type ListGeneratedProductsQueryVariables = Exact<{
-  filter?: InputMaybe<ModelGeneratedProductFilterInput>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type ListGeneratedProductsQuery = { listGeneratedProducts?: { nextToken?: string | null, items: Array<{ id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null> } | null };
-
-export type SearchGeneratedProductsQueryVariables = Exact<{
-  filter?: InputMaybe<SearchableGeneratedProductFilterInput>;
-  sort?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductSortInput>> | InputMaybe<SearchableGeneratedProductSortInput>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  nextToken?: InputMaybe<Scalars['String']>;
-  from?: InputMaybe<Scalars['Int']>;
-  aggregates?: InputMaybe<Array<InputMaybe<SearchableGeneratedProductAggregationInput>> | InputMaybe<SearchableGeneratedProductAggregationInput>>;
-}>;
-
-
-export type SearchGeneratedProductsQuery = { searchGeneratedProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchProductComponentSetsQuery = { searchProductComponentSets?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetFavoriteProductQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetFavoriteProductQuery = { getFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, favoriteProductProductId: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type GetFavoriteProductQuery = { getFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
 
 export type ListFavoriteProductsQueryVariables = Exact<{
   filter?: InputMaybe<ModelFavoriteProductFilterInput>;
@@ -6651,7 +5154,7 @@ export type ListFavoriteProductsQueryVariables = Exact<{
 }>;
 
 
-export type ListFavoriteProductsQuery = { listFavoriteProducts?: { nextToken?: string | null, items: Array<{ id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, favoriteProductProductId: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null> } | null };
+export type ListFavoriteProductsQuery = { listFavoriteProducts?: { nextToken?: string | null, items: Array<{ id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null> } | null };
 
 export type SearchFavoriteProductsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableFavoriteProductFilterInput>;
@@ -6663,7 +5166,7 @@ export type SearchFavoriteProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchFavoriteProductsQuery = { searchFavoriteProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, favoriteProductProductId: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchFavoriteProductsQuery = { searchFavoriteProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetUnitQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -6838,24 +5341,12 @@ export type OnAdminUserChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnAdminUserChangeSubscription = { onAdminUserChange?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedChainId?: string | null, selectedGroupId?: string | null, selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
+export type OnAdminUserChangeSubscription = { onAdminUserChange?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
 
 export type OnAdminUsersChangeSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnAdminUsersChangeSubscription = { onAdminUsersChange?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedChainId?: string | null, selectedGroupId?: string | null, selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
-
-export type OnChainsChangeSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnChainsChangeSubscription = { onChainsChange?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
-
-export type OnGroupsChangeSubscriptionVariables = Exact<{
-  chainId: Scalars['ID'];
-}>;
-
-
-export type OnGroupsChangeSubscription = { onGroupsChange?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type OnAdminUsersChangeSubscription = { onAdminUsersChange?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
 
 export type OnUnitsChangeSubscriptionVariables = Exact<{
   groupId: Scalars['ID'];
@@ -6869,35 +5360,21 @@ export type OnProductCategoriesChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnProductCategoriesChangeSubscription = { onProductCategoriesChange?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnProductCategoriesChangeSubscription = { onProductCategoriesChange?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnProductComponentsChangeSubscriptionVariables = Exact<{
   chainId: Scalars['ID'];
 }>;
 
 
-export type OnProductComponentsChangeSubscription = { onProductComponentsChange?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnProductComponentsChangeSubscription = { onProductComponentsChange?: { id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnProductComponentSetsChangeSubscriptionVariables = Exact<{
   chainId: Scalars['ID'];
 }>;
 
 
-export type OnProductComponentSetsChangeSubscription = { onProductComponentSetsChange?: { id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
-
-export type OnChainProductChangeSubscriptionVariables = Exact<{
-  chainId: Scalars['ID'];
-}>;
-
-
-export type OnChainProductChangeSubscription = { onChainProductChange?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type OnGroupProductChangeSubscriptionVariables = Exact<{
-  groupId: Scalars['ID'];
-}>;
-
-
-export type OnGroupProductChangeSubscription = { onGroupProductChange?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
+export type OnProductComponentSetsChangeSubscription = { onProductComponentSetsChange?: { id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnUnitProductChangeSubscriptionVariables = Exact<{
   unitId: Scalars['ID'];
@@ -6905,13 +5382,6 @@ export type OnUnitProductChangeSubscriptionVariables = Exact<{
 
 
 export type OnUnitProductChangeSubscription = { onUnitProductChange?: { id: string, parentId?: string | null, chainId?: string | null, groupId?: string | null, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null };
-
-export type OnGeneratedProductChangeSubscriptionVariables = Exact<{
-  unitId: Scalars['ID'];
-}>;
-
-
-export type OnGeneratedProductChangeSubscription = { onGeneratedProductChange?: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null };
 
 export type OnOrdersChangeSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -6922,13 +5392,6 @@ export type OnOrdersDeleteSubscriptionVariables = Exact<{ [key: string]: never; 
 
 
 export type OnOrdersDeleteSubscription = { onOrdersDelete?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
-
-export type OnProductChangedSubscriptionVariables = Exact<{
-  unitId?: InputMaybe<Scalars['String']>;
-}>;
-
-
-export type OnProductChangedSubscription = { onProductChanged?: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null };
 
 export type OnOrderChangedSubscriptionVariables = Exact<{
   userId?: InputMaybe<Scalars['String']>;
@@ -6946,36 +5409,6 @@ export type OnUnitOrdersChangeSubscriptionVariables = Exact<{
 
 
 export type OnUnitOrdersChangeSubscription = { onUnitOrdersChange?: { id: string, version?: number | null, userId: string, unitId: string, orderNum?: string | null, archived: boolean, paymentIntention?: number | null, transactionStatus?: PaymentStatus | null, transactionId?: string | null, unpayCategory?: UnpayCategory | null, orderMode?: OrderMode | null, servingMode?: ServingMode | null, hasRated?: boolean | null, tipTransactionStatus?: PaymentStatus | null, tipTransactionId?: string | null, orderPolicy?: OrderPolicy | null, soldOutVisibilityPolicy?: SoldOutVisibilityPolicy | null, packagingFeeTaxPercentage?: number | null, externalId?: string | null, guestLabel?: string | null, currentStatus?: OrderStatus | null, createdAt: string, updatedAt: string, visitId?: string | null, items: Array<{ productId: string, variantId: string, created?: number | null, image?: string | null, quantity: number, laneId?: string | null, allergens?: Array<Allergen | null> | null, productType?: ProductType | null, externalId?: string | null, netPackagingFee?: number | null, productName: { en?: string | null, de?: string | null, hu?: string | null }, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, variantName: { en?: string | null, de?: string | null, hu?: string | null }, configSets?: Array<{ productSetId: string, type: ProductComponentSetType, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, serviceFee?: { currency: string, netPrice: number, taxPercentage: number } | null, priceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number } }>, paymentMode?: { type: PaymentType, caption?: string | null, method: PaymentMethod } | null, statusLog: Array<{ userId: string, status: OrderStatus, ts: number }>, place?: { seat: string, table: string } | null, transaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFee?: { currency?: string | null, grossPrice?: number | null, taxContent?: number | null } | null, packagingSum?: { currency: string, netPrice: number, taxPercentage: number } | null, sumPriceShown: { currency: string, pricePerUnit: number, priceSum: number, tax: number, taxSum: number }, rating?: { key: string, value: number } | null, tip?: { type: TipType, value: number } | null, tipTransaction?: { id: string, userId: string, orderId: string, type?: string | null, total?: number | null, currency?: string | null, status?: PaymentStatus | null, externalTransactionId?: string | null, invoiceId?: string | null, receiptId?: string | null, createdAt: string, updatedAt: string, paymentMethodId?: string | null, user: { id: string, name?: string | null, email?: string | null, phone?: string | null, profileImage?: string | null, stripeCustomerId?: string | null, createdAt: string, updatedAt: string, invoiceAddress?: { customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null } | null }, invoice?: { id: string, userId: string, orderId: string, transactionId: string, externalInvoiceId?: string | null, customerName: string, taxNumber: string, country: string, city: string, streetAddress: string, postalCode: string, email?: string | null, pdfUrl?: string | null, status: InvoiceStatus, createdAt: string, updatedAt: string } | null, receipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null } | null, serviceFeePolicy?: { type: ServiceFeeType, percentage: number } | null, ratingPolicies?: Array<{ key: string, title: { en?: string | null, de?: string | null, hu?: string | null }, description: { en?: string | null, de?: string | null, hu?: string | null }, ratings: Array<{ value: number, icon?: string | null, text: { en?: string | null, de?: string | null, hu?: string | null } }> }> | null, tipPolicy?: { percents: Array<number>, minOtherAmount?: number | null, title?: { en?: string | null, de?: string | null, hu?: string | null } | null, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null } | null };
-
-export type OnCreateChainProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnCreateChainProductSubscription = { onCreateChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type OnUpdateChainProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnUpdateChainProductSubscription = { onUpdateChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type OnDeleteChainProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnDeleteChainProductSubscription = { onDeleteChainProduct?: { id: string, chainId: string, productCategoryId: string, productType: ProductType, isVisible: boolean, image?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type OnCreateGroupProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnCreateGroupProductSubscription = { onCreateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type OnUpdateGroupProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnUpdateGroupProductSubscription = { onUpdateGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
-
-export type OnDeleteGroupProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnDeleteGroupProductSubscription = { onDeleteGroupProduct?: { id: string, parentId: string, chainId: string, groupId: string, isVisible: boolean, tax: number, takeawayTax?: number | null, externalId?: string | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, refGroupPrice?: number | null, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, refGroupPrice: number, price: number, position: number, externalId?: string | null, netPackagingFee?: number | null }> } | null> | null } | null };
 
 export type OnCreateUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -7010,37 +5443,7 @@ export type OnDeleteVariantSubscription = { onDeleteVariant?: { id: string, refG
 export type OnUpdateAdminUserSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateAdminUserSubscription = { onUpdateAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedChainId?: string | null, selectedGroupId?: string | null, selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
-
-export type OnCreateChainSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnCreateChainSubscription = { onCreateChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
-
-export type OnUpdateChainSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnUpdateChainSubscription = { onUpdateChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
-
-export type OnDeleteChainSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnDeleteChainSubscription = { onDeleteChain?: { id: string, name: string, isActive?: boolean | null, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, style: { colors: { backgroundLight?: string | null, backgroundDark?: string | null, borderLight?: string | null, borderDark?: string | null, disabled?: string | null, indicator?: string | null, textLight?: string | null, textDark?: string | null, primary?: string | null, secondary?: string | null, button?: string | null, buttonText?: string | null, icon?: string | null, highlight?: string | null }, images?: { header?: string | null, logo?: string | null } | null }, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null, categoryOrders?: Array<{ id: string, parentId?: string | null } | null> | null } | null };
-
-export type OnCreateGroupSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnCreateGroupSubscription = { onCreateGroup?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
-
-export type OnUpdateGroupSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnUpdateGroupSubscription = { onUpdateGroup?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
-
-export type OnDeleteGroupSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnDeleteGroupSubscription = { onDeleteGroup?: { id: string, chainId: string, name: string, currency: string, email?: string | null, phone?: string | null, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, address?: { address: string, city: string, country: string, title: string, postalCode: string, location: { lat: number, lng: number } } | null } | null };
+export type OnUpdateAdminUserSubscription = { onUpdateAdminUser?: { id: string, name: string, email: string, phone: string, profileImage?: string | null, createdAt: string, updatedAt: string, settings?: { selectedUnitId?: string | null, selectedProductCategoryId?: string | null, selectedLanguage?: string | null, selectedHistoryDate?: number | null } | null } | null };
 
 export type OnUpdateOrderSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -7055,92 +5458,62 @@ export type OnDeleteOrderSubscription = { onDeleteOrder?: { id: string, version?
 export type OnCreateProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateProductCategorySubscription = { onCreateProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnCreateProductCategorySubscription = { onCreateProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnUpdateProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateProductCategorySubscription = { onUpdateProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnUpdateProductCategorySubscription = { onUpdateProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnDeleteProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteProductCategorySubscription = { onDeleteProductCategory?: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnDeleteProductCategorySubscription = { onDeleteProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnCreateProductComponentSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateProductComponentSubscription = { onCreateProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnCreateProductComponentSubscription = { onCreateProductComponent?: { id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnUpdateProductComponentSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateProductComponentSubscription = { onUpdateProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnUpdateProductComponentSubscription = { onUpdateProductComponent?: { id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnDeleteProductComponentSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteProductComponentSubscription = { onDeleteProductComponent?: { id: string, chainId: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnDeleteProductComponentSubscription = { onDeleteProductComponent?: { id: string, ownerEntity: string, description?: string | null, allergens?: Array<Allergen | null> | null, externalId?: string | null, dirty?: boolean | null, soldOut?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnCreateProductComponentSetSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateProductComponentSetSubscription = { onCreateProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnCreateProductComponentSetSubscription = { onCreateProductComponentSet?: { id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnUpdateProductComponentSetSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateProductComponentSetSubscription = { onUpdateProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnUpdateProductComponentSetSubscription = { onUpdateProductComponentSet?: { id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnDeleteProductComponentSetSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteProductComponentSetSubscription = { onDeleteProductComponentSet?: { id: string, externalId?: string | null, chainId: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
-
-export type OnCreateGeneratedProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnCreateGeneratedProductCategorySubscription = { onCreateGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
-
-export type OnUpdateGeneratedProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnUpdateGeneratedProductCategorySubscription = { onUpdateGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
-
-export type OnDeleteGeneratedProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnDeleteGeneratedProductCategorySubscription = { onDeleteGeneratedProductCategory?: { id: string, unitId: string, productNum: number, productCategoryId: string, position?: number | null, createdAt: string, updatedAt: string, productCategory: { id: string, chainId: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } } | null };
-
-export type OnCreateGeneratedProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnCreateGeneratedProductSubscription = { onCreateGeneratedProduct?: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null };
-
-export type OnUpdateGeneratedProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnUpdateGeneratedProductSubscription = { onUpdateGeneratedProduct?: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null };
-
-export type OnDeleteGeneratedProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OnDeleteGeneratedProductSubscription = { onDeleteGeneratedProduct?: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } | null };
+export type OnDeleteProductComponentSetSubscription = { onDeleteProductComponentSet?: { id: string, externalId?: string | null, ownerEntity: string, type: ProductComponentSetType, description: string, items: Array<string>, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnCreateFavoriteProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateFavoriteProductSubscription = { onCreateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, favoriteProductProductId: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type OnCreateFavoriteProductSubscription = { onCreateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
 
 export type OnUpdateFavoriteProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateFavoriteProductSubscription = { onUpdateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, favoriteProductProductId: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type OnUpdateFavoriteProductSubscription = { onUpdateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
 
 export type OnDeleteFavoriteProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteFavoriteProductSubscription = { onDeleteFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, favoriteProductProductId: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, createdAt: string, updatedAt: string, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type OnDeleteFavoriteProductSubscription = { onDeleteFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
 
 export type OnDeleteUnitSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -7223,13 +5596,6 @@ export type OnDeleteReceiptSubscriptionVariables = Exact<{ [key: string]: never;
 export type OnDeleteReceiptSubscription = { onDeleteReceipt?: { id: string, userId: string, orderId: string, transactionId: string, externalReceiptId?: string | null, email?: string | null, pdfData?: string | null, status: ReceiptStatus, createdAt: string, updatedAt: string } | null };
 
 
-export const GetGroupCurrencyDocument = gql`
-    query GetGroupCurrency($id: ID!) {
-  getGroup(id: $id) {
-    currency
-  }
-}
-    `;
 export const SearchReportOrdersDocument = gql`
     query SearchReportOrders($filter: SearchableOrderFilterInput, $sort: [SearchableOrderSortInput], $limit: Int, $nextToken: String, $from: Int) {
   searchOrders(
@@ -7251,38 +5617,6 @@ export const SearchReportOrdersDocument = gql`
   }
 }
     `;
-export const SearchChainIdsDocument = gql`
-    query SearchChainIds($filter: SearchableChainFilterInput, $sort: [SearchableChainSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchChains(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGroupIdsDocument = gql`
-    query SearchGroupIds($filter: SearchableGroupFilterInput, $sort: [SearchableGroupSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchGroups(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
 export const SearchUnitIdsDocument = gql`
     query SearchUnitIds($filter: SearchableUnitFilterInput, $sort: [SearchableUnitSortInput], $limit: Int, $nextToken: String, $from: Int) {
   searchUnits(
@@ -7299,57 +5633,9 @@ export const SearchUnitIdsDocument = gql`
   }
 }
     `;
-export const SearchChainProductIdsDocument = gql`
-    query SearchChainProductIds($filter: SearchableChainProductFilterInput, $sort: [SearchableChainProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchChainProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGroupProductIdsDocument = gql`
-    query SearchGroupProductIds($filter: SearchableGroupProductFilterInput, $sort: [SearchableGroupProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchGroupProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
 export const SearchUnitProductIdsDocument = gql`
     query SearchUnitProductIds($filter: SearchableUnitProductFilterInput, $sort: [SearchableUnitProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
   searchUnitProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-  ) {
-    items {
-      id
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGeneratedProductIdsDocument = gql`
-    query SearchGeneratedProductIds($filter: SearchableGeneratedProductFilterInput, $sort: [SearchableGeneratedProductSortInput], $limit: Int, $nextToken: String, $from: Int) {
-  searchGeneratedProducts(
     filter: $filter
     sort: $sort
     limit: $limit
@@ -8052,8 +6338,6 @@ export const CreateAdminUserDocument = gql`
     phone
     profileImage
     settings {
-      selectedChainId
-      selectedGroupId
       selectedUnitId
       selectedProductCategoryId
       selectedLanguage
@@ -8073,8 +6357,6 @@ export const DeleteAdminUserDocument = gql`
     phone
     profileImage
     settings {
-      selectedChainId
-      selectedGroupId
       selectedUnitId
       selectedProductCategoryId
       selectedLanguage
@@ -8514,384 +6796,6 @@ export const DeleteMyStripeCardDocument = gql`
   deleteMyStripeCard(input: $input)
 }
     `;
-export const CreateChainProductDocument = gql`
-    mutation CreateChainProduct($input: CreateChainProductInput!, $condition: ModelChainProductConditionInput) {
-  createChainProduct(input: $input, condition: $condition) {
-    id
-    chainId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productCategoryId
-    productType
-    isVisible
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    allergens
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const UpdateChainProductDocument = gql`
-    mutation UpdateChainProduct($input: UpdateChainProductInput!, $condition: ModelChainProductConditionInput) {
-  updateChainProduct(input: $input, condition: $condition) {
-    id
-    chainId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productCategoryId
-    productType
-    isVisible
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    allergens
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const DeleteChainProductDocument = gql`
-    mutation DeleteChainProduct($input: DeleteChainProductInput!, $condition: ModelChainProductConditionInput) {
-  deleteChainProduct(input: $input, condition: $condition) {
-    id
-    chainId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productCategoryId
-    productType
-    isVisible
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    allergens
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const CreateGroupProductDocument = gql`
-    mutation CreateGroupProduct($input: CreateGroupProductInput!, $condition: ModelGroupProductConditionInput) {
-  createGroupProduct(input: $input, condition: $condition) {
-    id
-    parentId
-    chainId
-    groupId
-    isVisible
-    tax
-    takeawayTax
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const UpdateGroupProductDocument = gql`
-    mutation UpdateGroupProduct($input: UpdateGroupProductInput!, $condition: ModelGroupProductConditionInput) {
-  updateGroupProduct(input: $input, condition: $condition) {
-    id
-    parentId
-    chainId
-    groupId
-    isVisible
-    tax
-    takeawayTax
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const DeleteGroupProductDocument = gql`
-    mutation DeleteGroupProduct($input: DeleteGroupProductInput!, $condition: ModelGroupProductConditionInput) {
-  deleteGroupProduct(input: $input, condition: $condition) {
-    id
-    parentId
-    chainId
-    groupId
-    isVisible
-    tax
-    takeawayTax
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
 export const CreateUnitProductDocument = gql`
     mutation CreateUnitProduct($input: CreateUnitProductInput!, $condition: ModelUnitProductConditionInput) {
   createUnitProduct(input: $input, condition: $condition) {
@@ -9234,268 +7138,11 @@ export const UpdateAdminUserDocument = gql`
     phone
     profileImage
     settings {
-      selectedChainId
-      selectedGroupId
       selectedUnitId
       selectedProductCategoryId
       selectedLanguage
       selectedHistoryDate
     }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const CreateChainDocument = gql`
-    mutation CreateChain($input: CreateChainInput!, $condition: ModelChainConditionInput) {
-  createChain(input: $input, condition: $condition) {
-    id
-    name
-    description {
-      en
-      de
-      hu
-    }
-    style {
-      colors {
-        backgroundLight
-        backgroundDark
-        borderLight
-        borderDark
-        disabled
-        indicator
-        textLight
-        textDark
-        primary
-        secondary
-        button
-        buttonText
-        icon
-        highlight
-      }
-      images {
-        header
-        logo
-      }
-    }
-    isActive
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    categoryOrders {
-      id
-      parentId
-    }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const UpdateChainDocument = gql`
-    mutation UpdateChain($input: UpdateChainInput!, $condition: ModelChainConditionInput) {
-  updateChain(input: $input, condition: $condition) {
-    id
-    name
-    description {
-      en
-      de
-      hu
-    }
-    style {
-      colors {
-        backgroundLight
-        backgroundDark
-        borderLight
-        borderDark
-        disabled
-        indicator
-        textLight
-        textDark
-        primary
-        secondary
-        button
-        buttonText
-        icon
-        highlight
-      }
-      images {
-        header
-        logo
-      }
-    }
-    isActive
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    categoryOrders {
-      id
-      parentId
-    }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const DeleteChainDocument = gql`
-    mutation DeleteChain($input: DeleteChainInput!, $condition: ModelChainConditionInput) {
-  deleteChain(input: $input, condition: $condition) {
-    id
-    name
-    description {
-      en
-      de
-      hu
-    }
-    style {
-      colors {
-        backgroundLight
-        backgroundDark
-        borderLight
-        borderDark
-        disabled
-        indicator
-        textLight
-        textDark
-        primary
-        secondary
-        button
-        buttonText
-        icon
-        highlight
-      }
-      images {
-        header
-        logo
-      }
-    }
-    isActive
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    categoryOrders {
-      id
-      parentId
-    }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const CreateGroupDocument = gql`
-    mutation CreateGroup($input: CreateGroupInput!, $condition: ModelGroupConditionInput) {
-  createGroup(input: $input, condition: $condition) {
-    id
-    chainId
-    name
-    description {
-      en
-      de
-      hu
-    }
-    currency
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const UpdateGroupDocument = gql`
-    mutation UpdateGroup($input: UpdateGroupInput!, $condition: ModelGroupConditionInput) {
-  updateGroup(input: $input, condition: $condition) {
-    id
-    chainId
-    name
-    description {
-      en
-      de
-      hu
-    }
-    currency
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const DeleteGroupDocument = gql`
-    mutation DeleteGroup($input: DeleteGroupInput!, $condition: ModelGroupConditionInput) {
-  deleteGroup(input: $input, condition: $condition) {
-    id
-    chainId
-    name
-    description {
-      en
-      de
-      hu
-    }
-    currency
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
     createdAt
     updatedAt
   }
@@ -10113,7 +7760,7 @@ export const CreateProductCategoryDocument = gql`
     mutation CreateProductCategory($input: CreateProductCategoryInput!, $condition: ModelProductCategoryConditionInput) {
   createProductCategory(input: $input, condition: $condition) {
     id
-    chainId
+    ownerEntity
     description {
       en
       de
@@ -10135,7 +7782,7 @@ export const UpdateProductCategoryDocument = gql`
     mutation UpdateProductCategory($input: UpdateProductCategoryInput!, $condition: ModelProductCategoryConditionInput) {
   updateProductCategory(input: $input, condition: $condition) {
     id
-    chainId
+    ownerEntity
     description {
       en
       de
@@ -10157,7 +7804,7 @@ export const DeleteProductCategoryDocument = gql`
     mutation DeleteProductCategory($input: DeleteProductCategoryInput!, $condition: ModelProductCategoryConditionInput) {
   deleteProductCategory(input: $input, condition: $condition) {
     id
-    chainId
+    ownerEntity
     description {
       en
       de
@@ -10179,7 +7826,7 @@ export const CreateProductComponentDocument = gql`
     mutation CreateProductComponent($input: CreateProductComponentInput!, $condition: ModelProductComponentConditionInput) {
   createProductComponent(input: $input, condition: $condition) {
     id
-    chainId
+    ownerEntity
     name {
       en
       de
@@ -10200,7 +7847,7 @@ export const UpdateProductComponentDocument = gql`
     mutation UpdateProductComponent($input: UpdateProductComponentInput!, $condition: ModelProductComponentConditionInput) {
   updateProductComponent(input: $input, condition: $condition) {
     id
-    chainId
+    ownerEntity
     name {
       en
       de
@@ -10221,7 +7868,7 @@ export const DeleteProductComponentDocument = gql`
     mutation DeleteProductComponent($input: DeleteProductComponentInput!, $condition: ModelProductComponentConditionInput) {
   deleteProductComponent(input: $input, condition: $condition) {
     id
-    chainId
+    ownerEntity
     name {
       en
       de
@@ -10243,7 +7890,7 @@ export const CreateProductComponentSetDocument = gql`
   createProductComponentSet(input: $input, condition: $condition) {
     id
     externalId
-    chainId
+    ownerEntity
     type
     name {
       en
@@ -10266,7 +7913,7 @@ export const UpdateProductComponentSetDocument = gql`
   updateProductComponentSet(input: $input, condition: $condition) {
     id
     externalId
-    chainId
+    ownerEntity
     type
     name {
       en
@@ -10289,7 +7936,7 @@ export const DeleteProductComponentSetDocument = gql`
   deleteProductComponentSet(input: $input, condition: $condition) {
     id
     externalId
-    chainId
+    ownerEntity
     type
     name {
       en
@@ -10302,312 +7949,6 @@ export const DeleteProductComponentSetDocument = gql`
     supportedServingModes
     dirty
     deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const CreateGeneratedProductCategoryDocument = gql`
-    mutation CreateGeneratedProductCategory($input: CreateGeneratedProductCategoryInput!, $condition: ModelGeneratedProductCategoryConditionInput) {
-  createGeneratedProductCategory(input: $input, condition: $condition) {
-    id
-    unitId
-    productNum
-    productCategoryId
-    productCategory {
-      id
-      chainId
-      description {
-        en
-        de
-        hu
-      }
-      image
-      name {
-        en
-        de
-        hu
-      }
-      position
-      createdAt
-      updatedAt
-    }
-    position
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const UpdateGeneratedProductCategoryDocument = gql`
-    mutation UpdateGeneratedProductCategory($input: UpdateGeneratedProductCategoryInput!, $condition: ModelGeneratedProductCategoryConditionInput) {
-  updateGeneratedProductCategory(input: $input, condition: $condition) {
-    id
-    unitId
-    productNum
-    productCategoryId
-    productCategory {
-      id
-      chainId
-      description {
-        en
-        de
-        hu
-      }
-      image
-      name {
-        en
-        de
-        hu
-      }
-      position
-      createdAt
-      updatedAt
-    }
-    position
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const DeleteGeneratedProductCategoryDocument = gql`
-    mutation DeleteGeneratedProductCategory($input: DeleteGeneratedProductCategoryInput!, $condition: ModelGeneratedProductCategoryConditionInput) {
-  deleteGeneratedProductCategory(input: $input, condition: $condition) {
-    id
-    unitId
-    productNum
-    productCategoryId
-    productCategory {
-      id
-      chainId
-      description {
-        en
-        de
-        hu
-      }
-      image
-      name {
-        en
-        de
-        hu
-      }
-      position
-      createdAt
-      updatedAt
-    }
-    position
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const CreateGeneratedProductDocument = gql`
-    mutation CreateGeneratedProduct($input: CreateGeneratedProductInput!, $condition: ModelGeneratedProductConditionInput) {
-  createGeneratedProduct(input: $input, condition: $condition) {
-    id
-    unitId
-    productCategoryId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productType
-    tax
-    takeawayTax
-    position
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      price
-      netPackagingFee
-      position
-      soldOut
-    }
-    allergens
-    configSets {
-      productSetId
-      name {
-        en
-        de
-        hu
-      }
-      position
-      type
-      maxSelection
-      items {
-        productComponentId
-        price
-        position
-        name {
-          en
-          de
-          hu
-        }
-        allergens
-        netPackagingFee
-        soldOut
-        externalId
-      }
-      supportedServingModes
-    }
-    supportedServingModes
-    soldOut
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const UpdateGeneratedProductDocument = gql`
-    mutation UpdateGeneratedProduct($input: UpdateGeneratedProductInput!, $condition: ModelGeneratedProductConditionInput) {
-  updateGeneratedProduct(input: $input, condition: $condition) {
-    id
-    unitId
-    productCategoryId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productType
-    tax
-    takeawayTax
-    position
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      price
-      netPackagingFee
-      position
-      soldOut
-    }
-    allergens
-    configSets {
-      productSetId
-      name {
-        en
-        de
-        hu
-      }
-      position
-      type
-      maxSelection
-      items {
-        productComponentId
-        price
-        position
-        name {
-          en
-          de
-          hu
-        }
-        allergens
-        netPackagingFee
-        soldOut
-        externalId
-      }
-      supportedServingModes
-    }
-    supportedServingModes
-    soldOut
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const DeleteGeneratedProductDocument = gql`
-    mutation DeleteGeneratedProduct($input: DeleteGeneratedProductInput!, $condition: ModelGeneratedProductConditionInput) {
-  deleteGeneratedProduct(input: $input, condition: $condition) {
-    id
-    unitId
-    productCategoryId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productType
-    tax
-    takeawayTax
-    position
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      price
-      netPackagingFee
-      position
-      soldOut
-    }
-    allergens
-    configSets {
-      productSetId
-      name {
-        en
-        de
-        hu
-      }
-      position
-      type
-      maxSelection
-      items {
-        productComponentId
-        price
-        position
-        name {
-          en
-          de
-          hu
-        }
-        allergens
-        netPackagingFee
-        soldOut
-        externalId
-      }
-      supportedServingModes
-    }
-    supportedServingModes
-    soldOut
     createdAt
     updatedAt
   }
@@ -10683,12 +8024,9 @@ export const CreateFavoriteProductDocument = gql`
       }
       supportedServingModes
       soldOut
-      createdAt
-      updatedAt
     }
     createdAt
     updatedAt
-    favoriteProductProductId
   }
 }
     `;
@@ -10762,12 +8100,9 @@ export const UpdateFavoriteProductDocument = gql`
       }
       supportedServingModes
       soldOut
-      createdAt
-      updatedAt
     }
     createdAt
     updatedAt
-    favoriteProductProductId
   }
 }
     `;
@@ -10841,12 +8176,9 @@ export const DeleteFavoriteProductDocument = gql`
       }
       supportedServingModes
       soldOut
-      createdAt
-      updatedAt
     }
     createdAt
     updatedAt
-    favoriteProductProductId
   }
 }
     `;
@@ -12048,85 +9380,6 @@ export const GetUnitsNearLocationDocument = gql`
         createdAt
         updatedAt
       }
-      chain {
-        id
-        name
-        description {
-          en
-          de
-          hu
-        }
-        style {
-          colors {
-            backgroundLight
-            backgroundDark
-            borderLight
-            borderDark
-            disabled
-            indicator
-            textLight
-            textDark
-            primary
-            secondary
-            button
-            buttonText
-            icon
-            highlight
-          }
-          images {
-            header
-            logo
-          }
-        }
-        isActive
-        address {
-          address
-          city
-          country
-          title
-          postalCode
-          location {
-            lat
-            lng
-          }
-        }
-        email
-        phone
-        categoryOrders {
-          id
-          parentId
-        }
-        createdAt
-        updatedAt
-      }
-      group {
-        id
-        chainId
-        name
-        description {
-          en
-          de
-          hu
-        }
-        currency
-        address {
-          address
-          city
-          country
-          title
-          postalCode
-          location {
-            lat
-            lng
-          }
-        }
-        email
-        phone
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
     }
   }
 }
@@ -12137,440 +9390,6 @@ export const SearchByRadiusDocument = gql`
     items
     nextToken
     total
-  }
-}
-    `;
-export const GetChainProductDocument = gql`
-    query GetChainProduct($id: ID!) {
-  getChainProduct(id: $id) {
-    id
-    chainId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productCategoryId
-    productType
-    isVisible
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    allergens
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const ListChainProductsDocument = gql`
-    query ListChainProducts($filter: ModelChainProductFilterInput, $limit: Int, $nextToken: String) {
-  listChainProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      chainId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productCategoryId
-      productType
-      isVisible
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        refGroupPrice
-        isAvailable
-        price
-        availabilities {
-          type
-          dayFrom
-          dayTo
-          timeFrom
-          timeTo
-          price
-        }
-        position
-        netPackagingFee
-        soldOut
-        ownerProduct
-        externalId
-      }
-      allergens
-      configSets {
-        productSetId
-        items {
-          productComponentId
-          refGroupPrice
-          price
-          position
-          externalId
-          netPackagingFee
-        }
-        position
-      }
-      externalId
-      dirty
-      deletedAt
-      createdAt
-      updatedAt
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchChainProductsDocument = gql`
-    query SearchChainProducts($filter: SearchableChainProductFilterInput, $sort: [SearchableChainProductSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableChainProductAggregationInput]) {
-  searchChainProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-    aggregates: $aggregates
-  ) {
-    items {
-      id
-      chainId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productCategoryId
-      productType
-      isVisible
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        refGroupPrice
-        isAvailable
-        price
-        availabilities {
-          type
-          dayFrom
-          dayTo
-          timeFrom
-          timeTo
-          price
-        }
-        position
-        netPackagingFee
-        soldOut
-        ownerProduct
-        externalId
-      }
-      allergens
-      configSets {
-        productSetId
-        items {
-          productComponentId
-          refGroupPrice
-          price
-          position
-          externalId
-          netPackagingFee
-        }
-        position
-      }
-      externalId
-      dirty
-      deletedAt
-      createdAt
-      updatedAt
-    }
-    nextToken
-    total
-    aggregateItems {
-      name
-      result {
-        ... on SearchableAggregateScalarResult {
-          value
-        }
-        ... on SearchableAggregateBucketResult {
-          buckets {
-            key
-            doc_count
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-export const GetGroupProductDocument = gql`
-    query GetGroupProduct($id: ID!) {
-  getGroupProduct(id: $id) {
-    id
-    parentId
-    chainId
-    groupId
-    isVisible
-    tax
-    takeawayTax
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const ListGroupProductsDocument = gql`
-    query ListGroupProducts($filter: ModelGroupProductFilterInput, $limit: Int, $nextToken: String) {
-  listGroupProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      parentId
-      chainId
-      groupId
-      isVisible
-      tax
-      takeawayTax
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        refGroupPrice
-        isAvailable
-        price
-        availabilities {
-          type
-          dayFrom
-          dayTo
-          timeFrom
-          timeTo
-          price
-        }
-        position
-        netPackagingFee
-        soldOut
-        ownerProduct
-        externalId
-      }
-      configSets {
-        productSetId
-        items {
-          productComponentId
-          refGroupPrice
-          price
-          position
-          externalId
-          netPackagingFee
-        }
-        position
-      }
-      externalId
-      dirty
-      deletedAt
-      createdAt
-      updatedAt
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGroupProductsDocument = gql`
-    query SearchGroupProducts($filter: SearchableGroupProductFilterInput, $sort: [SearchableGroupProductSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableGroupProductAggregationInput]) {
-  searchGroupProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-    aggregates: $aggregates
-  ) {
-    items {
-      id
-      parentId
-      chainId
-      groupId
-      isVisible
-      tax
-      takeawayTax
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        refGroupPrice
-        isAvailable
-        price
-        availabilities {
-          type
-          dayFrom
-          dayTo
-          timeFrom
-          timeTo
-          price
-        }
-        position
-        netPackagingFee
-        soldOut
-        ownerProduct
-        externalId
-      }
-      configSets {
-        productSetId
-        items {
-          productComponentId
-          refGroupPrice
-          price
-          position
-          externalId
-          netPackagingFee
-        }
-        position
-      }
-      externalId
-      dirty
-      deletedAt
-      createdAt
-      updatedAt
-    }
-    nextToken
-    total
-    aggregateItems {
-      name
-      result {
-        ... on SearchableAggregateScalarResult {
-          value
-        }
-        ... on SearchableAggregateBucketResult {
-          buckets {
-            key
-            doc_count
-          }
-        }
-      }
-    }
   }
 }
     `;
@@ -12972,8 +9791,6 @@ export const GetAdminUserDocument = gql`
     phone
     profileImage
     settings {
-      selectedChainId
-      selectedGroupId
       selectedUnitId
       selectedProductCategoryId
       selectedLanguage
@@ -12994,8 +9811,6 @@ export const ListAdminUsersDocument = gql`
       phone
       profileImage
       settings {
-        selectedChainId
-        selectedGroupId
         selectedUnitId
         selectedProductCategoryId
         selectedLanguage
@@ -13025,324 +9840,11 @@ export const SearchAdminUsersDocument = gql`
       phone
       profileImage
       settings {
-        selectedChainId
-        selectedGroupId
         selectedUnitId
         selectedProductCategoryId
         selectedLanguage
         selectedHistoryDate
       }
-      createdAt
-      updatedAt
-    }
-    nextToken
-    total
-    aggregateItems {
-      name
-      result {
-        ... on SearchableAggregateScalarResult {
-          value
-        }
-        ... on SearchableAggregateBucketResult {
-          buckets {
-            key
-            doc_count
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-export const GetChainDocument = gql`
-    query GetChain($id: ID!) {
-  getChain(id: $id) {
-    id
-    name
-    description {
-      en
-      de
-      hu
-    }
-    style {
-      colors {
-        backgroundLight
-        backgroundDark
-        borderLight
-        borderDark
-        disabled
-        indicator
-        textLight
-        textDark
-        primary
-        secondary
-        button
-        buttonText
-        icon
-        highlight
-      }
-      images {
-        header
-        logo
-      }
-    }
-    isActive
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    categoryOrders {
-      id
-      parentId
-    }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const ListChainsDocument = gql`
-    query ListChains($filter: ModelChainFilterInput, $limit: Int, $nextToken: String) {
-  listChains(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      name
-      description {
-        en
-        de
-        hu
-      }
-      style {
-        colors {
-          backgroundLight
-          backgroundDark
-          borderLight
-          borderDark
-          disabled
-          indicator
-          textLight
-          textDark
-          primary
-          secondary
-          button
-          buttonText
-          icon
-          highlight
-        }
-        images {
-          header
-          logo
-        }
-      }
-      isActive
-      address {
-        address
-        city
-        country
-        title
-        postalCode
-        location {
-          lat
-          lng
-        }
-      }
-      email
-      phone
-      categoryOrders {
-        id
-        parentId
-      }
-      createdAt
-      updatedAt
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchChainsDocument = gql`
-    query SearchChains($filter: SearchableChainFilterInput, $sort: [SearchableChainSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableChainAggregationInput]) {
-  searchChains(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-    aggregates: $aggregates
-  ) {
-    items {
-      id
-      name
-      description {
-        en
-        de
-        hu
-      }
-      style {
-        colors {
-          backgroundLight
-          backgroundDark
-          borderLight
-          borderDark
-          disabled
-          indicator
-          textLight
-          textDark
-          primary
-          secondary
-          button
-          buttonText
-          icon
-          highlight
-        }
-        images {
-          header
-          logo
-        }
-      }
-      isActive
-      address {
-        address
-        city
-        country
-        title
-        postalCode
-        location {
-          lat
-          lng
-        }
-      }
-      email
-      phone
-      categoryOrders {
-        id
-        parentId
-      }
-      createdAt
-      updatedAt
-    }
-    nextToken
-    total
-    aggregateItems {
-      name
-      result {
-        ... on SearchableAggregateScalarResult {
-          value
-        }
-        ... on SearchableAggregateBucketResult {
-          buckets {
-            key
-            doc_count
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-export const GetGroupDocument = gql`
-    query GetGroup($id: ID!) {
-  getGroup(id: $id) {
-    id
-    chainId
-    name
-    description {
-      en
-      de
-      hu
-    }
-    currency
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const ListGroupsDocument = gql`
-    query ListGroups($filter: ModelGroupFilterInput, $limit: Int, $nextToken: String) {
-  listGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      chainId
-      name
-      description {
-        en
-        de
-        hu
-      }
-      currency
-      address {
-        address
-        city
-        country
-        title
-        postalCode
-        location {
-          lat
-          lng
-        }
-      }
-      email
-      phone
-      createdAt
-      updatedAt
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGroupsDocument = gql`
-    query SearchGroups($filter: SearchableGroupFilterInput, $sort: [SearchableGroupSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableGroupAggregationInput]) {
-  searchGroups(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-    aggregates: $aggregates
-  ) {
-    items {
-      id
-      chainId
-      name
-      description {
-        en
-        de
-        hu
-      }
-      currency
-      address {
-        address
-        city
-        country
-        title
-        postalCode
-        location {
-          lat
-          lng
-        }
-      }
-      email
-      phone
       createdAt
       updatedAt
     }
@@ -14309,7 +10811,7 @@ export const GetProductCategoryDocument = gql`
     query GetProductCategory($id: ID!) {
   getProductCategory(id: $id) {
     id
-    chainId
+    ownerEntity
     description {
       en
       de
@@ -14332,7 +10834,7 @@ export const ListProductCategoriesDocument = gql`
   listProductCategories(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      chainId
+      ownerEntity
       description {
         en
         de
@@ -14364,7 +10866,7 @@ export const SearchProductCategoriesDocument = gql`
   ) {
     items {
       id
-      chainId
+      ownerEntity
       description {
         en
         de
@@ -14403,7 +10905,7 @@ export const GetProductComponentDocument = gql`
     query GetProductComponent($id: ID!) {
   getProductComponent(id: $id) {
     id
-    chainId
+    ownerEntity
     name {
       en
       de
@@ -14425,7 +10927,7 @@ export const ListProductComponentsDocument = gql`
   listProductComponents(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      chainId
+      ownerEntity
       name {
         en
         de
@@ -14456,7 +10958,7 @@ export const SearchProductComponentsDocument = gql`
   ) {
     items {
       id
-      chainId
+      ownerEntity
       name {
         en
         de
@@ -14495,7 +10997,7 @@ export const GetProductComponentSetDocument = gql`
   getProductComponentSet(id: $id) {
     id
     externalId
-    chainId
+    ownerEntity
     type
     name {
       en
@@ -14519,7 +11021,7 @@ export const ListProductComponentSetsDocument = gql`
     items {
       id
       externalId
-      chainId
+      ownerEntity
       type
       name {
         en
@@ -14552,7 +11054,7 @@ export const SearchProductComponentSetsDocument = gql`
     items {
       id
       externalId
-      chainId
+      ownerEntity
       type
       name {
         en
@@ -14565,372 +11067,6 @@ export const SearchProductComponentSetsDocument = gql`
       supportedServingModes
       dirty
       deletedAt
-      createdAt
-      updatedAt
-    }
-    nextToken
-    total
-    aggregateItems {
-      name
-      result {
-        ... on SearchableAggregateScalarResult {
-          value
-        }
-        ... on SearchableAggregateBucketResult {
-          buckets {
-            key
-            doc_count
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-export const GetGeneratedProductCategoryDocument = gql`
-    query GetGeneratedProductCategory($id: ID!) {
-  getGeneratedProductCategory(id: $id) {
-    id
-    unitId
-    productNum
-    productCategoryId
-    productCategory {
-      id
-      chainId
-      description {
-        en
-        de
-        hu
-      }
-      image
-      name {
-        en
-        de
-        hu
-      }
-      position
-      createdAt
-      updatedAt
-    }
-    position
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const ListGeneratedProductCategoriesDocument = gql`
-    query ListGeneratedProductCategories($filter: ModelGeneratedProductCategoryFilterInput, $limit: Int, $nextToken: String) {
-  listGeneratedProductCategories(
-    filter: $filter
-    limit: $limit
-    nextToken: $nextToken
-  ) {
-    items {
-      id
-      unitId
-      productNum
-      productCategoryId
-      productCategory {
-        id
-        chainId
-        description {
-          en
-          de
-          hu
-        }
-        image
-        name {
-          en
-          de
-          hu
-        }
-        position
-        createdAt
-        updatedAt
-      }
-      position
-      createdAt
-      updatedAt
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGeneratedProductCategoriesDocument = gql`
-    query SearchGeneratedProductCategories($filter: SearchableGeneratedProductCategoryFilterInput, $sort: [SearchableGeneratedProductCategorySortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableGeneratedProductCategoryAggregationInput]) {
-  searchGeneratedProductCategories(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-    aggregates: $aggregates
-  ) {
-    items {
-      id
-      unitId
-      productNum
-      productCategoryId
-      productCategory {
-        id
-        chainId
-        description {
-          en
-          de
-          hu
-        }
-        image
-        name {
-          en
-          de
-          hu
-        }
-        position
-        createdAt
-        updatedAt
-      }
-      position
-      createdAt
-      updatedAt
-    }
-    nextToken
-    total
-    aggregateItems {
-      name
-      result {
-        ... on SearchableAggregateScalarResult {
-          value
-        }
-        ... on SearchableAggregateBucketResult {
-          buckets {
-            key
-            doc_count
-          }
-        }
-      }
-    }
-  }
-}
-    `;
-export const GetGeneratedProductDocument = gql`
-    query GetGeneratedProduct($id: ID!) {
-  getGeneratedProduct(id: $id) {
-    id
-    unitId
-    productCategoryId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productType
-    tax
-    takeawayTax
-    position
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      price
-      netPackagingFee
-      position
-      soldOut
-    }
-    allergens
-    configSets {
-      productSetId
-      name {
-        en
-        de
-        hu
-      }
-      position
-      type
-      maxSelection
-      items {
-        productComponentId
-        price
-        position
-        name {
-          en
-          de
-          hu
-        }
-        allergens
-        netPackagingFee
-        soldOut
-        externalId
-      }
-      supportedServingModes
-    }
-    supportedServingModes
-    soldOut
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const ListGeneratedProductsDocument = gql`
-    query ListGeneratedProducts($filter: ModelGeneratedProductFilterInput, $limit: Int, $nextToken: String) {
-  listGeneratedProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      unitId
-      productCategoryId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productType
-      tax
-      takeawayTax
-      position
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        price
-        netPackagingFee
-        position
-        soldOut
-      }
-      allergens
-      configSets {
-        productSetId
-        name {
-          en
-          de
-          hu
-        }
-        position
-        type
-        maxSelection
-        items {
-          productComponentId
-          price
-          position
-          name {
-            en
-            de
-            hu
-          }
-          allergens
-          netPackagingFee
-          soldOut
-          externalId
-        }
-        supportedServingModes
-      }
-      supportedServingModes
-      soldOut
-      createdAt
-      updatedAt
-    }
-    nextToken
-  }
-}
-    `;
-export const SearchGeneratedProductsDocument = gql`
-    query SearchGeneratedProducts($filter: SearchableGeneratedProductFilterInput, $sort: [SearchableGeneratedProductSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableGeneratedProductAggregationInput]) {
-  searchGeneratedProducts(
-    filter: $filter
-    sort: $sort
-    limit: $limit
-    nextToken: $nextToken
-    from: $from
-    aggregates: $aggregates
-  ) {
-    items {
-      id
-      unitId
-      productCategoryId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productType
-      tax
-      takeawayTax
-      position
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        price
-        netPackagingFee
-        position
-        soldOut
-      }
-      allergens
-      configSets {
-        productSetId
-        name {
-          en
-          de
-          hu
-        }
-        position
-        type
-        maxSelection
-        items {
-          productComponentId
-          price
-          position
-          name {
-            en
-            de
-            hu
-          }
-          allergens
-          netPackagingFee
-          soldOut
-          externalId
-        }
-        supportedServingModes
-      }
-      supportedServingModes
-      soldOut
       createdAt
       updatedAt
     }
@@ -15023,12 +11159,9 @@ export const GetFavoriteProductDocument = gql`
       }
       supportedServingModes
       soldOut
-      createdAt
-      updatedAt
     }
     createdAt
     updatedAt
-    favoriteProductProductId
   }
 }
     `;
@@ -15103,12 +11236,9 @@ export const ListFavoriteProductsDocument = gql`
         }
         supportedServingModes
         soldOut
-        createdAt
-        updatedAt
       }
       createdAt
       updatedAt
-      favoriteProductProductId
     }
     nextToken
   }
@@ -15192,12 +11322,9 @@ export const SearchFavoriteProductsDocument = gql`
         }
         supportedServingModes
         soldOut
-        createdAt
-        updatedAt
       }
       createdAt
       updatedAt
-      favoriteProductProductId
     }
     nextToken
     total
@@ -16661,8 +12788,6 @@ export const OnAdminUserChangeDocument = gql`
     phone
     profileImage
     settings {
-      selectedChainId
-      selectedGroupId
       selectedUnitId
       selectedProductCategoryId
       selectedLanguage
@@ -16682,98 +12807,11 @@ export const OnAdminUsersChangeDocument = gql`
     phone
     profileImage
     settings {
-      selectedChainId
-      selectedGroupId
       selectedUnitId
       selectedProductCategoryId
       selectedLanguage
       selectedHistoryDate
     }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnChainsChangeDocument = gql`
-    subscription OnChainsChange {
-  onChainsChange {
-    id
-    name
-    description {
-      en
-      de
-      hu
-    }
-    style {
-      colors {
-        backgroundLight
-        backgroundDark
-        borderLight
-        borderDark
-        disabled
-        indicator
-        textLight
-        textDark
-        primary
-        secondary
-        button
-        buttonText
-        icon
-        highlight
-      }
-      images {
-        header
-        logo
-      }
-    }
-    isActive
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    categoryOrders {
-      id
-      parentId
-    }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnGroupsChangeDocument = gql`
-    subscription OnGroupsChange($chainId: ID!) {
-  onGroupsChange(chainId: $chainId) {
-    id
-    chainId
-    name
-    description {
-      en
-      de
-      hu
-    }
-    currency
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
     createdAt
     updatedAt
   }
@@ -16983,7 +13021,7 @@ export const OnProductCategoriesChangeDocument = gql`
     subscription OnProductCategoriesChange($chainId: ID!) {
   onProductCategoriesChange(chainId: $chainId) {
     id
-    chainId
+    ownerEntity
     description {
       en
       de
@@ -17005,7 +13043,7 @@ export const OnProductComponentsChangeDocument = gql`
     subscription OnProductComponentsChange($chainId: ID!) {
   onProductComponentsChange(chainId: $chainId) {
     id
-    chainId
+    ownerEntity
     name {
       en
       de
@@ -17027,7 +13065,7 @@ export const OnProductComponentSetsChangeDocument = gql`
   onProductComponentSetsChange(chainId: $chainId) {
     id
     externalId
-    chainId
+    ownerEntity
     type
     name {
       en
@@ -17038,132 +13076,6 @@ export const OnProductComponentSetsChangeDocument = gql`
     items
     maxSelection
     supportedServingModes
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnChainProductChangeDocument = gql`
-    subscription OnChainProductChange($chainId: ID!) {
-  onChainProductChange(chainId: $chainId) {
-    id
-    chainId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productCategoryId
-    productType
-    isVisible
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    allergens
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnGroupProductChangeDocument = gql`
-    subscription OnGroupProductChange($groupId: ID!) {
-  onGroupProductChange(groupId: $groupId) {
-    id
-    parentId
-    chainId
-    groupId
-    isVisible
-    tax
-    takeawayTax
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
     dirty
     deletedAt
     createdAt
@@ -17243,77 +13155,6 @@ export const OnUnitProductChangeDocument = gql`
     productType
     image
     allergens
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnGeneratedProductChangeDocument = gql`
-    subscription OnGeneratedProductChange($unitId: ID!) {
-  onGeneratedProductChange(unitId: $unitId) {
-    id
-    unitId
-    productCategoryId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productType
-    tax
-    takeawayTax
-    position
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      price
-      netPackagingFee
-      position
-      soldOut
-    }
-    allergens
-    configSets {
-      productSetId
-      name {
-        en
-        de
-        hu
-      }
-      position
-      type
-      maxSelection
-      items {
-        productComponentId
-        price
-        position
-        name {
-          en
-          de
-          hu
-        }
-        allergens
-        netPackagingFee
-        soldOut
-        externalId
-      }
-      supportedServingModes
-    }
-    supportedServingModes
-    soldOut
     createdAt
     updatedAt
   }
@@ -17927,77 +13768,6 @@ export const OnOrdersDeleteDocument = gql`
   }
 }
     `;
-export const OnProductChangedDocument = gql`
-    subscription OnProductChanged($unitId: String) {
-  onProductChanged(unitId: $unitId) {
-    id
-    unitId
-    productCategoryId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productType
-    tax
-    takeawayTax
-    position
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      price
-      netPackagingFee
-      position
-      soldOut
-    }
-    allergens
-    configSets {
-      productSetId
-      name {
-        en
-        de
-        hu
-      }
-      position
-      type
-      maxSelection
-      items {
-        productComponentId
-        price
-        position
-        name {
-          en
-          de
-          hu
-        }
-        allergens
-        netPackagingFee
-        soldOut
-        externalId
-      }
-      supportedServingModes
-    }
-    supportedServingModes
-    soldOut
-    createdAt
-    updatedAt
-  }
-}
-    `;
 export const OnOrderChangedDocument = gql`
     subscription OnOrderChanged($userId: String, $unitId: String, $archived: Boolean) {
   onOrderChanged(userId: $userId, unitId: $unitId, archived: $archived) {
@@ -18606,384 +14376,6 @@ export const OnUnitOrdersChangeDocument = gql`
   }
 }
     `;
-export const OnCreateChainProductDocument = gql`
-    subscription OnCreateChainProduct {
-  onCreateChainProduct {
-    id
-    chainId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productCategoryId
-    productType
-    isVisible
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    allergens
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnUpdateChainProductDocument = gql`
-    subscription OnUpdateChainProduct {
-  onUpdateChainProduct {
-    id
-    chainId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productCategoryId
-    productType
-    isVisible
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    allergens
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnDeleteChainProductDocument = gql`
-    subscription OnDeleteChainProduct {
-  onDeleteChainProduct {
-    id
-    chainId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productCategoryId
-    productType
-    isVisible
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    allergens
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnCreateGroupProductDocument = gql`
-    subscription OnCreateGroupProduct {
-  onCreateGroupProduct {
-    id
-    parentId
-    chainId
-    groupId
-    isVisible
-    tax
-    takeawayTax
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnUpdateGroupProductDocument = gql`
-    subscription OnUpdateGroupProduct {
-  onUpdateGroupProduct {
-    id
-    parentId
-    chainId
-    groupId
-    isVisible
-    tax
-    takeawayTax
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnDeleteGroupProductDocument = gql`
-    subscription OnDeleteGroupProduct {
-  onDeleteGroupProduct {
-    id
-    parentId
-    chainId
-    groupId
-    isVisible
-    tax
-    takeawayTax
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      refGroupPrice
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
-    configSets {
-      productSetId
-      items {
-        productComponentId
-        refGroupPrice
-        price
-        position
-        externalId
-        netPackagingFee
-      }
-      position
-    }
-    externalId
-    dirty
-    deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
 export const OnCreateUnitProductDocument = gql`
     subscription OnCreateUnitProduct {
   onCreateUnitProduct {
@@ -19326,268 +14718,11 @@ export const OnUpdateAdminUserDocument = gql`
     phone
     profileImage
     settings {
-      selectedChainId
-      selectedGroupId
       selectedUnitId
       selectedProductCategoryId
       selectedLanguage
       selectedHistoryDate
     }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnCreateChainDocument = gql`
-    subscription OnCreateChain {
-  onCreateChain {
-    id
-    name
-    description {
-      en
-      de
-      hu
-    }
-    style {
-      colors {
-        backgroundLight
-        backgroundDark
-        borderLight
-        borderDark
-        disabled
-        indicator
-        textLight
-        textDark
-        primary
-        secondary
-        button
-        buttonText
-        icon
-        highlight
-      }
-      images {
-        header
-        logo
-      }
-    }
-    isActive
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    categoryOrders {
-      id
-      parentId
-    }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnUpdateChainDocument = gql`
-    subscription OnUpdateChain {
-  onUpdateChain {
-    id
-    name
-    description {
-      en
-      de
-      hu
-    }
-    style {
-      colors {
-        backgroundLight
-        backgroundDark
-        borderLight
-        borderDark
-        disabled
-        indicator
-        textLight
-        textDark
-        primary
-        secondary
-        button
-        buttonText
-        icon
-        highlight
-      }
-      images {
-        header
-        logo
-      }
-    }
-    isActive
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    categoryOrders {
-      id
-      parentId
-    }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnDeleteChainDocument = gql`
-    subscription OnDeleteChain {
-  onDeleteChain {
-    id
-    name
-    description {
-      en
-      de
-      hu
-    }
-    style {
-      colors {
-        backgroundLight
-        backgroundDark
-        borderLight
-        borderDark
-        disabled
-        indicator
-        textLight
-        textDark
-        primary
-        secondary
-        button
-        buttonText
-        icon
-        highlight
-      }
-      images {
-        header
-        logo
-      }
-    }
-    isActive
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    categoryOrders {
-      id
-      parentId
-    }
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnCreateGroupDocument = gql`
-    subscription OnCreateGroup {
-  onCreateGroup {
-    id
-    chainId
-    name
-    description {
-      en
-      de
-      hu
-    }
-    currency
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnUpdateGroupDocument = gql`
-    subscription OnUpdateGroup {
-  onUpdateGroup {
-    id
-    chainId
-    name
-    description {
-      en
-      de
-      hu
-    }
-    currency
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnDeleteGroupDocument = gql`
-    subscription OnDeleteGroup {
-  onDeleteGroup {
-    id
-    chainId
-    name
-    description {
-      en
-      de
-      hu
-    }
-    currency
-    address {
-      address
-      city
-      country
-      title
-      postalCode
-      location {
-        lat
-        lng
-      }
-    }
-    email
-    phone
     createdAt
     updatedAt
   }
@@ -20205,7 +15340,7 @@ export const OnCreateProductCategoryDocument = gql`
     subscription OnCreateProductCategory {
   onCreateProductCategory {
     id
-    chainId
+    ownerEntity
     description {
       en
       de
@@ -20227,7 +15362,7 @@ export const OnUpdateProductCategoryDocument = gql`
     subscription OnUpdateProductCategory {
   onUpdateProductCategory {
     id
-    chainId
+    ownerEntity
     description {
       en
       de
@@ -20249,7 +15384,7 @@ export const OnDeleteProductCategoryDocument = gql`
     subscription OnDeleteProductCategory {
   onDeleteProductCategory {
     id
-    chainId
+    ownerEntity
     description {
       en
       de
@@ -20271,7 +15406,7 @@ export const OnCreateProductComponentDocument = gql`
     subscription OnCreateProductComponent {
   onCreateProductComponent {
     id
-    chainId
+    ownerEntity
     name {
       en
       de
@@ -20292,7 +15427,7 @@ export const OnUpdateProductComponentDocument = gql`
     subscription OnUpdateProductComponent {
   onUpdateProductComponent {
     id
-    chainId
+    ownerEntity
     name {
       en
       de
@@ -20313,7 +15448,7 @@ export const OnDeleteProductComponentDocument = gql`
     subscription OnDeleteProductComponent {
   onDeleteProductComponent {
     id
-    chainId
+    ownerEntity
     name {
       en
       de
@@ -20335,7 +15470,7 @@ export const OnCreateProductComponentSetDocument = gql`
   onCreateProductComponentSet {
     id
     externalId
-    chainId
+    ownerEntity
     type
     name {
       en
@@ -20358,7 +15493,7 @@ export const OnUpdateProductComponentSetDocument = gql`
   onUpdateProductComponentSet {
     id
     externalId
-    chainId
+    ownerEntity
     type
     name {
       en
@@ -20381,7 +15516,7 @@ export const OnDeleteProductComponentSetDocument = gql`
   onDeleteProductComponentSet {
     id
     externalId
-    chainId
+    ownerEntity
     type
     name {
       en
@@ -20394,312 +15529,6 @@ export const OnDeleteProductComponentSetDocument = gql`
     supportedServingModes
     dirty
     deletedAt
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnCreateGeneratedProductCategoryDocument = gql`
-    subscription OnCreateGeneratedProductCategory {
-  onCreateGeneratedProductCategory {
-    id
-    unitId
-    productNum
-    productCategoryId
-    productCategory {
-      id
-      chainId
-      description {
-        en
-        de
-        hu
-      }
-      image
-      name {
-        en
-        de
-        hu
-      }
-      position
-      createdAt
-      updatedAt
-    }
-    position
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnUpdateGeneratedProductCategoryDocument = gql`
-    subscription OnUpdateGeneratedProductCategory {
-  onUpdateGeneratedProductCategory {
-    id
-    unitId
-    productNum
-    productCategoryId
-    productCategory {
-      id
-      chainId
-      description {
-        en
-        de
-        hu
-      }
-      image
-      name {
-        en
-        de
-        hu
-      }
-      position
-      createdAt
-      updatedAt
-    }
-    position
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnDeleteGeneratedProductCategoryDocument = gql`
-    subscription OnDeleteGeneratedProductCategory {
-  onDeleteGeneratedProductCategory {
-    id
-    unitId
-    productNum
-    productCategoryId
-    productCategory {
-      id
-      chainId
-      description {
-        en
-        de
-        hu
-      }
-      image
-      name {
-        en
-        de
-        hu
-      }
-      position
-      createdAt
-      updatedAt
-    }
-    position
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnCreateGeneratedProductDocument = gql`
-    subscription OnCreateGeneratedProduct {
-  onCreateGeneratedProduct {
-    id
-    unitId
-    productCategoryId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productType
-    tax
-    takeawayTax
-    position
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      price
-      netPackagingFee
-      position
-      soldOut
-    }
-    allergens
-    configSets {
-      productSetId
-      name {
-        en
-        de
-        hu
-      }
-      position
-      type
-      maxSelection
-      items {
-        productComponentId
-        price
-        position
-        name {
-          en
-          de
-          hu
-        }
-        allergens
-        netPackagingFee
-        soldOut
-        externalId
-      }
-      supportedServingModes
-    }
-    supportedServingModes
-    soldOut
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnUpdateGeneratedProductDocument = gql`
-    subscription OnUpdateGeneratedProduct {
-  onUpdateGeneratedProduct {
-    id
-    unitId
-    productCategoryId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productType
-    tax
-    takeawayTax
-    position
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      price
-      netPackagingFee
-      position
-      soldOut
-    }
-    allergens
-    configSets {
-      productSetId
-      name {
-        en
-        de
-        hu
-      }
-      position
-      type
-      maxSelection
-      items {
-        productComponentId
-        price
-        position
-        name {
-          en
-          de
-          hu
-        }
-        allergens
-        netPackagingFee
-        soldOut
-        externalId
-      }
-      supportedServingModes
-    }
-    supportedServingModes
-    soldOut
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const OnDeleteGeneratedProductDocument = gql`
-    subscription OnDeleteGeneratedProduct {
-  onDeleteGeneratedProduct {
-    id
-    unitId
-    productCategoryId
-    name {
-      en
-      de
-      hu
-    }
-    description {
-      en
-      de
-      hu
-    }
-    productType
-    tax
-    takeawayTax
-    position
-    image
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      price
-      netPackagingFee
-      position
-      soldOut
-    }
-    allergens
-    configSets {
-      productSetId
-      name {
-        en
-        de
-        hu
-      }
-      position
-      type
-      maxSelection
-      items {
-        productComponentId
-        price
-        position
-        name {
-          en
-          de
-          hu
-        }
-        allergens
-        netPackagingFee
-        soldOut
-        externalId
-      }
-      supportedServingModes
-    }
-    supportedServingModes
-    soldOut
     createdAt
     updatedAt
   }
@@ -20775,12 +15604,9 @@ export const OnCreateFavoriteProductDocument = gql`
       }
       supportedServingModes
       soldOut
-      createdAt
-      updatedAt
     }
     createdAt
     updatedAt
-    favoriteProductProductId
   }
 }
     `;
@@ -20854,12 +15680,9 @@ export const OnUpdateFavoriteProductDocument = gql`
       }
       supportedServingModes
       soldOut
-      createdAt
-      updatedAt
     }
     createdAt
     updatedAt
-    favoriteProductProductId
   }
 }
     `;
@@ -20933,12 +15756,9 @@ export const OnDeleteFavoriteProductDocument = gql`
       }
       supportedServingModes
       soldOut
-      createdAt
-      updatedAt
     }
     createdAt
     updatedAt
-    favoriteProductProductId
   }
 }
     `;
@@ -21811,32 +16631,14 @@ export const OnDeleteReceiptDocument = gql`
 export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> & Observable<R>
 export function getSdk<C>(requester: Requester<C>) {
   return {
-    GetGroupCurrency(variables: GetGroupCurrencyQueryVariables, options?: C): Promise<GetGroupCurrencyQuery> {
-      return requester<GetGroupCurrencyQuery, GetGroupCurrencyQueryVariables>(GetGroupCurrencyDocument, variables, options);
-    },
     SearchReportOrders(variables?: SearchReportOrdersQueryVariables, options?: C): Promise<SearchReportOrdersQuery> {
       return requester<SearchReportOrdersQuery, SearchReportOrdersQueryVariables>(SearchReportOrdersDocument, variables, options);
-    },
-    SearchChainIds(variables?: SearchChainIdsQueryVariables, options?: C): Promise<SearchChainIdsQuery> {
-      return requester<SearchChainIdsQuery, SearchChainIdsQueryVariables>(SearchChainIdsDocument, variables, options);
-    },
-    SearchGroupIds(variables?: SearchGroupIdsQueryVariables, options?: C): Promise<SearchGroupIdsQuery> {
-      return requester<SearchGroupIdsQuery, SearchGroupIdsQueryVariables>(SearchGroupIdsDocument, variables, options);
     },
     SearchUnitIds(variables?: SearchUnitIdsQueryVariables, options?: C): Promise<SearchUnitIdsQuery> {
       return requester<SearchUnitIdsQuery, SearchUnitIdsQueryVariables>(SearchUnitIdsDocument, variables, options);
     },
-    SearchChainProductIds(variables?: SearchChainProductIdsQueryVariables, options?: C): Promise<SearchChainProductIdsQuery> {
-      return requester<SearchChainProductIdsQuery, SearchChainProductIdsQueryVariables>(SearchChainProductIdsDocument, variables, options);
-    },
-    SearchGroupProductIds(variables?: SearchGroupProductIdsQueryVariables, options?: C): Promise<SearchGroupProductIdsQuery> {
-      return requester<SearchGroupProductIdsQuery, SearchGroupProductIdsQueryVariables>(SearchGroupProductIdsDocument, variables, options);
-    },
     SearchUnitProductIds(variables?: SearchUnitProductIdsQueryVariables, options?: C): Promise<SearchUnitProductIdsQuery> {
       return requester<SearchUnitProductIdsQuery, SearchUnitProductIdsQueryVariables>(SearchUnitProductIdsDocument, variables, options);
-    },
-    SearchGeneratedProductIds(variables?: SearchGeneratedProductIdsQueryVariables, options?: C): Promise<SearchGeneratedProductIdsQuery> {
-      return requester<SearchGeneratedProductIdsQuery, SearchGeneratedProductIdsQueryVariables>(SearchGeneratedProductIdsDocument, variables, options);
     },
     SearchProductCategoryIds(variables?: SearchProductCategoryIdsQueryVariables, options?: C): Promise<SearchProductCategoryIdsQuery> {
       return requester<SearchProductCategoryIdsQuery, SearchProductCategoryIdsQueryVariables>(SearchProductCategoryIdsDocument, variables, options);
@@ -21898,24 +16700,6 @@ export function getSdk<C>(requester: Requester<C>) {
     DeleteMyStripeCard(variables: DeleteMyStripeCardMutationVariables, options?: C): Promise<DeleteMyStripeCardMutation> {
       return requester<DeleteMyStripeCardMutation, DeleteMyStripeCardMutationVariables>(DeleteMyStripeCardDocument, variables, options);
     },
-    CreateChainProduct(variables: CreateChainProductMutationVariables, options?: C): Promise<CreateChainProductMutation> {
-      return requester<CreateChainProductMutation, CreateChainProductMutationVariables>(CreateChainProductDocument, variables, options);
-    },
-    UpdateChainProduct(variables: UpdateChainProductMutationVariables, options?: C): Promise<UpdateChainProductMutation> {
-      return requester<UpdateChainProductMutation, UpdateChainProductMutationVariables>(UpdateChainProductDocument, variables, options);
-    },
-    DeleteChainProduct(variables: DeleteChainProductMutationVariables, options?: C): Promise<DeleteChainProductMutation> {
-      return requester<DeleteChainProductMutation, DeleteChainProductMutationVariables>(DeleteChainProductDocument, variables, options);
-    },
-    CreateGroupProduct(variables: CreateGroupProductMutationVariables, options?: C): Promise<CreateGroupProductMutation> {
-      return requester<CreateGroupProductMutation, CreateGroupProductMutationVariables>(CreateGroupProductDocument, variables, options);
-    },
-    UpdateGroupProduct(variables: UpdateGroupProductMutationVariables, options?: C): Promise<UpdateGroupProductMutation> {
-      return requester<UpdateGroupProductMutation, UpdateGroupProductMutationVariables>(UpdateGroupProductDocument, variables, options);
-    },
-    DeleteGroupProduct(variables: DeleteGroupProductMutationVariables, options?: C): Promise<DeleteGroupProductMutation> {
-      return requester<DeleteGroupProductMutation, DeleteGroupProductMutationVariables>(DeleteGroupProductDocument, variables, options);
-    },
     CreateUnitProduct(variables: CreateUnitProductMutationVariables, options?: C): Promise<CreateUnitProductMutation> {
       return requester<CreateUnitProductMutation, CreateUnitProductMutationVariables>(CreateUnitProductDocument, variables, options);
     },
@@ -21936,24 +16720,6 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     UpdateAdminUser(variables: UpdateAdminUserMutationVariables, options?: C): Promise<UpdateAdminUserMutation> {
       return requester<UpdateAdminUserMutation, UpdateAdminUserMutationVariables>(UpdateAdminUserDocument, variables, options);
-    },
-    CreateChain(variables: CreateChainMutationVariables, options?: C): Promise<CreateChainMutation> {
-      return requester<CreateChainMutation, CreateChainMutationVariables>(CreateChainDocument, variables, options);
-    },
-    UpdateChain(variables: UpdateChainMutationVariables, options?: C): Promise<UpdateChainMutation> {
-      return requester<UpdateChainMutation, UpdateChainMutationVariables>(UpdateChainDocument, variables, options);
-    },
-    DeleteChain(variables: DeleteChainMutationVariables, options?: C): Promise<DeleteChainMutation> {
-      return requester<DeleteChainMutation, DeleteChainMutationVariables>(DeleteChainDocument, variables, options);
-    },
-    CreateGroup(variables: CreateGroupMutationVariables, options?: C): Promise<CreateGroupMutation> {
-      return requester<CreateGroupMutation, CreateGroupMutationVariables>(CreateGroupDocument, variables, options);
-    },
-    UpdateGroup(variables: UpdateGroupMutationVariables, options?: C): Promise<UpdateGroupMutation> {
-      return requester<UpdateGroupMutation, UpdateGroupMutationVariables>(UpdateGroupDocument, variables, options);
-    },
-    DeleteGroup(variables: DeleteGroupMutationVariables, options?: C): Promise<DeleteGroupMutation> {
-      return requester<DeleteGroupMutation, DeleteGroupMutationVariables>(DeleteGroupDocument, variables, options);
     },
     UpdateOrder(variables: UpdateOrderMutationVariables, options?: C): Promise<UpdateOrderMutation> {
       return requester<UpdateOrderMutation, UpdateOrderMutationVariables>(UpdateOrderDocument, variables, options);
@@ -21987,24 +16753,6 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     DeleteProductComponentSet(variables: DeleteProductComponentSetMutationVariables, options?: C): Promise<DeleteProductComponentSetMutation> {
       return requester<DeleteProductComponentSetMutation, DeleteProductComponentSetMutationVariables>(DeleteProductComponentSetDocument, variables, options);
-    },
-    CreateGeneratedProductCategory(variables: CreateGeneratedProductCategoryMutationVariables, options?: C): Promise<CreateGeneratedProductCategoryMutation> {
-      return requester<CreateGeneratedProductCategoryMutation, CreateGeneratedProductCategoryMutationVariables>(CreateGeneratedProductCategoryDocument, variables, options);
-    },
-    UpdateGeneratedProductCategory(variables: UpdateGeneratedProductCategoryMutationVariables, options?: C): Promise<UpdateGeneratedProductCategoryMutation> {
-      return requester<UpdateGeneratedProductCategoryMutation, UpdateGeneratedProductCategoryMutationVariables>(UpdateGeneratedProductCategoryDocument, variables, options);
-    },
-    DeleteGeneratedProductCategory(variables: DeleteGeneratedProductCategoryMutationVariables, options?: C): Promise<DeleteGeneratedProductCategoryMutation> {
-      return requester<DeleteGeneratedProductCategoryMutation, DeleteGeneratedProductCategoryMutationVariables>(DeleteGeneratedProductCategoryDocument, variables, options);
-    },
-    CreateGeneratedProduct(variables: CreateGeneratedProductMutationVariables, options?: C): Promise<CreateGeneratedProductMutation> {
-      return requester<CreateGeneratedProductMutation, CreateGeneratedProductMutationVariables>(CreateGeneratedProductDocument, variables, options);
-    },
-    UpdateGeneratedProduct(variables: UpdateGeneratedProductMutationVariables, options?: C): Promise<UpdateGeneratedProductMutation> {
-      return requester<UpdateGeneratedProductMutation, UpdateGeneratedProductMutationVariables>(UpdateGeneratedProductDocument, variables, options);
-    },
-    DeleteGeneratedProduct(variables: DeleteGeneratedProductMutationVariables, options?: C): Promise<DeleteGeneratedProductMutation> {
-      return requester<DeleteGeneratedProductMutation, DeleteGeneratedProductMutationVariables>(DeleteGeneratedProductDocument, variables, options);
     },
     CreateFavoriteProduct(variables: CreateFavoriteProductMutationVariables, options?: C): Promise<CreateFavoriteProductMutation> {
       return requester<CreateFavoriteProductMutation, CreateFavoriteProductMutationVariables>(CreateFavoriteProductDocument, variables, options);
@@ -22072,24 +16820,6 @@ export function getSdk<C>(requester: Requester<C>) {
     SearchByRadius(variables: SearchByRadiusQueryVariables, options?: C): Promise<SearchByRadiusQuery> {
       return requester<SearchByRadiusQuery, SearchByRadiusQueryVariables>(SearchByRadiusDocument, variables, options);
     },
-    GetChainProduct(variables: GetChainProductQueryVariables, options?: C): Promise<GetChainProductQuery> {
-      return requester<GetChainProductQuery, GetChainProductQueryVariables>(GetChainProductDocument, variables, options);
-    },
-    ListChainProducts(variables?: ListChainProductsQueryVariables, options?: C): Promise<ListChainProductsQuery> {
-      return requester<ListChainProductsQuery, ListChainProductsQueryVariables>(ListChainProductsDocument, variables, options);
-    },
-    SearchChainProducts(variables?: SearchChainProductsQueryVariables, options?: C): Promise<SearchChainProductsQuery> {
-      return requester<SearchChainProductsQuery, SearchChainProductsQueryVariables>(SearchChainProductsDocument, variables, options);
-    },
-    GetGroupProduct(variables: GetGroupProductQueryVariables, options?: C): Promise<GetGroupProductQuery> {
-      return requester<GetGroupProductQuery, GetGroupProductQueryVariables>(GetGroupProductDocument, variables, options);
-    },
-    ListGroupProducts(variables?: ListGroupProductsQueryVariables, options?: C): Promise<ListGroupProductsQuery> {
-      return requester<ListGroupProductsQuery, ListGroupProductsQueryVariables>(ListGroupProductsDocument, variables, options);
-    },
-    SearchGroupProducts(variables?: SearchGroupProductsQueryVariables, options?: C): Promise<SearchGroupProductsQuery> {
-      return requester<SearchGroupProductsQuery, SearchGroupProductsQueryVariables>(SearchGroupProductsDocument, variables, options);
-    },
     GetUnitProduct(variables: GetUnitProductQueryVariables, options?: C): Promise<GetUnitProductQuery> {
       return requester<GetUnitProductQuery, GetUnitProductQueryVariables>(GetUnitProductDocument, variables, options);
     },
@@ -22116,24 +16846,6 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     SearchAdminUsers(variables?: SearchAdminUsersQueryVariables, options?: C): Promise<SearchAdminUsersQuery> {
       return requester<SearchAdminUsersQuery, SearchAdminUsersQueryVariables>(SearchAdminUsersDocument, variables, options);
-    },
-    GetChain(variables: GetChainQueryVariables, options?: C): Promise<GetChainQuery> {
-      return requester<GetChainQuery, GetChainQueryVariables>(GetChainDocument, variables, options);
-    },
-    ListChains(variables?: ListChainsQueryVariables, options?: C): Promise<ListChainsQuery> {
-      return requester<ListChainsQuery, ListChainsQueryVariables>(ListChainsDocument, variables, options);
-    },
-    SearchChains(variables?: SearchChainsQueryVariables, options?: C): Promise<SearchChainsQuery> {
-      return requester<SearchChainsQuery, SearchChainsQueryVariables>(SearchChainsDocument, variables, options);
-    },
-    GetGroup(variables: GetGroupQueryVariables, options?: C): Promise<GetGroupQuery> {
-      return requester<GetGroupQuery, GetGroupQueryVariables>(GetGroupDocument, variables, options);
-    },
-    ListGroups(variables?: ListGroupsQueryVariables, options?: C): Promise<ListGroupsQuery> {
-      return requester<ListGroupsQuery, ListGroupsQueryVariables>(ListGroupsDocument, variables, options);
-    },
-    SearchGroups(variables?: SearchGroupsQueryVariables, options?: C): Promise<SearchGroupsQuery> {
-      return requester<SearchGroupsQuery, SearchGroupsQueryVariables>(SearchGroupsDocument, variables, options);
     },
     GetOrder(variables: GetOrderQueryVariables, options?: C): Promise<GetOrderQuery> {
       return requester<GetOrderQuery, GetOrderQueryVariables>(GetOrderDocument, variables, options);
@@ -22170,24 +16882,6 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     SearchProductComponentSets(variables?: SearchProductComponentSetsQueryVariables, options?: C): Promise<SearchProductComponentSetsQuery> {
       return requester<SearchProductComponentSetsQuery, SearchProductComponentSetsQueryVariables>(SearchProductComponentSetsDocument, variables, options);
-    },
-    GetGeneratedProductCategory(variables: GetGeneratedProductCategoryQueryVariables, options?: C): Promise<GetGeneratedProductCategoryQuery> {
-      return requester<GetGeneratedProductCategoryQuery, GetGeneratedProductCategoryQueryVariables>(GetGeneratedProductCategoryDocument, variables, options);
-    },
-    ListGeneratedProductCategories(variables?: ListGeneratedProductCategoriesQueryVariables, options?: C): Promise<ListGeneratedProductCategoriesQuery> {
-      return requester<ListGeneratedProductCategoriesQuery, ListGeneratedProductCategoriesQueryVariables>(ListGeneratedProductCategoriesDocument, variables, options);
-    },
-    SearchGeneratedProductCategories(variables?: SearchGeneratedProductCategoriesQueryVariables, options?: C): Promise<SearchGeneratedProductCategoriesQuery> {
-      return requester<SearchGeneratedProductCategoriesQuery, SearchGeneratedProductCategoriesQueryVariables>(SearchGeneratedProductCategoriesDocument, variables, options);
-    },
-    GetGeneratedProduct(variables: GetGeneratedProductQueryVariables, options?: C): Promise<GetGeneratedProductQuery> {
-      return requester<GetGeneratedProductQuery, GetGeneratedProductQueryVariables>(GetGeneratedProductDocument, variables, options);
-    },
-    ListGeneratedProducts(variables?: ListGeneratedProductsQueryVariables, options?: C): Promise<ListGeneratedProductsQuery> {
-      return requester<ListGeneratedProductsQuery, ListGeneratedProductsQueryVariables>(ListGeneratedProductsDocument, variables, options);
-    },
-    SearchGeneratedProducts(variables?: SearchGeneratedProductsQueryVariables, options?: C): Promise<SearchGeneratedProductsQuery> {
-      return requester<SearchGeneratedProductsQuery, SearchGeneratedProductsQueryVariables>(SearchGeneratedProductsDocument, variables, options);
     },
     GetFavoriteProduct(variables: GetFavoriteProductQueryVariables, options?: C): Promise<GetFavoriteProductQuery> {
       return requester<GetFavoriteProductQuery, GetFavoriteProductQueryVariables>(GetFavoriteProductDocument, variables, options);
@@ -22258,12 +16952,6 @@ export function getSdk<C>(requester: Requester<C>) {
     OnAdminUsersChange(variables?: OnAdminUsersChangeSubscriptionVariables, options?: C): Observable<OnAdminUsersChangeSubscription> {
       return requester<OnAdminUsersChangeSubscription, OnAdminUsersChangeSubscriptionVariables>(OnAdminUsersChangeDocument, variables, options);
     },
-    OnChainsChange(variables?: OnChainsChangeSubscriptionVariables, options?: C): Observable<OnChainsChangeSubscription> {
-      return requester<OnChainsChangeSubscription, OnChainsChangeSubscriptionVariables>(OnChainsChangeDocument, variables, options);
-    },
-    OnGroupsChange(variables: OnGroupsChangeSubscriptionVariables, options?: C): Observable<OnGroupsChangeSubscription> {
-      return requester<OnGroupsChangeSubscription, OnGroupsChangeSubscriptionVariables>(OnGroupsChangeDocument, variables, options);
-    },
     OnUnitsChange(variables: OnUnitsChangeSubscriptionVariables, options?: C): Observable<OnUnitsChangeSubscription> {
       return requester<OnUnitsChangeSubscription, OnUnitsChangeSubscriptionVariables>(OnUnitsChangeDocument, variables, options);
     },
@@ -22276,17 +16964,8 @@ export function getSdk<C>(requester: Requester<C>) {
     OnProductComponentSetsChange(variables: OnProductComponentSetsChangeSubscriptionVariables, options?: C): Observable<OnProductComponentSetsChangeSubscription> {
       return requester<OnProductComponentSetsChangeSubscription, OnProductComponentSetsChangeSubscriptionVariables>(OnProductComponentSetsChangeDocument, variables, options);
     },
-    OnChainProductChange(variables: OnChainProductChangeSubscriptionVariables, options?: C): Observable<OnChainProductChangeSubscription> {
-      return requester<OnChainProductChangeSubscription, OnChainProductChangeSubscriptionVariables>(OnChainProductChangeDocument, variables, options);
-    },
-    OnGroupProductChange(variables: OnGroupProductChangeSubscriptionVariables, options?: C): Observable<OnGroupProductChangeSubscription> {
-      return requester<OnGroupProductChangeSubscription, OnGroupProductChangeSubscriptionVariables>(OnGroupProductChangeDocument, variables, options);
-    },
     OnUnitProductChange(variables: OnUnitProductChangeSubscriptionVariables, options?: C): Observable<OnUnitProductChangeSubscription> {
       return requester<OnUnitProductChangeSubscription, OnUnitProductChangeSubscriptionVariables>(OnUnitProductChangeDocument, variables, options);
-    },
-    OnGeneratedProductChange(variables: OnGeneratedProductChangeSubscriptionVariables, options?: C): Observable<OnGeneratedProductChangeSubscription> {
-      return requester<OnGeneratedProductChangeSubscription, OnGeneratedProductChangeSubscriptionVariables>(OnGeneratedProductChangeDocument, variables, options);
     },
     OnOrdersChange(variables?: OnOrdersChangeSubscriptionVariables, options?: C): Observable<OnOrdersChangeSubscription> {
       return requester<OnOrdersChangeSubscription, OnOrdersChangeSubscriptionVariables>(OnOrdersChangeDocument, variables, options);
@@ -22294,32 +16973,11 @@ export function getSdk<C>(requester: Requester<C>) {
     OnOrdersDelete(variables?: OnOrdersDeleteSubscriptionVariables, options?: C): Observable<OnOrdersDeleteSubscription> {
       return requester<OnOrdersDeleteSubscription, OnOrdersDeleteSubscriptionVariables>(OnOrdersDeleteDocument, variables, options);
     },
-    OnProductChanged(variables?: OnProductChangedSubscriptionVariables, options?: C): Observable<OnProductChangedSubscription> {
-      return requester<OnProductChangedSubscription, OnProductChangedSubscriptionVariables>(OnProductChangedDocument, variables, options);
-    },
     OnOrderChanged(variables?: OnOrderChangedSubscriptionVariables, options?: C): Observable<OnOrderChangedSubscription> {
       return requester<OnOrderChangedSubscription, OnOrderChangedSubscriptionVariables>(OnOrderChangedDocument, variables, options);
     },
     OnUnitOrdersChange(variables?: OnUnitOrdersChangeSubscriptionVariables, options?: C): Observable<OnUnitOrdersChangeSubscription> {
       return requester<OnUnitOrdersChangeSubscription, OnUnitOrdersChangeSubscriptionVariables>(OnUnitOrdersChangeDocument, variables, options);
-    },
-    OnCreateChainProduct(variables?: OnCreateChainProductSubscriptionVariables, options?: C): Observable<OnCreateChainProductSubscription> {
-      return requester<OnCreateChainProductSubscription, OnCreateChainProductSubscriptionVariables>(OnCreateChainProductDocument, variables, options);
-    },
-    OnUpdateChainProduct(variables?: OnUpdateChainProductSubscriptionVariables, options?: C): Observable<OnUpdateChainProductSubscription> {
-      return requester<OnUpdateChainProductSubscription, OnUpdateChainProductSubscriptionVariables>(OnUpdateChainProductDocument, variables, options);
-    },
-    OnDeleteChainProduct(variables?: OnDeleteChainProductSubscriptionVariables, options?: C): Observable<OnDeleteChainProductSubscription> {
-      return requester<OnDeleteChainProductSubscription, OnDeleteChainProductSubscriptionVariables>(OnDeleteChainProductDocument, variables, options);
-    },
-    OnCreateGroupProduct(variables?: OnCreateGroupProductSubscriptionVariables, options?: C): Observable<OnCreateGroupProductSubscription> {
-      return requester<OnCreateGroupProductSubscription, OnCreateGroupProductSubscriptionVariables>(OnCreateGroupProductDocument, variables, options);
-    },
-    OnUpdateGroupProduct(variables?: OnUpdateGroupProductSubscriptionVariables, options?: C): Observable<OnUpdateGroupProductSubscription> {
-      return requester<OnUpdateGroupProductSubscription, OnUpdateGroupProductSubscriptionVariables>(OnUpdateGroupProductDocument, variables, options);
-    },
-    OnDeleteGroupProduct(variables?: OnDeleteGroupProductSubscriptionVariables, options?: C): Observable<OnDeleteGroupProductSubscription> {
-      return requester<OnDeleteGroupProductSubscription, OnDeleteGroupProductSubscriptionVariables>(OnDeleteGroupProductDocument, variables, options);
     },
     OnCreateUnitProduct(variables?: OnCreateUnitProductSubscriptionVariables, options?: C): Observable<OnCreateUnitProductSubscription> {
       return requester<OnCreateUnitProductSubscription, OnCreateUnitProductSubscriptionVariables>(OnCreateUnitProductDocument, variables, options);
@@ -22341,24 +16999,6 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     OnUpdateAdminUser(variables?: OnUpdateAdminUserSubscriptionVariables, options?: C): Observable<OnUpdateAdminUserSubscription> {
       return requester<OnUpdateAdminUserSubscription, OnUpdateAdminUserSubscriptionVariables>(OnUpdateAdminUserDocument, variables, options);
-    },
-    OnCreateChain(variables?: OnCreateChainSubscriptionVariables, options?: C): Observable<OnCreateChainSubscription> {
-      return requester<OnCreateChainSubscription, OnCreateChainSubscriptionVariables>(OnCreateChainDocument, variables, options);
-    },
-    OnUpdateChain(variables?: OnUpdateChainSubscriptionVariables, options?: C): Observable<OnUpdateChainSubscription> {
-      return requester<OnUpdateChainSubscription, OnUpdateChainSubscriptionVariables>(OnUpdateChainDocument, variables, options);
-    },
-    OnDeleteChain(variables?: OnDeleteChainSubscriptionVariables, options?: C): Observable<OnDeleteChainSubscription> {
-      return requester<OnDeleteChainSubscription, OnDeleteChainSubscriptionVariables>(OnDeleteChainDocument, variables, options);
-    },
-    OnCreateGroup(variables?: OnCreateGroupSubscriptionVariables, options?: C): Observable<OnCreateGroupSubscription> {
-      return requester<OnCreateGroupSubscription, OnCreateGroupSubscriptionVariables>(OnCreateGroupDocument, variables, options);
-    },
-    OnUpdateGroup(variables?: OnUpdateGroupSubscriptionVariables, options?: C): Observable<OnUpdateGroupSubscription> {
-      return requester<OnUpdateGroupSubscription, OnUpdateGroupSubscriptionVariables>(OnUpdateGroupDocument, variables, options);
-    },
-    OnDeleteGroup(variables?: OnDeleteGroupSubscriptionVariables, options?: C): Observable<OnDeleteGroupSubscription> {
-      return requester<OnDeleteGroupSubscription, OnDeleteGroupSubscriptionVariables>(OnDeleteGroupDocument, variables, options);
     },
     OnUpdateOrder(variables?: OnUpdateOrderSubscriptionVariables, options?: C): Observable<OnUpdateOrderSubscription> {
       return requester<OnUpdateOrderSubscription, OnUpdateOrderSubscriptionVariables>(OnUpdateOrderDocument, variables, options);
@@ -22392,24 +17032,6 @@ export function getSdk<C>(requester: Requester<C>) {
     },
     OnDeleteProductComponentSet(variables?: OnDeleteProductComponentSetSubscriptionVariables, options?: C): Observable<OnDeleteProductComponentSetSubscription> {
       return requester<OnDeleteProductComponentSetSubscription, OnDeleteProductComponentSetSubscriptionVariables>(OnDeleteProductComponentSetDocument, variables, options);
-    },
-    OnCreateGeneratedProductCategory(variables?: OnCreateGeneratedProductCategorySubscriptionVariables, options?: C): Observable<OnCreateGeneratedProductCategorySubscription> {
-      return requester<OnCreateGeneratedProductCategorySubscription, OnCreateGeneratedProductCategorySubscriptionVariables>(OnCreateGeneratedProductCategoryDocument, variables, options);
-    },
-    OnUpdateGeneratedProductCategory(variables?: OnUpdateGeneratedProductCategorySubscriptionVariables, options?: C): Observable<OnUpdateGeneratedProductCategorySubscription> {
-      return requester<OnUpdateGeneratedProductCategorySubscription, OnUpdateGeneratedProductCategorySubscriptionVariables>(OnUpdateGeneratedProductCategoryDocument, variables, options);
-    },
-    OnDeleteGeneratedProductCategory(variables?: OnDeleteGeneratedProductCategorySubscriptionVariables, options?: C): Observable<OnDeleteGeneratedProductCategorySubscription> {
-      return requester<OnDeleteGeneratedProductCategorySubscription, OnDeleteGeneratedProductCategorySubscriptionVariables>(OnDeleteGeneratedProductCategoryDocument, variables, options);
-    },
-    OnCreateGeneratedProduct(variables?: OnCreateGeneratedProductSubscriptionVariables, options?: C): Observable<OnCreateGeneratedProductSubscription> {
-      return requester<OnCreateGeneratedProductSubscription, OnCreateGeneratedProductSubscriptionVariables>(OnCreateGeneratedProductDocument, variables, options);
-    },
-    OnUpdateGeneratedProduct(variables?: OnUpdateGeneratedProductSubscriptionVariables, options?: C): Observable<OnUpdateGeneratedProductSubscription> {
-      return requester<OnUpdateGeneratedProductSubscription, OnUpdateGeneratedProductSubscriptionVariables>(OnUpdateGeneratedProductDocument, variables, options);
-    },
-    OnDeleteGeneratedProduct(variables?: OnDeleteGeneratedProductSubscriptionVariables, options?: C): Observable<OnDeleteGeneratedProductSubscription> {
-      return requester<OnDeleteGeneratedProductSubscription, OnDeleteGeneratedProductSubscriptionVariables>(OnDeleteGeneratedProductDocument, variables, options);
     },
     OnCreateFavoriteProduct(variables?: OnCreateFavoriteProductSubscriptionVariables, options?: C): Observable<OnCreateFavoriteProductSubscription> {
       return requester<OnCreateFavoriteProductSubscription, OnCreateFavoriteProductSubscriptionVariables>(OnCreateFavoriteProductDocument, variables, options);

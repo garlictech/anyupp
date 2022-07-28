@@ -42,7 +42,7 @@
         <div class="col-md-4">
           <bgap-form-select
             caption="common.group"
-            [options]="(groupOptions$ | async) || []"
+            [options]="(unitOptions$ | async) || []"
             [control]="dialogForm?.get('groupId') | asFormControl"
             [localize]="false"
             inputId="groupId"

@@ -5,7 +5,7 @@ import { map, tap } from 'rxjs/operators';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
 import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-import { Chain, Maybe, NestedSortItem, ProductCategory } from '@bgap/domain';
+import { Unit, Maybe, NestedSortItem, ProductCategory } from '@bgap/domain';
 import { externalIdArrayCompare } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -15,7 +15,7 @@ import {
   ToasterService,
   visibleLinesOnViewport,
 } from '../../../../shared/utils';
-import { chainsSelectors } from '../../../../store/chains';
+import { unitsSelectors } from '../../../../store/units';
 import { ProductCategoryCollectionService } from '../../../../store/product-categories';
 import { ProductCategoryListService } from '../../services/product-category-list.service';
 import { ProductCategoryFormComponent } from '../product-category-form/product-category-form.component';
@@ -33,7 +33,7 @@ export class ProductCategoryListComponent {
 
   public productCategories$: Observable<ProductCategory[]>;
   public sortedProductCategoryIds: string[] = [];
-  public chain?: Chain;
+  public unit?: Unit;
   public categoryOrders: Maybe<NestedSortItem>[] = [];
   public flatNodes: NestedSortItem[] = [];
   public enableSaveSorting = false;
@@ -46,14 +46,14 @@ export class ProductCategoryListComponent {
     private _toasterService: ToasterService,
   ) {
     this.productCategories$ = combineLatest([
-      this._store.select(chainsSelectors.getSelectedChain),
+      this._store.select(unitsSelectors.getSelectedUnit),
       this._productCategoryCollectionService.filteredEntities$,
     ]).pipe(
-      tap(([chain, productCategories]) => {
-        this.chain = chain;
+      tap(([unit, productCategories]) => {
+        this.unit = unit;
 
         // Check the missing ids (e.g. new category saved which is not sorted yet)
-        this.categoryOrders = chain?.categoryOrders || [];
+        this.categoryOrders = unit?.categoryOrders || [];
         const categoryOrderedIds = this.categoryOrders.map(co => co?.id);
         const missingCategories = productCategories.filter(
           cat => !categoryOrderedIds?.includes(cat.id),
@@ -65,10 +65,10 @@ export class ProductCategoryListComponent {
 
         this.enableSaveSorting = missingCategories.length > 0;
       }),
-      map(([chain, productCategories]): ProductCategory[] => [
+      map(([unit, productCategories]): ProductCategory[] => [
         ...productCategories.sort(
           externalIdArrayCompare(
-            (chain?.categoryOrders || []).map(o => o?.id) as string[],
+            (unit?.categoryOrders || []).map(o => o?.id) as string[],
           ),
         ),
       ]),
@@ -97,7 +97,7 @@ export class ProductCategoryListComponent {
 
   public saveSorting() {
     this._productCategoryListService
-      .updateProductCategoryOrders$(this.chain?.id || '', this.flatNodes)
+      .updateProductCategoryOrders$(this.unit?.id || '', this.flatNodes)
       .subscribe(() => {
         this._toasterService.showSimpleSuccess('update');
       });

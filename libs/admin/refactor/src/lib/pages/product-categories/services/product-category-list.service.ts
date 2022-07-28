@@ -8,7 +8,7 @@ import { loggedUserSelectors } from '../../../store/logged-user';
 import { ProductCategoryCollectionService } from '../../../store/product-categories';
 import { ProductCategoryOrderChangeEvent } from '@bgap/shared/types';
 import { Store } from '@ngrx/store';
-import { ChainCollectionService } from '../../../store/chains';
+import { UnitCollectionService } from '../../../store/units';
 import { NestedSortItem } from '@bgap/domain';
 
 @Injectable({
@@ -17,17 +17,17 @@ import { NestedSortItem } from '@bgap/domain';
 export class ProductCategoryListService {
   private _nextToken?: string;
   private _working = false;
-  private _selectedChainId?: string | null;
+  private _selectedUnitId?: string | null;
 
   constructor(
     private _store: Store,
     private _productCategoryCollectionService: ProductCategoryCollectionService,
-    private _chainCollectionService: ChainCollectionService,
+    private _chainCollectionService: UnitCollectionService,
   ) {
     this._store
-      .select(loggedUserSelectors.getSelectedChainId)
-      .subscribe(selectedChainId => {
-        this._selectedChainId = selectedChainId;
+      .select(loggedUserSelectors.getSelectedUnitId)
+      .subscribe(selectedUnitId => {
+        this._selectedUnitId = selectedUnitId;
       });
   }
 
@@ -83,7 +83,7 @@ export class ProductCategoryListService {
   }
 
   public loadNextPaginatedData() {
-    if (!this._working && this._selectedChainId) {
+    if (!this._working && this._selectedUnitId) {
       this._working = true;
 
       this._productCategoryCollectionService
@@ -91,7 +91,7 @@ export class ProductCategoryListService {
           limit: PAGINATION_LIMIT,
           nextToken: this._nextToken,
           filter: {
-            chainId: { eq: this._selectedChainId },
+            chainId: { eq: this._selectedUnitId },
           },
         })
         .subscribe(result => {

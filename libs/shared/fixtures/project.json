@@ -1,5 +1,4 @@
 {
-  "root": "libs/shared/fixtures",
   "sourceRoot": "libs/shared/fixtures/src",
   "projectType": "library",
   "targets": {

@@ -1,6 +1,7 @@
 import { Unit } from '@bgap/domain';
 import { EntitySelectorsFactory } from '@ngrx/data';
 import { createSelector } from '@ngrx/store';
+import { KeyValue } from '@bgap/shared/types';
 
 import { ENTITY_NAME } from '../../../shared/types';
 import { loggedUserSelectors } from '../../../store/logged-user';
@@ -34,3 +35,13 @@ export const getSelectedUnitLanes = createSelector(
         value: lane?.name,
       })) || [],
 );
+
+export const getAllUnitOptions = () =>
+  createSelector(
+    unitEntitySelectors.selectEntities,
+    (units: Unit[]): KeyValue[] =>
+      (units || []).map(unit => ({
+        key: unit.id,
+        value: unit.name,
+      })),
+  );

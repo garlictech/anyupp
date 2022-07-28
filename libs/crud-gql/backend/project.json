@@ -1,5 +1,4 @@
 {
-  "root": "libs/crud-gql/backend",
   "sourceRoot": "libs/crud-gql/backend/src",
   "projectType": "library",
   "targets": {

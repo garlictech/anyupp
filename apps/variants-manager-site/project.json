@@ -1,6 +1,5 @@
 {
   "projectType": "application",
-  "root": "apps/variants-manager-site",
   "sourceRoot": "apps/variants-manager-site/src",
   "implicitDependencies": ["crud-backend"],
   "targets": {
@@ -94,5 +93,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["type:application", "platform:flutter"]
 }

@@ -24,19 +24,19 @@ export class ProductComponentSetCollectionService extends BaseCollectionService<
   public init = (destroyConnection$: Subject<boolean>) => {
     // Load all chains on startup
     this._store
-      .select(loggedUserSelectors.getSelectedChainId)
+      .select(loggedUserSelectors.getSelectedUnitId)
       .pipe(
-        tap(selectedChainId => {
+        tap(selectedUnitId => {
           // Update filter on settings change
           this.patchFilter({
-            chainId: selectedChainId,
+            unitId: selectedUnitId,
           });
         }),
-        switchMap(selectedChainId =>
+        switchMap(selectedUnitId =>
           // Load all data on settings change
           this.getAllCachedPaginatedData$({
             filter: {
-              chainId: { eq: selectedChainId },
+              unitId: { eq: selectedUnitId },
               deletedAt: { exists: false },
             },
           }),

@@ -1,5 +1,4 @@
 {
-  "root": "libs/rkeeper-api",
   "sourceRoot": "libs/rkeeper-api/src",
   "projectType": "library",
   "targets": {

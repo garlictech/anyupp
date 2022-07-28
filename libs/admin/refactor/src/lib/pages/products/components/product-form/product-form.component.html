@@ -117,7 +117,6 @@
       </div>
 
       <bgap-form-product-variants
-        [productLevel]="productLevel"
         [variantFormArray]="dialogForm?.get('variants') | asFormArray"
       ></bgap-form-product-variants>
 
@@ -126,7 +125,6 @@
       ></bgap-form-allergens>
 
       <bgap-form-product-components
-        [productLevel]="productLevel"
         [componentFormArray]="dialogForm?.get('configSets') | asFormArray"
       ></bgap-form-product-components>
 

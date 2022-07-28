@@ -1,5 +1,4 @@
 {
-  "root": "apps/cicd",
   "sourceRoot": "apps/cicd/src",
   "projectType": "application",
   "prefix": "cicd",

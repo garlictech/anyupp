@@ -26,9 +26,9 @@
           <bgap-form-select
             caption="common.chain"
             [localize]="false"
-            [options]="(chainOptions$ | async) || []"
-            [control]="dialogForm?.get('chainId') | asFormControl"
-            inputId="chainId"
+            [options]="(unitOptions$ | async) || []"
+            [control]="dialogForm?.get('unitId') | asFormControl"
+            inputId="unitId"
           ></bgap-form-select>
         </div>
         <div class="col-md-6 pt-3">

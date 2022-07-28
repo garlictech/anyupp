@@ -156,5 +156,5 @@ mv -f ../../libs/crud-gql/api/src/lib/generated/aws-exports.js ../../libs/crud-g
 # ----------------------------------------------------------
 pushd ../..
 yarn ts-node ./tools/fetch-configuration.ts $ENVNAME
-cp apps/anyupp-mobile/lib/awsconfiguration.dart apps/variants-manager-site/lib/services/
+cp -f apps/anyupp-mobile/lib/awsconfiguration.dart apps/variants-manager-site/lib/services/
 popd

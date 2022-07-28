@@ -1,5 +1,4 @@
 {
-  "root": "libs/shared/config",
   "sourceRoot": "libs/shared/config/src",
   "projectType": "library",
   "targets": {

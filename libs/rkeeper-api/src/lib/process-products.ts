@@ -20,7 +20,6 @@ import {
   shareReplay,
 } from 'rxjs/operators';
 import {
-  combineLatest,
   from,
   Observable,
   of,
@@ -44,8 +43,6 @@ import {
   ProductType,
   ServingMode,
   UnitProduct,
-  UpdateChainProductInput,
-  UpdateGroupProductInput,
   UpdateUnitProductInput,
 } from '@bgap/domain';
 import { CrudSdk } from '@bgap/crud-gql/api';
@@ -77,9 +74,7 @@ const commonSchema = {
 };
 
 export interface ProductUpdateCommands {
-  chain: UpdateChainProductInput;
   unit: UpdateUnitProductInput;
-  group: UpdateGroupProductInput;
 }
 
 export interface Dish {
@@ -182,8 +177,6 @@ export const searchExternalUnitProduct =
       );
 
 export interface RKeeperBusinessEntityInfo {
-  chainId: string;
-  groupId: string;
   unitId: string;
 }
 
@@ -201,8 +194,6 @@ export const getBusinessEntityInfo =
         ),
         map(unit => ({
           unitId: unit.id,
-          chainId: unit.chainId,
-          groupId: unit.groupId,
         })),
       );
 
@@ -213,74 +204,44 @@ export const createRkeeperProduct =
     dish: Dish,
     configSets: ProductConfigSet[] | null,
   ) =>
-    sdk
-      .CreateChainProduct({
-        input: {
-          productCategoryId: defaultProductCategoryId(businessEntity),
-          chainId: businessEntity.chainId,
-          name: {
-            hu: dish.name,
-          },
-          productType: ProductType.dish,
-          isVisible: true,
-          dirty: true,
-          variants: [],
+    sdk.CreateUnitProduct({
+      input: {
+        unitId: businessEntity.unitId,
+        name: {
+          hu: dish.name,
         },
-      })
-      .pipe(
-        throwIfEmptyValue(),
-        switchMap(chainProduct =>
-          sdk.CreateGroupProduct({
-            input: {
-              parentId: chainProduct.id,
-              chainId: businessEntity.chainId,
-              groupId: businessEntity.groupId,
-              isVisible: true,
-              tax: -1,
-              dirty: true,
-              variants: [],
+        productType: ProductType.dish,
+        productCategoryId: defaultProductCategoryId(businessEntity),
+        isVisible: true,
+        position: -1,
+        supportedServingModes: [ServingMode.inplace],
+        variants: [
+          {
+            id: 'id',
+            variantName: {
+              hu: dish.name,
             },
-          }),
-        ),
-        throwIfEmptyValue(),
-        switchMap(groupProduct =>
-          sdk.CreateUnitProduct({
-            input: {
-              parentId: groupProduct.id,
-              chainId: businessEntity.chainId,
-              groupId: businessEntity.groupId,
-              unitId: businessEntity.unitId,
-              isVisible: true,
-              position: -1,
-              supportedServingModes: [ServingMode.inplace],
-              variants: [
-                {
-                  id: 'id',
-                  variantName: {
-                    hu: dish.name,
-                  },
-                  isAvailable: dish.active,
-                  price: dish.price,
-                  position: -1,
-                  availabilities: [
-                    {
-                      type: 'A',
-                      price: dish.price,
-                    },
-                  ],
-                  pack: {
-                    size: 1,
-                    unit: 'zsák',
-                  },
-                  externalId: externalProductIdMaker(dish.id.toString()),
-                },
-              ],
-              dirty: true,
-              configSets,
+            isAvailable: dish.active,
+            price: dish.price,
+            position: -1,
+            availabilities: [
+              {
+                type: 'A',
+                price: dish.price,
+              },
+            ],
+            pack: {
+              size: 1,
+              unit: 'zsák',
             },
-          }),
-        ),
-      );
+            externalId: externalProductIdMaker(dish.id.toString()),
+          },
+        ],
+        dirty: true,
+        configSets,
+        tax: -1,
+      },
+    });
 
 export const updateRkeeperProduct =
   (sdk: CrudSdk) =>
@@ -330,8 +291,8 @@ export const updateRkeeperProduct =
 
 // This is a placeholder product category
 export const defaultProductCategoryId = (businessEntityInfo: {
-  chainId: string;
-}) => `default-product-category-${businessEntityInfo.chainId}`;
+  unitId: string;
+}) => `default-product-category-${businessEntityInfo.unitId}`;
 
 export const createDefaultProductCategory =
   (sdk: CrudSdk) => (businessEntityInfo: RKeeperBusinessEntityInfo) =>
@@ -339,7 +300,7 @@ export const createDefaultProductCategory =
       .CreateProductCategory({
         input: {
           id: defaultProductCategoryId(businessEntityInfo),
-          chainId: businessEntityInfo.chainId,
+          ownerEntity: businessEntityInfo.unitId,
           name: {
             en: 'Default category',
             hu: 'Alap kategória',
@@ -374,19 +335,19 @@ export const normalizeModifier = (modifier: Modifier) =>
   normalizeCommon(modifier) as Modifier;
 
 export const resolveComponentSets =
-  (sdk: CrudSdk, chainId: string, rawData: any) =>
+  (sdk: CrudSdk, unitId: string, rawData: any) =>
   (dish: Dish): OO.ObservableOption<ProductConfigSet[]> =>
-    resolveComponentSetsHelper(sdk, chainId, rawData, dish);
+    resolveComponentSetsHelper(sdk, unitId, rawData, dish);
 
 export const handleRkeeperProducts =
   (sdk: CrudSdk) =>
   (externalRestaurantId: string) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (rawData: any): Observable<boolean> =>
-    combineLatest(
+    forkJoin([
       getBusinessEntityInfo(sdk)(externalRestaurantId),
       processDishes(rawData),
-    ).pipe(
+    ]).pipe(
       switchMap(([businessEntityInfo, dishes]) =>
         createDefaultProductCategory(sdk)(businessEntityInfo).pipe(
           tap(() =>
@@ -395,16 +356,16 @@ export const handleRkeeperProducts =
           switchMap(() => from(dishes)),
           mergeMap(
             dish =>
-              combineLatest(
+              forkJoin([
                 resolveComponentSets(
                   sdk,
-                  businessEntityInfo.chainId,
+                  businessEntityInfo.unitId,
                   rawData,
                 )(dish).pipe(
                   map(O.getOrElse<ProductConfigSet[] | null>(() => null)),
                 ),
                 searchExternalUnitProduct(sdk)(dish.id.toString()),
-              ).pipe(
+              ]).pipe(
                 switchMap(([configSets, unitProduct]) =>
                   R.isNil(unitProduct)
                     ? createRkeeperProduct(sdk)(
@@ -440,7 +401,7 @@ export const handleRkeeperProducts =
     );
 
 export const upsertComponent =
-  (sdk: CrudSdk, chainId: string) =>
+  (sdk: CrudSdk, unitId: string) =>
   (modifier: Modifier): Observable<ProductConfigComponent> =>
     sdk
       .SearchProductComponents({
@@ -454,7 +415,7 @@ export const upsertComponent =
           component === null
             ? sdk.CreateProductComponent({
                 input: {
-                  chainId,
+                  ownerEntity: unitId,
                   name: { hu: modifier.name },
                   externalId: modifier.id.toString(),
                   dirty: true,
@@ -480,16 +441,16 @@ export const upsertComponent =
       );
 
 const modifierUpdaterHelper = R.memoizeWith(
-  (_sdk: CrudSdk, chainId: string, modifier: Modifier) =>
-    chainId + modifier.id.toString(),
-  (sdk: CrudSdk, chainId: string, modifier: Modifier) =>
-    pipe(upsertComponent(sdk, chainId)(modifier), shareReplay(1)),
+  (_sdk: CrudSdk, unitId: string, modifier: Modifier) =>
+    unitId + modifier.id.toString(),
+  (sdk: CrudSdk, unitId: string, modifier: Modifier) =>
+    pipe(upsertComponent(sdk, unitId)(modifier), shareReplay(1)),
 );
 
 export const modifierUpdater =
-  (sdk: CrudSdk, chainId: string) =>
+  (sdk: CrudSdk, unitId: string) =>
   (modifier: Modifier): Observable<ProductConfigComponent> =>
-    modifierUpdaterHelper(sdk, chainId, modifier);
+    modifierUpdaterHelper(sdk, unitId, modifier);
 
 export interface ModifierGroup {
   id: number;
@@ -515,12 +476,12 @@ export const normalizeModifierGroup = (modifierGroup: ModifierGroup) => ({
 });
 
 const upsertConfigSetsHelper = R.memoizeWith(
-  (_sdk: CrudSdk, chainId: string, modifierGroup: ModifierGroup) =>
-    chainId + modifierGroup.id.toString(),
-  (sdk: CrudSdk, chainId: string, modifierGroup: ModifierGroup) =>
+  (_sdk: CrudSdk, unitId: string, modifierGroup: ModifierGroup) =>
+    unitId + modifierGroup.id.toString(),
+  (sdk: CrudSdk, unitId: string, modifierGroup: ModifierGroup) =>
     pipe(
-      modifierGroup.modifiers.map(modifierUpdater(sdk, chainId)),
-      res => (R.isEmpty(res) ? of([]) : combineLatest(res)),
+      modifierGroup.modifiers.map(modifierUpdater(sdk, unitId)),
+      res => (R.isEmpty(res) ? of([]) : forkJoin(res)),
       filterNullishElements(),
       switchMap(components =>
         sdk
@@ -536,7 +497,7 @@ const upsertConfigSetsHelper = R.memoizeWith(
                 ? sdk.CreateProductComponentSet({
                     input: {
                       externalId: modifierGroup.id.toString(),
-                      chainId,
+                      ownerEntity: unitId,
                       type: ProductComponentSetType.rkeeper,
                       name: {
                         hu: modifierGroup.name,
@@ -569,13 +530,13 @@ const upsertConfigSetsHelper = R.memoizeWith(
 );
 
 export const upsertConfigSets =
-  (sdk: CrudSdk, chainId: string) =>
+  (sdk: CrudSdk, unitId: string) =>
   (modifierGroups: ModifierGroup[]): Observable<ProductConfigSet[]> =>
     R.isEmpty(modifierGroups)
       ? of([])
-      : combineLatest(
+      : forkJoin(
           modifierGroups.map(modifierGroup =>
-            upsertConfigSetsHelper(sdk, chainId, modifierGroup),
+            upsertConfigSetsHelper(sdk, unitId, modifierGroup),
           ),
         );
 
@@ -634,7 +595,7 @@ const resolveComponentSetsHelper = R.memoizeWith(
             ),
           ),
           (modifierGroups: Observable<ModifierGroup>[]) =>
-            R.isEmpty(modifierGroups) ? of([]) : combineLatest(modifierGroups),
+            R.isEmpty(modifierGroups) ? of([]) : forkJoin(modifierGroups),
           switchMap(upsertConfigSets(sdk, chainId)),
           catchError(err => {
             console.warn(

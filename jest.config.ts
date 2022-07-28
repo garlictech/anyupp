@@ -48,8 +48,6 @@ export default {
     '<rootDir>/libs/backend/orders',
     '<rootDir>/libs/backend/units',
     '<rootDir>/libs/backend/products',
-    '<rootDir>/libs/backend/product-categories',
-    '<rootDir>/libs/backend/reports',
     '<rootDir>/libs/backend/seeder',
     '<rootDir>/libs/backend/search',
     '<rootDir>/libs/domain',
