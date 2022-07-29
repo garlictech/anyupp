@@ -1,7 +1,6 @@
 import {
   CreateUnitProductInput,
   ProductComponentSetType,
-  ProductType,
 } from '@bgap/domain';
 import { handleEmptyPackaginFees } from './index';
 
