@@ -173,8 +173,6 @@ const order: Order = {
 
 const createUnitInput: CreateUnitInput = {
   id: 'UNITID',
-  chainId: 'UNIT CHAINID',
-  groupId: 'UNIT GROUPID',
   isActive: true,
   isAcceptingOrders: true,
   name: 'UNIT NAME',

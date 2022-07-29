@@ -7,7 +7,7 @@ const useCases = [
     label: 'add package fee',
     productId: 'PRODUCTID',
     sdk: {
-      GetGeneratedProduct: jest.fn().mockReturnValue(
+      GetUnitProduct: jest.fn().mockReturnValue(
         of({
           variants: [
             {
@@ -51,7 +51,7 @@ const useCases = [
     label: 'variant not found',
     productId: 'PRODUCTID2',
     sdk: {
-      GetGeneratedProduct: jest.fn().mockReturnValue(
+      GetUnitProduct: jest.fn().mockReturnValue(
         of({
           variants: [
             {
@@ -91,7 +91,7 @@ const useCases = [
     label: 'packaging fee of variant not given',
     productId: 'PRODUCTID3',
     sdk: {
-      GetGeneratedProduct: jest.fn().mockReturnValue(
+      GetUnitProduct: jest.fn().mockReturnValue(
         of({
           variants: [
             {
@@ -119,7 +119,7 @@ const useCases = [
     label: 'config set not found',
     productId: 'PRODUCTID4',
     sdk: {
-      GetGeneratedProduct: jest.fn().mockReturnValue(
+      GetUnitProduct: jest.fn().mockReturnValue(
         of({
           variants: [
             {
@@ -147,7 +147,7 @@ const useCases = [
     label: 'component not found',
     productId: 'PRODUCTID5',
     sdk: {
-      GetGeneratedProduct: jest.fn().mockReturnValue(
+      GetUnitProduct: jest.fn().mockReturnValue(
         of({
           variants: [
             {
@@ -175,7 +175,7 @@ const useCases = [
     label: 'no config sets',
     productId: 'PRODUCTID6',
     sdk: {
-      GetGeneratedProduct: jest.fn().mockReturnValue(
+      GetUnitProduct: jest.fn().mockReturnValue(
         of({
           variants: [
             {
@@ -236,8 +236,8 @@ test.each(useCases)(
         done();
       },
       complete: () => {
-        expect(sdk.GetGeneratedProduct.mock.calls).toMatchSnapshot(
-          `GetGeneratedProduct calls (${label})`,
+        expect(sdk.GetUnitProduct.mock.calls).toMatchSnapshot(
+          `GetUnitProduct calls (${label})`,
         );
         done();
       },

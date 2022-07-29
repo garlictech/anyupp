@@ -63,22 +63,17 @@ export class ProductListService {
       this._store
         .select(productsSelectors.getUnitProductsOfSelectedCategory)
         .pipe(map(products => products.sort(customNumberCompare('position')))),
-      this._store.select(
-        productsSelectors.getPendingUnitProductsOfSelectedCategory,
-      ),
     ]).pipe(
-      switchMap(([searchValue, unitProducts, pendingUnitProducts]) => {
+      switchMap(([searchValue, unitProducts]) => {
         const [dirtyUnitProducts, cleanUnitProducts] = partition(
           p => p.dirty,
           unitProducts,
         );
 
         return of(
-          [
-            ...pendingUnitProducts.map(p => ({ ...p, pending: true })),
-            ...cleanUnitProducts,
-            ...dirtyUnitProducts,
-          ].filter(p => foundIn(searchValue, p)),
+          [...dirtyUnitProducts, ...cleanUnitProducts].filter(p =>
+            foundIn(searchValue, p),
+          ),
         );
       }),
     );

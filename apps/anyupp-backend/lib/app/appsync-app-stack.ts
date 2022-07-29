@@ -76,14 +76,11 @@ export class AppsyncAppStack extends Stack {
             'dynamodb:UpdateItem',
           ],
           resources: [
-            tableConfig.GeneratedProduct.TableArn,
-            tableConfig.GeneratedProductCategory.TableArn,
             tableConfig.Unit.TableArn,
             tableConfig.AdminUser.TableArn,
             tableConfig.UnitProduct.TableArn,
-            tableConfig.GroupProduct.TableArn,
-            tableConfig.ChainProduct.TableArn,
             tableConfig.Order.TableArn,
+            tableConfig.Variant.TableArn,
           ],
         }),
       );

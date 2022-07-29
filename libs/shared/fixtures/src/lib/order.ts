@@ -1,7 +1,7 @@
 import {
   Allergen,
-  CreateChainProductInput,
   CreateOrderInput,
+  CreateUnitProductInput,
   Order,
   OrderMode,
   OrderStatus,
@@ -16,7 +16,7 @@ import { unitFixture } from './unit';
 
 const order_seeded_01_id = `${seededIdPrefix}order_1_id`;
 
-const orderItemInputBase = (productFixture: CreateChainProductInput) => ({
+const orderItemInputBase = (productFixture: CreateUnitProductInput) => ({
   quantity: 5,
   productId: productFixture.id || '',
   statusLog: [
@@ -79,9 +79,9 @@ const orderInputBase = {
   userId: 'test-monad',
   unitId: unitFixture.unitId_seeded_01,
   items: [
-    orderItemInputBase(productSnapshotFixture.chainProduct_1),
-    orderItemInputBase(productSnapshotFixture.chainProduct_2),
-    orderItemInputBase(productSnapshotFixture.chainProduct_3),
+    orderItemInputBase(productSnapshotFixture.unitProduct_1),
+    orderItemInputBase(productSnapshotFixture.unitProduct_2),
+    orderItemInputBase(productSnapshotFixture.unitProduct_3),
   ],
   sumPriceShown: {
     taxSum: 633.96,

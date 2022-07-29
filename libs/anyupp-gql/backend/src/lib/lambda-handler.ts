@@ -120,7 +120,6 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       deleteAdminUser: adminUserRequestHandlers.deleteAdminUser,
       createOrderFromCart: orderRequestHandlers.createOrderFromCart,
       createOrder: orderRequestHandlers.createOrder,
-      regenerateUnitData: unitRequestHandlers.regenerateUnitData,
       createAnonymUser: userRequestHandlers.createAnonymUser,
       createUnit: createUnitResolver(unitsDeps),
       updateUnit: updateUnitResolver(unitsDeps),

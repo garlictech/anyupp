@@ -37,49 +37,35 @@
     </div>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <nb-tabset fullWidth #tabset>
-      <nb-tab
-        [tabTitle]="'products.unitProducts' | translate"
-        [badgeText]="
-          pendingAndDirtyUnitProductsCount > 0 &&
-          (loggedUser$ | async)?.settings?.selectedUnitId
-            ? pendingAndDirtyUnitProductsCount.toString()
-            : ''
+    <ng-container *ngIf="(loggedUser$ | async)?.settings?.selectedUnitId">
+      <cdk-virtual-scroll-viewport
+        style="height: calc(100vh - 255px)"
+        itemSize="90"
+        (scrolledIndexChange)="
+          loadNextUnitProductPaginatedData($event, unitProducts.length)
         "
-        badgeStatus="danger"
-        [disabled]="!(loggedUser$ | async)?.settings?.selectedUnitId"
+        data-testid="unitProductsVSVP"
+        #unitProductsVSVP
       >
-        <ng-container *ngIf="(loggedUser$ | async)?.settings?.selectedUnitId">
-          <cdk-virtual-scroll-viewport
-            style="height: calc(100vh - 255px)"
-            itemSize="90"
-            (scrolledIndexChange)="
-              loadNextUnitProductPaginatedData($event, unitProducts.length)
+        <nb-list>
+          <nb-list-item
+            *cdkVirtualFor="
+              let product of unitProducts;
+              first as isFirst;
+              last as isLast
             "
-            data-testid="unitProductsVSVP"
-            #unitProductsVSVP
           >
-            <nb-list>
-              <nb-list-item
-                *cdkVirtualFor="
-                  let product of unitProducts;
-                  first as isFirst;
-                  last as isLast
-                "
-              >
-                <bgap-product-list-item
-                  class="w-100"
-                  [product]="product"
-                  [currency]="groupCurrency"
-                  (positionChange)="unitProductPositionChange($event)"
-                  [isFirst]="isFirst"
-                  [isLast]="isLast"
-                ></bgap-product-list-item>
-              </nb-list-item>
-            </nb-list>
-          </cdk-virtual-scroll-viewport>
-        </ng-container>
-      </nb-tab>
-    </nb-tabset>
+            <bgap-product-list-item
+              class="w-100"
+              [product]="product"
+              [currency]="groupCurrency"
+              (positionChange)="unitProductPositionChange($event)"
+              [isFirst]="isFirst"
+              [isLast]="isLast"
+            ></bgap-product-list-item>
+          </nb-list-item>
+        </nb-list>
+      </cdk-virtual-scroll-viewport>
+    </ng-container>
   </nb-card-body>
 </nb-card>

@@ -6,27 +6,34 @@ Object {
     "peanut",
     "egg",
   ],
-  "chainId": "CHAIN_ID",
   "configSets": Array [
     Object {
       "items": Array [
         Object {
+          "name": Object {
+            "en": "CONFIG SET ITEM NAME 1",
+          },
           "netPackagingFee": 30,
           "position": 1,
           "price": 1,
           "productComponentId": "PRODUCT_COMPONENT_ID_11",
-          "refGroupPrice": 1,
         },
         Object {
+          "name": Object {
+            "en": "CONFIG SET ITEM NAME 1",
+          },
           "netPackagingFee": 40,
           "position": 2,
           "price": 2,
           "productComponentId": "PRODUCT_COMPONENT_ID_21",
-          "refGroupPrice": 2,
         },
       ],
+      "name": Object {
+        "en": "CONFIG SET NAME 1",
+      },
       "position": 1,
       "productSetId": "PRODUCT_SET_01",
+      "type": "extras",
     },
   ],
   "createdAt": "12",
@@ -110,7 +117,7 @@ Object {
 }
 `;
 
-exports[`calculatePricesAndCheckActivity method should return a minimal representation of the product in the correct format: Result of toCreateGeneratedProductInputType 1`] = `
+exports[`calculatePricesAndCheckActivity method should return a minimal representation of the product in the correct format: Result of toCreateProductInputType 1`] = `
 Object {
   "allergens": Array [
     "peanut",
@@ -167,6 +174,7 @@ Object {
   },
   "id": "PRODUCT_ID",
   "image": "IMG",
+  "isVisible": true,
   "name": Object {
     "en": "NAME",
   },
@@ -183,6 +191,7 @@ Object {
   "variants": Array [
     Object {
       "id": "VARIANT_ID_01",
+      "isAvailable": true,
       "netPackagingFee": 30,
       "pack": Object {
         "size": 1,
@@ -197,6 +206,7 @@ Object {
     },
     Object {
       "id": "VARIANT_ID_01",
+      "isAvailable": true,
       "netPackagingFee": 30,
       "pack": Object {
         "size": 1,

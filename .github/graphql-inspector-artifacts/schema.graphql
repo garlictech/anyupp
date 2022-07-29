@@ -164,17 +164,23 @@ type UnitProduct @aws_iam @aws_cognito_user_pools {
 
 type ProductConfigComponent @aws_iam @aws_cognito_user_pools {
   productComponentId: ID!
-  refGroupPrice: Float!
   price: Float!
   position: Int!
   externalId: String
   netPackagingFee: Float
+  name: LocalizedItem!
+  allergens: [Allergen]
+  soldOut: Boolean
 }
 
 type ProductConfigSet @aws_iam @aws_cognito_user_pools {
   productSetId: ID!
   items: [ProductConfigComponent!]!
   position: Int!
+  name: LocalizedItem!
+  type: ProductComponentSetType!
+  maxSelection: Int
+  supportedServingModes: [ServingMode!]
 }
 
 type ProductVariant @aws_iam @aws_cognito_user_pools {
@@ -1203,8 +1209,6 @@ input CreateUnitInput {
   adBannersEnabled: Boolean
   coverBanners: [ImageAssetInput]
   coverBannersEnabled: Boolean
-  groupId: ID!
-  chainId: ID!
   lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
@@ -1278,8 +1282,6 @@ input UpdateUnitInput {
   adBannersEnabled: Boolean
   coverBanners: [ImageAssetInput]
   coverBannersEnabled: Boolean
-  groupId: ID
-  chainId: ID
   lastOrderNum: Int
   isActive: Boolean
   isAcceptingOrders: Boolean
@@ -1321,10 +1323,6 @@ type CreateAnonymUserOutput {
 }
 
 input CreateOrderFromCartInput {
-  id: ID!
-}
-
-input RegenerateUnitDataInput {
   id: ID!
 }
 
@@ -1417,7 +1415,6 @@ type Mutation {
   createAnonymUser: CreateAnonymUserOutput @aws_iam @aws_api_key
   createOrderFromCart(input: CreateOrderFromCartInput!): ID @aws_iam @aws_cognito_user_pools
   createOrder(input: CreateOrderInput!): Order @aws_iam @aws_cognito_user_pools
-  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean! @aws_iam @aws_cognito_user_pools
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   startStripePaymentConnected(input: StartStripePaymentInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
   payTipWithStripe(input: PayTipWithStripeInput!): StartStripePaymentOutput @aws_cognito_user_pools @aws_iam
@@ -1466,10 +1463,9 @@ type Mutation {
 type Subscription {
   onAdminUserChange(id: ID!): AdminUser @aws_subscribe(mutations: ["updateAdminUser"]) @aws_cognito_user_pools
   onAdminUsersChange: AdminUser @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"]) @aws_cognito_user_pools
-  onUnitsChange(groupId: ID!): Unit @aws_subscribe(mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]) @aws_cognito_user_pools
-  onProductCategoriesChange(chainId: ID!): ProductCategory @aws_subscribe(mutations: ["createProductCategory", "updateProductCategory"]) @aws_cognito_user_pools
-  onProductComponentsChange(chainId: ID!): ProductComponent @aws_subscribe(mutations: ["createProductComponent", "updateProductComponent"]) @aws_cognito_user_pools
-  onProductComponentSetsChange(chainId: ID!): ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet", "updateProductComponentSet"]) @aws_cognito_user_pools
+  onProductCategoriesChange(unitId: ID!): ProductCategory @aws_subscribe(mutations: ["createProductCategory", "updateProductCategory"]) @aws_cognito_user_pools
+  onProductComponentsChange(unitId: ID!): ProductComponent @aws_subscribe(mutations: ["createProductComponent", "updateProductComponent"]) @aws_cognito_user_pools
+  onProductComponentSetsChange(unitId: ID!): ProductComponentSet @aws_subscribe(mutations: ["createProductComponentSet", "updateProductComponentSet"]) @aws_cognito_user_pools
   onUnitProductChange(unitId: ID!): UnitProduct @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"]) @aws_cognito_user_pools
   onOrdersChange: Order @aws_subscribe(mutations: ["createOrder", "updateOrder"]) @aws_cognito_user_pools
   onOrdersDelete: Order @aws_subscribe(mutations: ["deleteOrder"]) @aws_cognito_user_pools
@@ -1742,15 +1738,21 @@ input ProductConfigSetInput {
   productSetId: ID!
   items: [ProductConfigComponentInput!]!
   position: Int!
+  name: LocalizedItemInput!
+  type: ProductComponentSetType!
+  maxSelection: Int
+  supportedServingModes: [ServingMode!]
 }
 
 input ProductConfigComponentInput {
   productComponentId: ID!
-  refGroupPrice: Float!
   price: Float!
   position: Int!
   externalId: String
   netPackagingFee: Float
+  name: LocalizedItemInput!
+  allergens: [Allergen]
+  soldOut: Boolean
 }
 
 type ModelUnitProductConnection @aws_iam @aws_cognito_user_pools {

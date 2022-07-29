@@ -80,7 +80,7 @@ describe('Orders pure function tests', () => {
 
     const orderItem = {
       ...orderFixtureBase.orderItemInputBase(
-        productSnapshotFixture.chainProduct_1,
+        productSnapshotFixture.unitProduct_1,
       ),
       productId: productSnapshotFixture.chainProduct_1.id,
     };

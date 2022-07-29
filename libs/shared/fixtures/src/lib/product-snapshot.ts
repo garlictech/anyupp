@@ -22,37 +22,37 @@ const chainProductId_13 = `${seededIdPrefix}chain_product_c1_13_id`;
 const chainProductId_14 = `${seededIdPrefix}chain_product_c1_14_id`;
 const chainProductId_15 = `${seededIdPrefix}chain_product_c1_15_id`;
 
-const groupProductId_01 = `${seededIdPrefix}chain_product_c1_g1_1_id`;
-const groupProductId_02 = `${seededIdPrefix}chain_product_c1_g1_2_id`;
-const groupProductId_03 = `${seededIdPrefix}chain_product_c1_g1_3_id`;
-const groupProductId_04 = `${seededIdPrefix}chain_product_c1_g1_4_id`;
-const groupProductId_05 = `${seededIdPrefix}chain_product_c1_g1_5_id`;
-const groupProductId_06 = `${seededIdPrefix}chain_product_c1_g1_6_id`;
-const groupProductId_07 = `${seededIdPrefix}chain_product_c1_g1_7_id`;
-const groupProductId_08 = `${seededIdPrefix}chain_product_c1_g1_8_id`;
-const groupProductId_09 = `${seededIdPrefix}chain_product_c1_g1_9_id`;
-const groupProductId_10 = `${seededIdPrefix}chain_product_c1_g1_10_id`;
-const groupProductId_11 = `${seededIdPrefix}chain_product_c1_g1_11_id`;
-const groupProductId_12 = `${seededIdPrefix}chain_product_c1_g1_12_id`;
-const groupProductId_13 = `${seededIdPrefix}chain_product_c1_g1_13_id`;
-const groupProductId_14 = `${seededIdPrefix}chain_product_c1_g1_14_id`;
-const groupProductId_15 = `${seededIdPrefix}chain_product_c1_g1_15_id`;
+const groupProductId_01 = `${seededIdPrefix}chain_product_1_id`;
+const groupProductId_02 = `${seededIdPrefix}chain_product_2_id`;
+const groupProductId_03 = `${seededIdPrefix}chain_product_3_id`;
+const groupProductId_04 = `${seededIdPrefix}chain_product_4_id`;
+const groupProductId_05 = `${seededIdPrefix}chain_product_5_id`;
+const groupProductId_06 = `${seededIdPrefix}chain_product_6_id`;
+const groupProductId_07 = `${seededIdPrefix}chain_product_7_id`;
+const groupProductId_08 = `${seededIdPrefix}chain_product_8_id`;
+const groupProductId_09 = `${seededIdPrefix}chain_product_9_id`;
+const groupProductId_10 = `${seededIdPrefix}chain_product_10_id`;
+const groupProductId_11 = `${seededIdPrefix}chain_product_11_id`;
+const groupProductId_12 = `${seededIdPrefix}chain_product_12_id`;
+const groupProductId_13 = `${seededIdPrefix}chain_product_13_id`;
+const groupProductId_14 = `${seededIdPrefix}chain_product_14_id`;
+const groupProductId_15 = `${seededIdPrefix}chain_product_15_id`;
 
-const unitProductId_01 = `${seededIdPrefix}unit_product_c1_g1_u1_1_id`;
-const unitProductId_02 = `${seededIdPrefix}unit_product_c1_g1_u1_2_id`;
-const unitProductId_03 = `${seededIdPrefix}unit_product_c1_g1_u1_3_id`;
-const unitProductId_04 = `${seededIdPrefix}unit_product_c1_g1_u1_4_id`;
-const unitProductId_05 = `${seededIdPrefix}unit_product_c1_g1_u1_5_id`;
-const unitProductId_06 = `${seededIdPrefix}unit_product_c1_g1_u1_6_id`;
-const unitProductId_07 = `${seededIdPrefix}unit_product_c1_g1_u1_7_id`;
-const unitProductId_08 = `${seededIdPrefix}unit_product_c1_g1_u1_8_id`;
-const unitProductId_09 = `${seededIdPrefix}unit_product_c1_g1_u1_9_id`;
-const unitProductId_10 = `${seededIdPrefix}unit_product_c1_g1_u1_10_id`;
-const unitProductId_11 = `${seededIdPrefix}unit_product_c1_g1_u1_11_id`;
-const unitProductId_12 = `${seededIdPrefix}unit_product_c1_g1_u1_12_id`;
-const unitProductId_13 = `${seededIdPrefix}unit_product_c1_g1_u1_13_id`;
-const unitProductId_14 = `${seededIdPrefix}unit_product_c1_g1_u1_14_id`;
-const unitProductId_15 = `${seededIdPrefix}unit_product_c1_g1_u1_15_id`;
+const unitProductId_01 = `${seededIdPrefix}unit_product_u1_1_id`;
+const unitProductId_02 = `${seededIdPrefix}unit_product_u1_2_id`;
+const unitProductId_03 = `${seededIdPrefix}unit_product_u1_3_id`;
+const unitProductId_04 = `${seededIdPrefix}unit_product_u1_4_id`;
+const unitProductId_05 = `${seededIdPrefix}unit_product_u1_5_id`;
+const unitProductId_06 = `${seededIdPrefix}unit_product_u1_6_id`;
+const unitProductId_07 = `${seededIdPrefix}unit_product_u1_7_id`;
+const unitProductId_08 = `${seededIdPrefix}unit_product_u1_8_id`;
+const unitProductId_09 = `${seededIdPrefix}unit_product_u1_9_id`;
+const unitProductId_10 = `${seededIdPrefix}unit_product_u1_10_id`;
+const unitProductId_11 = `${seededIdPrefix}unit_product_u1_11_id`;
+const unitProductId_12 = `${seededIdPrefix}unit_product_u1_12_id`;
+const unitProductId_13 = `${seededIdPrefix}unit_product_u1_13_id`;
+const unitProductId_14 = `${seededIdPrefix}unit_product_u1_14_id`;
+const unitProductId_15 = `${seededIdPrefix}unit_product_u1_15_id`;
 
 const chainProduct_1 = {
   id: chainProductId_01,
@@ -984,7 +984,7 @@ const unitProduct_1: CreateUnitProductInput = {
   parentId: groupProductId_05,
   takeaway: true,
   isVisible: true,
-  unitId: 'seeded_unit_c1_g1_1_id',
+  unitId: 'seeded_unit_1_id',
   chainId: 'seeded_chain_1_id',
   laneId: 'lane_01',
   position: 0,
@@ -1099,7 +1099,7 @@ const unitProduct_2 = {
   parentId: groupProductId_01,
   takeaway: true,
   isVisible: true,
-  unitId: 'seeded_unit_c1_g1_1_id',
+  unitId: 'seeded_unit_1_id',
   chainId: 'seeded_chain_1_id',
   laneId: 'lane_02',
   position: 0,
@@ -1233,7 +1233,7 @@ const unitProduct_3 = {
   parentId: groupProductId_04,
   takeaway: true,
   isVisible: true,
-  unitId: 'seeded_unit_c1_g1_1_id',
+  unitId: 'seeded_unit_1_id',
   chainId: 'seeded_chain_1_id',
   laneId: 'lane_01',
   position: 0,
@@ -1348,7 +1348,7 @@ const unitProduct_4 = {
   parentId: groupProductId_09,
   takeaway: true,
   isVisible: true,
-  unitId: 'seeded_unit_c1_g1_1_id',
+  unitId: 'seeded_unit_1_id',
   chainId: 'seeded_chain_1_id',
   laneId: 'lane_01',
   position: 0,
@@ -1482,7 +1482,7 @@ const unitProduct_5 = {
   parentId: groupProductId_08,
   takeaway: true,
   isVisible: true,
-  unitId: 'seeded_unit_c1_g1_1_id',
+  unitId: 'seeded_unit_1_id',
   chainId: 'seeded_chain_1_id',
   laneId: 'lane_01',
   position: 0,
@@ -1616,7 +1616,7 @@ const unitProduct_6 = {
   parentId: groupProductId_06,
   takeaway: true,
   isVisible: true,
-  unitId: 'seeded_unit_c1_g1_1_id',
+  unitId: 'seeded_unit_1_id',
   chainId: 'seeded_chain_1_id',
   laneId: 'lane_01',
   position: 0,
@@ -1743,7 +1743,7 @@ const unitProduct_7 = {
   parentId: groupProductId_02,
   takeaway: true,
   isVisible: true,
-  unitId: 'seeded_unit_c1_g1_1_id',
+  unitId: 'seeded_unit_1_id',
   chainId: 'seeded_chain_1_id',
   laneId: 'lane_01',
   position: 0,
@@ -1870,7 +1870,7 @@ const unitProduct_8 = {
   parentId: groupProductId_03,
   takeaway: true,
   isVisible: true,
-  unitId: 'seeded_unit_c1_g1_1_id',
+  unitId: 'seeded_unit_1_id',
   chainId: 'seeded_chain_1_id',
   laneId: 'lane_01',
   position: 0,
@@ -1985,7 +1985,7 @@ const unitProduct_9 = {
   parentId: groupProductId_07,
   takeaway: true,
   isVisible: true,
-  unitId: 'seeded_unit_c1_g1_1_id',
+  unitId: 'seeded_unit_1_id',
   chainId: 'seeded_chain_1_id',
   laneId: 'lane_01',
   position: 0,

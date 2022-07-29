@@ -8,7 +8,7 @@ import {
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 
-import { combineLatest, concat, defer, from, of } from 'rxjs';
+import { forkJoin, concat, defer, from, of } from 'rxjs';
 import {
   catchError,
   delay,
@@ -21,19 +21,13 @@ import {
   createAdminUser,
   createComponentSets,
   createConsumerUser,
-  createTestChain,
-  createTestGroup,
   createTestUnit,
   createTestUnitsForOrderHandling,
   SeederDependencies,
   seedYellowRKeeperUnit,
   seedSportbarRKeeperUnit,
-  createChainProductsFromSnapshot,
-  createGroupProductsFromSnapshot,
   createTestProductCategoryFromFixtures,
   createUnitProductsFromSnapshot,
-  //placeOrderToSeat,
-  //seedLotsOfOrders,
 } from './seed-data-fn';
 
 const ce = (tag: string) =>
@@ -78,7 +72,7 @@ export const seedAdminUser = (deps: SeederDependencies) =>
         tap(() => console.log('USER PASSWORD SET', username)),
       ),
     ),
-    combineLatest,
+    x => forkJoin(x),
   );
 
 export const seedBusinessData = (deps: SeederDependencies) =>
@@ -87,20 +81,14 @@ export const seedBusinessData = (deps: SeederDependencies) =>
       switchMap(() =>
         concat(
           createConsumerUser()(deps).pipe(ce('### Consumer user')),
-          createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
-          createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
-          createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
-          createTestGroup(2, 1)(deps).pipe(ce('### Group SEED 03')),
-          createTestUnit(1, 1, 1)(deps).pipe(ce('### Unit SEED 01')),
-          createTestUnit(1, 1, 2)(deps).pipe(ce('### Unit SEED 02')),
-          createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
+          createTestUnit(1)(deps).pipe(ce('### Unit SEED 01')),
+          createTestUnit(1)(deps).pipe(ce('### Unit SEED 02')),
+          createTestUnit(1)(deps).pipe(ce('### Unit SEED 03')),
           createTestUnitsForOrderHandling()(deps).pipe(
             ce('### Order handling units'),
           ),
           createTestProductCategoryFromFixtures()(deps),
           createComponentSets(deps).pipe(ce('### ComponentSets')),
-          createChainProductsFromSnapshot(deps).pipe(ce('### Chain products')),
-          createGroupProductsFromSnapshot(deps).pipe(ce('### Group products')),
           createUnitProductsFromSnapshot(deps).pipe(ce('### Unit products')),
         ),
       ),

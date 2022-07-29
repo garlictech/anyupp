@@ -28,14 +28,14 @@ export class ProductCategoryCollectionService extends BaseCollectionService<Prod
         tap(selectedUnitId => {
           // Update filter on settings change
           this.patchFilter({
-            unitId: selectedUnitId,
+            ownerEntity: selectedUnitId,
           });
         }),
         switchMap(selectedUnitId =>
           // Load all data on settings change
           this.getAllCachedPaginatedData$({
             filter: {
-              unitId: { eq: selectedUnitId },
+              ownerEntity: { eq: selectedUnitId },
             },
           }),
         ),

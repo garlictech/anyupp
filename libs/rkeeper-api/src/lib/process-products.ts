@@ -33,7 +33,6 @@ import {
   filterNullishGraphqlListWithDefault,
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
-import { regenerateUnitData } from '@bgap/backend/units';
 import {
   Maybe,
   ProductComponent,
@@ -391,11 +390,7 @@ export const handleRkeeperProducts =
               limit: 1,
             }),
           ),
-          switchMap(products =>
-            products?.items?.length
-              ? regenerateUnitData(sdk)(businessEntityInfo.unitId)
-              : of(true),
-          ),
+          mapTo(true),
         ),
       ),
     );
@@ -433,10 +428,10 @@ export const upsertComponent =
         throwIfEmptyValue(),
         map(component => ({
           productComponentId: component.id,
-          refGroupPrice: modifier.price,
           price: modifier.price,
           position: -1,
           externalId: component.externalId,
+          name: { hu: component.name?.hu },
         })),
       );
 
@@ -478,7 +473,11 @@ export const normalizeModifierGroup = (modifierGroup: ModifierGroup) => ({
 const upsertConfigSetsHelper = R.memoizeWith(
   (_sdk: CrudSdk, unitId: string, modifierGroup: ModifierGroup) =>
     unitId + modifierGroup.id.toString(),
-  (sdk: CrudSdk, unitId: string, modifierGroup: ModifierGroup) =>
+  (
+    sdk: CrudSdk,
+    unitId: string,
+    modifierGroup: ModifierGroup,
+  ): Observable<ProductConfigSet> =>
     pipe(
       modifierGroup.modifiers.map(modifierUpdater(sdk, unitId)),
       res => (R.isEmpty(res) ? of([]) : forkJoin(res)),
@@ -522,6 +521,8 @@ const upsertConfigSetsHelper = R.memoizeWith(
               productSetId: componentSet.id,
               items: components,
               position: -1,
+              type: ProductComponentSetType.modifier,
+              name: { hu: componentSet.name?.hu },
             })),
           ),
       ),

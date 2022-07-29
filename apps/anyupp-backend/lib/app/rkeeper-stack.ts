@@ -65,13 +65,11 @@ export class RKeeperStack extends sst.Stack {
           'dynamodb:UpdateItem',
         ],
         resources: [
-          tableConfig.GeneratedProduct.TableArn,
-          tableConfig.GeneratedProductCategory.TableArn,
+          tableConfig.ProductCategory.TableArn,
           tableConfig.Unit.TableArn,
           tableConfig.AdminUser.TableArn,
           tableConfig.UnitProduct.TableArn,
-          tableConfig.GroupProduct.TableArn,
-          tableConfig.ChainProduct.TableArn,
+          tableConfig.Variant.TableArn,
         ],
       }),
     );

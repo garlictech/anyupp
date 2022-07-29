@@ -95,7 +95,6 @@ export class ProductListComponent implements OnInit {
       .subscribe((unitProducts: UnitProducts[]) => {
         this.unitProducts = unitProducts;
         this._sortedUnitProductIds = this.unitProducts.map((p): string => p.id);
-
         this._changeDetectorRef.detectChanges();
       });
 
@@ -106,7 +105,7 @@ export class ProductListComponent implements OnInit {
         untilDestroyed(this),
       )
       .subscribe(() => {
-        this.loadNextUnitProductPaginatedData(0, 0);
+        this.loadNextUnitProductPaginatedData(10, 0);
       });
   }
 

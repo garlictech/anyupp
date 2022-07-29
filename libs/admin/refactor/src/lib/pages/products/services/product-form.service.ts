@@ -192,6 +192,8 @@ export class ProductFormService {
       this.createUnitProduct$(<CreateUnitProductInput>formValue),
       this.updateUnitProduct$({
         ...formValue,
+        // see 4 lines above
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         id: unitId!,
       }),
     );

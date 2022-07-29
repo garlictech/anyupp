@@ -131,21 +131,29 @@ Object {
       "items": Array [
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 0,
           "productComponentId": "COMPONENT ID",
-          "refGroupPrice": 0,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 100,
           "productComponentId": "COMPONENT ID",
-          "refGroupPrice": 100,
         },
       ],
+      "name": Object {
+        "hu": undefined,
+      },
       "position": -1,
       "productSetId": "NEW PRODUCT COMPONENT SET ID",
+      "type": "modifier",
     },
   ],
 }
@@ -229,84 +237,84 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017196",
         "name": Object {
           "hu": "Tej sima (90ml)",
         },
+        "ownerEntity": "UNITIDCreateProductComponent fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017195",
         "name": Object {
           "hu": "Kókuszital (90ml)",
         },
+        "ownerEntity": "UNITIDCreateProductComponent fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017194",
         "name": Object {
           "hu": "Laktózmentes tej (90ml)",
         },
+        "ownerEntity": "UNITIDCreateProductComponent fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017193",
         "name": Object {
           "hu": "Mandulaital (90ml)",
         },
+        "ownerEntity": "UNITIDCreateProductComponent fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991017191",
         "name": Object {
           "hu": "Zabital (90ml)",
         },
+        "ownerEntity": "UNITIDCreateProductComponent fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991011504",
         "name": Object {
           "hu": "Papírpohár 2dl",
         },
+        "ownerEntity": "UNITIDCreateProductComponent fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDCreateProductComponent fails",
         "dirty": true,
         "externalId": "9991011517",
         "name": Object {
           "hu": "Saját pohár",
         },
+        "ownerEntity": "UNITIDCreateProductComponent fails",
       },
     },
   ],
@@ -318,84 +326,84 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDSearchProductComponentSet fails",
         "dirty": true,
         "externalId": "9991017196",
         "name": Object {
           "hu": "Tej sima (90ml)",
         },
+        "ownerEntity": "UNITIDSearchProductComponentSet fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDSearchProductComponentSet fails",
         "dirty": true,
         "externalId": "9991017195",
         "name": Object {
           "hu": "Kókuszital (90ml)",
         },
+        "ownerEntity": "UNITIDSearchProductComponentSet fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDSearchProductComponentSet fails",
         "dirty": true,
         "externalId": "9991017194",
         "name": Object {
           "hu": "Laktózmentes tej (90ml)",
         },
+        "ownerEntity": "UNITIDSearchProductComponentSet fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDSearchProductComponentSet fails",
         "dirty": true,
         "externalId": "9991017193",
         "name": Object {
           "hu": "Mandulaital (90ml)",
         },
+        "ownerEntity": "UNITIDSearchProductComponentSet fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDSearchProductComponentSet fails",
         "dirty": true,
         "externalId": "9991017191",
         "name": Object {
           "hu": "Zabital (90ml)",
         },
+        "ownerEntity": "UNITIDSearchProductComponentSet fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDSearchProductComponentSet fails",
         "dirty": true,
         "externalId": "9991011504",
         "name": Object {
           "hu": "Papírpohár 2dl",
         },
+        "ownerEntity": "UNITIDSearchProductComponentSet fails",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDSearchProductComponentSet fails",
         "dirty": true,
         "externalId": "9991011517",
         "name": Object {
           "hu": "Saját pohár",
         },
+        "ownerEntity": "UNITIDSearchProductComponentSet fails",
       },
     },
   ],
@@ -407,84 +415,84 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDcreate new components",
         "dirty": true,
         "externalId": "9991017196",
         "name": Object {
           "hu": "Tej sima (90ml)",
         },
+        "ownerEntity": "UNITIDcreate new components",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDcreate new components",
         "dirty": true,
         "externalId": "9991017195",
         "name": Object {
           "hu": "Kókuszital (90ml)",
         },
+        "ownerEntity": "UNITIDcreate new components",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDcreate new components",
         "dirty": true,
         "externalId": "9991017194",
         "name": Object {
           "hu": "Laktózmentes tej (90ml)",
         },
+        "ownerEntity": "UNITIDcreate new components",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDcreate new components",
         "dirty": true,
         "externalId": "9991017193",
         "name": Object {
           "hu": "Mandulaital (90ml)",
         },
+        "ownerEntity": "UNITIDcreate new components",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDcreate new components",
         "dirty": true,
         "externalId": "9991017191",
         "name": Object {
           "hu": "Zabital (90ml)",
         },
+        "ownerEntity": "UNITIDcreate new components",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDcreate new components",
         "dirty": true,
         "externalId": "9991011504",
         "name": Object {
           "hu": "Papírpohár 2dl",
         },
+        "ownerEntity": "UNITIDcreate new components",
       },
     },
   ],
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDcreate new components",
         "dirty": true,
         "externalId": "9991011517",
         "name": Object {
           "hu": "Saját pohár",
         },
+        "ownerEntity": "UNITIDcreate new components",
       },
     },
   ],
@@ -502,7 +510,6 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDcreate new components",
         "description": "describe me",
         "dirty": true,
         "externalId": "9991017198",
@@ -516,6 +523,7 @@ Array [
         "name": Object {
           "hu": "Tejek 90ml",
         },
+        "ownerEntity": "UNITIDcreate new components",
         "type": "rkeeper",
       },
     },
@@ -523,7 +531,6 @@ Array [
   Array [
     Object {
       "input": Object {
-        "chainId": "CHAINIDcreate new components",
         "description": "describe me",
         "dirty": true,
         "externalId": "9991017199",
@@ -534,6 +541,7 @@ Array [
         "name": Object {
           "hu": "2dl papírpohár",
         },
+        "ownerEntity": "UNITIDcreate new components",
         "type": "rkeeper",
       },
     },
@@ -1029,62 +1037,84 @@ Object {
       "items": Array [
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 0,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 100,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 100,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 100,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 100,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
         },
       ],
+      "name": Object {
+        "hu": undefined,
+      },
       "position": -1,
       "productSetId": "NEW PRODUCT COMPONENT SET ID",
+      "type": "modifier",
     },
     Object {
       "items": Array [
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 50,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 50,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 0,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
         },
       ],
+      "name": Object {
+        "hu": undefined,
+      },
       "position": -1,
       "productSetId": "NEW PRODUCT COMPONENT SET ID",
+      "type": "modifier",
     },
   ],
 }
@@ -1098,62 +1128,84 @@ Object {
       "items": Array [
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 0,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 100,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 100,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 100,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 100,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 100,
         },
       ],
+      "name": Object {
+        "hu": undefined,
+      },
       "position": -1,
       "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
+      "type": "modifier",
     },
     Object {
       "items": Array [
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 50,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 50,
         },
         Object {
           "externalId": undefined,
+          "name": Object {
+            "hu": undefined,
+          },
           "position": -1,
           "price": 0,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
-          "refGroupPrice": 0,
         },
       ],
+      "name": Object {
+        "hu": undefined,
+      },
       "position": -1,
       "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
+      "type": "modifier",
     },
   ],
 }

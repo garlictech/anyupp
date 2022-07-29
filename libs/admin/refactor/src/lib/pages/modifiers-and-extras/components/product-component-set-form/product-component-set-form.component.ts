@@ -74,10 +74,7 @@ export class ProductComponentSetFormComponent
       // Patch unitId
       this._store
         .pipe(select(loggedUserSelectors.getSelectedUnitId), take(1))
-        .subscribe((selectedunitId: string | undefined | null) => {
-          if (selectedunitId) {
-          }
-        });
+        .subscribe();
     }
 
     combineLatest([

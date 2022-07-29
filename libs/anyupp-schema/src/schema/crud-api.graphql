@@ -164,17 +164,23 @@ type UnitProduct
 
 type ProductConfigComponent {
   productComponentId: ID!
-  refGroupPrice: Float!
   price: Float!
   position: Int!
   externalId: String
   netPackagingFee: Float
+  name: LocalizedItem! # (query for UnitProduct.configSets.items.productComponentId).name
+  allergens: [Allergen] # (query for UnitProduct.configSets.items.productComponentId).allergens
+  soldOut: Boolean # (query for UnitProduct.configSets.items.productComponentId).soldOut
 }
 
 type ProductConfigSet {
   productSetId: ID!
   items: [ProductConfigComponent!]!
   position: Int!
+  name: LocalizedItem! # (query for UnitProduct.configSets.productSetId).name
+  type: ProductComponentSetType! # (query for UnitProduct.configSets.productSetId).type
+  maxSelection: Int # (query for UnitProduct.configSets.productSetId).maxSelection
+  supportedServingModes: [ServingMode!] # (query for UnitProduct.configSets.productSetId).supportedServingModes
 }
 
 # ProductVariant was (is) the old embedded type, Variant is the sema one
@@ -1232,8 +1238,6 @@ input CreateUnitInput {
   adBannersEnabled: Boolean
   coverBanners: [ImageAssetInput]
   coverBannersEnabled: Boolean
-  groupId: ID!
-  chainId: ID!
   lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
@@ -1307,8 +1311,6 @@ input UpdateUnitInput {
   adBannersEnabled: Boolean
   coverBanners: [ImageAssetInput]
   coverBannersEnabled: Boolean
-  groupId: ID
-  chainId: ID
   lastOrderNum: Int
   isActive: Boolean
   isAcceptingOrders: Boolean
@@ -1350,10 +1352,6 @@ type CreateAnonymUserOutput {
 }
 
 input CreateOrderFromCartInput {
-  id: ID!
-}
-
-input RegenerateUnitDataInput {
   id: ID!
 }
 
@@ -1456,12 +1454,6 @@ type Mutation {
     @aws_cognito_user_pools
     @function(name: "${env}-anyupp-graphql-resolvers")
 
-  # Unit
-  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-    @function(name: "${env}-anyupp-graphql-resolvers")
-    @aws_iam
-    @aws_cognito_user_pools
-
   # Stripe
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
@@ -1503,23 +1495,18 @@ type Subscription {
   onAdminUsersChange: AdminUser
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
     @aws_cognito_user_pools
-  onUnitsChange(groupId: ID!): Unit
-    @aws_subscribe(
-      mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]
-    )
-    @aws_cognito_user_pools
   # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
-  onProductCategoriesChange(chainId: ID!): ProductCategory
+  onProductCategoriesChange(unitId: ID!): ProductCategory
     @aws_subscribe(
       mutations: ["createProductCategory", "updateProductCategory"]
     )
     @aws_cognito_user_pools
-  onProductComponentsChange(chainId: ID!): ProductComponent
+  onProductComponentsChange(unitId: ID!): ProductComponent
     @aws_subscribe(
       mutations: ["createProductComponent", "updateProductComponent"]
     )
     @aws_cognito_user_pools
-  onProductComponentSetsChange(chainId: ID!): ProductComponentSet
+  onProductComponentSetsChange(unitId: ID!): ProductComponentSet
     @aws_subscribe(
       mutations: ["createProductComponentSet", "updateProductComponentSet"]
     )

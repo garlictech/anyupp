@@ -11,9 +11,7 @@ import {
   Unit,
   WeeklySchedule,
 } from '@bgap/domain';
-import { chainFixture } from './chain';
 import { seededIdPrefix, testIdPrefix } from './common';
-import { groupFixture } from './group';
 import {
   rkeeperEndpoint,
   yellowRkeeperPassword,
@@ -21,9 +19,9 @@ import {
 } from './rkeeper';
 
 const unitId_01 = `${testIdPrefix}unit_1_id`;
-const unitId_seeded_01 = `${seededIdPrefix}unit_c1_g1_1_id`;
-const unitId_seeded_02 = `${seededIdPrefix}unit_c1_g1_2_id`;
-const unitId_seeded_03 = `${seededIdPrefix}unit_c1_g2_1_id`;
+const unitId_seeded_01 = `${seededIdPrefix}unit_1_id`;
+const unitId_seeded_02 = `${seededIdPrefix}unit_2_id`;
+const unitId_seeded_03 = `${seededIdPrefix}unit_1_id`;
 const unitId_NotExisting = `${testIdPrefix}NOT_EXISTING_UNIT`;
 
 const openingHours: WeeklySchedule = {
@@ -155,8 +153,6 @@ const unitBase = {
 const unit_01: Unit = {
   ...unitBase,
   id: unitId_01,
-  groupId: groupFixture.group_01.id,
-  chainId: chainFixture.chain_01.id,
   createdAt: '2021-08-02T01:54:11.843Z',
   updatedAt: '2021-08-02T01:54:11.843Z',
 };
@@ -164,15 +160,11 @@ const unit_01: Unit = {
 const unitInputBase: CreateUnitInput = {
   ...unitBase,
   id: unitId_01,
-  groupId: groupFixture.group_01.id,
-  chainId: chainFixture.chain_01.id,
 };
 
 const createUnit_01: RequiredId<CreateUnitInput> = {
   ...unitBase,
   id: unitId_01,
-  groupId: groupFixture.group_01.id,
-  chainId: chainFixture.chain_01.id,
   serviceFeePolicy: {
     type: ServiceFeeType.applicable,
     percentage: 10,

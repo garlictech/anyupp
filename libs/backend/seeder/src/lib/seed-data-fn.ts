@@ -1,6 +1,4 @@
 import {
-  chainFixture,
-  groupFixture,
   productCategoryFixture,
   productComponentSetFixture,
   productSnapshotFixture,
@@ -14,10 +12,6 @@ import { CrudSdk } from '@bgap/crud-gql/api';
 import {
   Allergen,
   CreateAdminUserInput,
-  CreateChainInput,
-  CreateChainProductInput,
-  CreateGroupInput,
-  CreateGroupProductInput,
   CreateOrderInput,
   CreateProductCategoryInput,
   CreateProductComponentInput,
@@ -77,42 +71,6 @@ export const createConsumerUser = () => (deps: SeederDependencies) => {
   );
 };
 
-export const createTestChain =
-  (chainIdx: number) => (deps: SeederDependencies) => {
-    console.debug('createTestChain', {
-      chainIdx,
-    });
-    const input: CreateChainInput = {
-      ...chainFixture.chainBase,
-      id: seedUtils.generateChainId(chainIdx),
-      name: `Rab lánc #${chainIdx}`,
-    };
-    return deleteCreate(
-      () => deps.crudSdk.DeleteChain({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateChain({ input }),
-    );
-  };
-
-export const createTestGroup =
-  (chainIdx: number, groupIdx: number) => (deps: SeederDependencies) => {
-    console.debug('createTestGroup', {
-      chainIdx,
-      groupIdx,
-    });
-    const input: CreateGroupInput = {
-      ...groupFixture.groupBase,
-      id: seedUtils.generateGroupId(chainIdx, groupIdx),
-      chainId: seedUtils.generateChainId(chainIdx),
-      name: `Nagy csoport #${groupIdx}`,
-      // currency: groupIdx % 2 === 0 ? 'HUF' : 'EUR',
-      currency: 'HUF',
-    };
-    return deleteCreate(
-      () => deps.crudSdk.DeleteGroup({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateGroup({ input }),
-    );
-  };
-
 export const createAdminUser =
   (adminUserId: string, email: string, phone: string) =>
   (deps: SeederDependencies) => {
@@ -135,19 +93,14 @@ export const createAdminUser =
   };
 
 export const createTestUnit =
-  (chainIdx: number, groupIdx: number, unitIdx: number) =>
-  (deps: SeederDependencies) => {
+  (unitIdx: number) => (deps: SeederDependencies) => {
     console.debug('createTestUnit', {
-      chainIdx,
-      groupIdx,
       unitIdx,
     });
     const input: CreateUnitInput = {
       ...R.omit(['createdAt', 'updatedAt'], unitFixture.unitBase),
-      id: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
-      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
-      chainId: seedUtils.generateChainId(chainIdx),
-      name: `Késdobáló #${chainIdx}${groupIdx}${unitIdx}`,
+      id: seedUtils.generateUnitId(unitIdx),
+      name: `Késdobáló #11${unitIdx}`,
       timeZone: 'Europe/Budapest',
       supportedServingModes:
         unitIdx % 2 === 1
@@ -371,11 +324,6 @@ export const createTestUnitsForOrderHandling =
         unitFixture.unitPickupInplace,
         unitFixture.unitPickupTakeaway,
       ],
-      R.map(unit => ({
-        ...unit,
-        groupId: seedUtils.generateGroupId(1, 1),
-        chainId: seedUtils.generateChainId(1),
-      })),
       R.map(input =>
         deleteCreate(
           () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
@@ -387,16 +335,16 @@ export const createTestUnitsForOrderHandling =
   };
 
 export const createTestProductCategory =
-  (chainIdx: number, productCategoryId: number) =>
+  (unitIdx: number, productCategoryId: number) =>
   (deps: SeederDependencies) => {
     console.debug('createTestProductCategory', {
-      chainIdx,
+      unitIdx,
       productCategoryId,
     });
 
     const input: DeletableInput<CreateProductCategoryInput> = {
-      id: seedUtils.generateProductCategoryId(chainIdx, productCategoryId),
-      ownerEntity: seedUtils.generateChainId(chainIdx),
+      id: seedUtils.generateProductCategoryId(unitIdx, productCategoryId),
+      ownerEntity: seedUtils.generateUnitId(unitIdx),
       name: {
         hu: `Teszt termék kategória #${productCategoryId}`,
         en: `Test product category #${productCategoryId}`,
@@ -457,58 +405,6 @@ export const createTestProductCategoryFromFixtures =
     );
   };
 
-export const createChainProductsFromSnapshot = (deps: SeederDependencies) => {
-  const deleteCreateChainProduct = (input: CreateChainProductInput) =>
-    deleteCreate(
-      () => deps.crudSdk.DeleteChainProduct({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateChainProduct({ input }),
-    );
-
-  return forkJoin([
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_1),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_2),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_3),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_4),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_5),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_6),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_7),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_8),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_9),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_10),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_11),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_12),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_13),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_14),
-    deleteCreateChainProduct(productSnapshotFixture.chainProduct_15),
-  ]);
-};
-
-export const createGroupProductsFromSnapshot = (deps: SeederDependencies) => {
-  const deleteCreateGroupProduct = (input: CreateGroupProductInput) =>
-    deleteCreate(
-      () => deps.crudSdk.DeleteGroupProduct({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateGroupProduct({ input }),
-    );
-
-  return forkJoin([
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_1),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_2),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_3),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_4),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_5),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_6),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_7),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_8),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_9),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_10),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_11),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_12),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_13),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_14),
-    deleteCreateGroupProduct(productSnapshotFixture.groupProduct_15),
-  ]);
-};
-
 export const createUnitProductsFromSnapshot = (deps: SeederDependencies) => {
   const deleteCreateUnitProduct = (input: CreateUnitProductInput) =>
     deleteCreate(
@@ -535,141 +431,20 @@ export const createUnitProductsFromSnapshot = (deps: SeederDependencies) => {
   ]);
 };
 
-export const createTestChainProduct =
-  (
-    chainIdx: number,
-    productCategoryIdx: number,
-    productIdx: number,
-    productName: string,
-    productType: ProductType,
-  ) =>
-  (deps: SeederDependencies) => {
-    console.debug('createTestChainProduct', {
-      chainIdx,
-      productCategoryIdx,
-      productIdx,
-      productName,
-      productType,
-    });
-    const input: DeletableInput<CreateChainProductInput> = {
-      id: seedUtils.generateChainProductId(chainIdx, productIdx),
-      chainId: seedUtils.generateChainId(chainIdx),
-      name: {
-        hu: `${productName} #${productIdx}`,
-        en: `${productName} #${productIdx}`,
-      },
-      description: {
-        hu: `${productName} #${productIdx} leírás`,
-        en: `${productName} #${productIdx} description`,
-      },
-      productCategoryId: seedUtils.generateProductCategoryId(
-        chainIdx,
-        productCategoryIdx,
-      ),
-      productType,
-      isVisible: true,
-      variants: [
-        {
-          id: seedUtils.generateVariantId(chainIdx, productIdx, 1, 'chain'),
-          isAvailable: true,
-          position: 10,
-          price: 11,
-          pack: {
-            size: 2,
-            unit: 'dl',
-          },
-          variantName: {
-            en: 'glass',
-            hu: 'pohár',
-          },
-        },
-      ],
-      image: 'https://picsum.photos/200',
-      allergens: [Allergen.egg, Allergen.gluten, Allergen.peanut],
-      // Use existing ProductComponentSet
-      configSets: productComponentSetFixture.seededChainProductConfigSets,
-    };
-    return deleteCreate(
-      () => deps.crudSdk.DeleteChainProduct({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateChainProduct({ input }),
-    );
-  };
-
-export const createTestGroupProduct =
-  (
-    chainIdx: number,
-    groupIdx: number,
-    chainProductIdx: number,
-    productIdx: number,
-  ) =>
-  (deps: SeederDependencies) => {
-    console.debug('createTestGroupProduct', {
-      chainIdx,
-      groupIdx,
-      chainProductIdx,
-      productIdx,
-    });
-    const input: DeletableInput<CreateGroupProductInput> = {
-      id: seedUtils.generateGroupProductId(chainIdx, groupIdx, productIdx),
-      parentId: seedUtils.generateChainProductId(chainIdx, chainProductIdx),
-      chainId: seedUtils.generateChainId(chainIdx),
-      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
-      isVisible: true,
-      tax: 27,
-      variants: [
-        {
-          id: seedUtils.generateVariantId(chainIdx, productIdx, 1, 'group'),
-          isAvailable: true,
-          price: 11,
-          position: 10,
-          pack: {
-            size: 2,
-            unit: 'dl',
-          },
-          variantName: {
-            en: 'glass',
-            hu: 'pohár',
-          },
-          refGroupPrice: productIdx * 50,
-        },
-      ],
-      configSets: productComponentSetFixture.seededGroupProductConfigSets,
-    };
-    return deleteCreate(
-      () => deps.crudSdk.DeleteGroupProduct({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateGroupProduct({ input }),
-    );
-  };
-
 /**
  * Create UnitProduct and GeneratedProducts too
  */
 export const createTestUnitProduct =
-  (
-    chainIdx: number,
-    groupIdx: number,
-    unitIdx: number,
-    groupProductIdx: number,
-    productIdx: number,
-  ) =>
+  (unitIdx: number, groupProductIdx: number, productIdx: number) =>
   (deps: SeederDependencies) => {
     console.debug('createTestUnitProduct', {
-      chainIdx,
-      groupIdx,
       unitIdx,
       groupProductIdx,
       productIdx,
     });
     const input: DeletableInput<CreateUnitProductInput> = {
-      id: seedUtils.generateUnitProductId(chainIdx, groupIdx, productIdx),
-      parentId: seedUtils.generateGroupProductId(
-        chainIdx,
-        groupIdx,
-        groupProductIdx,
-      ),
-      chainId: seedUtils.generateChainId(chainIdx),
-      groupId: seedUtils.generateGroupId(chainIdx, groupIdx),
-      unitId: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
+      id: seedUtils.generateUnitProductId(unitIdx, productIdx),
+      unitId: seedUtils.generateUnitId(unitIdx),
       laneId: 'lane_01',
       isVisible: true,
       takeaway: false,
@@ -701,7 +476,7 @@ export const createTestUnitProduct =
       },
       variants: [
         {
-          id: seedUtils.generateVariantId(chainIdx, productIdx, 1, 'unit'),
+          id: seedUtils.generateVariantId(unitIdx, productIdx, 1, 'unit'),
           isAvailable: true,
           price: 150,
           position: 1,
@@ -735,15 +510,11 @@ export const createTestUnitProduct =
 
 export const createTestOrder =
   ({
-    chainIdx,
-    groupIdx,
     unitIdx,
     productIdx,
     userIdx,
     orderIdx,
   }: {
-    chainIdx: number;
-    groupIdx: number;
     unitIdx: number;
     productIdx: number;
     userIdx: number;
@@ -751,8 +522,6 @@ export const createTestOrder =
   }) =>
   (deps: SeederDependencies) => {
     console.debug('createTestOrder', {
-      chainIdx,
-      groupIdx,
       unitIdx,
       productIdx,
       userIdx,
@@ -761,7 +530,7 @@ export const createTestOrder =
     const input: DeletableInput<CreateOrderInput> = {
       id: seedUtils.generateOrderId(orderIdx),
       userId: seedUtils.generateUserId(userIdx),
-      unitId: seedUtils.generateUnitId(chainIdx, groupIdx, unitIdx),
+      unitId: seedUtils.generateUnitId(unitIdx),
       paymentMode: {
         type: PaymentType.stripe,
         method: PaymentMethod.inapp,
@@ -802,14 +571,10 @@ export const createTestOrder =
             tax: 27, // empty
             taxSum: 149, // empty
           },
-          productId: seedUtils.generateUnitProductId(
-            chainIdx,
-            groupIdx,
-            productIdx,
-          ),
+          productId: seedUtils.generateUnitProductId(unitIdx, productIdx),
           quantity: 2,
           variantId: seedUtils.generateVariantId(
-            chainIdx,
+            unitIdx,
             productIdx,
             1,
             'unit',
@@ -932,8 +697,6 @@ export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
             supportedOrderModes: [OrderMode.pickup],
             supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
             externalId: '170880001',
-            groupId: 'sportbar-rkeeper-group',
-            chainId: 'sportbar-rkeeper-chain',
             pos: {
               type: PosType.rkeeper,
               rkeeper: {
@@ -944,33 +707,6 @@ export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
                 anyuppUsername: 'foobar',
               },
             },
-          },
-        }),
-    ),
-
-    deleteCreate(
-      () =>
-        deps.crudSdk.DeleteGroup({ input: { id: 'sportbar-rkeeper-group' } }),
-      () =>
-        deps.crudSdk.CreateGroup({
-          input: {
-            ...groupFixture.group_01,
-            id: 'sportbar-rkeeper-group',
-            name: 'sportbar RKEEPER Group',
-            chainId: 'sportbar-rkeeper-chain',
-          },
-        }),
-    ),
-
-    deleteCreate(
-      () =>
-        deps.crudSdk.DeleteChain({ input: { id: 'sportbar-rkeeper-chain' } }),
-      () =>
-        deps.crudSdk.CreateChain({
-          input: {
-            ...chainFixture.chain_01,
-            id: 'sportbar-rkeeper-chain',
-            name: 'sportbar RKEEPER Chain',
           },
         }),
     ),
@@ -989,8 +725,6 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
             supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
             supportedServingModes: [ServingMode.takeaway, ServingMode.inplace],
             externalId: '109150001',
-            groupId: 'yellow-rkeeper-group',
-            chainId: 'yellow-rkeeper-chain',
             pos: {
               type: PosType.rkeeper,
               rkeeper: {
@@ -1001,29 +735,6 @@ export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
                 anyuppUsername: 'foobar',
               },
             },
-          },
-        }),
-    ),
-    deleteCreate(
-      () => deps.crudSdk.DeleteGroup({ input: { id: 'yellow-rkeeper-group' } }),
-      () =>
-        deps.crudSdk.CreateGroup({
-          input: {
-            ...groupFixture.group_01,
-            id: 'yellow-rkeeper-group',
-            name: 'yellow RKEEPER Group',
-            chainId: 'yellow-rkeeper-chain',
-          },
-        }),
-    ),
-    deleteCreate(
-      () => deps.crudSdk.DeleteChain({ input: { id: 'yellow-rkeeper-chain' } }),
-      () =>
-        deps.crudSdk.CreateChain({
-          input: {
-            ...chainFixture.chain_01,
-            id: 'yellow-rkeeper-chain',
-            name: 'yellow RKEEPER Chain',
           },
         }),
     ),

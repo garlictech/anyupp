@@ -1,19 +1,19 @@
 import { Maybe } from '@bgap/crud-gql/api';
 import {
   defaultSupportedServingModes,
-  MergedProduct,
   MergedProductWithPrices,
   ProductComponentMap,
   ProductComponentSetMap,
   ProductVariantWithPrice,
 } from '@bgap/shared/types';
 import {
-  CreateGeneratedProductInput,
-  GeneratedProductConfigComponentInput,
-  GeneratedProductConfigSetInput,
-  GeneratedProductVariantInput,
+  CreateUnitProductInput,
+  ProductConfigComponentInput,
   ProductConfigSet,
+  ProductConfigSetInput,
   ProductVariant,
+  ProductVariantInput,
+  UnitProduct,
 } from '@bgap/domain';
 import { DateTime } from 'luxon';
 import { calculatePriceFromAvailabilities } from './calculate-price';
@@ -23,7 +23,7 @@ export const calculateActualPricesAndCheckActivity = ({
   atTimeISO,
   inTimeZone,
 }: {
-  product: MergedProduct;
+  product: UnitProduct;
   atTimeISO: string;
   inTimeZone: string;
 }): MergedProductWithPrices | undefined => {
@@ -52,7 +52,7 @@ export const calculateActualPricesAndCheckActivity = ({
 };
 
 export const isProductVisibleAndHasAnyAvailableVariant = (
-  product: MergedProduct,
+  product: UnitProduct,
 ) => {
   if (!product.variants) {
     throw new Error('HANDLE ME: product.variants cannot be nullish');
@@ -99,9 +99,9 @@ const calculateActualPriceForEachVariant = ({
   }, <ProductVariantWithPrice[]>[]);
 };
 
-const toGeneratedProductVariantInputType = (
+const toProductVariantInputType = (
   variant: ProductVariantWithPrice,
-): GeneratedProductVariantInput => {
+): ProductVariantInput => {
   if (!variant?.pack) {
     throw new Error('HANDLE ME: variant.pack expected to be an object');
   }
@@ -114,10 +114,11 @@ const toGeneratedProductVariantInputType = (
     price: variant.price,
     netPackagingFee: variant.netPackagingFee,
     soldOut: variant.soldOut,
+    isAvailable: variant.isAvailable,
   };
 };
 
-export const toCreateGeneratedProductInputType = ({
+export const toCreateProductInputType = ({
   product,
   unitId,
   productComponentSetMap,
@@ -129,7 +130,7 @@ export const toCreateGeneratedProductInputType = ({
   productComponentSetMap: ProductComponentSetMap;
   productComponentMap: ProductComponentMap;
   productConfigSets?: Maybe<Maybe<ProductConfigSet>[]>;
-}): CreateGeneratedProductInput => {
+}): CreateUnitProductInput => {
   if (
     !(
       product.unitId &&
@@ -155,22 +156,23 @@ export const toCreateGeneratedProductInputType = ({
     position: product.position,
     allergens: product.allergens,
     configSets: productConfigSets?.map(configSet =>
-      toGeneratedProductConfigSetInput({
+      toProductConfigSetInput({
         productConfigSet: configSet,
         productComponentSetMap,
         productComponentMap,
       }),
     ),
-    variants: product.variants.map(toGeneratedProductVariantInputType),
+    variants: product.variants.map(toProductVariantInputType),
     supportedServingModes:
       product.supportedServingModes && product.supportedServingModes.length > 0
         ? product.supportedServingModes
         : defaultSupportedServingModes,
     takeawayTax: product.takeawayTax || product.tax,
+    isVisible: product.isVisible,
   };
 };
 
-const toGeneratedProductConfigSetInput = ({
+const toProductConfigSetInput = ({
   productConfigSet,
   productComponentSetMap,
   productComponentMap,
@@ -178,7 +180,7 @@ const toGeneratedProductConfigSetInput = ({
   productConfigSet: Maybe<ProductConfigSet>;
   productComponentSetMap: ProductComponentSetMap;
   productComponentMap: ProductComponentMap;
-}): GeneratedProductConfigSetInput | null => {
+}): ProductConfigSetInput | null => {
   if (!productConfigSet) {
     return null;
   }
@@ -211,7 +213,7 @@ const toGeneratedProductConfigSetInput = ({
         );
       }
 
-      const configComponent: GeneratedProductConfigComponentInput = {
+      const configComponent: ProductConfigComponentInput = {
         productComponentId: confComponent.productComponentId,
         price: confComponent.price,
         position: confComponent.position,

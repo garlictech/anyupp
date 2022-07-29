@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Adding package fee: GetGeneratedProduct calls (add package fee) 1`] = `
+exports[`Adding package fee: GetUnitProduct calls (add package fee) 1`] = `
 Array [
   Array [
     Object {
@@ -15,7 +15,7 @@ Array [
 ]
 `;
 
-exports[`Adding package fee: GetGeneratedProduct calls (packaging fee of variant not given) 1`] = `
+exports[`Adding package fee: GetUnitProduct calls (packaging fee of variant not given) 1`] = `
 Array [
   Array [
     Object {

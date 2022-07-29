@@ -40,9 +40,7 @@ export class ProductListItemComponent {
   }
 
   public editProduct() {
-    let dialog;
-
-    dialog = this._nbDialogService.open(ProductExtendFormComponent);
+    const dialog = this._nbDialogService.open(ProductExtendFormComponent);
 
     dialog.componentRef.instance.editing = true;
     dialog.componentRef.instance.currency = this.currency;

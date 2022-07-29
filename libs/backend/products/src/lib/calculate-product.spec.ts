@@ -3,7 +3,6 @@
 import {
   defaultSupportedServingModes,
   EVariantAvailabilityType,
-  MergedProduct,
   ProductComponentMap,
   ProductComponentSetMap,
 } from '@bgap/shared/types';
@@ -13,16 +12,16 @@ import {
   ProductType,
   ProductVariant,
   ServingMode,
+  UnitProduct,
 } from '@bgap/domain';
 import {
   calculateActualPricesAndCheckActivity,
-  toCreateGeneratedProductInputType,
+  toCreateProductInputType,
 } from './calculate-product';
 
 describe('calculatePricesAndCheckActivity method', () => {
-  const baseProduct: MergedProduct = {
+  const baseProduct: UnitProduct = {
     id: 'PRODUCT_ID',
-    chainId: 'CHAIN_ID',
     groupId: 'GROUP_ID',
     unitId: 'UNIT_ID',
     parentId: 'PARENT_ID',
@@ -66,30 +65,32 @@ describe('calculatePricesAndCheckActivity method', () => {
     configSets: [
       {
         productSetId: 'PRODUCT_SET_01',
+        name: { en: 'CONFIG SET NAME 1' },
         items: [
           {
             productComponentId: 'PRODUCT_COMPONENT_ID_11',
-            refGroupPrice: 1,
             price: 1,
             position: 1,
             netPackagingFee: 30,
+            name: { en: 'CONFIG SET ITEM NAME 1' },
           },
           {
             productComponentId: 'PRODUCT_COMPONENT_ID_21',
-            refGroupPrice: 2,
             price: 2,
             position: 2,
             netPackagingFee: 40,
+            name: { en: 'CONFIG SET ITEM NAME 1' },
           },
         ],
         position: 1,
+        type: ProductComponentSetType.extras,
       },
     ],
   };
   const prodComponentMap: ProductComponentMap = {
     PRODUCT_COMPONENT_ID_11: {
       id: 'PRODUCT_COMPONENT_ID_11',
-      chainId: 'CHAIN_ID',
+      ownerEntity: 'UNIT_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
       description: 'PRODUCT_COMP_DESC',
       allergens: [Allergen.egg, Allergen.fish],
@@ -102,7 +103,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     },
     PRODUCT_COMPONENT_ID_21: {
       id: 'PRODUCT_COMPONENT_ID_21',
-      chainId: 'CHAIN_ID',
+      ownerEntity: 'UNIT_ID',
       name: { en: 'PRODUCT_COMP_NAME' },
       description: 'PRODUCT_COMP_DESC',
       allergens: [Allergen.egg, Allergen.fish],
@@ -117,7 +118,7 @@ describe('calculatePricesAndCheckActivity method', () => {
   const prodComponentSetMap: ProductComponentSetMap = {
     PRODUCT_SET_01: {
       id: 'PRODUCT_SET_01',
-      chainId: 'CHAIN_ID',
+      ownerEntity: 'UNIT_ID',
       name: { en: 'PRODUCT_COMP_SET_NAME' },
       description: 'PRODUCT_COMP_SET_DESC',
       type: ProductComponentSetType.extras,
@@ -155,7 +156,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       ...baseProduct.variants[0],
       position: 100,
     };
-    const product: MergedProduct = {
+    const product: UnitProduct = {
       ...baseProduct,
       variants: [
         baseProduct.variants[0],
@@ -197,7 +198,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       size: product?.variants?.[activeVariantIdx]?.pack?.size,
       unit: product?.variants?.[activeVariantIdx]?.pack?.unit,
     });
-    // It still has availabilities because only the toCreateGeneratedProductInputType will remove it
+    // It still has availabilities because only the toCreateProductInputType will remove it
     expect(result?.variants?.[activeVariantIdx]).toHaveProperty(
       'availabilities',
     );
@@ -205,14 +206,14 @@ describe('calculatePricesAndCheckActivity method', () => {
       `Result of calculateActualPricesAndCheckActivity with ONLY the variants with ACTIVE prices`,
     );
     expect(
-      toCreateGeneratedProductInputType({
+      toCreateProductInputType({
         product: result,
         unitId: baseProduct.unitId,
         productConfigSets: result.configSets,
         productComponentSetMap: prodComponentSetMap,
         productComponentMap: prodComponentMap,
       }),
-    ).toMatchSnapshot(`Result of toCreateGeneratedProductInputType`);
+    ).toMatchSnapshot(`Result of toCreateProductInputType`);
   });
 
   describe('isVisible', () => {
@@ -305,7 +306,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         position: 1,
         refGroupPrice: 0,
       };
-      const minimalProductWithSingleActiveVariant: Partial<MergedProduct> = {
+      const minimalProductWithSingleActiveVariant: Partial<UnitProduct> = {
         id: 'PROD_ID',
         isVisible: true,
         name: { en: 'prodName' },
@@ -316,10 +317,9 @@ describe('calculatePricesAndCheckActivity method', () => {
         tax: 0,
         position: 2,
         variants: [{ ...variant }, { ...variant }],
-        chainId: 'foobar',
+        unitId: 'foobar',
         createdAt: '1',
         updatedAt: '2',
-        unitId: 'foobar',
       };
 
       it('should return undefined in case none of the variants have active availability', () => {

@@ -1,16 +1,16 @@
 import { RequiredId } from '@bgap/shared/types';
 import { CreateProductCategoryInput } from '@bgap/domain';
-import { chainFixture } from './chain';
+import { unitFixture } from './unit';
 import { seededIdPrefix, testIdPrefix } from './common';
 
 const productCategoryId_01 = `${seededIdPrefix}product_category_c1_1_id`;
 const productCategoryId_02 = `${seededIdPrefix}product_category_c1_2_id`;
 const productCategoryId_03 = `${seededIdPrefix}product_category_c1_3_id`;
-const chainId_01 = chainFixture.chainId_seeded_01;
+const unitId_01 = unitFixture.unitId_seeded_01;
 
 const productCategoryBase: RequiredId<CreateProductCategoryInput> = {
   id: `${testIdPrefix}generatedProduct_id_`,
-  ownerEntity: chainId_01,
+  ownerEntity: unitId_01,
   name: { en: 'PRODUCT_CATEGORY' },
   description: { en: 'DESCRIPTION' },
   image: 'IMAGE',
@@ -19,7 +19,7 @@ const productCategoryBase: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_01: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_01,
-  ownerEntity: chainId_01,
+  ownerEntity: unitId_01,
   name: {
     hu: `Hamburgerek`,
     en: `Hamburgers`,
@@ -34,7 +34,7 @@ const seededProductCategory_01: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_02: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_02,
-  ownerEntity: chainId_01,
+  ownerEntity: unitId_01,
   name: {
     hu: `Alkoholmententes italok`,
     en: `Non-alcoholic drinks`,
@@ -49,7 +49,7 @@ const seededProductCategory_02: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_03: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_03,
-  ownerEntity: chainId_01,
+  ownerEntity: unitId_01,
   name: {
     hu: `Sörök`,
     en: `Beers`,

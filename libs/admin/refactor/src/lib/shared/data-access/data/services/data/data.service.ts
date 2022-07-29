@@ -201,10 +201,6 @@ export class DataService {
       .pipe(catchGqlError(this._store));
   }
 
-  public regenerateUnitData$(unitId: string) {
-    return this._crudSdk.sdk.RegenerateUnitData({ input: { id: unitId } });
-  }
-
   public updateAdminUserSettings$(
     userId: string,
     settings: UpdateAdminUserInput['settings'],

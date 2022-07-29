@@ -1,6 +1,6 @@
 import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
-import { combineLatest, from, Observable, of, throwError } from 'rxjs';
+import { forkJoin, from, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
 
 import {
@@ -13,7 +13,6 @@ import {
 import {
   Cart,
   CreateOrderInput,
-  GroupProduct,
   Maybe,
   OrderItem,
   OrderItemInput,
@@ -25,6 +24,7 @@ import {
   ServingMode,
   StatusLogInput,
   Unit,
+  UnitProduct,
 } from '@bgap/domain';
 import {
   getCartIsMissingError,
@@ -36,12 +36,7 @@ import {
 import { addPackagingFeeToOrder } from './handle-packaging-fee';
 import { addServiceFeeToOrder } from './handle-service-fee';
 import { hasSimplifiedOrder } from './order-resolvers';
-import {
-  getChainProduct,
-  getGroupProduct,
-  getUnitProduct,
-  OrderResolverDeps,
-} from './utils';
+import { getUnitProduct, OrderResolverDeps } from './utils';
 
 const toOrderInputFormat = ({
   userId,
@@ -125,10 +120,8 @@ const convertCartOrderItemToOrderItem = ({
   };
 };
 
-const getTax = (takeaway: boolean, groupProduct: GroupProduct): number =>
-  takeaway && groupProduct.takeawayTax
-    ? groupProduct.takeawayTax
-    : groupProduct.tax;
+const getTax = (takeaway: boolean, product: UnitProduct): number =>
+  takeaway && product.takeawayTax ? product.takeawayTax : product.tax;
 
 const getOrderItems =
   ({
@@ -143,27 +136,19 @@ const getOrderItems =
     takeaway: boolean;
   }) =>
   (deps: OrderResolverDeps): Observable<OrderItemInput[]> => {
-    return combineLatest(
+    return forkJoin(
       cartItems.map(cartItem =>
         getUnitProduct(deps.crudSdk)(cartItem.productId).pipe(
-          switchMap(unitProduct =>
-            getGroupProduct(deps.crudSdk)(unitProduct.parentId).pipe(
-              switchMap(groupProduct =>
-                getChainProduct(deps.crudSdk)(groupProduct.parentId).pipe(
-                  map(chainProduct =>
-                    convertCartOrderItemToOrderItem({
-                      userId,
-                      cartItem,
-                      currency,
-                      laneId: unitProduct.laneId,
-                      tax: getTax(takeaway, groupProduct),
-                      productType: chainProduct.productType,
-                      externalId: unitProduct.externalId,
-                    }),
-                  ),
-                ),
-              ),
-            ),
+          map(product =>
+            convertCartOrderItemToOrderItem({
+              userId,
+              cartItem,
+              currency,
+              laneId: product.laneId,
+              tax: getTax(takeaway, product),
+              productType: product.productType,
+              externalId: product.externalId,
+            }),
           ),
         ),
       ),
@@ -184,12 +169,6 @@ const getUnit = (id: string) => (deps: OrderResolverDeps) =>
 
 const getCart = (id: string) => (deps: OrderResolverDeps) =>
   from(deps.crudSdk.GetCart({ id }, { fetchPolicy: 'no-cache' }));
-
-const getGroupCurrency = (id: string) => (deps: OrderResolverDeps) =>
-  from(deps.crudSdk.GetGroupCurrency({ id }, { fetchPolicy: 'no-cache' })).pipe(
-    map(x => x?.currency),
-    throwIfEmptyValue<string>(`Group currency is missing for ${id}`),
-  );
 
 const isTakeawayCart = (cart: Cart) =>
   cart.servingMode === ServingMode.takeaway;
@@ -229,11 +208,7 @@ export const createOrderFromCart =
           ? of(props as { unit: Unit; cart: Cart })
           : throwError('Wrong data'),
       ),
-      switchMap(props =>
-        getGroupCurrency(props.unit.groupId)(deps).pipe(
-          map(currency => ({ ...props, currency })),
-        ),
-      ),
+      map(props => ({ ...props, currency: props.unit.currency })),
     );
 
     const calc2 = calc1.pipe(
