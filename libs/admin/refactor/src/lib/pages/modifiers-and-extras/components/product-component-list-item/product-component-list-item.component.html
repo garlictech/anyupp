@@ -1,10 +1,6 @@
 <div class="float-start">
   <div class="subtitle-2" role="button" (click)="editProductComponent()">
     {{ productComponent.name | localize }}
-    <bgap-status-led
-      class="ms-1"
-      [status]="!productComponent.soldOut"
-    ></bgap-status-led>
   </div>
   <div class="caption">{{ productComponent.description }}</div>
   <div class="caption">ID: {{ productComponent?.id }}</div>

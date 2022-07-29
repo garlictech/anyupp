@@ -39,7 +39,6 @@ export class FormsService {
       availabilities: this._formBuilder.array([]),
       position: [0],
       price: [0],
-      refGroupPrice: [0],
       netPackagingFee: [0],
       soldOut: [false],
     };
@@ -90,7 +89,6 @@ export class FormsService {
     this._formBuilder.group({
       productComponentId: ['', Validators.required],
       position: [0, Validators.required],
-      refGroupPrice: [0, Validators.required],
       price: [0, Validators.required],
       netPackagingFee: [0],
     });

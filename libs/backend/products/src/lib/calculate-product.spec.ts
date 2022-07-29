@@ -43,7 +43,6 @@ describe('calculatePricesAndCheckActivity method', () => {
       {
         id: `VARIANT_ID_01`,
         variantName: { en: `VARIANT_NAME_01` },
-        refGroupPrice: 1,
         isAvailable: true,
         pack: { size: 1, unit: 'UNIT' },
         price: 1,
@@ -275,7 +274,6 @@ describe('calculatePricesAndCheckActivity method', () => {
             },
           ],
           position: 999,
-          refGroupPrice: 1,
         };
         const input = {
           ...baseProduct,
@@ -304,7 +302,6 @@ describe('calculatePricesAndCheckActivity method', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         availabilities: [] as any,
         position: 1,
-        refGroupPrice: 0,
       };
       const minimalProductWithSingleActiveVariant: Partial<UnitProduct> = {
         id: 'PROD_ID',

@@ -416,18 +416,6 @@ export const createUnitProductsFromSnapshot = (deps: SeederDependencies) => {
     deleteCreateUnitProduct(productSnapshotFixture.unitProduct_1),
     deleteCreateUnitProduct(productSnapshotFixture.unitProduct_2),
     deleteCreateUnitProduct(productSnapshotFixture.unitProduct_3),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_4),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_5),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_6),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_7),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_8),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_9),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_10),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_11),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_12),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_13),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_14),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_15),
   ]);
 };
 

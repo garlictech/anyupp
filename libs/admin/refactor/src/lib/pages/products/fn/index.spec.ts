@@ -1,7 +1,12 @@
+import {
+  CreateUnitProductInput,
+  ProductComponentSetType,
+  ProductType,
+} from '@bgap/domain';
 import { handleEmptyPackaginFees } from './index';
 
 test('handleEmptyPackaginFees', () => {
-  const input = {
+  const input: CreateUnitProductInput = {
     isVisible: true,
     variants: [
       {
@@ -28,7 +33,6 @@ test('handleEmptyPackaginFees', () => {
         ],
         position: 0,
         price: 0,
-        refGroupPrice: 1200,
         netPackagingFee: 1200,
       },
       {
@@ -55,7 +59,6 @@ test('handleEmptyPackaginFees', () => {
         ],
         position: 0,
         price: 0,
-        refGroupPrice: 1500,
         netPackagingFee: undefined,
       },
     ],
@@ -66,26 +69,28 @@ test('handleEmptyPackaginFees', () => {
           {
             productComponentId: 'seeded_product_component_31_id',
             position: 1,
-            refGroupPrice: 500,
             price: 500,
             netPackagingFee: 11,
+            name: { en: 'NAME' },
           },
           {
             productComponentId: 'seeded_product_component_32_id',
             position: 2,
-            refGroupPrice: 500,
             price: 500,
             netPackagingFee: undefined,
+            name: { en: 'NAME' },
           },
           {
             productComponentId: 'seeded_product_component_33_id',
             position: 3,
-            refGroupPrice: 500,
             price: 500,
             netPackagingFee: undefined,
+            name: { en: 'NAME' },
           },
         ],
         position: 1,
+        name: { en: 'NAME' },
+        type: ProductComponentSetType.modifier,
       },
     ],
     laneId: 'lane_01',

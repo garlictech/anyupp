@@ -5,6 +5,7 @@ import {
   CreateUnitProductInput,
   ProductVariantInput,
   UnitProduct,
+  ProductType,
 } from '@bgap/crud-gql/api';
 import { productVariantsResolver } from '@bgap/backend/products';
 import { tap, map, switchMap, delay } from 'rxjs/operators';
@@ -36,6 +37,10 @@ describe('Product variants resolver tests', () => {
     __operation: 'Mutation',
     parentId: '',
     variants: [variantFixture],
+    name: { en: 'UNIT NAME' },
+    tax: 0,
+    productCategoryId: 'PRODUCT CAT ID',
+    productType: ProductType.dish,
   };
 
   const createUnitProductFixture: CreateUnitProductInput = R.omit([
@@ -60,7 +65,11 @@ describe('Product variants resolver tests', () => {
             R.map(variant => variant?.id),
             ids => R.reject(R.isNil)(ids),
             R.map(id => sdk.DeleteVariant({ input: { id } })),
-            R.ifElse(R.isEmpty, of, res => forkJoin(res).pipe(delay(3000))),
+            R.ifElse(
+              R.isEmpty,
+              x => of(x),
+              res => forkJoin(res).pipe(delay(3000)),
+            ),
           ),
         ),
       ),

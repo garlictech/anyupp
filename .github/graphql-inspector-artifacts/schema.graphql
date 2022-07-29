@@ -166,10 +166,7 @@ type ProductConfigComponent @aws_iam @aws_cognito_user_pools {
   productComponentId: ID!
   price: Float!
   position: Int!
-  externalId: String
   netPackagingFee: Float
-  name: LocalizedItem!
-  allergens: [Allergen]
   soldOut: Boolean
 }
 
@@ -177,17 +174,12 @@ type ProductConfigSet @aws_iam @aws_cognito_user_pools {
   productSetId: ID!
   items: [ProductConfigComponent!]!
   position: Int!
-  name: LocalizedItem!
-  type: ProductComponentSetType!
-  maxSelection: Int
-  supportedServingModes: [ServingMode!]
 }
 
 type ProductVariant @aws_iam @aws_cognito_user_pools {
   id: ID!
   variantName: LocalizedItem!
   pack: ProductVariantPack
-  refGroupPrice: Float
   isAvailable: Boolean!
   price: Float!
   availabilities: [Availability]
@@ -202,7 +194,6 @@ type Variant @aws_iam @aws_cognito_user_pools {
   id: ID!
   variantName: LocalizedItem!
   pack: ProductVariantPack
-  refGroupPrice: Float
   isAvailable: Boolean!
   price: Float!
   availabilities: [Availability]
@@ -683,7 +674,6 @@ type ProductComponent @aws_iam @aws_cognito_user_pools {
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
-  soldOut: Boolean
   deletedAt: AWSDateTime
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -1239,8 +1229,8 @@ input CreateUnitInput {
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
-  currency: String
-  style: ChainStyleInput
+  currency: String!
+  style: ChainStyleInput!
   categoryOrders: [NestedSortItemInput]
 }
 
@@ -1723,7 +1713,6 @@ input ProductVariantInput {
   id: ID
   variantName: LocalizedItemInput!
   pack: ProductVariantPackInput
-  refGroupPrice: Float
   isAvailable: Boolean!
   price: Float!
   availabilities: [AvailabilityInput]
@@ -1738,20 +1727,13 @@ input ProductConfigSetInput {
   productSetId: ID!
   items: [ProductConfigComponentInput!]!
   position: Int!
-  name: LocalizedItemInput!
-  type: ProductComponentSetType!
-  maxSelection: Int
-  supportedServingModes: [ServingMode!]
 }
 
 input ProductConfigComponentInput {
   productComponentId: ID!
   price: Float!
   position: Int!
-  externalId: String
   netPackagingFee: Float
-  name: LocalizedItemInput!
-  allergens: [Allergen]
   soldOut: Boolean
 }
 
@@ -1887,7 +1869,6 @@ type ModelVariantConnection @aws_iam @aws_cognito_user_pools {
 
 input ModelVariantFilterInput {
   id: ModelIDInput
-  refGroupPrice: ModelFloatInput
   isAvailable: ModelBooleanInput
   price: ModelFloatInput
   position: ModelIntInput
@@ -1901,7 +1882,6 @@ input ModelVariantFilterInput {
 }
 
 input ModelVariantConditionInput {
-  refGroupPrice: ModelFloatInput
   isAvailable: ModelBooleanInput
   price: ModelFloatInput
   position: ModelIntInput
@@ -1918,7 +1898,6 @@ input CreateVariantInput {
   id: ID
   variantName: LocalizedItemInput!
   pack: ProductVariantPackInput
-  refGroupPrice: Float
   isAvailable: Boolean!
   price: Float!
   availabilities: [AvailabilityInput]
@@ -1933,7 +1912,6 @@ input UpdateVariantInput {
   id: ID!
   variantName: LocalizedItemInput
   pack: ProductVariantPackInput
-  refGroupPrice: Float
   isAvailable: Boolean
   price: Float
   availabilities: [AvailabilityInput]
@@ -2196,7 +2174,6 @@ input ModelProductComponentFilterInput {
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
-  soldOut: ModelBooleanInput
   deletedAt: ModelStringInput
   and: [ModelProductComponentFilterInput]
   or: [ModelProductComponentFilterInput]
@@ -2209,7 +2186,6 @@ input ModelProductComponentConditionInput {
   allergens: ModelAllergenListInput
   externalId: ModelStringInput
   dirty: ModelBooleanInput
-  soldOut: ModelBooleanInput
   deletedAt: ModelStringInput
   and: [ModelProductComponentConditionInput]
   or: [ModelProductComponentConditionInput]
@@ -2224,7 +2200,6 @@ input CreateProductComponentInput {
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
-  soldOut: Boolean
   deletedAt: AWSDateTime
 }
 
@@ -2236,7 +2211,6 @@ input UpdateProductComponentInput {
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
-  soldOut: Boolean
   deletedAt: AWSDateTime
 }
 
@@ -3006,7 +2980,6 @@ input SearchableUnitProductAggregationInput {
 
 input SearchableVariantFilterInput {
   id: SearchableIDFilterInput
-  refGroupPrice: SearchableFloatFilterInput
   isAvailable: SearchableBooleanFilterInput
   price: SearchableFloatFilterInput
   position: SearchableIntFilterInput
@@ -3023,7 +2996,6 @@ input SearchableVariantFilterInput {
 
 enum SearchableVariantSortableFields {
   id
-  refGroupPrice
   isAvailable
   price
   position
@@ -3042,7 +3014,6 @@ input SearchableVariantSortInput {
 
 enum SearchableVariantAggregateField {
   id
-  refGroupPrice
   isAvailable
   price
   position
@@ -3238,7 +3209,6 @@ input SearchableProductComponentFilterInput {
   description: SearchableStringFilterInput
   externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
-  soldOut: SearchableBooleanFilterInput
   deletedAt: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
@@ -3254,7 +3224,6 @@ enum SearchableProductComponentSortableFields {
   description
   externalId
   dirty
-  soldOut
   deletedAt
   createdAt
   updatedAt
@@ -3272,7 +3241,6 @@ enum SearchableProductComponentAggregateField {
   allergens
   externalId
   dirty
-  soldOut
   deletedAt
   createdAt
   updatedAt

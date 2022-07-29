@@ -216,6 +216,10 @@ const createUnitInput: CreateUnitInput = {
   },
   supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
   supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
+  currency: 'EUR',
+  style: {
+    colors: {},
+  },
 };
 const unit: Unit = {
   id: 'UNITID',

@@ -238,15 +238,17 @@ const unitConfigSets: ProductConfigSetInput[] = [
         position: 1,
         productComponentId: seededProdCompSet_01.items[0],
         price: 0,
-        refGroupPrice: -1.5,
+        name: { en: 'COMPONENT NAME' },
       },
       {
         position: 2,
         productComponentId: seededProdCompSet_01.items[1],
-        refGroupPrice: 2.8,
         price: 0,
+        name: { en: 'COMPONENT NAME' },
       },
     ],
+    name: { en: 'COMPONENT NAME' },
+    type: ProductComponentSetType.modifier,
   },
   {
     position: 2,
@@ -255,16 +257,18 @@ const unitConfigSets: ProductConfigSetInput[] = [
       {
         position: 1,
         productComponentId: seededProdCompSet_02.items[0],
-        refGroupPrice: 1,
         price: 0,
+        name: { en: 'COMPONENT NAME' },
       },
       {
         position: 2,
         productComponentId: seededProdCompSet_02.items[1],
-        refGroupPrice: 2,
         price: 0,
+        name: { en: 'COMPONENT NAME' },
       },
     ],
+    name: { en: 'COMPONENT NAME' },
+    type: ProductComponentSetType.modifier,
   },
   {
     position: 3,
@@ -273,22 +277,24 @@ const unitConfigSets: ProductConfigSetInput[] = [
       {
         position: 1,
         productComponentId: seededProdCompSet_03.items[0],
-        refGroupPrice: 3,
         price: 0,
+        name: { en: 'COMPONENT NAME' },
       },
       {
         position: 2,
         productComponentId: seededProdCompSet_03.items[1],
-        refGroupPrice: 4,
         price: 0,
+        name: { en: 'COMPONENT NAME' },
       },
       {
         position: 3,
         productComponentId: seededProdCompSet_03.items[2],
-        refGroupPrice: 5,
         price: 0,
+        name: { en: 'COMPONENT NAME' },
       },
     ],
+    name: { en: 'COMPONENT NAME' },
+    type: ProductComponentSetType.modifier,
   },
 ];
 export const productComponentSetFixture = {

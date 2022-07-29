@@ -15,9 +15,7 @@ import { orderRequestHandler, OrderResolverDeps } from '@bgap/backend/orders';
 import { tableConfig } from '@bgap/crud-gql/backend';
 import {
   cartFixture,
-  generatedProductFixture,
   getCognitoUsername,
-  groupFixture,
   maskTimestamp,
   maskV4UuidIds,
   productFixture,
@@ -35,15 +33,6 @@ import {
 } from '../../../../api-clients';
 import { dateMatcher } from '../../../../utils';
 import { createTestCart, deleteTestCart } from '../../../seeds/cart';
-import {
-  createTestChainProduct,
-  deleteTestChainProduct,
-} from '../../../seeds/chain-product';
-import { createTestGroup, deleteTestGroup } from '../../../seeds/group';
-import {
-  createTestGroupProduct,
-  deleteTestGroupProduct,
-} from '../../../seeds/group-product';
 import { createTestUnit, deleteTestUnit } from '../../../seeds/unit';
 import {
   createTestUnitProduct,
@@ -53,8 +42,6 @@ import { CrudSdk } from 'libs/crud-gql/api/src';
 import {
   Allergen,
   CreateCartInput,
-  CreateChainProductInput,
-  CreateGroupProductInput,
   CreateOrderFromCartInput,
   CreateUnitInput,
   CreateUnitProductInput,
@@ -66,7 +53,6 @@ import {
   ServingMode,
 } from '@bgap/domain';
 
-const TEST_NAME = 'ORDER_';
 const DYNAMODB_OPERATION_DELAY = 3000;
 
 const getOrder = (crudSdk: CrudSdk, id: string) => {
@@ -80,20 +66,9 @@ const getCart = (crudSdk: CrudSdk, id: string) => {
 };
 
 // PRODUCTS to create
-const chainProduct_01: RequiredId<CreateChainProductInput> = {
-  ...productFixture.chainProductInputBase,
-  id: `${testIdPrefix}${TEST_NAME}chainProduct_01`,
-};
-const groupProduct_01: RequiredId<CreateGroupProductInput> = {
-  ...productFixture.groupProductInputBase,
-  id: `${testIdPrefix}${TEST_NAME}groupProduct_01`,
-  parentId: chainProduct_01.id,
-  takeawayTax: 53,
-};
 const unitProduct_01: RequiredId<CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: productFixture.unitProductId_seeded_id_01,
-  parentId: groupProduct_01.id,
 };
 
 const orderItemConfigSet_01: OrderItemConfigSetInput = {
@@ -143,37 +118,12 @@ const unitProductFixture: RequiredId<CreateUnitProductInput> = {
   groupId: unitFixture.unit_01.groupId,
 };
 
-const generatedProduct = {
-  ...generatedProductFixture.getGeneratedProduct({
-    id: unitProductFixture.id,
-    unitId: unitProductFixture.unitId,
-    productCategoryId: 'NO_PRODUCT_CATEGORY',
-  }),
-
-  configSets: [
-    {
-      ...orderItemConfigSet_01,
-      items: orderItemConfigSet_01.items.map(item => ({
-        ...item,
-        position: 1,
-      })),
-      position: 1,
-    },
-    {
-      ...orderItemConfigSet_02,
-      items: orderItemConfigSet_02.items.map(item => ({
-        ...item,
-        position: 1,
-      })),
-      position: 2,
-    },
-  ], // Price (1 + (-1.5 + 2.3) + (5 + -1)) * 2
-};
-
 const orderItemFixture: OrderItem = {
   ...cartFixture.getOrderItem(),
-  variantId: generatedProduct.variants[0].id,
-  variantName: generatedProduct.variants[0].variantName,
+  variantId: unitProductFixture.variants?.[0]?.id || 'VARIANT ID SHOULD EXIST',
+  variantName: unitProductFixture.variants?.[0]?.variantName || {
+    en: 'VARIANT NAME SHOULD EXIST',
+  },
 };
 
 const cart_01: RequiredId<CreateCartInput> = {
@@ -267,11 +217,7 @@ describe('CreatOrderFromCart mutation test', () => {
       deleteTestCart(cartWithSimplifiedOrderFlow.id, crudSdk),
       deleteTestUnit(unitFixture.unit_01.id, crudSdk),
       deleteTestUnit(unitWithSimplifiedOrderFlow.id, crudSdk),
-      deleteTestGroup(groupFixture.group_01.id, crudSdk),
       deleteTestUnitProduct(unitProductFixture.id, crudSdk),
-      deleteTestGroupProduct(groupProduct_01.id, crudSdk),
-      deleteTestChainProduct(chainProduct_01.id, crudSdk),
-      crudSdk.DeleteGeneratedProduct({ input: { id: generatedProduct.id } }),
     ]);
 
   beforeAll(done => {
@@ -295,11 +241,8 @@ describe('CreatOrderFromCart mutation test', () => {
         switchMap(() =>
           // Seeding
           forkJoin([
-            createTestGroup(groupFixture.group_01, crudSdk),
             createTestUnit(unitFixture.createUnit_01, crudSdk),
             createTestUnit(unitWithSimplifiedOrderFlow, crudSdk),
-            createTestChainProduct(chainProduct_01, crudSdk),
-            createTestGroupProduct(groupProduct_01, crudSdk),
             createTestUnitProduct(unitProductFixture, crudSdk),
             createTestCart(cart_01, crudSdk),
             createTestCart(cart_02, crudSdk),
@@ -307,7 +250,6 @@ describe('CreatOrderFromCart mutation test', () => {
             createTestCart(cart_04_different_unit, crudSdk),
             createTestCart(cart_05_takeaway, crudSdk),
             createTestCart(cartWithSimplifiedOrderFlow, crudSdk),
-            crudSdk.CreateGeneratedProduct({ input: generatedProduct }),
           ]),
         ),
         delay(5000),
@@ -455,7 +397,7 @@ describe('CreatOrderFromCart mutation test', () => {
     return errorCases;
   };
 
-  it('should create an order from a valid cart with resolver function', done => {
+  it.only('should create an order from a valid cart with resolver function', done => {
     testLogic(input =>
       defer(() =>
         orderRequestHandler({

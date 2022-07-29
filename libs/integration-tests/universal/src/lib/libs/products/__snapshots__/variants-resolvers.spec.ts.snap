@@ -2,21 +2,32 @@
 
 exports[`Product variants resolver tests CreateUnitProduct with API call 1`] = `
 Object {
+  "allergens": null,
   "chainId": "",
   "configSets": null,
   "createdAt": "MASKED DATE",
   "deletedAt": null,
+  "description": null,
   "dirty": null,
   "externalId": null,
   "groupId": "",
-  "groupProduct": null,
   "id": "product_variants_MASKED ID",
+  "image": null,
   "isVisible": true,
   "laneId": null,
+  "name": Object {
+    "de": null,
+    "en": "UNIT NAME",
+    "hu": null,
+  },
   "parentId": "",
   "position": 1,
+  "productCategoryId": "PRODUCT CAT ID",
+  "productType": "dish",
   "supportedServingModes": null,
   "takeaway": null,
+  "takeawayTax": null,
+  "tax": 0,
   "unitId": "",
   "updatedAt": "MASKED DATE",
   "variants": Array [
@@ -30,7 +41,6 @@ Object {
       "pack": null,
       "position": 1,
       "price": 10,
-      "refGroupPrice": null,
       "soldOut": null,
       "variantName": Object {
         "de": null,
@@ -55,7 +65,6 @@ Array [
     "pack": null,
     "position": 1,
     "price": 10,
-    "refGroupPrice": null,
     "soldOut": null,
     "updatedAt": "MASKED DATE",
     "variantName": Object {
@@ -80,7 +89,6 @@ Array [
     "pack": null,
     "position": 1,
     "price": 10,
-    "refGroupPrice": null,
     "soldOut": null,
     "updatedAt": "MASKED DATE",
     "variantName": Object {
@@ -94,21 +102,32 @@ Array [
 
 exports[`Product variants resolver tests GetUnitProduct with API call 1`] = `
 Object {
+  "allergens": null,
   "chainId": "",
   "configSets": null,
   "createdAt": "MASKED DATE",
   "deletedAt": null,
+  "description": null,
   "dirty": null,
   "externalId": null,
   "groupId": "",
-  "groupProduct": null,
   "id": "product_variants_MASKED ID",
+  "image": null,
   "isVisible": true,
   "laneId": null,
+  "name": Object {
+    "de": null,
+    "en": "UNIT NAME",
+    "hu": null,
+  },
   "parentId": "",
   "position": 1,
+  "productCategoryId": "PRODUCT CAT ID",
+  "productType": "dish",
   "supportedServingModes": null,
   "takeaway": null,
+  "takeawayTax": null,
+  "tax": 0,
   "unitId": "",
   "updatedAt": "MASKED DATE",
   "variants": Array [
@@ -122,7 +141,6 @@ Object {
       "pack": null,
       "position": 1,
       "price": 10,
-      "refGroupPrice": null,
       "soldOut": null,
       "variantName": Object {
         "de": null,
@@ -136,21 +154,32 @@ Object {
 
 exports[`Product variants resolver tests UpdateUnitProduct with API call 1`] = `
 Object {
+  "allergens": null,
   "chainId": "A NEW CHAIN ID",
   "configSets": null,
   "createdAt": "MASKED DATE",
   "deletedAt": null,
+  "description": null,
   "dirty": null,
   "externalId": null,
   "groupId": "",
-  "groupProduct": null,
   "id": "product_variants_MASKED ID",
+  "image": null,
   "isVisible": true,
   "laneId": null,
+  "name": Object {
+    "de": null,
+    "en": "UNIT NAME",
+    "hu": null,
+  },
   "parentId": "",
   "position": 1,
+  "productCategoryId": "PRODUCT CAT ID",
+  "productType": "dish",
   "supportedServingModes": null,
   "takeaway": null,
+  "takeawayTax": null,
+  "tax": 0,
   "unitId": "",
   "updatedAt": "MASKED DATE",
   "variants": Array [
@@ -164,7 +193,6 @@ Object {
       "pack": null,
       "position": 1,
       "price": 10,
-      "refGroupPrice": null,
       "soldOut": null,
       "variantName": Object {
         "de": null,

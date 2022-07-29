@@ -170,11 +170,13 @@ const unitNoRkeeper: CreateUnitInput = {
   ],
   supportedOrderModes: [OrderMode.instant],
   supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
-  groupId: 'foobar',
-  chainId: 'foobar',
   location: {
     lat: 47,
     lon: 19,
+  },
+  currency: 'HUF',
+  style: {
+    colors: {},
   },
 };
 

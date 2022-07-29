@@ -10,7 +10,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { UntypedFormArray } from '@angular/forms';
-import { AdminUserSettings } from '@bgap/domain';
+import { AdminUserSettings, Unit } from '@bgap/domain';
 import {
   EImageType,
   KeyValue,
@@ -21,10 +21,12 @@ import { cleanObject, filterNullish } from '@bgap/shared/utils';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select } from '@ngrx/store';
 
+import { SERVING_MODES } from '../../../../shared/utils';
 import { AbstractFormDialogComponent } from '../../../../shared/forms';
 import { loggedUserSelectors } from '../../../../store/logged-user';
 import { PRODUCT_TYPES } from '../../const';
 import { ProductFormService } from '../../services/product-form.service';
+import { unitsSelectors } from '../../../../store/units';
 
 @UntilDestroy()
 @Component({
@@ -40,6 +42,10 @@ export class ProductFormComponent
   public product?: Product;
   public productCategories$: Observable<KeyValue[]>;
   public productTypes: KeyValue[] = PRODUCT_TYPES;
+  public unitLanes$: Observable<KeyValue[]>;
+  public currency!: string;
+  public servingModes = SERVING_MODES;
+  public selectedUnit?: Unit;
 
   private _userSettings: AdminUserSettings = {};
 
@@ -52,6 +58,12 @@ export class ProductFormComponent
 
     this.dialogForm = this._productFormService.createProductFormGroup();
 
+    this.unitLanes$ = this._store.pipe(
+      select(unitsSelectors.getSelectedUnitLanes),
+      filterNullish(),
+      take(1),
+    );
+
     this._store
       .pipe(
         select(loggedUserSelectors.getLoggedUserSettings),
@@ -63,6 +75,12 @@ export class ProductFormComponent
       });
 
     this.productCategories$ = this._productFormService.getProductCategories$();
+
+    this._store
+      .pipe(select(unitsSelectors.getSelectedUnit), filterNullish(), take(1))
+      .subscribe(unit => {
+        this.selectedUnit = unit;
+      });
   }
 
   get productImage(): string {

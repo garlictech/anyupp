@@ -13,6 +13,7 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 
 import { ProductListService } from '../../services/product-list.service';
 import { ProductExtendFormComponent } from '../product-extend-form/product-extend-form.component';
+import { ProductFormComponent } from '../product-form/product-form.component';
 
 @UntilDestroy()
 @Component({
@@ -40,10 +41,10 @@ export class ProductListItemComponent {
   }
 
   public editProduct() {
-    const dialog = this._nbDialogService.open(ProductExtendFormComponent);
+    const dialog = this._nbDialogService.open(ProductFormComponent);
 
-    dialog.componentRef.instance.editing = true;
-    dialog.componentRef.instance.currency = this.currency;
+    //dialog.componentRef.instance.editing = true;
+    //dialog.componentRef.instance.currency = this.currency;
 
     dialog.componentRef.instance.product = fp.cloneDeep(this.product);
   }
