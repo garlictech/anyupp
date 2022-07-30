@@ -22,9 +22,7 @@ import {
 describe('calculatePricesAndCheckActivity method', () => {
   const baseProduct: UnitProduct = {
     id: 'PRODUCT_ID',
-    groupId: 'GROUP_ID',
     unitId: 'UNIT_ID',
-    parentId: 'PARENT_ID',
     takeaway: true,
     tax: 11,
     takeawayTax: 23,

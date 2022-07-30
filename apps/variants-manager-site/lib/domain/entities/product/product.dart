@@ -2,6 +2,8 @@ import 'package:functional_data/functional_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:variants_manager_site/domain/entities/variant/variant.dart';
 
+import '../localized_item/localized_item.dart';
+
 part 'product.g.dart';
 
 @FunctionalData()
@@ -12,7 +14,7 @@ class Product extends $Product {
   @override
   final List<Variant> variants;
   @override
-  final String name;
+  final LocalizedItem name;
 
   Product({required this.id, required this.variants, required this.name});
 

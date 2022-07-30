@@ -114,7 +114,6 @@ subscription OnOrderHistoryChanged($userId: String!) {
           }
           price
           productComponentId
-          externalId
           netPackagingFee
         }
         name {
@@ -148,7 +147,6 @@ subscription OnOrderHistoryChanged($userId: String!) {
       image
       laneId
       created
-      externalId
       productType
       serviceFee {
         currency
@@ -223,7 +221,6 @@ subscription OnOrderHistoryChanged($userId: String!) {
       }
     }
     soldOutVisibilityPolicy
-    externalId
     guestLabel
     packagingFeeTaxPercentage
     statusLog {

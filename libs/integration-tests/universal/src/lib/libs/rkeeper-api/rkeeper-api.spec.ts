@@ -33,7 +33,6 @@ import { ES_DELAY, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
 import * as fixtures from './fixtures';
-import { deleteGeneratedProductsForAUnitFromDb } from '@bgap/backend/products';
 import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { v1 as uuidV1 } from 'uuid';
 import {
@@ -43,16 +42,13 @@ import {
 } from '@bgap/shared/config';
 import { maskAll, maskDate, maskV4UuidIds } from '@bgap/shared/fixtures';
 import {
-  ChainProduct,
-  GeneratedProduct,
-  GeneratedProductConfigSet,
-  GroupProduct,
   Maybe,
   ProductComponent,
   ProductComponentSet,
   ProductConfigSet,
   UnitProduct,
 } from '@bgap/domain';
+import { deleteTestUnitProduct } from '../../seeds/unit-product';
 
 const commonBackendName = 'common-backend2-anyupp';
 
@@ -95,49 +91,19 @@ describe('Test the rkeeper api basic functionality', () => {
     deleteOp: (x: { input: { id: string } }) => any,
   ) => testItemDeleter(searchOp, deleteOp, { dirty: { eq: true } });
 
-  const chainDataDeleter = <Y extends { id: string }>(
-    searchOp: (x: { filter: { chainId: { eq: string } } }) => Observable<
-      | {
-          items?: Maybe<Array<Maybe<Y>>>;
-        }
-      | undefined
-      | null
-    >,
-    deleteOp: (x: { input: { id: string } }) => any,
-    chainId: string,
-  ) => testItemDeleter(searchOp, deleteOp, { chainId: { eq: chainId } });
-
   const cleanup$ = forkJoin([
     dirtyItemDeleter(crudSdk.SearchUnitProducts, crudSdk.DeleteUnitProduct),
-    dirtyItemDeleter(crudSdk.SearchGroupProducts, crudSdk.DeleteGroupProduct),
-    dirtyItemDeleter(crudSdk.SearchChainProducts, crudSdk.DeleteChainProduct),
-    chainDataDeleter(
-      crudSdk.SearchProductComponents,
-      crudSdk.DeleteProductComponent,
-      fixtures.rkeeperUnit.chainId,
-    ),
-    chainDataDeleter(
-      crudSdk.SearchProductComponentSets,
-      crudSdk.DeleteProductComponentSet,
-      fixtures.rkeeperUnit.chainId,
-    ),
   ]).pipe(
     switchMap(() =>
       from([fixtures.rkeeperUnitProduct, fixtures.rkeeperUnitProduct2]),
     ),
-    mergeMap(
-      item =>
-        crudSdk.DeleteUnitProduct({
-          input: { id: item.id },
-        }),
-      100,
-    ),
+    mergeMap(item => deleteTestUnitProduct(item, crudSdk), 100),
     mergeMap(
       () =>
         crudSdk.DeleteProductCategory({
           input: {
             id: defaultProductCategoryId({
-              chainId: fixtures.rkeeperUnit.chainId,
+              unitId: fixtures.rkeeperUnit.id,
             }),
           },
         }),
@@ -148,9 +114,6 @@ describe('Test the rkeeper api basic functionality', () => {
     switchMap(() =>
       forkJoin([
         crudSdk.DeleteUnit({ input: { id: fixtures.rkeeperUnit.id } }),
-        crudSdk.DeleteGroup({ input: { id: fixtures.createGroup.id } }),
-        crudSdk.DeleteChain({ input: { id: fixtures.createChain.id } }),
-        deleteGeneratedProductsForAUnitFromDb(crudSdk)(''),
       ]),
     ),
     tap(result => console.log(`${result} deleted items`)),
@@ -170,11 +133,7 @@ describe('Test the rkeeper api basic functionality', () => {
         mergeMap(input => crudSdk.CreateUnitProduct({ input })),
         takeLast(1),
         switchMap(() =>
-          forkJoin([
-            crudSdk.CreateUnit({ input: fixtures.rkeeperUnit }),
-            crudSdk.CreateGroup({ input: fixtures.createGroup }),
-            crudSdk.CreateChain({ input: fixtures.createChain }),
-          ]),
+          forkJoin([crudSdk.CreateUnit({ input: fixtures.rkeeperUnit })]),
         ),
         delay(ES_DELAY),
       )
@@ -185,7 +144,7 @@ describe('Test the rkeeper api basic functionality', () => {
     cleanup$.subscribe(() => done());
   }, 60000);
 
-  test('It shouls be able to search for external product', done => {
+  test.only('It shouls be able to search for external product', done => {
     searchExternalUnitProduct(crudSdk)(fixtures.rkeeperProductGuid)
       .pipe(
         tap(res =>
@@ -226,40 +185,6 @@ describe('Test the rkeeper api basic functionality', () => {
                 filterNullishGraphqlListWithDefault<UnitProduct>([]),
                 tap(res =>
                   expect(maskAll(res)).toMatchSnapshot('UNITPRODUCTST'),
-                ),
-              ),
-            crudSdk
-              .SearchGroupProducts({
-                filter: {
-                  and: [
-                    {
-                      dirty: { eq: true },
-                      groupId: { eq: fixtures.businessEntity.groupId },
-                    },
-                  ],
-                },
-              })
-              .pipe(
-                filterNullishGraphqlListWithDefault<GroupProduct>([]),
-                tap(res =>
-                  expect(maskAll(res)).toMatchSnapshot('GROUPPRODUCTST'),
-                ),
-              ),
-            crudSdk
-              .SearchChainProducts({
-                filter: {
-                  and: [
-                    {
-                      dirty: { eq: true },
-                      chainId: { eq: fixtures.businessEntity.chainId },
-                    },
-                  ],
-                },
-              })
-              .pipe(
-                filterNullishGraphqlListWithDefault<ChainProduct>([]),
-                tap(res =>
-                  expect(maskAll(res)).toMatchSnapshot('CHAINPRODUCTST'),
                 ),
               ),
           ]),
@@ -327,7 +252,7 @@ describe('Test the rkeeper api basic functionality', () => {
 
     const sortConfigSets = <
       T extends {
-        items?: Maybe<GeneratedProductConfigSet | ProductConfigSet>;
+        items?: Maybe<ProductConfigSet>;
       },
     >(
       sets: Maybe<T>[],
@@ -338,9 +263,7 @@ describe('Test the rkeeper api basic functionality', () => {
           ...configSet,
           items: configSet?.items
             ? pipe(
-                (configSet?.items ?? []) as Maybe<
-                  ProductConfigSet | GeneratedProductConfigSet
-                >[],
+                (configSet?.items ?? []) as Maybe<ProductConfigSet>[],
                 R.reject(R.isNil),
                 R.sortBy(JSON.stringify),
               )
@@ -375,16 +298,6 @@ describe('Test the rkeeper api basic functionality', () => {
       .pipe(
         delay(ES_DELAY),
         switchMap(() =>
-          crudSdk.SearchGeneratedProducts({
-            filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
-          }),
-        ),
-        filterNullishGraphqlListWithDefault<GeneratedProduct>([]),
-        map(res =>
-          processProducts<GeneratedProductConfigSet, GeneratedProduct>(res),
-        ),
-        tap(checkMatches('Generated products')),
-        switchMap(() =>
           crudSdk.SearchUnitProducts({
             filter: { unitId: { eq: fixtures.rkeeperUnit.id } },
           }),
@@ -393,29 +306,15 @@ describe('Test the rkeeper api basic functionality', () => {
         map(res => processProducts<ProductConfigSet, UnitProduct>(res)),
         tap(checkMatches('Unit products')),
         switchMap(() =>
-          crudSdk.SearchGroupProducts({
-            filter: { groupId: { eq: fixtures.rkeeperUnit.groupId } },
-          }),
-        ),
-        filterNullishGraphqlListWithDefault<GroupProduct>([]),
-        tap(checkMatches('Group products')),
-        switchMap(() =>
-          crudSdk.SearchChainProducts({
-            filter: { chainId: { eq: fixtures.rkeeperUnit.chainId } },
-          }),
-        ),
-        filterNullishGraphqlListWithDefault<ChainProduct>([]),
-        tap(checkMatches('Chain products')),
-        switchMap(() =>
           crudSdk.SearchProductComponents({
-            filter: { chainId: { eq: fixtures.rkeeperUnit.chainId } },
+            filter: { ownerEntity: { eq: fixtures.rkeeperUnit.id } },
           }),
         ),
         filterNullishGraphqlListWithDefault<ProductComponent>([]),
         tap(checkMatches('Product components')),
         switchMap(() =>
           crudSdk.SearchProductComponentSets({
-            filter: { chainId: { eq: fixtures.rkeeperUnit.chainId } },
+            filter: { ownerEntity: { eq: fixtures.rkeeperUnit.id } },
           }),
         ),
         filterNullishGraphqlListWithDefault<ProductComponentSet>([]),

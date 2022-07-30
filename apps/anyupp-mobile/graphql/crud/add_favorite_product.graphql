@@ -65,11 +65,9 @@ mutation CreateFavoriteProduct($userId: ID!, $unitId: ID!, $productId: ID!) {
           price
           netPackagingFee
           productComponentId
-          soldOut
         }
       }
       supportedServingModes
-      soldOut
     }
   }
 }

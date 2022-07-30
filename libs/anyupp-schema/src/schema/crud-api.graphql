@@ -137,9 +137,6 @@ type UnitProduct
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  parentId: ID
-  chainId: ID
-  groupId: ID
   unitId: ID!
   isVisible: Boolean!
   takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
@@ -148,10 +145,8 @@ type UnitProduct
   variants: [ProductVariant] @function(name: "${env}-anyupp-graphql-resolvers")
   configSets: [ProductConfigSet]
   supportedServingModes: [ServingMode!]
-  externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
-
   tax: Int!
   takeawayTax: Int
   name: LocalizedItem!

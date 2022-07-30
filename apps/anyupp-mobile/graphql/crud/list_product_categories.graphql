@@ -5,7 +5,7 @@ query ListProductCategories($chainId: ID!, $nextToken: String, $limit: Int) {
     limit: $limit
   ) {
     items {
-      chainId
+      ownerEntity
       createdAt
       id
       image

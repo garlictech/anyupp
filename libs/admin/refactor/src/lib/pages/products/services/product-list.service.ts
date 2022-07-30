@@ -141,24 +141,14 @@ export class ProductListService {
           switchMap(settings =>
             iif(
               () => !!settings?.selectedUnitId,
-              this._unitProductCollectionService
-                .getCachedPaginatedData$({
-                  filter: {
-                    unitId: { eq: settings?.selectedUnitId },
-                    deletedAt: { exists: false },
-                  },
-                  limit: PAGINATION_LIMIT,
-                  nextToken: this._nextToken.unit,
-                })
-                .pipe(
-                  // Load groupProducts
-                  switchMap(unitListResult =>
-                    from(unitListResult.items.map(i => i.parentId)).pipe(
-                      filterNullish(),
-                      mapTo(unitListResult),
-                    ),
-                  ),
-                ),
+              this._unitProductCollectionService.getCachedPaginatedData$({
+                filter: {
+                  unitId: { eq: settings?.selectedUnitId },
+                  deletedAt: { exists: false },
+                },
+                limit: PAGINATION_LIMIT,
+                nextToken: this._nextToken.unit,
+              }),
               of(undefined),
             ),
           ),

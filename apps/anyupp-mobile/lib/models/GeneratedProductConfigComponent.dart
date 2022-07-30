@@ -11,7 +11,6 @@ class GeneratedProductConfigComponent {
   final List<Allergen>? allergens;
   final double? netPackagingFee;
   final bool soldOut;
-  final String? externalId;
 
   GeneratedProductConfigComponent({
     required this.productComponentId,
@@ -21,7 +20,6 @@ class GeneratedProductConfigComponent {
     this.allergens,
     this.netPackagingFee,
     this.soldOut = false,
-    this.externalId,
   });
 
   GeneratedProductConfigComponent copyWith({
@@ -42,7 +40,6 @@ class GeneratedProductConfigComponent {
       allergens: allergens ?? this.allergens,
       netPackagingFee: netPackagingFee ?? this.netPackagingFee,
       soldOut: soldOut ?? this.soldOut,
-      externalId: externalId ?? this.externalId,
     );
   }
 
@@ -55,7 +52,6 @@ class GeneratedProductConfigComponent {
       'allergens': allergens?.map((x) => enumToString(x)).toList(),
       'netPackagingFee': netPackagingFee,
       'soldOut': soldOut,
-      'externalId': externalId,
     };
   }
 
@@ -66,7 +62,6 @@ class GeneratedProductConfigComponent {
       position: map['position'],
       netPackagingFee: map['netPackagingFee'],
       name: LocalizedItem.fromJson(map['name']),
-      externalId: map['externalId'],
       allergens: map['allergens'] != null
           ? List<Allergen>.from(
               map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
@@ -77,7 +72,7 @@ class GeneratedProductConfigComponent {
 
   @override
   String toString() {
-    return 'GeneratedProductConfigComponent(productComponentId: $productComponentId, externalId: $externalId, price: $price, soldOut: $soldOut, netPackagingFee: $netPackagingFee, position: $position, name: $name, allergens: $allergens)';
+    return 'GeneratedProductConfigComponent(productComponentId: $productComponentId, price: $price, soldOut: $soldOut, netPackagingFee: $netPackagingFee, position: $position, name: $name, allergens: $allergens)';
   }
 
   @override
@@ -91,7 +86,6 @@ class GeneratedProductConfigComponent {
         other.name == name &&
         other.netPackagingFee == netPackagingFee &&
         other.soldOut == soldOut &&
-        other.externalId == externalId &&
         listEquals(other.allergens, allergens);
   }
 
@@ -103,7 +97,6 @@ class GeneratedProductConfigComponent {
         name.hashCode ^
         netPackagingFee.hashCode ^
         allergens.hashCode ^
-        soldOut.hashCode ^
-        externalId.hashCode;
+        soldOut.hashCode;
   }
 }

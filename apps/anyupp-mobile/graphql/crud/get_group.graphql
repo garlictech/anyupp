@@ -1,5 +1,0 @@
-query GetGroupById($groupId: ID!) {
-  getGroup(id: $groupId) {
-    currency
-  }
-}

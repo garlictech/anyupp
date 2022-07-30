@@ -136,9 +136,6 @@ input ServiceFeePolicyInput {
 
 type UnitProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
-  parentId: ID
-  chainId: ID
-  groupId: ID
   unitId: ID!
   isVisible: Boolean!
   takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
@@ -147,7 +144,6 @@ type UnitProduct @aws_iam @aws_cognito_user_pools {
   variants: [ProductVariant]
   configSets: [ProductConfigSet]
   supportedServingModes: [ServingMode!]
-  externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
   tax: Int!
@@ -1763,16 +1759,12 @@ input ModelAllergenListInput {
 
 input ModelUnitProductFilterInput {
   id: ModelIDInput
-  parentId: ModelIDInput
-  chainId: ModelIDInput
-  groupId: ModelIDInput
   unitId: ModelIDInput
   isVisible: ModelBooleanInput
   takeaway: ModelBooleanInput
   laneId: ModelIDInput
   position: ModelIntInput
   supportedServingModes: ModelServingModeListInput
-  externalId: ModelStringInput
   dirty: ModelBooleanInput
   deletedAt: ModelStringInput
   tax: ModelIntInput
@@ -1787,16 +1779,12 @@ input ModelUnitProductFilterInput {
 }
 
 input ModelUnitProductConditionInput {
-  parentId: ModelIDInput
-  chainId: ModelIDInput
-  groupId: ModelIDInput
   unitId: ModelIDInput
   isVisible: ModelBooleanInput
   takeaway: ModelBooleanInput
   laneId: ModelIDInput
   position: ModelIntInput
   supportedServingModes: ModelServingModeListInput
-  externalId: ModelStringInput
   dirty: ModelBooleanInput
   deletedAt: ModelStringInput
   tax: ModelIntInput
@@ -1812,9 +1800,6 @@ input ModelUnitProductConditionInput {
 
 input CreateUnitProductInput {
   id: ID
-  parentId: ID
-  chainId: ID
-  groupId: ID
   unitId: ID!
   isVisible: Boolean!
   takeaway: Boolean
@@ -1823,7 +1808,6 @@ input CreateUnitProductInput {
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
   supportedServingModes: [ServingMode!]
-  externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
   tax: Int!
@@ -1838,9 +1822,6 @@ input CreateUnitProductInput {
 
 input UpdateUnitProductInput {
   id: ID!
-  parentId: ID
-  chainId: ID
-  groupId: ID
   unitId: ID
   isVisible: Boolean
   takeaway: Boolean
@@ -1849,7 +1830,6 @@ input UpdateUnitProductInput {
   variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
   supportedServingModes: [ServingMode!]
-  externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
   tax: Int
@@ -2884,15 +2864,11 @@ input SearchableIDFilterInput {
 
 input SearchableUnitProductFilterInput {
   id: SearchableIDFilterInput
-  parentId: SearchableIDFilterInput
-  chainId: SearchableIDFilterInput
-  groupId: SearchableIDFilterInput
   unitId: SearchableIDFilterInput
   isVisible: SearchableBooleanFilterInput
   takeaway: SearchableBooleanFilterInput
   laneId: SearchableIDFilterInput
   position: SearchableIntFilterInput
-  externalId: SearchableStringFilterInput
   dirty: SearchableBooleanFilterInput
   deletedAt: SearchableStringFilterInput
   tax: SearchableIntFilterInput
@@ -2916,15 +2892,11 @@ enum SearchableSortDirection {
 
 enum SearchableUnitProductSortableFields {
   id
-  parentId
-  chainId
-  groupId
   unitId
   isVisible
   takeaway
   laneId
   position
-  externalId
   dirty
   deletedAt
   tax
@@ -2950,16 +2922,12 @@ enum SearchableAggregateType {
 
 enum SearchableUnitProductAggregateField {
   id
-  parentId
-  chainId
-  groupId
   unitId
   isVisible
   takeaway
   laneId
   position
   supportedServingModes
-  externalId
   dirty
   deletedAt
   tax

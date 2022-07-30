@@ -131,7 +131,6 @@ query GetOrder($orderId: ID!) {
           }
           price
           productComponentId
-          externalId
           netPackagingFee
         }
         name {
@@ -147,7 +146,6 @@ query GetOrder($orderId: ID!) {
       laneId
       productType
       created
-      externalId
       netPackagingFee
       serviceFee {
         currency
@@ -222,7 +220,6 @@ query GetOrder($orderId: ID!) {
       }
     }
     soldOutVisibilityPolicy
-    externalId
     guestLabel
     orderNum
     packagingFeeTaxPercentage

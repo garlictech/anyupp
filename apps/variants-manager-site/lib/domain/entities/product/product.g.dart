@@ -11,12 +11,12 @@ abstract class $Product {
 
   String get id;
   List<Variant> get variants;
-  String get name;
+  LocalizedItem get name;
 
   Product copyWith({
     String? id,
     List<Variant>? variants,
-    String? name,
+    LocalizedItem? name,
   }) =>
       Product(
         id: id ?? this.id,
@@ -70,7 +70,7 @@ class Product$Change {
 
   String id;
   List<Variant> variants;
-  String name;
+  LocalizedItem name;
 }
 
 // ignore: avoid_classes_with_only_static_members
@@ -86,7 +86,7 @@ class Product$ {
         variantsContainer.copyWith(variants: variants),
   );
 
-  static final name = Lens<Product, String>(
+  static final name = Lens<Product, LocalizedItem>(
     (nameContainer) => nameContainer.name,
     (nameContainer, name) => nameContainer.copyWith(name: name),
   );
@@ -101,7 +101,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       variants: (json['variants'] as List<dynamic>)
           .map((e) => Variant.fromJson(e as Map<String, dynamic>))
           .toList(),
-      name: json['name'] as String,
+      name: LocalizedItem.fromJson(json['name'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{

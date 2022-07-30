@@ -10,8 +10,6 @@ abstract class $GeoUnit {
   const $GeoUnit();
 
   String get id;
-  String get groupId;
-  String get chainId;
   String get name;
   Address get address;
   ChainStyle get style;
@@ -43,8 +41,6 @@ abstract class $GeoUnit {
 
   GeoUnit copyWith({
     String? id,
-    String? groupId,
-    String? chainId,
     String? name,
     Address? address,
     ChainStyle? style,
@@ -76,8 +72,6 @@ abstract class $GeoUnit {
   }) =>
       GeoUnit(
         id: id ?? this.id,
-        groupId: groupId ?? this.groupId,
-        chainId: chainId ?? this.chainId,
         name: name ?? this.name,
         address: address ?? this.address,
         style: style ?? this.style,
@@ -113,8 +107,6 @@ abstract class $GeoUnit {
   GeoUnit copyUsing(void Function(GeoUnit$Change change) mutator) {
     final change = GeoUnit$Change._(
       this.id,
-      this.groupId,
-      this.chainId,
       this.name,
       this.address,
       this.style,
@@ -147,8 +139,6 @@ abstract class $GeoUnit {
     mutator(change);
     return GeoUnit(
       id: change.id,
-      groupId: change.groupId,
-      chainId: change.chainId,
       name: change.name,
       address: change.address,
       style: change.style,
@@ -182,7 +172,7 @@ abstract class $GeoUnit {
 
   @override
   String toString() =>
-      "GeoUnit(id: $id, groupId: $groupId, chainId: $chainId, name: $name, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes, orderPolicy: $orderPolicy, packagingTax: $packagingTax, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, serviceFeePolicy: $serviceFeePolicy, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, orderPaymentPolicy: $orderPaymentPolicy, location: $location, adBannersEnabled: $adBannersEnabled, adBanners: $adBanners, canRequestVatInvoice: $canRequestVatInvoice, description: $description, email: $email, phone: $phone, coverBannersEnabled: $coverBannersEnabled, coverBanners: $coverBanners, canCallWaiter: $canCallWaiter, isVisibleInApp: $isVisibleInApp)";
+      "GeoUnit(id: $id, name: $name, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes, orderPolicy: $orderPolicy, packagingTax: $packagingTax, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, serviceFeePolicy: $serviceFeePolicy, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, orderPaymentPolicy: $orderPaymentPolicy, location: $location, adBannersEnabled: $adBannersEnabled, adBanners: $adBanners, canRequestVatInvoice: $canRequestVatInvoice, description: $description, email: $email, phone: $phone, coverBannersEnabled: $coverBannersEnabled, coverBanners: $coverBanners, canCallWaiter: $canCallWaiter, isVisibleInApp: $isVisibleInApp)";
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
@@ -190,8 +180,6 @@ abstract class $GeoUnit {
       other is GeoUnit &&
       other.runtimeType == runtimeType &&
       id == other.id &&
-      groupId == other.groupId &&
-      chainId == other.chainId &&
       name == other.name &&
       address == other.address &&
       style == other.style &&
@@ -226,8 +214,6 @@ abstract class $GeoUnit {
   int get hashCode {
     var result = 17;
     result = 37 * result + id.hashCode;
-    result = 37 * result + groupId.hashCode;
-    result = 37 * result + chainId.hashCode;
     result = 37 * result + name.hashCode;
     result = 37 * result + address.hashCode;
     result = 37 * result + style.hashCode;
@@ -263,8 +249,6 @@ abstract class $GeoUnit {
 class GeoUnit$Change {
   GeoUnit$Change._(
     this.id,
-    this.groupId,
-    this.chainId,
     this.name,
     this.address,
     this.style,
@@ -296,8 +280,6 @@ class GeoUnit$Change {
   );
 
   String id;
-  String groupId;
-  String chainId;
   String name;
   Address address;
   ChainStyle style;
@@ -333,16 +315,6 @@ class GeoUnit$ {
   static final id = Lens<GeoUnit, String>(
     (idContainer) => idContainer.id,
     (idContainer, id) => idContainer.copyWith(id: id),
-  );
-
-  static final groupId = Lens<GeoUnit, String>(
-    (groupIdContainer) => groupIdContainer.groupId,
-    (groupIdContainer, groupId) => groupIdContainer.copyWith(groupId: groupId),
-  );
-
-  static final chainId = Lens<GeoUnit, String>(
-    (chainIdContainer) => chainIdContainer.chainId,
-    (chainIdContainer, chainId) => chainIdContainer.copyWith(chainId: chainId),
   );
 
   static final name = Lens<GeoUnit, String>(

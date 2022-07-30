@@ -1,7 +1,7 @@
 query ListAllProducts($chainId: ID!, $nextToken: String, $limit: Int) {
   searchUnitProducts(
     filter: {
-      chainId: { eq: $chainId }
+      unitId: { eq: $unitId }
       dirty: { ne: true }
       and: { deletedAt: { exists: false } }
     }
@@ -30,7 +30,6 @@ query ListAllProducts($chainId: ID!, $nextToken: String, $limit: Int) {
         netPackagingFee
         soldOut
         isAvailable
-        refGroupPrice
         availabilities {
           dayTo
           dayFrom
@@ -48,14 +47,11 @@ query ListAllProducts($chainId: ID!, $nextToken: String, $limit: Int) {
           price
           netPackagingFee
           productComponentId
-          externalId
-          refGroupPrice
         }
       }
       supportedServingModes
       dirty
       isVisible
-      externalId
       tax
       takeawayTax
       name {

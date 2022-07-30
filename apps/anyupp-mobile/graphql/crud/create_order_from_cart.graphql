@@ -117,7 +117,6 @@ mutation CreateOrderFromCart($order: CreateOrderInput!) {
           }
           price
           productComponentId
-          externalId
           netPackagingFee
         }
         name {
@@ -151,7 +150,6 @@ mutation CreateOrderFromCart($order: CreateOrderInput!) {
       image
       laneId
       created
-      externalId
       productType
     }
     transactionId
@@ -217,7 +215,6 @@ mutation CreateOrderFromCart($order: CreateOrderInput!) {
     }
     soldOutVisibilityPolicy
     guestLabel
-    externalId
     currentStatus
     orderNum
     packagingFeeTaxPercentage

@@ -38,7 +38,7 @@ class ProductVariantManagerWidget extends ConsumerWidget {
     final working = productList.working || vm.working;
 
     Widget _getProductContent(Product product) {
-      final content = Text(product.name);
+      final content = Text(product.name.hu ?? "UNKNOWN VARIANT");
 
       return WidgetTableCell(
           content: role == "target"

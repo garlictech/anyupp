@@ -19,8 +19,6 @@ part 'GeoUnit.g.dart';
 @FunctionalData()
 class GeoUnit extends $GeoUnit {
   final String id;
-  final String groupId;
-  final String chainId;
   final String name;
   final Address address;
   final ChainStyle style;
@@ -52,8 +50,6 @@ class GeoUnit extends $GeoUnit {
 
   GeoUnit({
     required this.id,
-    required this.groupId,
-    required this.chainId,
     required this.name,
     required this.address,
     required this.style,
@@ -87,8 +83,6 @@ class GeoUnit extends $GeoUnit {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'groupId': groupId,
-      'chainId': chainId,
       'name': name,
       'address': address.toJson(),
       'style': style.toJson(),
@@ -125,8 +119,6 @@ class GeoUnit extends $GeoUnit {
   factory GeoUnit.fromJson(Map<String, dynamic> map) {
     return GeoUnit(
       id: map['id'],
-      groupId: map['groupId'],
-      chainId: map['chainId'],
       name: map['name'],
       address: Address.fromJson(map['address']),
       style: ChainStyle.fromJson(map['style']),

@@ -30,14 +30,12 @@ Object {
   "description": Object {
     "en": "DESCRIPTION",
   },
-  "groupId": "GROUP_ID",
   "id": "PRODUCT_ID",
   "image": "IMG",
   "isVisible": true,
   "name": Object {
     "en": "NAME",
   },
-  "parentId": "PARENT_ID",
   "position": 1,
   "productCategoryId": "PROD_CAT_ID",
   "productType": "drink",
