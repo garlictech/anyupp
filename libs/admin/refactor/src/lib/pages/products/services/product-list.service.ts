@@ -1,11 +1,10 @@
 import * as R from 'ramda';
 import { partition } from 'lodash/fp';
-import { combineLatest, defer, EMPTY, from, iif, Observable, of } from 'rxjs';
+import { combineLatest, defer, EMPTY, iif, Observable, of } from 'rxjs';
 import {
   debounceTime,
   filter,
   map,
-  mapTo,
   startWith,
   switchMap,
   take,
