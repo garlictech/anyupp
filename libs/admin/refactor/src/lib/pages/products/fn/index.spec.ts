@@ -1,12 +1,14 @@
-import {
-  CreateUnitProductInput,
-  ProductComponentSetType,
-} from '@bgap/domain';
+import { CreateUnitProductInput, ProductComponentSetType } from '@bgap/domain';
 import { handleEmptyPackaginFees } from './index';
 
 test('handleEmptyPackaginFees', () => {
   const input: CreateUnitProductInput = {
+    position: 0,
+    productCategoryId: 'PRODUCT CATEGORY ID',
+    productType: ProductType.food,
+    tax: 3,
     isVisible: true,
+    unitId: 'UNIT ID',
     variants: [
       {
         id: 'd22dee40-528b-11ec-afe3-15e1afd659e2',
@@ -70,32 +72,28 @@ test('handleEmptyPackaginFees', () => {
             position: 1,
             price: 500,
             netPackagingFee: 11,
-            name: { en: 'NAME' },
           },
           {
             productComponentId: 'seeded_product_component_32_id',
             position: 2,
             price: 500,
             netPackagingFee: undefined,
-            name: { en: 'NAME' },
           },
           {
             productComponentId: 'seeded_product_component_33_id',
             position: 3,
             price: 500,
             netPackagingFee: undefined,
-            name: { en: 'NAME' },
           },
         ],
         position: 1,
-        name: { en: 'NAME' },
-        type: ProductComponentSetType.modifier,
       },
     ],
     laneId: 'lane_01',
     supportedServingModes: [],
     id: 'seeded_unit_product_c1_g1_u1_9_id',
     takeaway: true,
+    name: { en: 'PRODUCT NAME' },
   };
 
   expect(handleEmptyPackaginFees(input)).toMatchSnapshot();

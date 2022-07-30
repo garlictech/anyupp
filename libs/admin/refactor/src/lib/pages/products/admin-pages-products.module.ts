@@ -23,7 +23,6 @@ import {
 } from '@nebular/theme';
 import { TranslateModule } from '@ngx-translate/core';
 
-import { ProductExtendFormComponent } from './components/product-extend-form/product-extend-form.component';
 import { ProductFormComponent } from './components/product-form/product-form.component';
 import { ProductListItemComponent } from './components/product-list-item/product-list-item.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
@@ -50,7 +49,6 @@ const NB_MODULES = [
     ProductListComponent,
     ProductListItemComponent,
     ProductFormComponent,
-    ProductExtendFormComponent,
   ],
   imports: [
     CommonModule,

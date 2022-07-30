@@ -64,25 +64,21 @@ describe('calculatePricesAndCheckActivity method', () => {
     configSets: [
       {
         productSetId: 'PRODUCT_SET_01',
-        name: { en: 'CONFIG SET NAME 1' },
         items: [
           {
             productComponentId: 'PRODUCT_COMPONENT_ID_11',
             price: 1,
             position: 1,
             netPackagingFee: 30,
-            name: { en: 'CONFIG SET ITEM NAME 1' },
           },
           {
             productComponentId: 'PRODUCT_COMPONENT_ID_21',
             price: 2,
             position: 2,
             netPackagingFee: 40,
-            name: { en: 'CONFIG SET ITEM NAME 1' },
           },
         ],
         position: 1,
-        type: ProductComponentSetType.extras,
       },
     ],
   };
@@ -97,7 +93,6 @@ describe('calculatePricesAndCheckActivity method', () => {
       updatedAt: 'UPDATED_AT',
       externalId: 'EXTERNAL_ID',
       dirty: false,
-      soldOut: true,
       deletedAt: '',
     },
     PRODUCT_COMPONENT_ID_21: {
@@ -110,7 +105,6 @@ describe('calculatePricesAndCheckActivity method', () => {
       updatedAt: 'UPDATED_AT',
       externalId: 'EXTERNAL_ID',
       dirty: false,
-      soldOut: false,
       deletedAt: '',
     },
   };
@@ -120,7 +114,6 @@ describe('calculatePricesAndCheckActivity method', () => {
       ownerEntity: 'UNIT_ID',
       name: { en: 'PRODUCT_COMP_SET_NAME' },
       description: 'PRODUCT_COMP_SET_DESC',
-      type: ProductComponentSetType.extras,
       maxSelection: 1,
       createdAt: 'CREATED_AT',
       updatedAt: 'UPDATED_AT',
@@ -129,6 +122,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       externalId: 'EXTERNAL_ID',
       dirty: false,
       deletedAt: '',
+      type: ProductComponentSetType.extras,
     },
   };
   const timezone01 = 'Europe/London';

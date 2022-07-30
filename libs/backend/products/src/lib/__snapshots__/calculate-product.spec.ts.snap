@@ -10,30 +10,20 @@ Object {
     Object {
       "items": Array [
         Object {
-          "name": Object {
-            "en": "CONFIG SET ITEM NAME 1",
-          },
           "netPackagingFee": 30,
           "position": 1,
           "price": 1,
           "productComponentId": "PRODUCT_COMPONENT_ID_11",
         },
         Object {
-          "name": Object {
-            "en": "CONFIG SET ITEM NAME 1",
-          },
           "netPackagingFee": 40,
           "position": 2,
           "price": 2,
           "productComponentId": "PRODUCT_COMPONENT_ID_21",
         },
       ],
-      "name": Object {
-        "en": "CONFIG SET NAME 1",
-      },
       "position": 1,
       "productSetId": "PRODUCT_SET_01",
-      "type": "extras",
     },
   ],
   "createdAt": "12",
@@ -81,7 +71,6 @@ Object {
       },
       "position": 1,
       "price": 1.5,
-      "refGroupPrice": 1,
       "soldOut": false,
       "variantName": Object {
         "en": "VARIANT_NAME_01",
@@ -107,7 +96,6 @@ Object {
       },
       "position": 100,
       "price": 1.5,
-      "refGroupPrice": 1,
       "soldOut": false,
       "variantName": Object {
         "en": "VARIANT_NAME_01",
@@ -127,46 +115,20 @@ Object {
     Object {
       "items": Array [
         Object {
-          "allergens": Array [
-            "egg",
-            "fish",
-          ],
-          "externalId": "EXTERNAL_ID",
-          "name": Object {
-            "en": "PRODUCT_COMP_NAME",
-          },
           "netPackagingFee": 30,
           "position": 1,
           "price": 1,
           "productComponentId": "PRODUCT_COMPONENT_ID_11",
-          "soldOut": true,
         },
         Object {
-          "allergens": Array [
-            "egg",
-            "fish",
-          ],
-          "externalId": "EXTERNAL_ID",
-          "name": Object {
-            "en": "PRODUCT_COMP_NAME",
-          },
           "netPackagingFee": 40,
           "position": 2,
           "price": 2,
           "productComponentId": "PRODUCT_COMPONENT_ID_21",
-          "soldOut": false,
         },
       ],
-      "maxSelection": 1,
-      "name": Object {
-        "en": "PRODUCT_COMP_SET_NAME",
-      },
       "position": 1,
       "productSetId": "PRODUCT_SET_01",
-      "supportedServingModes": Array [
-        "inPlace",
-      ],
-      "type": "extras",
     },
   ],
   "description": Object {

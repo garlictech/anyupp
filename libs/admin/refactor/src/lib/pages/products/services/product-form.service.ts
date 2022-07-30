@@ -55,7 +55,7 @@ export class ProductFormService {
   }
 
   public createProductFormGroup() {
-    return this._formBuilder.group({
+    const dialogForm = this._formBuilder.group({
       name: this._formBuilder.group(
         {
           hu: [''],
@@ -80,14 +80,6 @@ export class ProductFormService {
       allergens: [[]],
       configSets: this._formBuilder.array([]),
     });
-  }
-
-  public createProductExtendFormGroup() {
-    const dialogForm = this._formBuilder.group({
-      isVisible: [''],
-      variants: this._formBuilder.array([]),
-      configSets: this._formBuilder.array([]),
-    });
 
     dialogForm.addControl(
       'tax',
@@ -103,7 +95,6 @@ export class ProductFormService {
       'supportedServingModes',
       this._formBuilder.control([], { validators: notEmptyArray }),
     );
-
     return dialogForm;
   }
 

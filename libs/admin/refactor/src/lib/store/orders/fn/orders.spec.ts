@@ -5,7 +5,7 @@ import {
   productSnapshotFixture,
   unitFixture,
 } from '@bgap/shared/fixtures';
-import { FloorMapUserOrderObjects } from '@bgap/shared/types';
+import { FloorMapUserOrderObjects, LaneOrderItem } from '@bgap/shared/types';
 
 import {
   getActiveOrdersByUser,
@@ -78,11 +78,11 @@ describe('Orders pure function tests', () => {
   describe('getOrderLaneColor', () => {
     const unit: Unit = unitFixture.unit_01;
 
-    const orderItem = {
+    const orderItem: LaneOrderItem = {
       ...orderFixtureBase.orderItemInputBase(
         productSnapshotFixture.unitProduct_1,
       ),
-      productId: productSnapshotFixture.chainProduct_1.id,
+      productId: productSnapshotFixture.unitProduct_1.id || 'IS MUST EXIST',
     };
 
     it('should get order lane color', () => {

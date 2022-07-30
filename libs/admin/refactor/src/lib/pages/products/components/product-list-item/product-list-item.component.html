@@ -15,6 +15,18 @@
   <div *ngIf="!product?.pending">
     <button
       nbButton
+      shape="round"
+      size="tiny"
+      class="float-right ms-2"
+      (click)="duplicateProduct(product?.id || '')"
+      [title]="'products.duplicateProduct' | translate"
+    >
+      <nb-icon icon="content_copy" pack="material-icons"></nb-icon>
+      {{ 'products.duplicateProduct' | translate }}
+    </button>
+
+    <button
+      nbButton
       status="danger"
       shape="round"
       size="tiny"
@@ -63,19 +75,6 @@
       </button>
     </ng-container>
   </div>
-
-  <button
-    *ngIf="product?.pending"
-    nbButton
-    status="danger"
-    shape="round"
-    size="tiny"
-    class="float-right"
-    (click)="extendProduct()"
-    [title]="'products.extendProduct' | translate"
-  >
-    <nb-icon icon="file_download" pack="material-icons"></nb-icon>
-  </button>
 
   <div class="dirty-block float-right" *ngIf="product?.dirty">
     <nb-badge text="DIRTY" status="danger" position="top right"></nb-badge>

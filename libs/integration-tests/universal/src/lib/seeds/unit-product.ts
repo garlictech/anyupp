@@ -1,6 +1,7 @@
 import { CrudSdk } from '@bgap/crud-gql/api';
-import { CreateUnitProductInput } from '@bgap/domain';
-import { defer } from 'rxjs';
+import { CreateUnitProductInput, UnitProduct } from '@bgap/domain';
+import { RequiredId } from '@bgap/shared/types';
+import { defer, forkJoin } from 'rxjs';
 
 import { resultTap } from './seed.util';
 
@@ -13,10 +14,15 @@ export const createTestUnitProduct = (
   );
 
 export const deleteTestUnitProduct = (
-  id: string,
-
+  product: {
+    id: RequiredId<CreateUnitProductInput>['id'];
+    variants?: RequiredId<CreateUnitProductInput>['variants'];
+  },
   crudSdk: CrudSdk,
 ) =>
-  defer(() => crudSdk.DeleteUnitProduct({ input: { id } })).pipe(
-    resultTap('UNIT PRODUCT delete', id),
-  );
+  forkJoin([
+    crudSdk.DeleteUnitProduct({ input: { id: product.id } }),
+    ...(product.variants?.map(variant =>
+      crudSdk.DeleteVariant({ input: { id: variant?.id || '' } }),
+    ) || []),
+  ]).pipe(resultTap('UNIT PRODUCT delete with its variants', product.id));

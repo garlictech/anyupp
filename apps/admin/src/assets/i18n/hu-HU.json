@@ -229,6 +229,7 @@
     }
   },
   "products": {
+    "duplicateProduct": "Megkettőz",
     "listTitle": "Termékek",
     "chainProducts": "Chain termékek",
     "groupProducts": "Group termékek",

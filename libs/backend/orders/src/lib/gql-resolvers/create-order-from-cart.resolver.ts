@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
 import { forkJoin, from, Observable, of, throwError } from 'rxjs';
-import { map, mapTo, switchMap } from 'rxjs/operators';
+import { map, mapTo, switchMap, tap } from 'rxjs/operators';
 
 import {
   calculateOrderItemPriceRounded,
@@ -182,6 +182,7 @@ export const createOrderFromCart =
     // split a long stream to help the type checker
     const calc1 = getCart(cartId)(deps).pipe(
       throwIfEmptyValue<Cart>(`Cart is missing: ${cartId}`),
+      tap(x => console.error('THE CART: ', JSON.stringify(x, null, 2))),
       switchMap(cart =>
         cart.userId === deps.userId
           ? of(cart)

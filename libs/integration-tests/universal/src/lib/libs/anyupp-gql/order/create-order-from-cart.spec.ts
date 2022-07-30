@@ -4,6 +4,7 @@ import { defer, forkJoin, of } from 'rxjs';
 import {
   catchError,
   delay,
+  map,
   switchMap,
   tap,
   throwIfEmpty,
@@ -69,6 +70,7 @@ const getCart = (crudSdk: CrudSdk, id: string) => {
 const unitProduct_01: RequiredId<CreateUnitProductInput> = {
   ...productFixture.unitProductInputBase,
   id: productFixture.unitProductId_seeded_id_01,
+  tax: 20,
 };
 
 const orderItemConfigSet_01: OrderItemConfigSetInput = {
@@ -79,14 +81,14 @@ const orderItemConfigSet_01: OrderItemConfigSetInput = {
     {
       productComponentId: 'PRODUCT_COMPONENT_ID_0101',
       name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-      price: -1.5,
+      price: 10,
       allergens: [Allergen.egg, Allergen.fish],
-      netPackagingFee: 1,
+      netPackagingFee: 10,
     },
     {
       productComponentId: 'PRODUCT_COMPONENT_ID_0102',
       name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-      price: 2.3,
+      price: 20,
       allergens: [Allergen.egg, Allergen.gluten],
     },
   ],
@@ -100,12 +102,12 @@ const orderItemConfigSet_02: OrderItemConfigSetInput = {
     {
       productComponentId: 'PRODUCT_COMPONENT_ID_0201',
       name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-      price: 5,
+      price: 10,
     },
     {
       productComponentId: 'PRODUCT_COMPONENT_ID_0202',
       name: { en: 'EN_NAME', de: 'DE_NAME', hu: 'HU_NAME' },
-      price: -1,
+      price: 20,
       allergens: [Allergen.peanut],
     },
   ],
@@ -114,8 +116,6 @@ const orderItemConfigSet_02: OrderItemConfigSetInput = {
 const unitProductFixture: RequiredId<CreateUnitProductInput> = {
   ...unitProduct_01,
   unitId: unitFixture.unit_01.id,
-  chainId: unitFixture.unit_01.chainId,
-  groupId: unitFixture.unit_01.groupId,
 };
 
 const orderItemFixture: OrderItem = {
@@ -217,7 +217,7 @@ describe('CreatOrderFromCart mutation test', () => {
       deleteTestCart(cartWithSimplifiedOrderFlow.id, crudSdk),
       deleteTestUnit(unitFixture.unit_01.id, crudSdk),
       deleteTestUnit(unitWithSimplifiedOrderFlow.id, crudSdk),
-      deleteTestUnitProduct(unitProductFixture.id, crudSdk),
+      deleteTestUnitProduct(unitProductFixture, crudSdk),
     ]);
 
   beforeAll(done => {
@@ -397,7 +397,7 @@ describe('CreatOrderFromCart mutation test', () => {
     return errorCases;
   };
 
-  it.only('should create an order from a valid cart with resolver function', done => {
+  it('should create an order from a valid cart with resolver function', done => {
     testLogic(input =>
       defer(() =>
         orderRequestHandler({
@@ -406,6 +406,10 @@ describe('CreatOrderFromCart mutation test', () => {
         }).createOrderFromCart({
           input,
         }),
+      ).pipe(
+        switchMap(x => deps.crudSdk.GetOrder({ id: x || '' })),
+        tap(x => console.warn('ORDER: ', JSON.stringify(x, null, 2))),
+        map(order => order?.id),
       ),
     ).subscribe(() => done());
   }, 60000);

@@ -196,14 +196,6 @@ const toProductConfigSetInput = ({
   return {
     position: productConfigSet.position,
     productSetId: productConfigSet.productSetId,
-    name: productComponentSet.name,
-    type: productComponentSet.type,
-    maxSelection: productComponentSet.maxSelection,
-    supportedServingModes:
-      productComponentSet.supportedServingModes &&
-      productComponentSet.supportedServingModes.length > 0
-        ? productComponentSet.supportedServingModes
-        : defaultSupportedServingModes,
     items: productConfigSet.items.map(confComponent => {
       const productComponent =
         productComponentMap[confComponent.productComponentId];
@@ -218,11 +210,7 @@ const toProductConfigSetInput = ({
         price: confComponent.price,
         position: confComponent.position,
         // comes from the productComponent itself (referenced by productComponentId)
-        name: productComponent.name,
-        allergens: productComponent.allergens,
         netPackagingFee: confComponent.netPackagingFee,
-        soldOut: productComponent.soldOut,
-        externalId: productComponent.externalId,
       };
       return configComponent;
     }),

@@ -1,3 +1,4 @@
+import * as R from 'ramda';
 import { partition } from 'lodash/fp';
 import { combineLatest, defer, EMPTY, from, iif, Observable, of } from 'rxjs';
 import {
@@ -189,6 +190,28 @@ export class ProductListService {
             ),
             of(undefined),
           ),
+        ),
+        take(1),
+      )
+      .subscribe();
+  }
+
+  public duplicateUnitProduct(id: string) {
+    this._crudSdk.sdk
+      .GetUnitProduct({ id })
+      .pipe(
+        switchMap(product =>
+          !!product?.id
+            ? this._crudSdk.sdk.CreateUnitProduct({
+                input: {
+                  ...R.omit(['createdAt', 'deletedAt', 'updatedAt', 'id'])(
+                    product,
+                  ),
+                  name: R.map(text => `${text} COPY`, product.name),
+                  dirty: true,
+                },
+              })
+            : of(undefined),
         ),
         take(1),
       )
