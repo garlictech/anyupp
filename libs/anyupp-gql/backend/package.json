@@ -7,7 +7,7 @@
   "license": "SEE LICENSE IN license.txt",
   "dependencies": {},
   "devDependencies": {
-    "@graphql-codegen/cli": "2.11.0",
+    "@graphql-codegen/cli": "2.11.2",
     "@graphql-codegen/introspection": "2.2.0",
     "@graphql-codegen/typescript": "2.7.2",
     "@graphql-codegen/typescript-apollo-angular": "3.5.2",
