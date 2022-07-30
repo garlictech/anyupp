@@ -201,7 +201,7 @@ export class ProductListService {
       .GetUnitProduct({ id })
       .pipe(
         switchMap(product =>
-          !!product?.id
+          product?.id
             ? this._crudSdk.sdk.CreateUnitProduct({
                 input: {
                   ...R.omit(['createdAt', 'deletedAt', 'updatedAt', 'id'])(

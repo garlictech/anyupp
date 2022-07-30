@@ -1,4 +1,4 @@
-import { CreateUnitProductInput, ProductComponentSetType } from '@bgap/domain';
+import { CreateUnitProductInput } from '@bgap/domain';
 import { handleEmptyPackaginFees } from './index';
 
 test('handleEmptyPackaginFees', () => {
