@@ -5252,10 +5252,10 @@
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
 
-"@graphql-codegen/cli@2.11.2":
-  version "2.11.2"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.11.2.tgz#f502d0e9e19305acffca5f07789dde8d4e0fa656"
-  integrity sha512-dt70+et0QFmhL3krrlYWcsp7T6pvChEQ1vEGoNn46Rn53velGDwP546DtSPpHJmajY/eJ11CueoI0J/3o0/BTA==
+"@graphql-codegen/cli@2.11.3":
+  version "2.11.3"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.11.3.tgz#6cb0fd6da0773957b531cccf7459303a23ee1c05"
+  integrity sha512-C1d88Kx0a0PF1tOR00UIZjHq5aWNNcw5fM2k08rOY9O5b4sU7kEb+YbGKP6EExTtJnYb49fePLKVvrIv1ejDFg==
   dependencies:
     "@graphql-codegen/core" "2.6.0"
     "@graphql-codegen/plugin-helpers" "^2.6.1"
@@ -5397,10 +5397,10 @@
     auto-bind "~4.0.0"
     tslib "~2.4.0"
 
-"@graphql-codegen/typescript-generic-sdk@2.4.2":
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-generic-sdk/-/typescript-generic-sdk-2.4.2.tgz#2b41657ddcc97c75950f004853e3dd82b186835f"
-  integrity sha512-e8tAbYPvbqZGNoTnwhfLyaf3DxP8QFHq8Tu89SaPtdDKDUv6LxZxGJ5+yKN26G3ScN/hEOPSLZ5KxIPYV/8q+g==
+"@graphql-codegen/typescript-generic-sdk@2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-generic-sdk/-/typescript-generic-sdk-2.5.0.tgz#55673be33535876f0b61f28bdd12e9b580f4ca67"
+  integrity sha512-mE2lGe6f0qRD38IRhpzIn2UvLnEZjhlM+Dsrc6SyZtiE+apw3ZGaAAmp1jBN1Op22yqx0qUBhBLk5H4/EdiajA==
   dependencies:
     "@graphql-codegen/plugin-helpers" "^2.6.0"
     "@graphql-codegen/visitor-plugin-common" "2.12.0"
