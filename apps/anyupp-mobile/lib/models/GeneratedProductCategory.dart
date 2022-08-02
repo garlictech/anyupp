@@ -25,4 +25,9 @@ class GeneratedProductCategory extends $GeneratedProductCategory {
     this.updatedAt,
     this.createdAt,
   });
+
+  factory GeneratedProductCategory.fromJson(Map<String, dynamic> json) =>
+      _$GeneratedProductCategoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$GeneratedProductCategoryToJson(this);
 }

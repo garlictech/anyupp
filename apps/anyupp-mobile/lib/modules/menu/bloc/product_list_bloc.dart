@@ -36,12 +36,11 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
 
       // Load categories
       var categories =
-          await _productRepository.getProductCategoryList(event.chainId);
+          await _productRepository.getProductCategoryList(event.unitId);
 
       // Load products
       var products = await _productRepository.getAllProductList(
         unitId: event.unitId,
-        chainId: event.chainId,
         nextToken: event.nextToken,
       );
 

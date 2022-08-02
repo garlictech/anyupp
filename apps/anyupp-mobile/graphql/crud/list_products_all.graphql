@@ -1,4 +1,4 @@
-query ListAllProducts($chainId: ID!, $nextToken: String, $limit: Int) {
+query ListAllProducts($unitId: ID!, $nextToken: String, $limit: Int) {
   searchUnitProducts(
     filter: {
       unitId: { eq: $unitId }

@@ -117,7 +117,6 @@ _getConfigSet(
         en: componentSet.name.en,
         de: componentSet.name.de,
       ),
-      externalId: componentSet.externalId,
       productSetId: componentSet.id,
       supportedServingModes:
           componentSet.supportedServingModes ?? [ServingMode.inPlace],
@@ -139,9 +138,7 @@ _getConfigSet(
                 de: component.name.de,
               ),
               position: item.position,
-              price: item.price > 0 ? item.price : item.refGroupPrice,
-              soldOut: component.soldOut ?? false,
-              externalId: item.externalId,
+              price: item.price,
               netPackagingFee: item.netPackagingFee,
               allergens: component.allergens?.whereNotNull().toList(),
             );

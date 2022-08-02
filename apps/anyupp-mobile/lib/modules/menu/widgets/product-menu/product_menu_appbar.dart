@@ -144,7 +144,6 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
       // );
       BlocProvider.of<ProductListBloc>(context).add(LoadAllProductList(
         unitId: currentUnit!.id,
-        chainId: currentUnit!.chainId,
       ));
       return true;
     }

@@ -1,11 +1,16 @@
-query ListProductCategories($chainId: ID!, $nextToken: String, $limit: Int) {
+query ListProductCategories(
+  $ownerEntity: ID!
+  $nextToken: String
+  $limit: Int
+) {
   searchProductCategories(
-    filter: { chainId: { eq: $chainId } }
+    filter: { ownerEntity: { eq: $ownerEntity } }
     nextToken: $nextToken
     limit: $limit
   ) {
     items {
       ownerEntity
+      parentId
       createdAt
       id
       image

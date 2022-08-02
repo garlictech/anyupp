@@ -333,6 +333,7 @@ export interface CreateProductCategoryInput {
   image?: InputMaybe<Scalars['String']>;
   name: LocalizedItemInput;
   ownerEntity: Scalars['ID'];
+  parentId?: InputMaybe<Scalars['ID']>;
   position: Scalars['Int'];
 }
 
@@ -1160,6 +1161,7 @@ export interface ModelProductCategoryConditionInput {
   not?: InputMaybe<ModelProductCategoryConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductCategoryConditionInput>>>;
   ownerEntity?: InputMaybe<ModelIdInput>;
+  parentId?: InputMaybe<ModelIdInput>;
   position?: InputMaybe<ModelIntInput>;
 }
 
@@ -1175,6 +1177,7 @@ export interface ModelProductCategoryFilterInput {
   not?: InputMaybe<ModelProductCategoryFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelProductCategoryFilterInput>>>;
   ownerEntity?: InputMaybe<ModelIdInput>;
+  parentId?: InputMaybe<ModelIdInput>;
   position?: InputMaybe<ModelIntInput>;
 }
 
@@ -2162,6 +2165,7 @@ export interface ProductCategory {
   image?: Maybe<Scalars['String']>;
   name: LocalizedItem;
   ownerEntity: Scalars['ID'];
+  parentId?: Maybe<Scalars['ID']>;
   position: Scalars['Int'];
   updatedAt: Scalars['AWSDateTime'];
 }
@@ -3126,6 +3130,7 @@ export enum SearchableProductCategoryAggregateField {
   id = 'id',
   image = 'image',
   ownerentity = 'ownerEntity',
+  parentid = 'parentId',
   position = 'position',
   updatedat = 'updatedAt'
 }
@@ -3151,6 +3156,7 @@ export interface SearchableProductCategoryFilterInput {
   not?: InputMaybe<SearchableProductCategoryFilterInput>;
   or?: InputMaybe<Array<InputMaybe<SearchableProductCategoryFilterInput>>>;
   ownerEntity?: InputMaybe<SearchableIdFilterInput>;
+  parentId?: InputMaybe<SearchableIdFilterInput>;
   position?: InputMaybe<SearchableIntFilterInput>;
   updatedAt?: InputMaybe<SearchableStringFilterInput>;
 }
@@ -3165,6 +3171,7 @@ export enum SearchableProductCategorySortableFields {
   id = 'id',
   image = 'image',
   ownerentity = 'ownerEntity',
+  parentid = 'parentId',
   position = 'position',
   updatedat = 'updatedAt'
 }
@@ -4145,6 +4152,7 @@ export interface UpdateProductCategoryInput {
   image?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<LocalizedItemInput>;
   ownerEntity?: InputMaybe<Scalars['ID']>;
+  parentId?: InputMaybe<Scalars['ID']>;
   position?: InputMaybe<Scalars['Int']>;
 }
 
@@ -4628,7 +4636,7 @@ export type CreateProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type CreateProductCategoryMutation = { createProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type CreateProductCategoryMutation = { createProductCategory?: { id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type UpdateProductCategoryMutationVariables = Exact<{
   input: UpdateProductCategoryInput;
@@ -4636,7 +4644,7 @@ export type UpdateProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type UpdateProductCategoryMutation = { updateProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type UpdateProductCategoryMutation = { updateProductCategory?: { id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type DeleteProductCategoryMutationVariables = Exact<{
   input: DeleteProductCategoryInput;
@@ -4644,7 +4652,7 @@ export type DeleteProductCategoryMutationVariables = Exact<{
 }>;
 
 
-export type DeleteProductCategoryMutation = { deleteProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type DeleteProductCategoryMutation = { deleteProductCategory?: { id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type CreateProductComponentMutationVariables = Exact<{
   input: CreateProductComponentInput;
@@ -4982,7 +4990,7 @@ export type GetProductCategoryQueryVariables = Exact<{
 }>;
 
 
-export type GetProductCategoryQuery = { getProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type GetProductCategoryQuery = { getProductCategory?: { id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type ListProductCategoriesQueryVariables = Exact<{
   filter?: InputMaybe<ModelProductCategoryFilterInput>;
@@ -4991,7 +4999,7 @@ export type ListProductCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type ListProductCategoriesQuery = { listProductCategories?: { nextToken?: string | null, items: Array<{ id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
+export type ListProductCategoriesQuery = { listProductCategories?: { nextToken?: string | null, items: Array<{ id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null> } | null };
 
 export type SearchProductCategoriesQueryVariables = Exact<{
   filter?: InputMaybe<SearchableProductCategoryFilterInput>;
@@ -5003,7 +5011,7 @@ export type SearchProductCategoriesQueryVariables = Exact<{
 }>;
 
 
-export type SearchProductCategoriesQuery = { searchProductCategories?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchProductCategoriesQuery = { searchProductCategories?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetProductComponentQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -5274,7 +5282,7 @@ export type OnProductCategoriesChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnProductCategoriesChangeSubscription = { onProductCategoriesChange?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnProductCategoriesChangeSubscription = { onProductCategoriesChange?: { id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnProductComponentsChangeSubscriptionVariables = Exact<{
   unitId: Scalars['ID'];
@@ -5372,17 +5380,17 @@ export type OnDeleteOrderSubscription = { onDeleteOrder?: { id: string, version?
 export type OnCreateProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateProductCategorySubscription = { onCreateProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnCreateProductCategorySubscription = { onCreateProductCategory?: { id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnUpdateProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateProductCategorySubscription = { onUpdateProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnUpdateProductCategorySubscription = { onUpdateProductCategory?: { id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnDeleteProductCategorySubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteProductCategorySubscription = { onDeleteProductCategory?: { id: string, ownerEntity: string, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
+export type OnDeleteProductCategorySubscription = { onDeleteProductCategory?: { id: string, ownerEntity: string, parentId?: string | null, image?: string | null, position: number, createdAt: string, updatedAt: string, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, name: { en?: string | null, de?: string | null, hu?: string | null } } | null };
 
 export type OnCreateProductComponentSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -7649,6 +7657,7 @@ export const CreateProductCategoryDocument = gql`
   createProductCategory(input: $input, condition: $condition) {
     id
     ownerEntity
+    parentId
     description {
       en
       de
@@ -7671,6 +7680,7 @@ export const UpdateProductCategoryDocument = gql`
   updateProductCategory(input: $input, condition: $condition) {
     id
     ownerEntity
+    parentId
     description {
       en
       de
@@ -7693,6 +7703,7 @@ export const DeleteProductCategoryDocument = gql`
   deleteProductCategory(input: $input, condition: $condition) {
     id
     ownerEntity
+    parentId
     description {
       en
       de
@@ -10676,6 +10687,7 @@ export const GetProductCategoryDocument = gql`
   getProductCategory(id: $id) {
     id
     ownerEntity
+    parentId
     description {
       en
       de
@@ -10699,6 +10711,7 @@ export const ListProductCategoriesDocument = gql`
     items {
       id
       ownerEntity
+      parentId
       description {
         en
         de
@@ -10731,6 +10744,7 @@ export const SearchProductCategoriesDocument = gql`
     items {
       id
       ownerEntity
+      parentId
       description {
         en
         de
@@ -12683,6 +12697,7 @@ export const OnProductCategoriesChangeDocument = gql`
   onProductCategoriesChange(unitId: $unitId) {
     id
     ownerEntity
+    parentId
     description {
       en
       de
@@ -14974,6 +14989,7 @@ export const OnCreateProductCategoryDocument = gql`
   onCreateProductCategory {
     id
     ownerEntity
+    parentId
     description {
       en
       de
@@ -14996,6 +15012,7 @@ export const OnUpdateProductCategoryDocument = gql`
   onUpdateProductCategory {
     id
     ownerEntity
+    parentId
     description {
       en
       de
@@ -15018,6 +15035,7 @@ export const OnDeleteProductCategoryDocument = gql`
   onDeleteProductCategory {
     id
     ownerEntity
+    parentId
     description {
       en
       de

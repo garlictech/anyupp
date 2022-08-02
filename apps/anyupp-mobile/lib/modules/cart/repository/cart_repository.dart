@@ -250,7 +250,6 @@ class CartRepository implements ICartProvider {
                   name: item.name,
                   price: item.price,
                   productComponentId: item.productComponentId,
-                  externalId: item.externalId,
                   netPackagingFee: item.netPackagingFee,
                   allergens: item.allergens,
                 ))

@@ -25,4 +25,9 @@ class ProductVariant extends $ProductVariant {
       this.netPackagingFee,
       required this.soldOut,
       this.externalId});
+
+  factory ProductVariant.fromJson(Map<String, dynamic> json) =>
+      _$ProductVariantFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProductVariantToJson(this);
 }

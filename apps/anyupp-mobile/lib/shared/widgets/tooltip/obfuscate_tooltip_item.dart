@@ -30,7 +30,7 @@ class ObfuscateTooltipItemState extends State<ObfuscateTooltipItem>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     _intervalSubscription =
         Stream.periodic(Duration(seconds: 1)).listen((event) {
       final currentPositionSize = getPositionAndSize();
@@ -40,7 +40,7 @@ class ObfuscateTooltipItemState extends State<ObfuscateTooltipItem>
       }
       _lastPositionSize = currentPositionSize;
     });
-    WidgetsBinding.instance!.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _addToTooltips(widget.tooltipKeys);
     });
   }
@@ -56,7 +56,7 @@ class ObfuscateTooltipItemState extends State<ObfuscateTooltipItem>
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     _intervalSubscription.cancel();
     _removeFromTooltips(widget.tooltipKeys);
     super.dispose();

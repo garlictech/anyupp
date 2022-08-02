@@ -50,7 +50,6 @@ class _MenuScreenState extends State<MenuScreen> {
           var bloc = getIt<ProductListBloc>();
           bloc.add(LoadAllProductList(
             unitId: currentUnit!.id,
-            chainId: currentUnit!.chainId,
           ));
           return bloc;
         },
@@ -95,7 +94,6 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   void _onRefresh() async {
     BlocProvider.of<ProductListBloc>(context).add(LoadAllProductList(
       unitId: currentUnit!.id,
-      chainId: currentUnit!.chainId,
     ));
   }
 

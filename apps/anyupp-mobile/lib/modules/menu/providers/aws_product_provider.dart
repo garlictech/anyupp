@@ -4,20 +4,20 @@ import '/graphql/graphql.dart';
 import '/models.dart';
 import '/modules/menu/utils/generated_product_converter.dart';
 import '/shared/pagination/pagination.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'product_provider_interface.dart';
 
 class AwsProductProvider implements IProductProvider {
   @override
-  Future<PageResponse<ProductCategory>> getProductCategoryList(String chainId,
+  Future<PageResponse<ProductCategory>> getProductCategoryList(
+      String ownerEntity,
       [String? nextToken]) async {
-    log.d('***** getProductCategoryList().start().chainId=$chainId');
+    log.d('***** getProductCategoryList().start().ownerEntity=$ownerEntity');
 
     try {
       var result = await GQL.amplify.execute(ListProductCategoriesQuery(
         variables: ListProductCategoriesArguments(
-          chainId: chainId, // TODO kideriteni miert chainId kell.
+          ownerEntity: ownerEntity,
           nextToken: nextToken,
         ),
       ));
@@ -63,13 +63,14 @@ class AwsProductProvider implements IProductProvider {
   @override
   Future<PageResponse<GeneratedProduct>> getAllProductList(
       {required String unitId,
-      required String chainId,
+      required String ownerEntity,
       String? nextToken}) async {
     try {
-      log.d('***** getAllProductList().unitId=$unitId, chainId=$chainId');
+      log.d(
+          '***** getAllProductList().unitId=$unitId, ownerEntity=$ownerEntity');
       var result = await GQL.amplify.execute(ListAllProductsQuery(
         variables: ListAllProductsArguments(
-          chainId: chainId,
+          unitId: unitId,
           nextToken: nextToken,
         ),
       ));
@@ -87,15 +88,6 @@ class AwsProductProvider implements IProductProvider {
       // Load Config Components and Config sets for Chain
       Map<String, ProductComponentSet> componentSets = {};
       Map<String, ProductComponent> components = {};
-      await Future.wait(
-        [
-          (() async => componentSets = await _getChainProductSets(chainId))(),
-          (() async =>
-              components = await _getChainProductComponents(chainId))(),
-        ],
-      );
-      // log.d('ComponentSets=${componentSets}');
-      // log.d('Components=${components}');
       log.d(
           '***** getAllProductList().searchUnitProducts.items.length=${result.data?.searchUnitProducts?.items.length}');
 
@@ -135,51 +127,5 @@ class AwsProductProvider implements IProductProvider {
       log.e('***** getAllProductList().error=$e');
       rethrow;
     }
-  }
-
-  Future<Map<String, ProductComponentSet>> _getChainProductSets(
-    String chainId,
-  ) async {
-    var result = await GQL.amplify.execute(
-      ListChainProductComponentSetsQuery(
-        variables: ListChainProductComponentSetsArguments(
-          chainId: chainId,
-        ),
-      ),
-      fetchPolicy: FetchPolicy.cacheFirst,
-    );
-
-    if (result.hasErrors) {
-      log.d('AwsUnitProvider._getGroup().result.errors=${result.errors}');
-      throw GraphQLException.fromGraphQLError(
-          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
-    }
-
-    return Map.fromIterable(
-        result.data?.searchProductComponentSets?.items ?? [],
-        key: (v) => v.id,
-        value: (v) => v);
-  }
-
-  Future<Map<String, ProductComponent>> _getChainProductComponents(
-    String chainId,
-  ) async {
-    var result = await GQL.amplify.execute(
-      ListChainProductComponentsQuery(
-        variables: ListChainProductComponentsArguments(
-          chainId: chainId,
-        ),
-      ),
-      fetchPolicy: FetchPolicy.cacheFirst,
-    );
-
-    if (result.hasErrors) {
-      log.d('AwsUnitProvider._getGroup().result.errors=${result.errors}');
-      throw GraphQLException.fromGraphQLError(
-          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
-    }
-
-    return Map.fromIterable(result.data?.searchProductComponents?.items ?? [],
-        key: (v) => v.id, value: (v) => v);
   }
 }

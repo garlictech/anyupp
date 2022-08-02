@@ -668,6 +668,7 @@ type ProductCategory
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   ownerEntity: ID!
+  parentId: ID # parent category id
   description: LocalizedItem
   image: String
   name: LocalizedItem!

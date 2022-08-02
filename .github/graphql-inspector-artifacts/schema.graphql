@@ -654,6 +654,7 @@ type Place @aws_iam @aws_cognito_user_pools @aws_api_key {
 type ProductCategory @aws_iam @aws_cognito_user_pools {
   id: ID!
   ownerEntity: ID!
+  parentId: ID
   description: LocalizedItem
   image: String
   name: LocalizedItem!
@@ -2104,6 +2105,7 @@ type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {
 input ModelProductCategoryFilterInput {
   id: ModelIDInput
   ownerEntity: ModelIDInput
+  parentId: ModelIDInput
   image: ModelStringInput
   position: ModelIntInput
   and: [ModelProductCategoryFilterInput]
@@ -2113,6 +2115,7 @@ input ModelProductCategoryFilterInput {
 
 input ModelProductCategoryConditionInput {
   ownerEntity: ModelIDInput
+  parentId: ModelIDInput
   image: ModelStringInput
   position: ModelIntInput
   and: [ModelProductCategoryConditionInput]
@@ -2123,6 +2126,7 @@ input ModelProductCategoryConditionInput {
 input CreateProductCategoryInput {
   id: ID
   ownerEntity: ID!
+  parentId: ID
   description: LocalizedItemInput
   image: String
   name: LocalizedItemInput!
@@ -2132,6 +2136,7 @@ input CreateProductCategoryInput {
 input UpdateProductCategoryInput {
   id: ID!
   ownerEntity: ID
+  parentId: ID
   description: LocalizedItemInput
   image: String
   name: LocalizedItemInput
@@ -3133,6 +3138,7 @@ input SearchableOrderAggregationInput {
 input SearchableProductCategoryFilterInput {
   id: SearchableIDFilterInput
   ownerEntity: SearchableIDFilterInput
+  parentId: SearchableIDFilterInput
   image: SearchableStringFilterInput
   position: SearchableIntFilterInput
   createdAt: SearchableStringFilterInput
@@ -3145,6 +3151,7 @@ input SearchableProductCategoryFilterInput {
 enum SearchableProductCategorySortableFields {
   id
   ownerEntity
+  parentId
   image
   position
   createdAt
@@ -3159,6 +3166,7 @@ input SearchableProductCategorySortInput {
 enum SearchableProductCategoryAggregateField {
   id
   ownerEntity
+  parentId
   image
   position
   createdAt
