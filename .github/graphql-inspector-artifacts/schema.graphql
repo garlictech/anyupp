@@ -22,7 +22,7 @@ type Address @aws_iam @aws_cognito_user_pools {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationLatLng!
+  location: LocationLatLng
 }
 
 type PaymentMode @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -1110,7 +1110,6 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationLatLngInput!
 }
 
 input LocalizedItemInput {

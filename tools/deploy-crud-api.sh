@@ -7,8 +7,8 @@ export AWS_PAGER=""
 ENVNAME=$1
 APPNAME=${ENVNAME}-anyupp-backend
 
-amplify push --yes --allow-destructive-graphql-schema-updates
-#amplify push --yes
+#amplify push --yes --allow-destructive-graphql-schema-updates
+amplify push --yes
 
 APPID=$(amplify env get --name ${ENVNAME} --json | \
   jq -r '.awscloudformation.AmplifyAppId')

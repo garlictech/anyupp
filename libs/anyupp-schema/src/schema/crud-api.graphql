@@ -20,7 +20,7 @@ type Address {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationLatLng!
+  location: LocationLatLng
 }
 
 type PaymentMode {
@@ -1138,7 +1138,6 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationLatLngInput!
 }
 
 input LocalizedItemInput {

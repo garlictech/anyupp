@@ -223,10 +223,6 @@ export class UnitFormService {
     if (formValue.address) {
       formValue.address = {
         ...formValue.address,
-        location: {
-          lat: formValue.location?.lat || 0,
-          lng: formValue.location?.lon || 0,
-        },
       };
     }
 

@@ -141,7 +141,6 @@ describe('Product variants resolver tests', () => {
           sdk.UpdateUnitProduct({
             input: {
               id: result.id,
-              chainId: 'A NEW CHAIN ID',
               variants: [
                 {
                   ...(result?.variants?.[0] as Variant),

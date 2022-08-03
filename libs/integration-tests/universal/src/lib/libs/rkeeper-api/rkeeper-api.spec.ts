@@ -1,4 +1,4 @@
-import { sendRkeeperOrder } from '@bgap/rkeeper-api';
+import { searchExternalVariant, sendRkeeperOrder } from '@bgap/rkeeper-api';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
@@ -20,7 +20,6 @@ import {
 import {
   createRkeeperProduct,
   updateRkeeperProduct,
-  searchExternalUnitProduct,
   getBusinessEntityInfo,
   handleRkeeperProducts,
   createDefaultProductCategory,
@@ -144,15 +143,13 @@ describe('Test the rkeeper api basic functionality', () => {
     cleanup$.subscribe(() => done());
   }, 60000);
 
-  test.only('It shouls be able to search for external product', done => {
-    searchExternalUnitProduct(crudSdk)(fixtures.rkeeperProductGuid)
+  test('It shouls be able to search for external variant', done => {
+    searchExternalVariant(crudSdk)(fixtures.rkeeperProductGuid)
       .pipe(
         tap(res =>
           expect(res?.id).toMatchSnapshot('existing external product'),
         ),
-        switchMap(() =>
-          searchExternalUnitProduct(crudSdk)('NOT EXISTING PRODUCT'),
-        ),
+        switchMap(() => searchExternalVariant(crudSdk)('NOT EXISTING PRODUCT')),
         tap(res =>
           expect(res).toMatchSnapshot('NOT existing external product'),
         ),
@@ -235,7 +232,7 @@ describe('Test the rkeeper api basic functionality', () => {
     });
   }, 60000);
 
-  test('Test full rkeeper product handling - the use case', done => {
+  test.only('Test full rkeeper product handling - the use case', done => {
     const createMatcher =
       (matcher: Record<string, unknown>) =>
       (label: string) =>

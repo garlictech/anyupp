@@ -5,7 +5,7 @@ import {
   calculateOrderItemSumPriceRounded,
   calculateOrderSumPriceRounded,
   calculateTaxSumFromBrutto,
-} from '@bgap/crud-gql/api';
+} from './order.utils';
 import {
   OrderItem,
   OrderItemConfigComponentInput,

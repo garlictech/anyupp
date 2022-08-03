@@ -183,10 +183,6 @@ const createUnitInput: CreateUnitInput = {
     country: 'UNIT COUNTRY',
     title: 'UNTI TITLE',
     postalCode: 'UNIT POSTAL CODE',
-    location: {
-      lat: 47,
-      lng: 19,
-    },
   },
   location: {
     lat: 47,

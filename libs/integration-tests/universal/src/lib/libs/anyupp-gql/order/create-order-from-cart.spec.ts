@@ -408,7 +408,6 @@ describe('CreatOrderFromCart mutation test', () => {
         }),
       ).pipe(
         switchMap(x => deps.crudSdk.GetOrder({ id: x || '' })),
-        tap(x => console.warn('ORDER: ', JSON.stringify(x, null, 2))),
         map(order => order?.id),
       ),
     ).subscribe(() => done());

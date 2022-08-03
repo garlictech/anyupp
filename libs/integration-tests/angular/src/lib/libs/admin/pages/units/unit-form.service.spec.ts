@@ -27,7 +27,7 @@ import {
   MockNbDialogService,
   MockTranslateService,
 } from '../../shared/service-mocks';
-import { ChainProduct, OrderMode, ServingMode, Unit } from '@bgap/domain';
+import { OrderMode, ServingMode, Unit, UnitProduct } from '@bgap/domain';
 
 describe('UnitFormService', () => {
   const unitId = `${testIdPrefix}ADMIN_UNIT_IT_UNIT_ID_01`;
@@ -146,7 +146,7 @@ describe('UnitFormService', () => {
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<ChainProduct>>saveResponse).data.id
+          (<UpsertResponse<UnitProduct>>saveResponse).data.id
             ? service.updateUnit$(
                 {
                   ...unitFixture.unitInputBase,
@@ -248,7 +248,7 @@ describe('UnitFormService', () => {
         }),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<ChainProduct>>saveResponse).data.id
+          (<UpsertResponse<UnitProduct>>saveResponse).data.id
             ? service.updateRKeeperData$({
                 unitId,
                 anyuppPassword: 'new-anyuppPassword',

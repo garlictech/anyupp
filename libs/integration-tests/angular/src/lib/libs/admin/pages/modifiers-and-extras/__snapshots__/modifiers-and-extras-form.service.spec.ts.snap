@@ -10,7 +10,6 @@ Object {
       "soya",
       "peanut",
     ],
-    "chainId": "chainId",
     "createdAt": Any<String>,
     "deletedAt": null,
     "description": "DESCRIPTION",
@@ -22,7 +21,7 @@ Object {
       "en": "PRODUCT_COMPONENT",
       "hu": "TERMEK_KOMPONENS",
     },
-    "soldOut": null,
+    "ownerEntity": "ownerEntity",
     "updatedAt": Any<String>,
   },
   "type": "insert",
@@ -32,13 +31,13 @@ Object {
 exports[`ModifiersAndExtrasFormService createProductComponentFormGroup should create form group 1`] = `
 Object {
   "allergens": Array [],
-  "chainId": "",
   "description": "",
   "name": Object {
     "de": "",
     "en": "",
     "hu": "",
   },
+  "ownerEntity": "",
   "soldOut": false,
 }
 `;
@@ -46,7 +45,6 @@ Object {
 exports[`ModifiersAndExtrasFormService createProductComponentSet$ should create product component set 1`] = `
 Object {
   "data": Object {
-    "chainId": "chainId",
     "createdAt": Any<String>,
     "deletedAt": null,
     "description": "DESCRIPTION",
@@ -60,6 +58,7 @@ Object {
       "en": "COMPONENT_SET",
       "hu": "KOMPONENS_SET",
     },
+    "ownerEntity": "ownerEntity",
     "supportedServingModes": null,
     "type": "extras",
     "updatedAt": Any<String>,
@@ -78,7 +77,6 @@ Object {
       "soya",
       "peanut",
     ],
-    "chainId": "chainId MOD",
     "createdAt": Any<String>,
     "deletedAt": null,
     "description": "DESCRIPTION",
@@ -90,7 +88,7 @@ Object {
       "en": "PRODUCT_COMPONENT",
       "hu": "TERMEK_KOMPONENS",
     },
-    "soldOut": null,
+    "ownerEntity": "ownerEntity MOD",
     "updatedAt": Any<String>,
   },
   "type": "update",
@@ -100,7 +98,6 @@ Object {
 exports[`ModifiersAndExtrasFormService updateProductComponentSet$ should update product component set 1`] = `
 Object {
   "data": Object {
-    "chainId": "chainId MOD",
     "createdAt": Any<String>,
     "deletedAt": null,
     "description": "DESCRIPTION",
@@ -114,6 +111,7 @@ Object {
       "en": "COMPONENT_SET",
       "hu": "KOMPONENS_SET",
     },
+    "ownerEntity": "ownerEntity MOD",
     "supportedServingModes": null,
     "type": "extras",
     "updatedAt": Any<String>,

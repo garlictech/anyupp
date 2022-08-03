@@ -163,7 +163,7 @@ describe('ModifiersAndExtrasFormService', () => {
           service.createProductComponent$({
             ...productComponentSetFixture.productComponentBase,
             id: productComponentId,
-            chainId: 'chainId',
+            ownerEntity: 'ownerEntity',
           }),
         ),
         tap(saveResponse => {
@@ -188,7 +188,7 @@ describe('ModifiersAndExtrasFormService', () => {
           service.createProductComponent$({
             ...productComponentSetFixture.productComponentBase,
             id: productComponentId,
-            chainId: 'chainId',
+            ownerEntity: 'ownerEntity',
           }),
         ),
         catchError(() => cleanup()),
@@ -197,7 +197,7 @@ describe('ModifiersAndExtrasFormService', () => {
             ? service.updateProductComponent$({
                 ...productComponentSetFixture.productComponentBase,
                 id: productComponentId,
-                chainId: 'chainId MOD',
+                ownerEntity: 'ownerEntity MOD',
               })
             : EMPTY,
         ),
@@ -280,7 +280,7 @@ describe('ModifiersAndExtrasFormService', () => {
           service.createProductComponentSet$({
             ...productComponentSetFixture.productComponentSetBase,
             id: productComponentSetId,
-            chainId: 'chainId',
+            ownerEntity: 'ownerEntity',
           }),
         ),
         tap(saveResponse => {
@@ -305,7 +305,7 @@ describe('ModifiersAndExtrasFormService', () => {
           service.createProductComponentSet$({
             ...productComponentSetFixture.productComponentSetBase,
             id: productComponentSetId,
-            chainId: 'chainId',
+            ownerEntity: 'ownerEntity',
           }),
         ),
         catchError(() => cleanup()),
@@ -314,7 +314,7 @@ describe('ModifiersAndExtrasFormService', () => {
             ? service.updateProductComponentSet$({
                 ...productComponentSetFixture.productComponentSetBase,
                 id: productComponentSetId,
-                chainId: 'chainId MOD',
+                ownerEntity: 'ownerEntity MOD',
               })
             : EMPTY,
         ),

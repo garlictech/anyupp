@@ -155,7 +155,7 @@ const getFirstFoundItem = <T>(): UnaryFunction<
     map(items => items?.[0] ?? null),
   );
 
-export const searchExternalUnitProduct =
+export const searchExternalVariant =
   (sdk: CrudSdk) =>
   (rkeeperProductGuid: string): Observable<Maybe<UnitProduct> | undefined> =>
     sdk
@@ -363,7 +363,7 @@ export const handleRkeeperProducts =
                 )(dish).pipe(
                   map(O.getOrElse<ProductConfigSet[] | null>(() => null)),
                 ),
-                searchExternalUnitProduct(sdk)(dish.id.toString()),
+                searchExternalVariant(sdk)(dish.id.toString()),
               ]).pipe(
                 switchMap(([configSets, unitProduct]) =>
                   R.isNil(unitProduct)
