@@ -293,6 +293,7 @@ describe('Test the rkeeper api basic functionality', () => {
       fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
     )(fixtures.rawData)
       .pipe(
+        tap(() => console.warn('******')),
         delay(ES_DELAY),
         switchMap(() =>
           crudSdk.SearchUnitProducts({

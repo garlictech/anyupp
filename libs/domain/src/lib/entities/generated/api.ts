@@ -16275,8 +16275,8 @@ export const OnDeleteReceiptDocument = gql`
   }
 }
     `;
-export type Requester<C= {}> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> & Observable<R>
-export function getSdk<C>(requester: Requester<C>) {
+export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> & Observable<R>
+export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     SearchReportOrders(variables?: SearchReportOrdersQueryVariables, options?: C): Promise<SearchReportOrdersQuery> {
       return requester<SearchReportOrdersQuery, SearchReportOrdersQueryVariables>(SearchReportOrdersDocument, variables, options);

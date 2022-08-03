@@ -10,7 +10,12 @@ aws ecr get-login-password --region eu-west-1 | docker login --username AWS --pa
 
 yarn nx run-many --target=config --all --skip-nx-cache --env=$ENVNAME
 yarn nx run-many --target=build --projects=crud-backend,anyupp-global,anyupp-backend,anyupp-mobile --env=$ENVNAME --mode=$MODE
-yarn nx run-many --target=build --projects=variants-manager-site
+
+if [ $MODE = 'ci' ]; then
+  yarn nx run-many --target=build-ci --projects=variants-manager-site
+else
+  yarn nx run-many --target=build --projects=variants-manager-site
+fi
 
 if [ $ENVNAME = 'dev' ]; then
   yarn nx build admin 

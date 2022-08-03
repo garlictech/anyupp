@@ -22,6 +22,25 @@
       ],
       "outputs": ["dist/apps/variants-manager"]
     },
+    "build-ci": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build web --release",
+          "mkdir -p ../../dist/apps/variants-manager",
+          "cp -r build/web/* ../../dist/apps/variants-manager"
+        ],
+        "cwd": "apps/variants-manager-site"
+      },
+      "dependsOn": [
+        {
+          "projects": "dependencies",
+          "target": "build"
+        }
+      ],
+      "outputs": ["dist/apps/variants-manager"]
+    },
     "analyze": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
