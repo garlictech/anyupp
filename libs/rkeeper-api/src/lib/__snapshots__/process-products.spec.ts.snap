@@ -130,30 +130,18 @@ Object {
     Object {
       "items": Array [
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 0,
           "productComponentId": "COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 100,
           "productComponentId": "COMPONENT ID",
         },
       ],
-      "name": Object {
-        "hu": undefined,
-      },
       "position": -1,
       "productSetId": "NEW PRODUCT COMPONENT SET ID",
-      "type": "modifier",
     },
   ],
 }
@@ -1036,85 +1024,49 @@ Object {
     Object {
       "items": Array [
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 0,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 100,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 100,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 100,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 100,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
         },
       ],
-      "name": Object {
-        "hu": undefined,
-      },
       "position": -1,
       "productSetId": "NEW PRODUCT COMPONENT SET ID",
-      "type": "modifier",
     },
     Object {
       "items": Array [
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 50,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 0,
           "productComponentId": "NEW PRODUCT COMPONENT ID",
         },
       ],
-      "name": Object {
-        "hu": undefined,
-      },
       "position": -1,
       "productSetId": "NEW PRODUCT COMPONENT SET ID",
-      "type": "modifier",
     },
   ],
 }
@@ -1127,85 +1079,49 @@ Object {
     Object {
       "items": Array [
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 0,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 100,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 100,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 100,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 100,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
         },
       ],
-      "name": Object {
-        "hu": undefined,
-      },
       "position": -1,
       "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
-      "type": "modifier",
     },
     Object {
       "items": Array [
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 50,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
         },
         Object {
-          "externalId": undefined,
-          "name": Object {
-            "hu": undefined,
-          },
           "position": -1,
           "price": 0,
           "productComponentId": "THE NEW PRODUCT COMPONENT ID",
         },
       ],
-      "name": Object {
-        "hu": undefined,
-      },
       "position": -1,
       "productSetId": "THE NEW PRODUCT COMPONENT SET ID",
-      "type": "modifier",
     },
   ],
 }

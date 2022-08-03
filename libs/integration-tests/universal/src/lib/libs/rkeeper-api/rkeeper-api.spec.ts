@@ -232,7 +232,7 @@ describe('Test the rkeeper api basic functionality', () => {
     });
   }, 60000);
 
-  test.only('Test full rkeeper product handling - the use case', done => {
+  test('Test full rkeeper product handling - the use case', done => {
     const createMatcher =
       (matcher: Record<string, unknown>) =>
       (label: string) =>
@@ -293,7 +293,6 @@ describe('Test the rkeeper api basic functionality', () => {
       fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
     )(fixtures.rawData)
       .pipe(
-        tap(() => console.warn('******')),
         delay(ES_DELAY),
         switchMap(() =>
           crudSdk.SearchUnitProducts({
@@ -434,7 +433,7 @@ test('send order to rkeeper by HTTP post', done => {
       next: () => console.log,
       error: error => {
         console.error('Error', error);
-        done();
+        throw error;
       },
       complete: () => done(),
     });
@@ -455,7 +454,7 @@ test('send order to rkeeper by sendRkeeperOrder', done => {
       next: () => console.log,
       error: error => {
         console.error('Error', error);
-        done();
+        throw error;
       },
       complete: () => done(),
     });
@@ -521,7 +520,7 @@ test('send an unpaid order to rkeeper by HTTP post, then send another request to
       next: () => console.log,
       error: error => {
         console.error('Error', error);
-        done();
+        throw error;
       },
       complete: () => done(),
     });
@@ -549,7 +548,7 @@ test('test the menusync route', done => {
       next: () => console.log,
       error: error => {
         console.error('Error', error);
-        done();
+        throw error;
       },
       complete: () => done(),
     });
@@ -582,7 +581,7 @@ test('test the order status route', done => {
       next: () => console.log,
       error: error => {
         console.error('Error', error);
-        done();
+        throw error;
       },
       complete: () => done(),
     });

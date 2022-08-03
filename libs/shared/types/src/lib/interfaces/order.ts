@@ -1,4 +1,3 @@
-import { CrudSdk } from '@bgap/crud-gql/api';
 import {
   LocalizedItem,
   Order,
@@ -91,9 +90,4 @@ export interface UnpayCategoryStatObjItem {
 
 export interface UnpayCategoryStatObj {
   [category: string]: UnpayCategoryStatObjItem;
-}
-
-export interface OrderHandlerDeps {
-  crudSdk: CrudSdk;
-  timestamp: () => number;
 }

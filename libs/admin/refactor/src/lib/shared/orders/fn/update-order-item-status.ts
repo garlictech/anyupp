@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { throwIfEmptyValue } from '@bgap/shared/utils';
 
-import { OrderHandlerDeps } from '@bgap/shared/types';
+import { OrderHandlerDeps } from './utils';
 import { Order, OrderStatus, UpdateOrderInput } from '@bgap/domain';
 import { getOrderStatusByItemsStatus } from '@bgap/crud-gql/api';
 

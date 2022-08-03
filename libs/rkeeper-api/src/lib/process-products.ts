@@ -15,7 +15,6 @@ import {
   mergeMap,
   count,
   catchError,
-  delay,
   mapTo,
   shareReplay,
 } from 'rxjs/operators';
@@ -380,16 +379,6 @@ export const handleRkeeperProducts =
           tap(() => console.log('... a product processed')),
           count(),
           tap(i => console.log(i + ' Product processed')),
-          delay(ES_DELAY),
-          switchMap(() =>
-            sdk.SearchUnitProducts({
-              filter: {
-                unitId: { eq: businessEntityInfo.unitId },
-                dirty: { ne: true },
-              },
-              limit: 1,
-            }),
-          ),
           mapTo(true),
         ),
       ),
@@ -430,8 +419,6 @@ export const upsertComponent =
           productComponentId: component.id,
           price: modifier.price,
           position: -1,
-          externalId: component.externalId,
-          name: { hu: component.name?.hu },
         })),
       );
 
@@ -521,8 +508,6 @@ const upsertConfigSetsHelper = R.memoizeWith(
               productSetId: componentSet.id,
               items: components,
               position: -1,
-              type: ProductComponentSetType.modifier,
-              name: { hu: componentSet.name?.hu },
             })),
           ),
       ),
@@ -546,10 +531,10 @@ export const filterActiveData = <T extends { active: boolean }>(data: T[]) =>
 
 const resolveComponentSetsHelper = R.memoizeWith(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (_sdk: CrudSdk, chainId: string, _rawData: any, dish: Dish) =>
-    chainId + (dish.modischeme ?? -1).toString(),
+  (_sdk: CrudSdk, unitId: string, _rawData: any, dish: Dish) =>
+    unitId + (dish.modischeme ?? -1).toString(),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (sdk: CrudSdk, chainId: string, rawData: any, dish: Dish) =>
+  (sdk: CrudSdk, unitId: string, rawData: any, dish: Dish) =>
     pipe(
       rawData?.data?.modifiers,
       O.fromPredicate(() => !!rawData?.data?.modifiers && !!dish.modischeme),
@@ -597,7 +582,7 @@ const resolveComponentSetsHelper = R.memoizeWith(
           ),
           (modifierGroups: Observable<ModifierGroup>[]) =>
             R.isEmpty(modifierGroups) ? of([]) : forkJoin(modifierGroups),
-          switchMap(upsertConfigSets(sdk, chainId)),
+          switchMap(upsertConfigSets(sdk, unitId)),
           catchError(err => {
             console.warn(
               `Found an invalid record. The problem: (${JSON.stringify(

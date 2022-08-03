@@ -1,5 +1,5 @@
 import { OrderStatus } from '@bgap/domain';
-import { OrderHandlerDeps } from '@bgap/shared/types';
+import { OrderHandlerDeps } from './utils';
 
 export const updateOrderStatus =
   (deps: OrderHandlerDeps) =>

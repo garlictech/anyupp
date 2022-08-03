@@ -1,7 +1,7 @@
 import { switchMap } from 'rxjs/operators';
 
 import { PaymentStatus, UnpayCategory } from '@bgap/domain';
-import { OrderHandlerDeps } from '@bgap/shared/types';
+import { OrderHandlerDeps } from './utils';
 
 export const updateOrderTransactionStatus =
   (deps: OrderHandlerDeps) =>
