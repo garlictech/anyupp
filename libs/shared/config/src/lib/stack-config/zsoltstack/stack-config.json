@@ -15,25 +15,25 @@
     "vpcIdOutput": "vpc-0880d26d0165c9f7f"
   },
   "anyupp-backend-sites": {
-    "VariantsBucket8636AB76": "variants-anyupp-backend.anyupp.com",
+    "VariantsBucket8636AB76": "zsoltstack-variants-anyupp-backend.anyupp.com",
     "VariantsDistributionDomainName64CED8FD": "d19l43lc6k016w.cloudfront.net",
-    "AdminSiteDomainA75B4E32": "admin-anyupp-backend.anyupp.com",
-    "VariantsSiteDomain720640AD": "variants-anyupp-backend.anyupp.com",
+    "AdminSiteDomainA75B4E32": "zsoltstack-admin-anyupp-backend.anyupp.com",
+    "VariantsSiteDomain720640AD": "zsoltstack-variants-anyupp-backend.anyupp.com",
     "AdminDistributionDomainNameA4A4FE5B": "d3ooy6w4xhs0hy.cloudfront.net",
-    "AdminSiteEAA17C78": "https://admin-anyupp-backend.anyupp.com",
+    "AdminSiteEAA17C78": "https://zsoltstack-admin-anyupp-backend.anyupp.com",
     "AdminDistributionIdB4DE25AB": "E6K44SMX7URKC",
-    "VariantsSite8C170134": "https://variants-anyupp-backend.anyupp.com",
+    "VariantsSite8C170134": "https://zsoltstack-variants-anyupp-backend.anyupp.com",
     "VariantsDistributionIdEF1CC563": "E2612Q4E6RH7VJ",
-    "AdminBucketCA57896C": "admin-anyupp-backend.anyupp.com"
+    "AdminBucketCA57896C": "zsoltstack-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {
     "ConsumerUserPoolId": "eu-west-1_AUqAGszS6",
     "AdminUserPoolId": "eu-west-1_RwPXNA4am",
     "AdminWebUserPoolClientId": "4q3irgd1vk7fpsvhf0f3p4knos",
     "ConsumerNativeUserPoolClientId": "7f2luopf192dprdnsdbhl9sgnr",
-    "AdminUserPoolDomain": "https://anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
+    "AdminUserPoolDomain": "https://zsoltstack-anyupp-backend-admin.auth.eu-west-1.amazoncognito.com",
     "ConsumerWebUserPoolClientId": "4vh2pk285820dtlsdi2cso21gc",
-    "ConsumerUserPoolDomain": "https://anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
+    "ConsumerUserPoolDomain": "https://zsoltstack-anyupp-backend-consumer.auth.eu-west-1.amazoncognito.com",
     "IdentityPoolId": "eu-west-1:8dfb630b-b5d3-4445-bc55-30d07834e667",
     "AdminNativeUserPoolClientId": "1ga9h1fsr25b9ksj9ikhsq6b1l"
   },
@@ -44,7 +44,7 @@
   "anyupp-backend-rkeeper": {
     "RKeeperWebhookEndpointCBC72BD4": "https://dadq12h6fl.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-zsoltstack.anyupp.com/zsoltstack",
-    "RKeeperTaskBucketName": "anyupp-backen-anyupprkeepermenubucket4-3c8swgmphrt6",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/anyupp-backend-RkeeperECSTaskExecutionR-1UAN6OBJT4R8K"
+    "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-3c8swgmphrt6",
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-RkeeperECSTaskExecutionR-1UAN6OBJT4R8K"
   }
 }
