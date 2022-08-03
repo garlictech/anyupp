@@ -7,9 +7,7 @@ import { App, Stack } from '@serverless-stack/resources';
 import { AppsyncAppStack } from './app/appsync-app-stack';
 import { CognitoStack } from './app/cognito-stack';
 import { ConfiguratorStack } from './app/configurator-stack';
-import { FargateStack } from './app/fargate-stack';
 import { ParamsStack } from './app/params-stack';
-import { ReportGeneratorStack } from './app/report-generator-stack';
 import { RKeeperStack } from './app/rkeeper-stack';
 import { SecretsManagerStack } from './app/secretsmanager-stack';
 import { SiteStack } from './app/site-stack';
@@ -33,12 +31,6 @@ export class AnyUppStack extends Stack {
     const vpc = ec2.Vpc.fromLookup(this, 'AnyuppVpc', {
       vpcId: paramsStack.vpcId,
     });
-
-    const securityGroupId = ec2.SecurityGroup.fromSecurityGroupId(
-      this,
-      'AnyuppDefaultSecurityGroupId',
-      paramsStack.securityGroupId,
-    );
 
     const rootDomain = 'anyupp.com';
 
@@ -85,11 +77,6 @@ export class AnyUppStack extends Stack {
       apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
     });
 
-    const fargateStack = new FargateStack(scope, 'fargate', {
-      vpc,
-      securityGroupId,
-    });
-
     const appsyncStack = new AppsyncAppStack(scope, 'appsync', {
       consumerUserPool: cognitoStack.consumerUserPool,
       adminUserPool: cognitoStack.adminUserPool,
@@ -99,16 +86,6 @@ export class AnyUppStack extends Stack {
       apiAccessKeyId: secretsManagerStack.apiAccessKeyId,
       apiSecretAccessKey: secretsManagerStack.apiSecretAccessKey,
       szamlazzhuAgentKey: secretsManagerStack.szamlazzhuAgentKey,
-    });
-
-    new ReportGeneratorStack(scope, 'report-generator', {
-      reportAccessKeyId: secretsManagerStack.reportAccessKeyID,
-      reportSecretAccessKey: secretsManagerStack.reportSecretAccessKey,
-      slackChannel: paramsStack.slackChannel,
-      vpc,
-      userPoolId: cognitoStack.adminUserPool.userPoolId,
-      slackBotToken: secretsManagerStack.slackBotToken,
-      cluster: fargateStack.cluster,
     });
 
     new StripeStack(scope, 'stripe', {
