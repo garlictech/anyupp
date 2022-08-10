@@ -12,7 +12,7 @@ import '/graphql/generated/crud-api.dart';
 
 // Represents one row (one sandwich) in cart page
 class CartListItemWidget extends StatefulWidget {
-  final GeoUnit unit;
+  final Unit unit;
   final OrderItem order;
   final ServingMode servingMode;
   CartListItemWidget(
@@ -204,7 +204,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
     List<Widget> children = [];
     if (widget.order.selectedConfigMap != null) {
       widget.order.selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent
+        for (ProductConfigComponent generatedProductConfigComponent
             in value) {
           children.add(Text(
             '+ ${getLocalizedText(context, generatedProductConfigComponent.name)}',

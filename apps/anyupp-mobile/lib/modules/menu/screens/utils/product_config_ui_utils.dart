@@ -8,7 +8,7 @@ import '/graphql/generated/crud-api.dart';
 // }
 
 String getModifierItemsTotalPrice(
-    GeneratedProductConfigSet modifier, String currency) {
+    ProductConfigSet modifier, String currency) {
   double price = 0;
   modifier.items.forEach((item) {
     price += item.price;
@@ -20,8 +20,8 @@ String formatCurrencyWithSignal(double price, String currency) {
   return (price >= 0 ? '+' : '-') + formatCurrency(price, currency);
 }
 
-GeneratedProductConfigSet? getModifierConfigSetById(
-    String productSetId, List<GeneratedProductConfigSet> sets) {
+ProductConfigSet? getModifierConfigSetById(
+    String productSetId, List<ProductConfigSet> sets) {
   // log.d('getModifierConfigSetById()=$productSetId');
   int index = sets.indexWhere((configSet) =>
       configSet.type == ProductComponentSetType.modifier &&
@@ -33,8 +33,8 @@ GeneratedProductConfigSet? getModifierConfigSetById(
   return null;
 }
 
-GeneratedProductConfigSet? getExtraConfigSetById(
-    String extraSetId, List<GeneratedProductConfigSet> sets) {
+ProductConfigSet? getExtraConfigSetById(
+    String extraSetId, List<ProductConfigSet> sets) {
   int index = sets.indexWhere((configSet) =>
       configSet.type == ProductComponentSetType.extras &&
       configSet.productSetId == extraSetId);
@@ -44,9 +44,9 @@ GeneratedProductConfigSet? getExtraConfigSetById(
   return null;
 }
 
-GeneratedProductConfigComponent? getComponentByIdFromSet(
+ProductConfigComponent? getComponentByIdFromSet(
   String componentId,
-  GeneratedProductConfigSet? configSet,
+  ProductConfigSet? configSet,
   ServingMode? mode,
 ) {
   if (configSet != null && configSet.items.isNotEmpty) {
@@ -59,13 +59,13 @@ GeneratedProductConfigComponent? getComponentByIdFromSet(
   return null;
 }
 
-GeneratedProductConfigComponent? getExtraComponentByIdAndSetId(
+ProductConfigComponent? getExtraComponentByIdAndSetId(
   String extraSetId,
   String componentId,
-  List<GeneratedProductConfigSet> configSets,
+  List<ProductConfigSet> configSets,
   ServingMode? mode,
 ) {
-  GeneratedProductConfigSet? configSet =
+  ProductConfigSet? configSet =
       getExtraConfigSetById(extraSetId, configSets);
   if (configSet != null && configSet.supportedServingModes.contains(mode)) {
     return getComponentByIdFromSet(componentId, configSet, mode);
@@ -76,7 +76,7 @@ GeneratedProductConfigComponent? getExtraComponentByIdAndSetId(
 class CalculatePriceInput {
   final Map<String, String> selectedModifiers;
   final Map<String, Map<String, bool>> selectedExtras;
-  final List<GeneratedProductConfigSet> configSets;
+  final List<ProductConfigSet> configSets;
 
   CalculatePriceInput(
       {required this.selectedModifiers,
@@ -85,7 +85,7 @@ class CalculatePriceInput {
 }
 
 double calculateTotalPrice(
-  GeneratedProduct product,
+  Product product,
   ServingMode? servingMode,
   ProductVariant? _productVariant,
   Map<String, Map<String, bool>> selectedExtras,
@@ -95,9 +95,9 @@ double calculateTotalPrice(
 
   //--- calculate modifier price
   selectedModifiers.forEach((key, value) {
-    GeneratedProductConfigSet? modifier =
+    ProductConfigSet? modifier =
         getModifierConfigSetById(key, product.configSets ?? []);
-    GeneratedProductConfigComponent? component = getComponentByIdFromSet(
+    ProductConfigComponent? component = getComponentByIdFromSet(
       value,
       modifier,
       servingMode,
@@ -113,7 +113,7 @@ double calculateTotalPrice(
   selectedExtras.forEach((setId, setMap) {
     setMap.forEach((componentId, selected) {
       if (selected == true) {
-        GeneratedProductConfigComponent? component =
+        ProductConfigComponent? component =
             getExtraComponentByIdAndSetId(
           setId,
           componentId,

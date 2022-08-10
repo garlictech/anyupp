@@ -17,8 +17,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  final GeoUnit unit;
-  final GeneratedProduct item;
+  final Unit unit;
+  final Product item;
   final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
 
@@ -160,18 +160,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  bool isDisabled(GeoUnit unit) =>
+  bool isDisabled(Unit unit) =>
       widget.displayState == ProductItemDisplayState.DISABLED ||
       (widget.displayState == ProductItemDisplayState.SOLDOUT &&
           unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.faded);
-  bool isHidden(GeoUnit unit) =>
+  bool isHidden(Unit unit) =>
       widget.displayState == ProductItemDisplayState.SOLDOUT &&
       unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.invisible;
 }
 
 class ProductDetailsWidget extends StatelessWidget {
-  final GeoUnit unit;
-  final GeneratedProduct item;
+  final Unit unit;
+  final Product item;
   final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
   final bool disabled;
@@ -290,7 +290,7 @@ class ProductDetailsWidget extends StatelessWidget {
 
 class _ProductDetailsImageWidget extends StatelessWidget {
   final String url;
-  final GeneratedProduct item;
+  final Product item;
   final bool disabled;
 
   const _ProductDetailsImageWidget(
@@ -353,7 +353,7 @@ class _ProductDetailsImageWidget extends StatelessWidget {
 }
 
 class ProductImageAndInfoWidget extends StatelessWidget {
-  final GeneratedProduct item;
+  final Product item;
 
   const ProductImageAndInfoWidget({Key? key, required this.item})
       : super(key: key);
@@ -426,8 +426,8 @@ class ProductImageAndInfoWidget extends StatelessWidget {
 }
 
 class ProductDetailsToolBarButtonsWidget extends StatelessWidget {
-  final GeneratedProduct item;
-  final GeoUnit unit;
+  final Product item;
+  final Unit unit;
 
   const ProductDetailsToolBarButtonsWidget(
       {Key? key, required this.item, required this.unit})

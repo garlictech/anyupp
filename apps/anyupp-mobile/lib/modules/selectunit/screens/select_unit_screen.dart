@@ -165,7 +165,7 @@ class _SelectUnitScreenState extends State<SelectUnitScreen> {
     );
   }
 
-  Widget _buildList(List<GeoUnit> units, ServingMode mode) {
+  Widget _buildList(List<Unit> units, ServingMode mode) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -243,7 +243,7 @@ class _StartQRCodeScanButton extends StatelessWidget {
 }
 
 class _UnitListWidget extends StatefulWidget {
-  final List<GeoUnit> units;
+  final List<Unit> units;
   const _UnitListWidget({Key? key, required this.units}) : super(key: key);
 
   @override

@@ -18,7 +18,7 @@ void main() {
   setUpAll(() async {
     GoogleFonts.config.allowRuntimeFetching = false;
 
-    GeoUnit mockUnit = MockGenerator.generateUnit(
+    Unit mockUnit = MockGenerator.generateUnit(
       name: 'TEST UNIT',
       currency: 'huf',
     );

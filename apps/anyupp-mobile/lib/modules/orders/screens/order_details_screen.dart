@@ -17,7 +17,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final Order order;
-  // final GeoUnit unit;
+  // final Unit unit;
 
   const OrderDetailsScreen({Key? key, required this.order}) : super(key: key);
 
@@ -858,7 +858,7 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
     List<String> extraNames = [];
     if (item.selectedConfigMap != null) {
       item.selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent
+        for (ProductConfigComponent generatedProductConfigComponent
             in value) {
           extraNames.add(
               getLocalizedText(context, generatedProductConfigComponent.name));
@@ -1304,8 +1304,8 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
   }) : super(key: key);
 
   OrderDetailsInfoTableItemData _generateItemData(BuildContext context) {
-    // List<GeoUnit>? units = getIt<UnitsBloc>().state;
-    GeoUnit? unit;
+    // List<Unit>? units = getIt<UnitsBloc>().state;
+    Unit? unit;
     var state = getIt<UnitsBloc>().state;
     if (state is UnitsLoaded) {
       int index = state.units.indexWhere((unit) => unit.id == order.unitId);

@@ -20,7 +20,7 @@ import '../mock/mock_data_faker.dart';
 import '../unit/mock/mock_auth_provider.dart';
 import 'mock/mocks.dart';
 
-GeoUnit _unit = MockGenerator.generateUnit(
+Unit _unit = MockGenerator.generateUnit(
   name: 'TEST UNIT',
   currency: 'HUF',
 );
@@ -151,7 +151,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = Size(1080, 2000);
 
     await tester.runAsync(() async {
-      GeneratedProduct product = MockGenerator.generateProduct(
+      Product product = MockGenerator.generateProduct(
         name: 'Hamburger',
         variantCount: 1,
         servingModes: [ServingMode.inPlace],
@@ -180,7 +180,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = Size(1080, 2000);
 
     await tester.runAsync(() async {
-      GeneratedProduct product = MockGenerator.generateProduct(
+      Product product = MockGenerator.generateProduct(
         name: 'Hamburger',
         variantCount: 1,
         servingModes: [ServingMode.inPlace],

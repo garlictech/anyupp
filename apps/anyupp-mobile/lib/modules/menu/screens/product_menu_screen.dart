@@ -105,7 +105,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
 
   @override
   Widget build(BuildContext context) {
-    GeoUnit? unit = currentUnit;
+    Unit? unit = currentUnit;
     assert(unit != null);
     return Scaffold(
       appBar: ProductMenuAppBar(
@@ -230,9 +230,9 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
 
   Widget _buildMainMenu(
     BuildContext context,
-    GeoUnit unit,
+    Unit unit,
     List<ProductCategory> productCategories,
-    List<GeneratedProduct> products,
+    List<Product> products,
     List<FavoriteProduct>? favorites,
   ) {
     var menu = _buildProductList(
@@ -346,9 +346,9 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
 
   _CategoryMenuWidgets _buildProductList({
     required BuildContext context,
-    required GeoUnit unit,
+    required Unit unit,
     required List<ProductCategory> productCategories,
-    required List<GeneratedProduct> products,
+    required List<Product> products,
     List<FavoriteProduct>? favorites,
   }) {
     _favoritesIndex = favorites?.isNotEmpty == true ? 1 : 0;
@@ -433,7 +433,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
 
   List<Widget> _getWidgetsFromMenuItems(
     List<MenuListItem> menuItems,
-    GeoUnit unit,
+    Unit unit,
     ServingMode servingMode,
   ) {
     List<Widget> results = [];

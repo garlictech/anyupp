@@ -2,7 +2,6 @@ import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
 import '/graphql/graphql.dart';
 import '/models.dart';
-import '/modules/menu/utils/generated_product_converter.dart';
 import '/shared/pagination/pagination.dart';
 
 import 'product_provider_interface.dart';
@@ -61,7 +60,7 @@ class AwsProductProvider implements IProductProvider {
   }
 
   @override
-  Future<PageResponse<GeneratedProduct>> getAllProductList(
+  Future<PageResponse<Product>> getAllProductList(
       {required String unitId, String? nextToken}) async {
     try {
       log.d('***** getAllProductList().unitId=$unitId');
@@ -83,21 +82,21 @@ class AwsProductProvider implements IProductProvider {
       }
 
       // Load Config Components and Config sets for Chain
-      Map<String, ProductComponentSet> componentSets = {};
-      Map<String, ProductComponent> components = {};
       log.d(
           '***** getAllProductList().searchUnitProducts.items.length=${result.data?.searchUnitProducts?.items.length}');
 
       int count = result.data?.searchUnitProducts?.total ?? 0;
       String? token = result.data?.searchUnitProducts?.nextToken;
       var items = result.data?.searchUnitProducts?.items;
-      List<GeneratedProduct> results = [];
+      List<Product> results = [];
       if (items != null) {
         for (int i = 0; i < items.length; i++) {
-          // GeneratedProduct product =
-          //     GeneratedProduct.fromJson(items[i]!.toJson());
-          GeneratedProduct? product =
-              getProductFromQuery(items[i]!, componentSets, components);
+          // Product product =
+          //     Product.fromJson(items[i]!.toJson());
+          final jsonFormat = items[i]?.toJson();
+          Product? product =
+              jsonFormat != null ? Product.fromJson(jsonFormat) : null;
+
           if (product != null) {
             product.variants
                 .sort((v1, v2) => v1.position.compareTo(v2.position));

@@ -16,7 +16,7 @@ class MockCartRepository implements CartRepository {
 
   @override
   Future<Cart?> addProductToCart(
-      GeoUnit unit, OrderItem item, ServingMode servingMode) {
+      Unit unit, OrderItem item, ServingMode servingMode) {
     throw UnimplementedError();
   }
 
@@ -27,7 +27,7 @@ class MockCartRepository implements CartRepository {
   }
 
   @override
-  Future<Cart?> clearPlaceInCart(GeoUnit unit) async {
+  Future<Cart?> clearPlaceInCart(Unit unit) async {
     return _cart;
   }
 
@@ -57,7 +57,7 @@ class MockCartRepository implements CartRepository {
   }
 
   @override
-  Future<Cart?> updatePlaceInCart(GeoUnit unit, Place place) async {
+  Future<Cart?> updatePlaceInCart(Unit unit, Place place) async {
     return _cart;
   }
 
@@ -75,10 +75,10 @@ class MockCartRepository implements CartRepository {
   @override
   OrderItem getOrderItem(
     String userId,
-    GeoUnit unit,
-    GeneratedProduct product,
+    Unit unit,
+    Product product,
     ProductVariant variant,
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+    Map<ProductConfigSet, List<ProductConfigComponent>>
         configSets,
   ) {
     return OrderItem(

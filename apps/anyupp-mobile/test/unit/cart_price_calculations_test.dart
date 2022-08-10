@@ -105,7 +105,7 @@ void main() {
   }
 
   Order generateOrder({
-    required GeoUnit unit,
+    required Unit unit,
     PaymentMethod paymentMethod = PaymentMethod.inapp,
     PaymentType paymentType = PaymentType.stripe,
     required ServingMode servingMode,
@@ -144,7 +144,7 @@ void main() {
   }
 
   group('Testing order list aggregation', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(name: 'TEST UNIT', currency: 'huf')

@@ -12,7 +12,7 @@ import '/graphql/generated/crud-api.dart';
 
 Future<ServingMode?> selectUnitAndGoToMenuScreen(
   BuildContext context,
-  GeoUnit unit, {
+  Unit unit, {
   bool dismissable = true,
   bool deletePlace = false,
   bool useTheme = true,
@@ -86,7 +86,7 @@ Future<ServingMode?> selectUnitAndGoToMenuScreen(
 void selectServingModeAndGo(
   Cart? cart,
   ServingMode servingMode,
-  GeoUnit unit, {
+  Unit unit, {
   bool deletePlace = false,
   bool cartDeleted = false,
 }) async {

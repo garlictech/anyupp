@@ -6,7 +6,7 @@ abstract class IProductProvider {
       String ownerEntity,
       [String? nextToken]);
 
-  Future<PageResponse<GeneratedProduct>> getAllProductList({
+  Future<PageResponse<Product>> getAllProductList({
     required String unitId,
     String? nextToken,
   });

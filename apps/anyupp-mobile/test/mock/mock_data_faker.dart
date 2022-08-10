@@ -184,7 +184,7 @@ class MockGenerator {
         netPackagingFee: packagingFee);
   }
 
-  static GeneratedProductConfigSet generateEmptyProductConfigSet({
+  static ProductConfigSet generateEmptyProductConfigSet({
     required String name,
     String? productSetId,
     List<ServingMode> supportedServingModes = const [
@@ -196,7 +196,7 @@ class MockGenerator {
     int maxSelection = 1,
     int position = 0,
   }) {
-    return GeneratedProductConfigSet(
+    return ProductConfigSet(
       name: LocalizedItem(
         hu: name,
         de: name,
@@ -245,13 +245,13 @@ class MockGenerator {
     );
   }
 
-  static GeoUnit generateUnit({
+  static Unit generateUnit({
     String? id,
     required String name,
     required String currency,
     OrderPolicy? orderPolicy = OrderPolicy.full,
   }) {
-    return GeoUnit(
+    return Unit(
       id: id ?? faker.guid.guid(),
       name: name,
       address: Address(
@@ -297,7 +297,7 @@ class MockGenerator {
     );
   }
 
-  static GeneratedProduct generateProduct({
+  static Product generateProduct({
     required String name,
     List<ServingMode> servingModes = const [
       ServingMode.inPlace,
@@ -318,14 +318,14 @@ class MockGenerator {
       );
     }
 
-    List<GeneratedProductConfigSet> configSets = [];
+    List<ProductConfigSet> configSets = [];
     for (int i = 0; i < configSetCount; i++) {
       configSets.add(generateProductConfigSet(
         name: '${name}_config_$i',
         position: i,
       ));
     }
-    return GeneratedProduct(
+    return Product(
       id: faker.guid.guid(),
       unitId: faker.guid.guid(),
       productCategoryId: faker.guid.guid(),
@@ -370,7 +370,7 @@ class MockGenerator {
         isAvailable: true);
   }
 
-  static GeneratedProductConfigSet generateProductConfigSet({
+  static ProductConfigSet generateProductConfigSet({
     required String name,
     required int position,
     List<ServingMode> servingModes = const [
@@ -379,7 +379,7 @@ class MockGenerator {
     ],
     int itemCount = 3,
   }) {
-    List<GeneratedProductConfigComponent> items = [];
+    List<ProductConfigComponent> items = [];
     for (int i = 0; i < itemCount; i++) {
       items.add(generateProductConfigComponent(
         position: i,
@@ -387,7 +387,7 @@ class MockGenerator {
         price: (i + 1) * 100,
       ));
     }
-    return GeneratedProductConfigSet(
+    return ProductConfigSet(
       productSetId: faker.guid.guid(),
       name: LocalizedItem(
         de: name,
@@ -403,7 +403,7 @@ class MockGenerator {
     );
   }
 
-  static GeneratedProductConfigComponent generateProductConfigComponent({
+  static ProductConfigComponent generateProductConfigComponent({
     required String name,
     required double price,
     int position = 0,
@@ -411,7 +411,7 @@ class MockGenerator {
     double packagingFee = 0.0,
   }) {
     List<Allergen> allergeens = generateAllergeens(allergensCount);
-    return GeneratedProductConfigComponent(
+    return ProductConfigComponent(
       productComponentId: faker.guid.guid(),
       price: price,
       position: position,

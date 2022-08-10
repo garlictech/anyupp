@@ -20,7 +20,7 @@ class CartRepository implements ICartProvider {
   Cart? get cart => _cartProvider.cart;
 
   Future<Cart?> addProductToCart(
-      GeoUnit unit, OrderItem item, ServingMode servingMode) async {
+      Unit unit, OrderItem item, ServingMode servingMode) async {
     Cart? cart = await _cartProvider.getCurrentCart(unit.id);
     User? user = await _authProvider.getAuthenticatedUserProfile();
     if (user == null) {
@@ -112,7 +112,7 @@ class CartRepository implements ICartProvider {
     return cart;
   }
 
-  Future<Cart?> updatePlaceInCart(GeoUnit unit, Place place) async {
+  Future<Cart?> updatePlaceInCart(Unit unit, Place place) async {
     Cart? cart = await _cartProvider.getCurrentCart(unit.id);
     if (cart == null || cart.items.isEmpty) {
       return null;
@@ -131,7 +131,7 @@ class CartRepository implements ICartProvider {
     return _cartProvider.getCurrentCartStream(unitId);
   }
 
-  // Future<void> createAndSendOrderFromCart(GeoUnit unit, String paymentMethod) async {
+  // Future<void> createAndSendOrderFromCart(Unit unit, String paymentMethod) async {
   //   await _cartProvider.createAndSendOrderFromCart();
   // }
 
@@ -141,7 +141,7 @@ class CartRepository implements ICartProvider {
     return null;
   }
 
-  Future<Cart?> clearPlaceInCart(GeoUnit unit) async {
+  Future<Cart?> clearPlaceInCart(Unit unit) async {
     // log.d('CartRepository.clearPlaceInCart()=${unit.id}');
     Cart? cart = await getCurrentCart(unit.id);
     if (cart != null) {
@@ -180,10 +180,10 @@ class CartRepository implements ICartProvider {
 
   OrderItem getOrderItem(
     String userId,
-    GeoUnit unit,
-    GeneratedProduct product,
+    Unit unit,
+    Product product,
     ProductVariant variant,
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+    Map<ProductConfigSet, List<ProductConfigComponent>>
         configSets,
   ) {
     return OrderItem(
@@ -233,7 +233,7 @@ class CartRepository implements ICartProvider {
   }
 
   List<OrderItemConfigSet>? _getConfigSets(
-      Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+      Map<ProductConfigSet, List<ProductConfigComponent>>
           configSets) {
     if (configSets.isEmpty) {
       return null;

@@ -80,7 +80,7 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
 }
 
 class OrderAfterPayWidget extends StatelessWidget {
-  final GeoUnit unit;
+  final Unit unit;
   final List<Order> orders;
   late final Order aggregatedOrder;
 
@@ -163,7 +163,7 @@ class OrderAfterPayWidget extends StatelessWidget {
 }
 
 class OrderAfterPayItemWidget extends StatelessWidget {
-  final GeoUnit unit;
+  final Unit unit;
   final Order order;
 
   const OrderAfterPayItemWidget(
@@ -233,7 +233,7 @@ class OrderAfterPayHeaderWidget extends StatelessWidget {
   }) : super(key: key);
 
   final Order order;
-  final GeoUnit unit;
+  final Unit unit;
 
   @override
   Widget build(BuildContext context) {

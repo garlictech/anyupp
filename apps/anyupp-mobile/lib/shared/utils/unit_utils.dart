@@ -6,7 +6,7 @@ import '/modules/takeaway/takeaway.dart';
 
 import 'place_preferences.dart';
 
-GeoUnit? get currentUnit {
+Unit? get currentUnit {
   var state = getIt<UnitSelectBloc>().state;
   if (state is UnitSelected) {
     return state.unit;

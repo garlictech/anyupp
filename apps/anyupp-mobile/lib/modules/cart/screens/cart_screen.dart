@@ -230,7 +230,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildCartListAndTotal(BuildContext context, GeoUnit unit, Cart cart) {
+  Widget _buildCartListAndTotal(BuildContext context, Unit unit, Cart cart) {
     // log.d('_buildCartListAndTotal()=${cart.servingMode}');
     Map<int, Allergen> cartAllergens = {};
     for (OrderItem item in cart.items) {
@@ -241,7 +241,7 @@ class _CartScreenState extends State<CartScreen> {
       }
       if (item.selectedConfigMap != null) {
         item.selectedConfigMap!.forEach((key, value) {
-          for (GeneratedProductConfigComponent component in value) {
+          for (ProductConfigComponent component in value) {
             if (component.allergens != null) {
               for (Allergen allergen in component.allergens!) {
                 cartAllergens[allergenMap[allergen]!] = allergen;
@@ -313,7 +313,7 @@ class _CartScreenState extends State<CartScreen> {
 
   Widget _buildPaymentButtonPanel(
     BuildContext context,
-    GeoUnit unit,
+    Unit unit,
     Cart cart,
   ) {
     bool showQrCodeScan = cart.isPlaceEmpty;
@@ -421,7 +421,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildServiceFeeItem(BuildContext context, Cart cart, GeoUnit unit) {
+  Widget _buildServiceFeeItem(BuildContext context, Cart cart, Unit unit) {
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(
@@ -492,7 +492,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildPackagingFeeItem(BuildContext context, Cart cart, GeoUnit unit,
+  Widget _buildPackagingFeeItem(BuildContext context, Cart cart, Unit unit,
       [bool showSeparator = true]) {
     return SlideAnimation(
       verticalOffset: 50.0,
@@ -564,7 +564,7 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _buildCartItem(BuildContext context, GeoUnit unit, OrderItem order,
+  Widget _buildCartItem(BuildContext context, Unit unit, OrderItem order,
       ServingMode servingMode) {
     // log.d('_buildCartItem()=$order');
     return SlideAnimation(
@@ -583,7 +583,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   _handlePaymentButtonPressed(
-    GeoUnit unit,
+    Unit unit,
     Cart cart,
     bool showQrCodeScan,
   ) async {

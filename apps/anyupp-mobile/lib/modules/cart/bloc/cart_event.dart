@@ -20,7 +20,7 @@ class GetCurrentCartAction extends BaseCartAction {
 }
 
 class AddProductToCartAction extends BaseCartAction {
-  final GeoUnit unit;
+  final Unit unit;
   final OrderItem order;
 
   const AddProductToCartAction(this.unit, this.order);
@@ -41,7 +41,7 @@ class RemoveProductFromCartAction extends BaseCartAction {
 
 class UpdateProductInCartAction extends BaseCartAction {
   final String unitId;
-  final GeneratedProduct product;
+  final Product product;
   final ProductVariant variant;
   final int quantity;
 
@@ -57,7 +57,7 @@ class ClearCartAction extends BaseCartAction {
 }
 
 class ClearPlaceInCart extends BaseCartAction {
-  final GeoUnit unit;
+  final Unit unit;
 
   const ClearPlaceInCart(this.unit);
 
@@ -66,7 +66,7 @@ class ClearPlaceInCart extends BaseCartAction {
 }
 
 class UpdatePlaceInCartAction extends BaseCartAction {
-  final GeoUnit unit;
+  final Unit unit;
   final Place place;
 
   const UpdatePlaceInCartAction(this.unit, this.place);
@@ -76,7 +76,7 @@ class UpdatePlaceInCartAction extends BaseCartAction {
 }
 
 class CreateAndSendOrder extends BaseCartAction {
-  final GeoUnit unit;
+  final Unit unit;
 
   const CreateAndSendOrder(this.unit);
 

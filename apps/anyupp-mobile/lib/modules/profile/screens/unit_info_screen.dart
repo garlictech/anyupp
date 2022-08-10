@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '/core/theme/theme.dart';
 
 class UnitInfoScreen extends StatelessWidget {
-  final GeoUnit unit;
+  final Unit unit;
   const UnitInfoScreen({Key? key, required this.unit}) : super(key: key);
 
   @override

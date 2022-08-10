@@ -4,8 +4,8 @@ import '/shared/locale.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailVariantItemWidget extends StatelessWidget {
-  final GeoUnit unit;
-  final GeneratedProduct product;
+  final Unit unit;
+  final Product product;
   final ProductVariant variant;
   final Widget? child;
 

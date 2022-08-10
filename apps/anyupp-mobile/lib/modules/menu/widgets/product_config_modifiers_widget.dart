@@ -13,8 +13,8 @@ typedef OnModifiersSelected = void Function(
     Map<String, String> selectedModifiers);
 
 class ProductConfigModifiersWidget extends StatefulWidget {
-  final GeneratedProduct product;
-  final GeoUnit unit;
+  final Product product;
+  final Unit unit;
   final OnModifiersSelected onModifiersSelected;
   final ProductItemDisplayState displayState;
 
@@ -58,7 +58,7 @@ class _ProductConfigModifiersWidgetState
     });
   }
 
-  bool _shouldDisplayConfigSet(GeneratedProductConfigSet configSet) {
+  bool _shouldDisplayConfigSet(ProductConfigSet configSet) {
     bool display = configSet.items.isNotEmpty;
     if (widget.unit.soldOutVisibilityPolicy != null) {
       int visibleItemCount = configSet.items.fold(
@@ -71,7 +71,7 @@ class _ProductConfigModifiersWidgetState
   }
 
   bool _shouldDisplayConfigComponent(
-      GeneratedProductConfigComponent component) {
+      ProductConfigComponent component) {
     return widget.unit.soldOutVisibilityPolicy != null
         ? !component.soldOut
         : true;
@@ -93,7 +93,7 @@ class _ProductConfigModifiersWidgetState
   }
 
   List<Widget> _buildModifiers(
-      BuildContext context, List<GeneratedProductConfigSet>? sets) {
+      BuildContext context, List<ProductConfigSet>? sets) {
     List<Widget> widgets = [];
     ServingMode? mode = takeAwayMode;
     sets?.forEach((modifier) {
@@ -107,7 +107,7 @@ class _ProductConfigModifiersWidgetState
     return widgets;
   }
 
-  Widget _buildSingleModifier(GeneratedProductConfigSet modifier) {
+  Widget _buildSingleModifier(ProductConfigSet modifier) {
     return Container(
       margin: EdgeInsets.only(bottom: 16.0),
       decoration: BoxDecoration(
@@ -158,7 +158,7 @@ class _ProductConfigModifiersWidgetState
   }
 
   List<Widget> _buildModifiersList(BuildContext context, String productSetId,
-      List<GeneratedProductConfigComponent> items) {
+      List<ProductConfigComponent> items) {
     List<Widget> widgets = [];
     for (int i = 0; i < items.length; i++) {
       widgets.add(_buildModifierListItem(context, items[i], productSetId,
@@ -169,7 +169,7 @@ class _ProductConfigModifiersWidgetState
 
   Widget _buildModifierListItem(
     BuildContext context,
-    GeneratedProductConfigComponent item,
+    ProductConfigComponent item,
     String productSetId,
     String value,
     bool last,

@@ -17,7 +17,7 @@ class OrderItem {
   final List<Allergen>? allergens;
   final ProductType productType;
   final List<OrderItemConfigSet>? configSets;
-  final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
+  final Map<ProductConfigSet, List<ProductConfigComponent>>?
       selectedConfigMap;
   final double? netPackagingFee;
   final Price? serviceFee;
@@ -56,7 +56,7 @@ class OrderItem {
     List<Allergen>? allergens,
     ProductType? productType,
     List<OrderItemConfigSet>? configSets,
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
+    Map<ProductConfigSet, List<ProductConfigComponent>>?
         selectedConfigMap,
     double? netPackagingFee,
     Price? serviceFee,
@@ -125,9 +125,9 @@ class OrderItem {
               map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))
           : null,
       selectedConfigMap: map['configSets'] != null
-          ? getSelectdConfigMap(List<GeneratedProductConfigSet>.from(
+          ? getSelectdConfigMap(List<ProductConfigSet>.from(
               map['configSets']
-                  ?.map((x) => GeneratedProductConfigSet.fromJson(x))))
+                  ?.map((x) => ProductConfigSet.fromJson(x))))
           : null,
       netPackagingFee: map['netPackagingFee'],
       serviceFee:
@@ -184,11 +184,11 @@ class OrderItem {
         serviceFee.hashCode;
   }
 
-  static Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
-      getSelectdConfigMap(List<GeneratedProductConfigSet> mapList) {
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+  static Map<ProductConfigSet, List<ProductConfigComponent>>
+      getSelectdConfigMap(List<ProductConfigSet> mapList) {
+    Map<ProductConfigSet, List<ProductConfigComponent>>
         selectedConfigMap = {};
-    for (GeneratedProductConfigSet temp in mapList) {
+    for (ProductConfigSet temp in mapList) {
       selectedConfigMap[temp] = temp.items;
     }
     return selectedConfigMap;

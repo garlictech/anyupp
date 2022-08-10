@@ -29,7 +29,7 @@ extension CartExtension on Cart {
     return value;
   }
 
-  int variantCount(GeneratedProduct item, ProductVariant variant) {
+  int variantCount(Product item, ProductVariant variant) {
     int index = items.indexWhere(
         (order) => order.productId == item.id && order.variantId == variant.id);
     return index != -1 ? items[index].quantity : 0;

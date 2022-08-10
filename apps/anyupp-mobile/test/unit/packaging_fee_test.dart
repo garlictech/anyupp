@@ -10,7 +10,7 @@ import '../widget/mock/mocks.dart';
 void main() {
   setUpAll(() {
     // Setup
-    GeoUnit mockUnit = MockGenerator.generateUnit(
+    Unit mockUnit = MockGenerator.generateUnit(
       name: 'Test Unit',
       currency: 'huf',
     ).copyWith(
@@ -127,7 +127,7 @@ void main() {
       expect(cart.totalPrice, equals(0));
       expect(cart.packaginFee, equals(0));
 
-      GeneratedProductConfigSet configSet =
+      ProductConfigSet configSet =
           MockGenerator.generateEmptyProductConfigSet(
         name: 'Test Modifier Set',
         type: ProductComponentSetType.modifier,

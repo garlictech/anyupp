@@ -11,8 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '/graphql/generated/crud-api.dart';
 
 class ProductConfiguratorWidget extends StatefulWidget {
-  final GeoUnit unit;
-  final GeneratedProduct product;
+  final Unit unit;
+  final Product product;
   final ServingMode? servingMode;
   final ProductItemDisplayState displayState;
 
@@ -176,25 +176,25 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     );
   }
 
-  Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+  Map<ProductConfigSet, List<ProductConfigComponent>>
       getSelectedComponentMap() {
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+    Map<ProductConfigSet, List<ProductConfigComponent>>
         selectedConfigMap = {};
     _selectedModifiers.forEach((key, value) {
-      GeneratedProductConfigSet? modifier =
+      ProductConfigSet? modifier =
           getModifierConfigSetById(key, widget.product.configSets ?? []);
       if (modifier != null) {
-        GeneratedProductConfigComponent? component =
+        ProductConfigComponent? component =
             getComponentByIdFromSet(value, modifier, widget.servingMode);
         selectedConfigMap[modifier] = component == null ? [] : [component];
       }
     });
     _selectedExtras.forEach((key, value) {
-      GeneratedProductConfigSet? modifier =
+      ProductConfigSet? modifier =
           getExtraConfigSetById(key, widget.product.configSets ?? []);
       value.forEach((extra, isAdded) {
         if (isAdded) {
-          GeneratedProductConfigComponent? component =
+          ProductConfigComponent? component =
               getComponentByIdFromSet(extra, modifier, widget.servingMode);
           if (selectedConfigMap[modifier] == null &&
               modifier != null &&
@@ -230,9 +230,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     }
     //--- calculate modifier price
     _selectedModifiers.forEach((key, value) {
-      GeneratedProductConfigSet? modifier =
+      ProductConfigSet? modifier =
           getModifierConfigSetById(key, widget.product.configSets ?? []);
-      GeneratedProductConfigComponent? component =
+      ProductConfigComponent? component =
           getComponentByIdFromSet(value, modifier, widget.servingMode);
 
       if (component != null) {
@@ -243,7 +243,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     _selectedExtras.forEach((setId, setMap) {
       setMap.forEach((componentId, selected) {
         if (selected == true) {
-          GeneratedProductConfigComponent? component =
+          ProductConfigComponent? component =
               getExtraComponentByIdAndSetId(
             setId,
             componentId,

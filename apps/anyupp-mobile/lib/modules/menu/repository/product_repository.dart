@@ -14,7 +14,7 @@ class ProductRepository {
     return _provider.getProductCategoryList(ownerEntity, nextToken);
   }
 
-  Future<PageResponse<GeneratedProduct>> getAllProductList({
+  Future<PageResponse<Product>> getAllProductList({
     required String unitId,
     String? nextToken,
   }) {

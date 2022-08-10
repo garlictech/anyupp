@@ -5,7 +5,7 @@ abstract class UnitSelectEvent extends Equatable {
 }
 
 class SelectUnit extends UnitSelectEvent {
-  final GeoUnit unit;
+  final Unit unit;
   SelectUnit(this.unit);
 
   @override

@@ -116,7 +116,7 @@ class _InvoiceFormBottomSheetWidgetState
 
   Widget _buildInvoiceFormScreen(
     BuildContext context,
-    GeoUnit unit,
+    Unit unit,
   ) {
     if (_countryCodeController.text != 'HU') {
       taxFieldValidator = null;
@@ -289,7 +289,7 @@ class _InvoiceFormBottomSheetWidgetState
     );
   }
 
-  Widget _buildSendCartButton(BuildContext context, GeoUnit unit) {
+  Widget _buildSendCartButton(BuildContext context, Unit unit) {
     return BlocBuilder<CartBloc, BaseCartState>(builder: (context, state) {
       bool loading = state is CartLoadingState;
 

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '/models/GeoUnit.dart';
+import '/models/Unit.dart';
 import '/models/OrderItem.dart';
 
 abstract class ConfigsetState extends Equatable {
@@ -12,7 +12,7 @@ abstract class ConfigsetState extends Equatable {
 class ConfigsetInitial extends ConfigsetState {}
 
 class ConfigsetUpdated extends ConfigsetState {
-  final GeoUnit unit;
+  final Unit unit;
   final OrderItem orderItem;
   final double totalPrice;
 

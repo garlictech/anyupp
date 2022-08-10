@@ -16,10 +16,10 @@ void main() {
       return variants;
     }
 
-    GeneratedProductConfigSet _genConfigSet(List<bool> soldOutComponents) {
+    ProductConfigSet _genConfigSet(List<bool> soldOutComponents) {
       var set = MockGenerator.generateEmptyProductConfigSet(
           name: 'TEST COMPONENT SET');
-      List<GeneratedProductConfigComponent> components = [];
+      List<ProductConfigComponent> components = [];
       soldOutComponents.forEach((soldOut) {
         components.add(MockGenerator.generateProductConfigComponent(
           name: 'TEST COMPONENT',
@@ -34,7 +34,7 @@ void main() {
       return set;
     }
 
-    GeneratedProduct _genProduct(
+    Product _genProduct(
         {bool productSoldOut = false,
         List<bool> variantsSoldOut = const [false],
         List<bool>? configsSoldOut}) {

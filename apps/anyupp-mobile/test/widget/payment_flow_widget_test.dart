@@ -22,7 +22,7 @@ void main() {
   // 2. placeWithPaymentType
   // 3. full
   late Cart _mockCart;
-  late GeoUnit _mockUnit;
+  late Unit _mockUnit;
 
   setUpAll(() async {
     GoogleFonts.config.allowRuntimeFetching = false;

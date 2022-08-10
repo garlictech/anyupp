@@ -29,7 +29,7 @@ void main() {
       email: 'test_user_profile@anyupp.com',
       name: 'John Doe',
     );
-    GeoUnit mockUnit = MockGenerator.generateUnit(
+    Unit mockUnit = MockGenerator.generateUnit(
       name: 'Test Unit',
       currency: 'huf',
     ).copyWith(

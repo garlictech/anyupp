@@ -36,7 +36,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
   return BlocBuilder<UnitSelectBloc, UnitSelectState>(
     builder: (context, state) {
       if (state is UnitSelected) {
-        final GeoUnit unit = state.unit;
+        final Unit unit = state.unit;
         return Wrap(
           alignment: WrapAlignment.start,
           direction: Axis.horizontal,
@@ -125,16 +125,16 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                 left: 14.0,
               ),
               child: Text(
-                GeoUnitUtils.isClosed(unit)
-                    ? GeoUnitUtils.getClosedText(
+                UnitUtils.isClosed(unit)
+                    ? UnitUtils.getClosedText(
                         unit,
                         transEx(context, "selectUnit.closed"),
                         transEx(context, "selectUnit.opens"),
-                        transEx(context, "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
+                        transEx(context, "selectUnit.weekdays.${UnitUtils.getOpenedHour(unit)?.getDayString()}"),
                       )
                     : transEx(context, "selectUnit.opened") +
                         ": " +
-                        transEx(context, GeoUnitUtils.getOpenedHour(unit)?.getOpenRangeString() ?? ''),
+                        transEx(context, UnitUtils.getOpenedHour(unit)?.getOpenRangeString() ?? ''),
 
                 //'Nyitva: 09:00 - 22:00',
                 style: Fonts.satoshi(

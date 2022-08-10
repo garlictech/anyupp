@@ -75,7 +75,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget>
     );
   }
 
-  Widget _buildButtons(BuildContext context, [GeoUnit? unit, Cart? cart]) {
+  Widget _buildButtons(BuildContext context, [Unit? unit, Cart? cart]) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -100,7 +100,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget>
     );
   }
 
-  Widget _buildPaymentButton(BuildContext context, GeoUnit unit, Cart cart) {
+  Widget _buildPaymentButton(BuildContext context, Unit unit, Cart cart) {
     return SlideTransition(
       position: _offset,
       child: Container(

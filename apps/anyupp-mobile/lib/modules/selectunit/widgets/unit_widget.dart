@@ -17,7 +17,7 @@ class UnitWidget extends StatefulWidget {
   final List<String>? imageList;
   final double? discount;
   final double? rating;
-  // final GeoUnit unit;
+  // final Unit unit;
   UnitWidget({
     required this.unitName,
     required this.closeTime,

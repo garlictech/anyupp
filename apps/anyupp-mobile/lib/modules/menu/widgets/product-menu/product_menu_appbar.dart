@@ -45,7 +45,7 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
 
   Future<void> _checkNeedToShowTooltip() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    GeoUnit? unit = currentUnit;
+    Unit? unit = currentUnit;
     if (unit != null) {
       bool? showed = preferences.getBool('TOOLTIP_${unit.id}');
       // log.d('_checkNeedToShowTooltip.showed=$showed');
@@ -112,7 +112,7 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
     );
   }
 
-  void _resetPlaceAndGoToUnitSelection(GeoUnit? unit) {
+  void _resetPlaceAndGoToUnitSelection(Unit? unit) {
     if (unit != null) {
       getIt<CartBloc>().add(ClearPlaceInCart(unit));
     }

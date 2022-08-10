@@ -262,7 +262,7 @@ CumulatedPrice getOrderTotalServiceFee(
 
 double getNetPackagingFeeOfConfigComponent({
   required OrderItemInput item,
-  required GeneratedProductConfigComponent component,
+  required ProductConfigComponent component,
 }) {
   return component.netPackagingFee ?? 0;
 }
@@ -274,7 +274,7 @@ double getNetPackagingFeeOfConfigSets({
 }
 
 double getTotalNetPackagingFee(
-    GeoUnit unit, ServingMode servingMode, List<OrderItem> items) {
+    Unit unit, ServingMode servingMode, List<OrderItem> items) {
   if (servingMode != ServingMode.takeAway) {
     return 0;
   }
@@ -296,7 +296,7 @@ double getTotalNetPackagingFee(
 }
 
 double _getPackagingFeeOfConfigSet(
-    List<GeneratedProductConfigComponent> component) {
+    List<ProductConfigComponent> component) {
   return component.fold(
     0,
     (previous, next) => previous += (next.netPackagingFee ?? 0),
@@ -312,7 +312,7 @@ PriceInput getPackagingFeeOfItem(PriceShown price) {
   );
 }
 
-CumulatedPriceInput getTotalServiceFee(GeoUnit unit, List<OrderItem> items) {
+CumulatedPriceInput getTotalServiceFee(Unit unit, List<OrderItem> items) {
   var priceList = items
       .map((item) => getServiceFee(unit.serviceFeePolicy, item.priceShown))
       .toList();

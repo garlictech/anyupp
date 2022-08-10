@@ -4,7 +4,7 @@ import '/modules/cart/cart.dart';
 import '/modules/cart/utils/cart_to_order_calculations.dart';
 
 CreateOrderFromCartArguments createOrderFromCartArguments(
-  GeoUnit unit,
+  Unit unit,
   Cart cart,
 ) {
   // var map = cart.toJson();
@@ -132,7 +132,7 @@ PriceInput? _priceToInput(Price? price) {
       : null;
 }
 
-CreateOrderFromCartArguments createOrderFromCart(GeoUnit unit, Cart cart) {
+CreateOrderFromCartArguments createOrderFromCart(Unit unit, Cart cart) {
   var serviceFee = getTotalServiceFee(unit, cart.items);
 
   return CreateOrderFromCartArguments(

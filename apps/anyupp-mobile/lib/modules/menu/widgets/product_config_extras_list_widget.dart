@@ -8,8 +8,8 @@ typedef OnExtraSetItemSelected = void Function(
     String extraSetId, String extraComponentId, bool selected);
 
 class ProductConfigExtrasWidget extends StatefulWidget {
-  final GeneratedProduct product;
-  final GeoUnit unit;
+  final Product product;
+  final Unit unit;
   final OnExtraSetItemSelected onExtraSelected;
 
   const ProductConfigExtrasWidget(
@@ -29,7 +29,7 @@ class _ProductConfigExtrasWidgetState extends State<ProductConfigExtrasWidget> {
   }
 
   Widget _buildExtraSets(
-      BuildContext context, List<GeneratedProductConfigSet>? extras) {
+      BuildContext context, List<ProductConfigSet>? extras) {
     ServingMode? mode = takeAwayMode;
 
     List<Widget> widgets = [];

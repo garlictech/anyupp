@@ -1,5 +1,5 @@
 import '/core/core.dart';
-import '/models/GeoUnit.dart';
+import '/models/Unit.dart';
 import '/models/extensions/OpeningHoursExtension.dart';
 import '/modules/menu/menu.dart';
 import '/shared/locale.dart';
@@ -9,7 +9,7 @@ import '/graphql/generated/crud-api.dart';
 import 'package:flutter_svg/svg.dart';
 
 class UnitCardWidget extends StatelessWidget {
-  final GeoUnit unit;
+  final Unit unit;
   final GestureTapCallback? onTap;
 
   const UnitCardWidget({
@@ -71,19 +71,19 @@ class UnitCardWidget extends StatelessWidget {
                   FittedBox(
                     fit: BoxFit.contain,
                     child: Text(
-                      GeoUnitUtils.isClosed(unit)
-                          ? GeoUnitUtils.getClosedText(
+                      UnitUtils.isClosed(unit)
+                          ? UnitUtils.getClosedText(
                               unit,
                               transEx(context, "selectUnit.closed"),
                               transEx(context, "selectUnit.opens"),
                               transEx(context,
-                                  "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
+                                  "selectUnit.weekdays.${UnitUtils.getOpenedHour(unit)?.getDayString()}"),
                             )
                           : transEx(context, "selectUnit.opened") +
                               ": " +
                               transEx(
                                   context,
-                                  GeoUnitUtils.getOpenedHour(unit)!
+                                  UnitUtils.getOpenedHour(unit)!
                                       .getOpenRangeString()!),
                       style: Fonts.satoshi(
                         fontSize: 12.0,

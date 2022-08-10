@@ -6,7 +6,7 @@ extension OrderItemExtension on OrderItem {
     double sum = priceShown.pricePerUnit;
     if (selectedConfigMap != null) {
       selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent
+        for (ProductConfigComponent generatedProductConfigComponent
             in value) {
           sum += generatedProductConfigComponent.price;
         }

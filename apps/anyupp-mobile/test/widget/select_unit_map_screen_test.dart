@@ -49,7 +49,7 @@ void main() {
     getIt.registerSingleton<CartBloc>(MockCartBloc(
       stateToSend: EmptyCartState(),
     ));
-    List<GeoUnit> units = List.generate(
+    List<Unit> units = List.generate(
         unitCount,
         (index) => MockGenerator.generateUnit(
               name: 'TEST UNIT #$index',

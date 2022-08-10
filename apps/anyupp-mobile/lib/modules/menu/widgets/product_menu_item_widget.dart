@@ -10,8 +10,8 @@ import '/shared/nav.dart';
 
 // Representing each sandwich in menu list (Menu page)
 class ProductMenuItemWidget extends StatelessWidget {
-  final GeoUnit unit;
-  final GeneratedProduct item;
+  final Unit unit;
+  final Product item;
   final ProductItemDisplayState displayState;
   final ServingMode servingMode;
 

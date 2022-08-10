@@ -10,7 +10,7 @@ abstract class UnitSelectState extends Equatable {
 class NoUnitSelected extends UnitSelectState {}
 
 class UnitSelected extends UnitSelectState {
-  final GeoUnit unit;
+  final Unit unit;
   const UnitSelected(this.unit);
 
   @override

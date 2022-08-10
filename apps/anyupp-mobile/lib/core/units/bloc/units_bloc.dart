@@ -24,7 +24,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     on<FilterUnits>(_onFilterUnits);
   }
 
-  List<GeoUnit>? _units;
+  List<Unit>? _units;
   LatLng? _userLocation;
 
   FutureOr<void> _onLoadUnitsNearLocation(
@@ -108,7 +108,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     ));
   }
 
-  List<GeoUnit> _filter(List<GeoUnit> units, UnitFilter? filter) {
+  List<Unit> _filter(List<Unit> units, UnitFilter? filter) {
     if (filter == null) {
       return units;
     }

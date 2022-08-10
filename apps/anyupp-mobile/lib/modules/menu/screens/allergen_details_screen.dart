@@ -26,7 +26,7 @@ class AllergenDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildDetailsScreen(BuildContext context, GeoUnit? unit) {
+  Widget buildDetailsScreen(BuildContext context, Unit? unit) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 32.0),
       child: CustomScrollView(

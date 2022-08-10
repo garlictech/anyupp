@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import '/models/GeoUnit.dart';
+import '/models/Unit.dart';
 import '/models/OrderItem.dart';
 
 abstract class ConfigsetEvent extends Equatable {
@@ -10,7 +10,7 @@ abstract class ConfigsetEvent extends Equatable {
 }
 
 class ConfigsetUpdatedEvent extends ConfigsetEvent {
-  final GeoUnit unit;
+  final Unit unit;
   final OrderItem orderItem;
   final double totalPrice;
 

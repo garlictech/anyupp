@@ -13,7 +13,7 @@ import '/graphql/generated/crud-api.dart';
 
 class CurrentOrderCardWidget extends StatelessWidget {
   final Order order;
-  // final GeoUnit unit;
+  // final Unit unit;
 
   const CurrentOrderCardWidget({
     required this.order,

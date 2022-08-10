@@ -7,7 +7,7 @@ class UnitRepository {
 
   UnitRepository(this._unitProvider);
 
-  Future<List<GeoUnit>> searchUnitsNearRadius(
+  Future<List<Unit>> searchUnitsNearRadius(
       LatLng location, int radius) async {
     return _unitProvider.searchUnitsNearRadius(location, radius);
   }

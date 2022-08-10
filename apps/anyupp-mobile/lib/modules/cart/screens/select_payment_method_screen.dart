@@ -17,7 +17,7 @@ import '../../main/bloc/main_navigation_bloc.dart';
 import '../../main/bloc/main_navigation_event.dart';
 
 class SelectPaymentMethodScreen extends StatefulWidget {
-  final GeoUnit unit;
+  final Unit unit;
   final String? orderId;
   final Place? place;
 
@@ -298,7 +298,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
     );
   }
 
-  Widget _buildPaymentMethodList(BuildContext context, GeoUnit unit) {
+  Widget _buildPaymentMethodList(BuildContext context, Unit unit) {
     // log.d('_buildPaymentMethodList().unit.paymentModes=${unit.id}: ${unit.paymentModes}');
 
     if (_loading) {

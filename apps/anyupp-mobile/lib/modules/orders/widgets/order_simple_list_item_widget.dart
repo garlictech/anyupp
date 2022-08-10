@@ -63,7 +63,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
     List<Widget> children = [];
     if (orderItem.selectedConfigMap != null) {
       orderItem.selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent in value) {
+        for (ProductConfigComponent generatedProductConfigComponent in value) {
           children.add(Text(
             getLocalizedText(context, generatedProductConfigComponent.name),
             textAlign: TextAlign.left,

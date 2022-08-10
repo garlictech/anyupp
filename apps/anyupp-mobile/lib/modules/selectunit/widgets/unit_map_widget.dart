@@ -18,7 +18,7 @@ class UnitMapCardWidget extends StatelessWidget {
   final double? rating;
   final double height;
   final Color imageBackgroundColor;
-  // final GeoUnit unit;
+  // final Unit unit;
   UnitMapCardWidget({
     required this.unitName,
     required this.closeTime,

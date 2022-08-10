@@ -10,7 +10,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class FavoritesListWidget extends StatefulWidget {
-  final GeoUnit unit;
+  final Unit unit;
   final ServingMode mode;
 
   FavoritesListWidget({Key? key, required this.unit, required this.mode})
@@ -63,7 +63,7 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
     });
   }
 
-  Widget _buildList(GeoUnit unit, List<FavoriteProduct> list) {
+  Widget _buildList(Unit unit, List<FavoriteProduct> list) {
     return AnimationLimiter(
       child: SmartRefresher(
         enablePullDown: true,

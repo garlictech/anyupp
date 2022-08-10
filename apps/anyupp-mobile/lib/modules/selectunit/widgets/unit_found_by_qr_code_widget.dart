@@ -45,7 +45,7 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
   String? _errorDesc;
   late AnimationController _controller;
 
-  GeoUnit? _selectedUnit;
+  Unit? _selectedUnit;
 
   @override
   void initState() {
@@ -240,10 +240,10 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
 
   Future<void> _handleUnitFoundByQRCode(
     BuildContext context,
-    List<GeoUnit> units,
+    List<Unit> units,
   ) async {
-    int index = units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
-    GeoUnit? unit = index >= 0 ? units[index] : null;
+    int index = units.indexWhere((Unit unit) => unit.id == widget.unitId);
+    Unit? unit = index >= 0 ? units[index] : null;
     if (unit != null) {
       log.d('***************** UNIT FOUND FOR QR=$unit');
       await setPlacePref(unit.id, widget.place);

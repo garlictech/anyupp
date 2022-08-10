@@ -16,8 +16,8 @@ class FavoriteIconWidget extends StatefulWidget {
   }) : super(key: key);
 
   final ThemeChainData theme;
-  final GeneratedProduct product;
-  final GeoUnit unit;
+  final Product product;
+  final Unit unit;
   final double iconSize;
 
   @override
@@ -77,7 +77,7 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
     );
   }
 
-  void _addRemoveFavorite(BuildContext context, GeneratedProduct product) {
+  void _addRemoveFavorite(BuildContext context, Product product) {
     BlocProvider.of<FavoritesBloc>(context).add(AddOrRemoveFavoriteProduct(
       widget.unit.id,
       product.productCategoryId,

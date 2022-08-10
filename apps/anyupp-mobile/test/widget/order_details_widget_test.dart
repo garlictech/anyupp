@@ -114,7 +114,7 @@ void main() {
   });
 
   group('Order Screen test with rating button', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(
@@ -166,7 +166,7 @@ void main() {
   });
 
   group('Order Screen test with tip button', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(
@@ -219,7 +219,7 @@ void main() {
   });
 
   group('Order Screen test with rating AND tip button', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(
@@ -275,7 +275,7 @@ void main() {
   });
 
   group('Order Screen test hide tip and rating', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(
@@ -339,7 +339,7 @@ void main() {
   });
 
   group('Order Screen test tip amount info section', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(

@@ -78,7 +78,7 @@ ThemeChainData generateTheme(Color primary, Color secondary) {
   );
 }
 
-ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
+ThemeChainData unitThemeToThemeChainData(Unit unit) {
   log.d('***** unitThemeToThemeChainData().unit=${unit.style.colors}');
   try {
     String primaryString =

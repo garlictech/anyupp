@@ -136,7 +136,7 @@ class _SelectUnitMapScreenState extends State<SelectUnitMapScreen> {
 }
 
 class SelectUnitMapScreenInner extends StatefulWidget {
-  final List<GeoUnit> units;
+  final List<Unit> units;
   final LatLng? userLocation;
 
   const SelectUnitMapScreenInner({
@@ -154,7 +154,7 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
   Completer<GoogleMapController> _mapController = Completer();
   Marker? _userMarker;
   Set<Marker> _markers = {};
-  GeoUnit? _selectedUnit;
+  Unit? _selectedUnit;
 
   final LatLng _center = const LatLng(47.4744579, 19.0754983);
 
@@ -226,7 +226,7 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
     );
   }
 
-  _onPageChanged(int index, GeoUnit unit) {
+  _onPageChanged(int index, Unit unit) {
     _zoomToUnit(unit);
     if (mounted) {
       setState(() {
@@ -236,7 +236,7 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
     _createMarkers(widget.units, widget.userLocation, _selectedUnit);
   }
 
-  Future<void> _zoomToUnit(GeoUnit unit) async {
+  Future<void> _zoomToUnit(Unit unit) async {
     log.d('_zoomToUnit()=${unit.loc}');
     return _animateMapToLocation(
       LatLng(
@@ -261,9 +261,9 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
   }
 
   Future<void> _createMarkers(
-    List<GeoUnit> units,
+    List<Unit> units,
     LatLng? userLocation,
-    GeoUnit? selectedUnit,
+    Unit? selectedUnit,
   ) async {
     List<Widget> unitMarkers = [];
 
@@ -279,7 +279,7 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
       );
       unitMarkers.add(userMarker);
     }
-    for (GeoUnit unit in units) {
+    for (Unit unit in units) {
       final isInplace =
           unit.supportedServingModes.contains(ServingMode.inPlace);
 
@@ -440,7 +440,7 @@ class _MarkerWidget extends StatelessWidget {
 }
 
 class _MapUnitListWidget extends StatelessWidget {
-  final List<GeoUnit> units;
+  final List<Unit> units;
   final ValueChanged<int> onPageChanged;
   const _MapUnitListWidget({
     Key? key,

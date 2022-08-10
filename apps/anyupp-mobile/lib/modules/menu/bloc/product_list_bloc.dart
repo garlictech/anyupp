@@ -22,7 +22,7 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
     on<RefreshFavoritesInProductList>(_onRefreshFavoritesInProductList);
   }
 
-  List<GeneratedProduct>? _products;
+  List<Product>? _products;
   List<ProductCategory>? _categories;
   List<FavoriteProduct>? _favorites;
 

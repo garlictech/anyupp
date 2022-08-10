@@ -9,7 +9,7 @@ import '../mock/mock_data_faker.dart';
 
 void main() {
   group('Test product price calculation: Test single variant price', () {
-    late GeneratedProduct _product;
+    late Product _product;
 
     setUp(() async {
       _product = MockGenerator.generateProduct(
@@ -35,7 +35,7 @@ void main() {
   });
 
   group('Test product price calculation: Test multiple variant price', () {
-    late GeneratedProduct _product;
+    late Product _product;
 
     setUp(() async {
       _product = MockGenerator.generateProduct(
@@ -66,7 +66,7 @@ void main() {
   });
 
   group('Test product price calculation: Test extras price', () {
-    late GeneratedProduct _product;
+    late Product _product;
 
     setUp(() async {
       _product = MockGenerator.generateProduct(
@@ -119,7 +119,7 @@ void main() {
   });
 
   group('Test product price calculation: Test modifiers price', () {
-    late GeneratedProduct _product;
+    late Product _product;
 
     setUp(() async {
       _product = MockGenerator.generateProduct(
@@ -172,7 +172,7 @@ void main() {
 
   group('Test product price calculation: Test with modifiers and extras price',
       () {
-    late GeneratedProduct _product;
+    late Product _product;
 
     setUp(() async {
       _product = MockGenerator.generateProduct(
@@ -245,7 +245,7 @@ void main() {
   group(
       'Test product price calculation: Test with takeAway mode with modifiers and extra price',
       () {
-    late GeneratedProduct _product;
+    late Product _product;
 
     setUp(() async {
       _product = MockGenerator.generateProduct(

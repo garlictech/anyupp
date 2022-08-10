@@ -1,3 +1,5 @@
+import 'package:anyupp/graphql/generated/crud-api.graphql.dart';
+
 import '../Product.dart';
 
 extension ProductExtension on Product {
@@ -7,4 +9,8 @@ extension ProductExtension on Product {
   // No variants found with soldOut = false means: all variants are sold out
   bool get isAllVariantsSoldOut =>
       variants.indexWhere((variant) => variant.soldOut == false) == -1;
+
+  bool isAvailableInServingMode(ServingMode? mode) {
+    return mode != null && supportedServingModes.contains(mode);
+  }
 }
