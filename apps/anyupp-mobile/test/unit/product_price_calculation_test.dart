@@ -1,8 +1,8 @@
 // formatPackNumber
 
-import '/graphql/generated/crud-api.dart';
-import '/models.dart';
-import '/modules/menu/menu.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/menu/menu.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../mock/mock_data_faker.dart';

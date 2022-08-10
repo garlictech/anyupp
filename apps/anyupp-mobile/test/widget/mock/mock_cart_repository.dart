@@ -1,6 +1,6 @@
-import '/graphql/generated/crud-api.graphql.dart';
-import '/models.dart';
-import '/modules/cart/cart.dart';
+import 'package:anyupp/graphql/generated/crud-api.graphql.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class MockCartRepository implements CartRepository {

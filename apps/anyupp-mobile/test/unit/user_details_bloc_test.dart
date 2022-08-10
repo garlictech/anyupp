@@ -1,6 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:equatable/equatable.dart';
-import '/shared/user-details/user_details.dart';
+import 'package:anyupp/shared/user-details/user_details.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'mock/mock_auth_provider.dart';

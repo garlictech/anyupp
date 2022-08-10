@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import '/graphql/generated/crud-api.dart';
-import '/models.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
 import 'package:faker/faker.dart' hide Address;
 
 class MockGenerator {
@@ -253,8 +253,6 @@ class MockGenerator {
   }) {
     return GeoUnit(
       id: id ?? faker.guid.guid(),
-      groupId: faker.guid.guid(),
-      chainId: faker.guid.guid(),
       name: name,
       address: Address(
         address: 'Test Street',
@@ -359,17 +357,17 @@ class MockGenerator {
     ProductVariantPack? pack,
   }) {
     return ProductVariant(
-      id: faker.guid.guid(),
-      variantName: LocalizedItem(
-        en: name,
-        de: name,
-        hu: name,
-      ),
-      price: price,
-      position: position,
-      pack: pack,
-      soldOut: false,
-    );
+        id: faker.guid.guid(),
+        variantName: LocalizedItem(
+          en: name,
+          de: name,
+          hu: name,
+        ),
+        price: price,
+        position: position,
+        pack: pack,
+        soldOut: false,
+        isAvailable: true);
   }
 
   static GeneratedProductConfigSet generateProductConfigSet({

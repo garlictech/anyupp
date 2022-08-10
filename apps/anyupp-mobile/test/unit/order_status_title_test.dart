@@ -1,7 +1,7 @@
 // formatPackNumber
 
-import '/graphql/generated/crud-api.dart';
-import '/modules/orders/orders.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/modules/orders/orders.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

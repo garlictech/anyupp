@@ -1,9 +1,9 @@
-import '/core/core.dart';
-import '/graphql/generated/crud-api.dart';
-import '/models.dart';
-import '/modules/cart/cart.dart';
-import '/modules/payment/payment.dart';
-import '/modules/takeaway/bloc/takeaway_bloc.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
+import 'package:anyupp/modules/payment/payment.dart';
+import 'package:anyupp/modules/takeaway/bloc/takeaway_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

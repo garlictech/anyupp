@@ -14,10 +14,10 @@ import 'TipPolicy.dart';
 import 'core/parsers.dart';
 import 'mock/mock_api_values.dart';
 
-part 'GeoUnit.g.dart';
+part 'Unit.g.dart';
 
 @FunctionalData()
-class GeoUnit extends $GeoUnit {
+class Unit extends $Unit {
   final String id;
   final String name;
   final Address address;
@@ -48,7 +48,7 @@ class GeoUnit extends $GeoUnit {
   final bool? canCallWaiter;
   final bool isVisibleInApp;
 
-  GeoUnit({
+  Unit({
     required this.id,
     required this.name,
     required this.address,
@@ -116,8 +116,8 @@ class GeoUnit extends $GeoUnit {
     };
   }
 
-  factory GeoUnit.fromJson(Map<String, dynamic> map) {
-    return GeoUnit(
+  factory Unit.fromJson(Map<String, dynamic> map) {
+    return Unit(
       id: map['id'],
       name: map['name'],
       address: Address.fromJson(map['address']),
@@ -189,6 +189,6 @@ class GeoUnit extends $GeoUnit {
 
   @override
   String toString() {
-    return 'GeoUnit(id: $id, name: $name, location: $location, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, serviceFeePolicy: $serviceFeePolicy, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
+    return 'Unit(id: $id, name: $name, location: $location, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, serviceFeePolicy: $serviceFeePolicy, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, orderPolicy: $orderPolicy, packagingTax: $packagingTax, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes)';
   }
 }

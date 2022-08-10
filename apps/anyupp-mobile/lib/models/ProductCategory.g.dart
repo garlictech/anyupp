@@ -161,8 +161,10 @@ ProductCategory _$ProductCategoryFromJson(Map<String, dynamic> json) =>
     ProductCategory(
       id: json['id'] as String,
       ownerEntity: json['ownerEntity'] as String,
-      name: json['name'],
-      description: json['description'],
+      name: LocalizedItem.fromJson(json['name'] as Map<String, dynamic>),
+      description: json['description'] == null
+          ? null
+          : LocalizedItem.fromJson(json['description'] as Map<String, dynamic>),
       image: json['image'] as String?,
       parentId: json['parentId'] as String?,
       position: json['position'] as int,
@@ -181,8 +183,8 @@ Map<String, dynamic> _$ProductCategoryToJson(ProductCategory instance) {
   }
 
   writeNotNull('parentId', instance.parentId);
-  writeNotNull('name', instance.name);
-  writeNotNull('description', instance.description);
+  val['name'] = instance.name.toJson();
+  writeNotNull('description', instance.description?.toJson());
   writeNotNull('image', instance.image);
   val['position'] = instance.position;
   return val;

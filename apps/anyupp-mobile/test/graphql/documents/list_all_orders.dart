@@ -1,5 +1,5 @@
-import '/graphql/generated/crud-api.graphql.dart';
-import '/graphql/graphql.dart';
+import 'package:anyupp/graphql/generated/crud-api.graphql.dart';
+import 'package:anyupp/graphql/graphql.dart';
 
 import '../../test_logger.dart';
 

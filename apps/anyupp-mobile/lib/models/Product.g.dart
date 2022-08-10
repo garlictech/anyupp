@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'GeneratedProduct.dart';
+part of 'Product.dart';
 
 // **************************************************************************
 // FunctionalDataGenerator
 // **************************************************************************
 
-abstract class $GeneratedProduct {
-  const $GeneratedProduct();
+abstract class $Product {
+  const $Product();
 
   String get id;
   String get unitId;
@@ -20,11 +20,11 @@ abstract class $GeneratedProduct {
   String? get image;
   List<ProductVariant> get variants;
   List<Allergen>? get allergens;
-  List<GeneratedProductConfigSet>? get configSets;
+  List<ProductConfigSet>? get configSets;
   List<ServingMode> get supportedServingModes;
   bool get soldOut;
 
-  GeneratedProduct copyWith({
+  Product copyWith({
     String? id,
     String? unitId,
     String? productCategoryId,
@@ -36,11 +36,11 @@ abstract class $GeneratedProduct {
     String? image,
     List<ProductVariant>? variants,
     List<Allergen>? allergens,
-    List<GeneratedProductConfigSet>? configSets,
+    List<ProductConfigSet>? configSets,
     List<ServingMode>? supportedServingModes,
     bool? soldOut,
   }) =>
-      GeneratedProduct(
+      Product(
         id: id ?? this.id,
         unitId: unitId ?? this.unitId,
         productCategoryId: productCategoryId ?? this.productCategoryId,
@@ -58,9 +58,8 @@ abstract class $GeneratedProduct {
         soldOut: soldOut ?? this.soldOut,
       );
 
-  GeneratedProduct copyUsing(
-      void Function(GeneratedProduct$Change change) mutator) {
-    final change = GeneratedProduct$Change._(
+  Product copyUsing(void Function(Product$Change change) mutator) {
+    final change = Product$Change._(
       this.id,
       this.unitId,
       this.productCategoryId,
@@ -77,7 +76,7 @@ abstract class $GeneratedProduct {
       this.soldOut,
     );
     mutator(change);
-    return GeneratedProduct(
+    return Product(
       id: change.id,
       unitId: change.unitId,
       productCategoryId: change.productCategoryId,
@@ -97,12 +96,12 @@ abstract class $GeneratedProduct {
 
   @override
   String toString() =>
-      "GeneratedProduct(id: $id, unitId: $unitId, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets, supportedServingModes: $supportedServingModes, soldOut: $soldOut)";
+      "Product(id: $id, unitId: $unitId, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets, supportedServingModes: $supportedServingModes, soldOut: $soldOut)";
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object other) =>
-      other is GeneratedProduct &&
+      other is Product &&
       other.runtimeType == runtimeType &&
       id == other.id &&
       unitId == other.unitId &&
@@ -141,8 +140,8 @@ abstract class $GeneratedProduct {
   }
 }
 
-class GeneratedProduct$Change {
-  GeneratedProduct$Change._(
+class Product$Change {
+  Product$Change._(
     this.id,
     this.unitId,
     this.productCategoryId,
@@ -170,24 +169,24 @@ class GeneratedProduct$Change {
   String? image;
   List<ProductVariant> variants;
   List<Allergen>? allergens;
-  List<GeneratedProductConfigSet>? configSets;
+  List<ProductConfigSet>? configSets;
   List<ServingMode> supportedServingModes;
   bool soldOut;
 }
 
 // ignore: avoid_classes_with_only_static_members
-class GeneratedProduct$ {
-  static final id = Lens<GeneratedProduct, String>(
+class Product$ {
+  static final id = Lens<Product, String>(
     (idContainer) => idContainer.id,
     (idContainer, id) => idContainer.copyWith(id: id),
   );
 
-  static final unitId = Lens<GeneratedProduct, String>(
+  static final unitId = Lens<Product, String>(
     (unitIdContainer) => unitIdContainer.unitId,
     (unitIdContainer, unitId) => unitIdContainer.copyWith(unitId: unitId),
   );
 
-  static final productCategoryId = Lens<GeneratedProduct, String>(
+  static final productCategoryId = Lens<Product, String>(
     (productCategoryIdContainer) =>
         productCategoryIdContainer.productCategoryId,
     (productCategoryIdContainer, productCategoryId) =>
@@ -195,60 +194,58 @@ class GeneratedProduct$ {
             productCategoryId: productCategoryId),
   );
 
-  static final name = Lens<GeneratedProduct, LocalizedItem>(
+  static final name = Lens<Product, LocalizedItem>(
     (nameContainer) => nameContainer.name,
     (nameContainer, name) => nameContainer.copyWith(name: name),
   );
 
-  static final description = Lens<GeneratedProduct, LocalizedItem?>(
+  static final description = Lens<Product, LocalizedItem?>(
     (descriptionContainer) => descriptionContainer.description,
     (descriptionContainer, description) =>
         descriptionContainer.copyWith(description: description),
   );
 
-  static final productType = Lens<GeneratedProduct, ProductType>(
+  static final productType = Lens<Product, ProductType>(
     (productTypeContainer) => productTypeContainer.productType,
     (productTypeContainer, productType) =>
         productTypeContainer.copyWith(productType: productType),
   );
 
-  static final tax = Lens<GeneratedProduct, int>(
+  static final tax = Lens<Product, int>(
     (taxContainer) => taxContainer.tax,
     (taxContainer, tax) => taxContainer.copyWith(tax: tax),
   );
 
-  static final position = Lens<GeneratedProduct, int>(
+  static final position = Lens<Product, int>(
     (positionContainer) => positionContainer.position,
     (positionContainer, position) =>
         positionContainer.copyWith(position: position),
   );
 
-  static final image = Lens<GeneratedProduct, String?>(
+  static final image = Lens<Product, String?>(
     (imageContainer) => imageContainer.image,
     (imageContainer, image) => imageContainer.copyWith(image: image),
   );
 
-  static final variants = Lens<GeneratedProduct, List<ProductVariant>>(
+  static final variants = Lens<Product, List<ProductVariant>>(
     (variantsContainer) => variantsContainer.variants,
     (variantsContainer, variants) =>
         variantsContainer.copyWith(variants: variants),
   );
 
-  static final allergens = Lens<GeneratedProduct, List<Allergen>?>(
+  static final allergens = Lens<Product, List<Allergen>?>(
     (allergensContainer) => allergensContainer.allergens,
     (allergensContainer, allergens) =>
         allergensContainer.copyWith(allergens: allergens),
   );
 
-  static final configSets =
-      Lens<GeneratedProduct, List<GeneratedProductConfigSet>?>(
+  static final configSets = Lens<Product, List<ProductConfigSet>?>(
     (configSetsContainer) => configSetsContainer.configSets,
     (configSetsContainer, configSets) =>
         configSetsContainer.copyWith(configSets: configSets),
   );
 
-  static final supportedServingModes =
-      Lens<GeneratedProduct, List<ServingMode>>(
+  static final supportedServingModes = Lens<Product, List<ServingMode>>(
     (supportedServingModesContainer) =>
         supportedServingModesContainer.supportedServingModes,
     (supportedServingModesContainer, supportedServingModes) =>
@@ -256,7 +253,7 @@ class GeneratedProduct$ {
             supportedServingModes: supportedServingModes),
   );
 
-  static final soldOut = Lens<GeneratedProduct, bool>(
+  static final soldOut = Lens<Product, bool>(
     (soldOutContainer) => soldOutContainer.soldOut,
     (soldOutContainer, soldOut) => soldOutContainer.copyWith(soldOut: soldOut),
   );

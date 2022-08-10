@@ -1,5 +1,5 @@
-import '/models.dart';
-import '/modules/payment/payment.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/payment/payment.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'mocks.dart';

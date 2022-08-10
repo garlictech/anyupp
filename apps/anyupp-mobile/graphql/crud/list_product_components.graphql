@@ -1,4 +1,4 @@
-query ListChainProductComponents(
+query ListProductComponents(
   $ownerEntity: ID!
   $nextToken: String
   $limit: Int

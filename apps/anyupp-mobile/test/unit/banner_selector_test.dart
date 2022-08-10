@@ -1,5 +1,5 @@
-import '/models.dart';
-import '/modules/adbanner/adbanner.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/adbanner/adbanner.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

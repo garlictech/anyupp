@@ -1,9 +1,9 @@
-import '/models.dart';
-import '/modules/orders/utils/order_afterpay_utils.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/orders/utils/order_afterpay_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../mock/mock_data_faker.dart';
-import '/graphql/generated/crud-api.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
 
 void main() {
   Order generateOrder(

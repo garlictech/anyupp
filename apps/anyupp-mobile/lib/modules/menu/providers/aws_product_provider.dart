@@ -62,12 +62,9 @@ class AwsProductProvider implements IProductProvider {
 
   @override
   Future<PageResponse<GeneratedProduct>> getAllProductList(
-      {required String unitId,
-      required String ownerEntity,
-      String? nextToken}) async {
+      {required String unitId, String? nextToken}) async {
     try {
-      log.d(
-          '***** getAllProductList().unitId=$unitId, ownerEntity=$ownerEntity');
+      log.d('***** getAllProductList().unitId=$unitId');
       var result = await GQL.amplify.execute(ListAllProductsQuery(
         variables: ListAllProductsArguments(
           unitId: unitId,

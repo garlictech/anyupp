@@ -1,10 +1,10 @@
-import '/core/core.dart';
-import '/graphql/generated/crud-api.dart';
-import '/models.dart';
-import '/modules/orders/bloc/order_refresh_bloc.dart';
-import '/modules/rating_tipping/rating_tipping.dart';
-import '/modules/screens.dart';
-import '/shared/locale.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/orders/bloc/order_refresh_bloc.dart';
+import 'package:anyupp/modules/rating_tipping/rating_tipping.dart';
+import 'package:anyupp/modules/screens.dart';
+import 'package:anyupp/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';

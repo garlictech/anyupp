@@ -1,4 +1,4 @@
-import '/models.dart';
+import 'package:anyupp/models.dart';
 
 User MOCK_USER([String? id]) => User(
       id: id ?? 'test@anyupp.com',

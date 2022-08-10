@@ -84,7 +84,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
       return SizedBox();
     }
 
-    variants = variants.where((variant) => !variant.soldOut).toList();
+    variants =
+        variants.where((variant) => !(variant.soldOut ?? false)).toList();
 
     return Container(
       color: theme.secondary12,

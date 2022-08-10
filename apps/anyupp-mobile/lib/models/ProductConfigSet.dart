@@ -4,18 +4,18 @@ import '/models.dart';
 import '/graphql/generated/crud-api.dart';
 
 @immutable
-class GeneratedProductConfigSet {
+class ProductConfigSet {
   final String productSetId;
   final LocalizedItem name;
   final String? description;
   final int? position;
   final ProductComponentSetType type;
   final int? maxSelection;
-  final List<GeneratedProductConfigComponent> items;
+  final List<ProductConfigComponent> items;
   final List<ServingMode> supportedServingModes;
   final String? externalId;
 
-  GeneratedProductConfigSet({
+  ProductConfigSet({
     required this.productSetId,
     required this.name,
     this.description,
@@ -27,18 +27,18 @@ class GeneratedProductConfigSet {
     this.externalId,
   });
 
-  GeneratedProductConfigSet copyWith({
+  ProductConfigSet copyWith({
     String? productSetId,
     LocalizedItem? name,
     String? description,
     int? position,
     ProductComponentSetType? type,
     int? maxSelection,
-    List<GeneratedProductConfigComponent>? items,
+    List<ProductConfigComponent>? items,
     List<ServingMode>? supportedServingModes,
     String? externalId,
   }) {
-    return GeneratedProductConfigSet(
+    return ProductConfigSet(
       productSetId: productSetId ?? this.productSetId,
       name: name ?? this.name,
       description: description ?? this.description,
@@ -67,16 +67,16 @@ class GeneratedProductConfigSet {
     };
   }
 
-  factory GeneratedProductConfigSet.fromJson(Map<String, dynamic> map) {
-    return GeneratedProductConfigSet(
+  factory ProductConfigSet.fromJson(Map<String, dynamic> map) {
+    return ProductConfigSet(
       productSetId: map['productSetId'],
       name: LocalizedItem.fromJson(map['name']),
       description: map['description'],
       position: map['position'],
       type: enumFromString(map['type'], ProductComponentSetType.values),
       maxSelection: map['maxSelection'],
-      items: List<GeneratedProductConfigComponent>.from(map['items']
-          ?.map((x) => GeneratedProductConfigComponent.fromJson(x))),
+      items: List<ProductConfigComponent>.from(
+          map['items']?.map((x) => ProductConfigComponent.fromJson(x))),
       supportedServingModes: map['supportedServingModes'] != null
           ? List<ServingMode>.from(
               map['supportedServingModes']?.map(
@@ -93,14 +93,14 @@ class GeneratedProductConfigSet {
 
   @override
   String toString() {
-    return 'GeneratedProductConfigSet(productSetId: $productSetId, name: $name, supportedServingModes: $supportedServingModes, description: $description, position: $position, type: $type, maxSelection: $maxSelection, items: $items)';
+    return 'ProductConfigSet(productSetId: $productSetId, name: $name, supportedServingModes: $supportedServingModes, description: $description, position: $position, type: $type, maxSelection: $maxSelection, items: $items)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is GeneratedProductConfigSet &&
+    return other is ProductConfigSet &&
         other.productSetId == productSetId &&
         other.name == name &&
         other.description == description &&

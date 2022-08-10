@@ -3,7 +3,7 @@ import '/models.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
-class GeneratedProductConfigComponent {
+class ProductConfigComponent {
   final String productComponentId;
   final double price;
   final int? position;
@@ -12,7 +12,7 @@ class GeneratedProductConfigComponent {
   final double? netPackagingFee;
   final bool soldOut;
 
-  GeneratedProductConfigComponent({
+  ProductConfigComponent({
     required this.productComponentId,
     required this.price,
     this.position,
@@ -22,7 +22,7 @@ class GeneratedProductConfigComponent {
     this.soldOut = false,
   });
 
-  GeneratedProductConfigComponent copyWith({
+  ProductConfigComponent copyWith({
     String? productComponentId,
     double? price,
     int? position,
@@ -32,7 +32,7 @@ class GeneratedProductConfigComponent {
     bool? soldOut,
     String? externalId,
   }) {
-    return GeneratedProductConfigComponent(
+    return ProductConfigComponent(
       productComponentId: productComponentId ?? this.productComponentId,
       price: price ?? this.price,
       position: position ?? this.position,
@@ -55,8 +55,8 @@ class GeneratedProductConfigComponent {
     };
   }
 
-  factory GeneratedProductConfigComponent.fromJson(Map<String, dynamic> map) {
-    return GeneratedProductConfigComponent(
+  factory ProductConfigComponent.fromJson(Map<String, dynamic> map) {
+    return ProductConfigComponent(
       productComponentId: map['productComponentId'],
       price: map['price'],
       position: map['position'],
@@ -72,14 +72,14 @@ class GeneratedProductConfigComponent {
 
   @override
   String toString() {
-    return 'GeneratedProductConfigComponent(productComponentId: $productComponentId, price: $price, soldOut: $soldOut, netPackagingFee: $netPackagingFee, position: $position, name: $name, allergens: $allergens)';
+    return 'ProductConfigComponent(productComponentId: $productComponentId, price: $price, soldOut: $soldOut, netPackagingFee: $netPackagingFee, position: $position, name: $name, allergens: $allergens)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is GeneratedProductConfigComponent &&
+    return other is ProductConfigComponent &&
         other.productComponentId == productComponentId &&
         other.price == price &&
         other.position == position &&

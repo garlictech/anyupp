@@ -1,10 +1,10 @@
-import '/core/core.dart';
-import '/graphql/generated/crud-api.dart';
-import '/models.dart';
-import '/modules/cart/cart.dart';
-import '/modules/selectunit/selectunit.dart';
-import '/modules/takeaway/takeaway.dart';
-import '/shared/auth/auth.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
+import 'package:anyupp/modules/selectunit/selectunit.dart';
+import 'package:anyupp/modules/takeaway/takeaway.dart';
+import 'package:anyupp/shared/auth/auth.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

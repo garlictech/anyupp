@@ -1,5 +1,5 @@
-import '/models/LocalizedItem.dart';
-import '/shared/locale.dart';
+import 'package:anyupp/models/LocalizedItem.dart';
+import 'package:anyupp/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
