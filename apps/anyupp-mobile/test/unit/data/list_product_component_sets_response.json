@@ -3,7 +3,7 @@
     "searchProductComponentSets": {
       "items": [
         {
-          "chainId": "seeded_chain_1_id",
+          "ownerEntity": "seeded_chain_1_id",
           "createdAt": "2022-06-30T10:15:52.087Z",
           "deletedAt": null,
           "description": "Köret módosító készlet",
@@ -23,48 +23,6 @@
           "supportedServingModes": null,
           "type": "modifier",
           "updatedAt": "2022-06-30T10:15:52.087Z"
-        },
-        {
-          "chainId": "seeded_chain_1_id",
-          "createdAt": "2022-06-30T10:15:51.361Z",
-          "deletedAt": null,
-          "description": "Szolíd elegancia",
-          "externalId": null,
-          "id": "seeded_product_component_set_02_id",
-          "items": [
-            "seeded_product_component_21_id",
-            "seeded_product_component_22_id"
-          ],
-          "maxSelection": 2,
-          "name": {
-            "de": "Decoration",
-            "en": "Decoration",
-            "hu": "Dekoráció"
-          },
-          "supportedServingModes": null,
-          "type": "extras",
-          "updatedAt": "2022-06-30T10:15:51.361Z"
-        },
-        {
-          "chainId": "seeded_chain_1_id",
-          "createdAt": "2022-06-30T10:15:50.899Z",
-          "deletedAt": null,
-          "description": "Tálalási hőmérséklet",
-          "externalId": null,
-          "id": "seeded_product_component_set_01_id",
-          "items": [
-            "seeded_product_component_11_id",
-            "seeded_product_component_12_id"
-          ],
-          "maxSelection": 2,
-          "name": {
-            "de": "Temperature",
-            "en": "Temperature",
-            "hu": "Hőmérséklet"
-          },
-          "supportedServingModes": null,
-          "type": "modifier",
-          "updatedAt": "2022-06-30T10:15:50.899Z"
         }
       ],
       "nextToken": "WyJzZWVkZWRfcHJvZHVjdF9jb21wb25lbnRfc2V0XzAxX2lkIl0=",

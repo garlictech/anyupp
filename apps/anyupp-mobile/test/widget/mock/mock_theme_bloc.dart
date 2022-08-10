@@ -1,4 +1,4 @@
-import '/core/core.dart';
+import 'package:anyupp/core/core.dart';
 
 class MockThemeBloc extends ThemeBloc {
   MockThemeBloc() : super(UnitSelectBloc());

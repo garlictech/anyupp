@@ -1,8 +1,4 @@
-query ListChainProductComponentSets(
-  $chainId: ID!
-  $nextToken: String
-  $limit: Int
-) {
+query ListProductComponentSets($chainId: ID!, $nextToken: String, $limit: Int) {
   searchProductComponentSets(
     filter: {
       ownerEntity: { eq: $ownerEntity }

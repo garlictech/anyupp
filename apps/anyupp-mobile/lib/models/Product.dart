@@ -3,10 +3,10 @@ import '/graphql/generated/crud-api.dart';
 import 'package:functional_data/functional_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'GeneratedProduct.g.dart';
+part 'Product.g.dart';
 
 @FunctionalData()
-class GeneratedProduct extends $GeneratedProduct {
+class Product extends $Product {
   @override
   final String id;
   @override
@@ -30,13 +30,13 @@ class GeneratedProduct extends $GeneratedProduct {
   @override
   final List<Allergen>? allergens;
   @override
-  final List<GeneratedProductConfigSet>? configSets;
+  final List<ProductConfigSet>? configSets;
   @override
   final List<ServingMode> supportedServingModes;
   @override
   final bool soldOut;
 
-  GeneratedProduct({
+  Product({
     required this.id,
     required this.unitId,
     required this.productCategoryId,
@@ -55,7 +55,7 @@ class GeneratedProduct extends $GeneratedProduct {
 
   @override
   String toString() {
-    return 'GeneratedProduct(id: $id, unitId: $unitId, supportedServingModes: $supportedServingModes, soldOut: $soldOut, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
+    return 'Product(id: $id, unitId: $unitId, supportedServingModes: $supportedServingModes, soldOut: $soldOut, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
   }
 
   Map<String, dynamic> toJson() {
@@ -78,8 +78,8 @@ class GeneratedProduct extends $GeneratedProduct {
     };
   }
 
-  factory GeneratedProduct.fromJson(Map<String, dynamic> map) {
-    return GeneratedProduct(
+  factory Product.fromJson(Map<String, dynamic> map) {
+    return Product(
       id: map['id'],
       unitId: map['unitId'],
       productCategoryId: map['productCategoryId'],
@@ -98,8 +98,8 @@ class GeneratedProduct extends $GeneratedProduct {
               map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
           : null,
       configSets: map['configSets'] != null
-          ? List<GeneratedProductConfigSet>.from(map['configSets']
-              ?.map((x) => GeneratedProductConfigSet?.fromJson(x)))
+          ? List<ProductConfigSet>.from(
+              map['configSets']?.map((x) => ProductConfigSet?.fromJson(x)))
           : null,
       supportedServingModes: map['supportedServingModes'] != null
           ? List<ServingMode>.from(

@@ -7,7 +7,7 @@ class FavoriteProduct {
   final String? id;
   final String userId;
   final String unitId;
-  final GeneratedProduct product;
+  final Product product;
   FavoriteProduct({
     this.id,
     required this.userId,
@@ -19,7 +19,7 @@ class FavoriteProduct {
     String? id,
     String? userId,
     String? unitId,
-    GeneratedProduct? product,
+    Product? product,
   }) {
     return FavoriteProduct(
       id: id ?? this.id,
@@ -43,7 +43,7 @@ class FavoriteProduct {
       id: map['id'],
       userId: map['userId'],
       unitId: map['unitId'],
-      product: GeneratedProduct.fromJson(map['product']),
+      product: Product.fromJson(map['product']),
     );
   }
 

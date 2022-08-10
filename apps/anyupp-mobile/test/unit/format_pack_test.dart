@@ -1,6 +1,6 @@
 // formatPackNumber
 
-import '/shared/utils/format_utils.dart';
+import 'package:anyupp/shared/utils/format_utils.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

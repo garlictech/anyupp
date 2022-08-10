@@ -1,6 +1,8 @@
-import '/models.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:functional_data/functional_data.dart';
+
+import 'LocalizedItem.dart';
+import 'ProductVariantPack.dart';
 
 part 'ProductVariant.g.dart';
 
@@ -13,7 +15,8 @@ class ProductVariant extends $ProductVariant {
   final double price;
   final int position;
   final double? netPackagingFee;
-  final bool soldOut;
+  final bool? soldOut;
+  final bool isAvailable;
   final String? externalId;
 
   ProductVariant(
@@ -23,7 +26,8 @@ class ProductVariant extends $ProductVariant {
       required this.price,
       required this.position,
       this.netPackagingFee,
-      required this.soldOut,
+      this.soldOut,
+      required this.isAvailable,
       this.externalId});
 
   factory ProductVariant.fromJson(Map<String, dynamic> json) =>

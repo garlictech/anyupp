@@ -15,7 +15,8 @@ abstract class $ProductVariant {
   double get price;
   int get position;
   double? get netPackagingFee;
-  bool get soldOut;
+  bool? get soldOut;
+  bool get isAvailable;
   String? get externalId;
 
   ProductVariant copyWith({
@@ -26,6 +27,7 @@ abstract class $ProductVariant {
     int? position,
     double? netPackagingFee,
     bool? soldOut,
+    bool? isAvailable,
     String? externalId,
   }) =>
       ProductVariant(
@@ -36,6 +38,7 @@ abstract class $ProductVariant {
         position: position ?? this.position,
         netPackagingFee: netPackagingFee ?? this.netPackagingFee,
         soldOut: soldOut ?? this.soldOut,
+        isAvailable: isAvailable ?? this.isAvailable,
         externalId: externalId ?? this.externalId,
       );
 
@@ -49,6 +52,7 @@ abstract class $ProductVariant {
       this.position,
       this.netPackagingFee,
       this.soldOut,
+      this.isAvailable,
       this.externalId,
     );
     mutator(change);
@@ -60,13 +64,14 @@ abstract class $ProductVariant {
       position: change.position,
       netPackagingFee: change.netPackagingFee,
       soldOut: change.soldOut,
+      isAvailable: change.isAvailable,
       externalId: change.externalId,
     );
   }
 
   @override
   String toString() =>
-      "ProductVariant(id: $id, variantName: $variantName, pack: $pack, price: $price, position: $position, netPackagingFee: $netPackagingFee, soldOut: $soldOut, externalId: $externalId)";
+      "ProductVariant(id: $id, variantName: $variantName, pack: $pack, price: $price, position: $position, netPackagingFee: $netPackagingFee, soldOut: $soldOut, isAvailable: $isAvailable, externalId: $externalId)";
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
@@ -80,6 +85,7 @@ abstract class $ProductVariant {
       position == other.position &&
       netPackagingFee == other.netPackagingFee &&
       soldOut == other.soldOut &&
+      isAvailable == other.isAvailable &&
       externalId == other.externalId;
 
   @override
@@ -93,6 +99,7 @@ abstract class $ProductVariant {
     result = 37 * result + position.hashCode;
     result = 37 * result + netPackagingFee.hashCode;
     result = 37 * result + soldOut.hashCode;
+    result = 37 * result + isAvailable.hashCode;
     result = 37 * result + externalId.hashCode;
     return result;
   }
@@ -107,6 +114,7 @@ class ProductVariant$Change {
     this.position,
     this.netPackagingFee,
     this.soldOut,
+    this.isAvailable,
     this.externalId,
   );
 
@@ -116,7 +124,8 @@ class ProductVariant$Change {
   double price;
   int position;
   double? netPackagingFee;
-  bool soldOut;
+  bool? soldOut;
+  bool isAvailable;
   String? externalId;
 }
 
@@ -155,9 +164,15 @@ class ProductVariant$ {
         netPackagingFeeContainer.copyWith(netPackagingFee: netPackagingFee),
   );
 
-  static final soldOut = Lens<ProductVariant, bool>(
+  static final soldOut = Lens<ProductVariant, bool?>(
     (soldOutContainer) => soldOutContainer.soldOut,
     (soldOutContainer, soldOut) => soldOutContainer.copyWith(soldOut: soldOut),
+  );
+
+  static final isAvailable = Lens<ProductVariant, bool>(
+    (isAvailableContainer) => isAvailableContainer.isAvailable,
+    (isAvailableContainer, isAvailable) =>
+        isAvailableContainer.copyWith(isAvailable: isAvailable),
   );
 
   static final externalId = Lens<ProductVariant, String?>(
@@ -174,12 +189,16 @@ class ProductVariant$ {
 ProductVariant _$ProductVariantFromJson(Map<String, dynamic> json) =>
     ProductVariant(
       id: json['id'] as String?,
-      variantName: json['variantName'],
-      pack: json['pack'],
+      variantName:
+          LocalizedItem.fromJson(json['variantName'] as Map<String, dynamic>),
+      pack: json['pack'] == null
+          ? null
+          : ProductVariantPack.fromJson(json['pack'] as Map<String, dynamic>),
       price: (json['price'] as num).toDouble(),
       position: json['position'] as int,
       netPackagingFee: (json['netPackagingFee'] as num?)?.toDouble(),
-      soldOut: json['soldOut'] as bool,
+      soldOut: json['soldOut'] as bool?,
+      isAvailable: json['isAvailable'] as bool,
       externalId: json['externalId'] as String?,
     );
 
@@ -193,12 +212,13 @@ Map<String, dynamic> _$ProductVariantToJson(ProductVariant instance) {
   }
 
   writeNotNull('id', instance.id);
-  writeNotNull('variantName', instance.variantName);
-  writeNotNull('pack', instance.pack);
+  val['variantName'] = instance.variantName.toJson();
+  writeNotNull('pack', instance.pack?.toJson());
   val['price'] = instance.price;
   val['position'] = instance.position;
   writeNotNull('netPackagingFee', instance.netPackagingFee);
-  val['soldOut'] = instance.soldOut;
+  writeNotNull('soldOut', instance.soldOut);
+  val['isAvailable'] = instance.isAvailable;
   writeNotNull('externalId', instance.externalId);
   return val;
 }

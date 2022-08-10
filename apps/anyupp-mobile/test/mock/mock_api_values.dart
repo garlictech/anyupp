@@ -1,5 +1,5 @@
-import '/models.dart';
-import '/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
 
 class TestMock {
   static final bool _enabled = true;

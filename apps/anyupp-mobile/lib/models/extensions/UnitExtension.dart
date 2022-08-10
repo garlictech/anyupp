@@ -1,7 +1,8 @@
+import '../Location.dart';
+import '../Unit.dart';
 import '/graphql/generated/crud-api.dart';
-import '/models.dart';
 
-extension GeoUnitExtension on GeoUnit {
+extension UnitExtension on Unit {
   Location get loc =>
       location ?? address.location ?? Location(lat: 47, lng: 19);
 

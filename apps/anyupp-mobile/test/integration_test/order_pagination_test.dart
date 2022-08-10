@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
-import '/core/core.dart';
-import '/models.dart';
-import '/modules/login/login.dart';
-import '/modules/orders/orders.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/login/login.dart';
+import 'package:anyupp/modules/orders/orders.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rxdart/rxdart.dart';
 

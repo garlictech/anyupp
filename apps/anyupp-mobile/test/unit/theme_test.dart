@@ -1,5 +1,5 @@
-import '/core/theme/theme.dart';
-import '/models.dart';
+import 'package:anyupp/core/theme/theme.dart';
+import 'package:anyupp/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tinycolor2/tinycolor2.dart';

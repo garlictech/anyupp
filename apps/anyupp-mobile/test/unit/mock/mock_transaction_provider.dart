@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import '/models.dart';
-import '/modules/transactions/transactions.dart';
-import '/shared/pagination/pagination.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/transactions/transactions.dart';
+import 'package:anyupp/shared/pagination/pagination.dart';
 
 import '../../mock/mock_data_faker.dart';
 import '../../test_logger.dart';

@@ -1,4 +1,4 @@
-import '/core/core.dart';
+import 'package:anyupp/core/core.dart';
 import 'package:mockito/mockito.dart';
 
 class MockUnitsBloc extends Fake implements UnitsBloc {

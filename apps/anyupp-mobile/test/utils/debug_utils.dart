@@ -1,5 +1,5 @@
-import '/models.dart';
-import '/core/logger.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/core/logger.dart';
 
 void debugOrder(Order order) {
   log.d('debugOrder[${order.id}:');

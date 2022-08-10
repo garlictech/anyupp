@@ -1,7 +1,7 @@
-import '/core/core.dart';
-import '/graphql/generated/crud-api.dart';
-import '/models.dart';
-import '/modules/cart/cart.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../mock/mock_data_faker.dart';

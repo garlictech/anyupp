@@ -1,7 +1,8 @@
-import '/models.dart';
-import '/modules/menu/menu.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/menu/menu.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
-import '/core/logger.dart';
+import 'package:anyupp/core/logger.dart';
 
 import 'utils/json_loader.dart';
 
@@ -13,9 +14,9 @@ void main() {
 
   Future<List<GeneratedProduct>> _loadAndParseGeneratedProducts() async {
     var jsonProduct = await loadJson(
-      'test/unit/data/list_generated_product_response.json',
+      'test/unit/data/list_unit_products_response.json',
     );
-    List data = jsonProduct['data']['listGeneratedProducts']['items'];
+    List data = jsonProduct['data']['searchUnitProducts']['items'];
     return data.map((json) => GeneratedProduct.fromJson(json)).toList();
   }
 
@@ -125,6 +126,9 @@ void main() {
         _productComponents,
       );
       // Compare config sets
+      debugPrint("******1 ${original.configSets}");
+      debugPrint("******2 ${test1!.configSets}");
+
       expect(original.configSets?.length, equals(test1!.configSets?.length));
       original.configSets?.forEach((originalConfigSet) {
         var testConfigSet = test1.configSets?.firstWhere(

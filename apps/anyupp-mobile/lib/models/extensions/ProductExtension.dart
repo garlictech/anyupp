@@ -1,6 +1,6 @@
-import '/models.dart';
+import '../Product.dart';
 
-extension ProductExtension on GeneratedProduct {
+extension ProductExtension on Product {
   //
   bool get isSoldOut => soldOut == true || isAllVariantsSoldOut;
 

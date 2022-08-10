@@ -1,6 +1,6 @@
-import '/graphql/generated/crud-api.dart';
-import '/models.dart';
-import '/modules/cart/utils/cart_to_order_calculations.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/utils/cart_to_order_calculations.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -1,6 +1,6 @@
-import '/graphql/generated/crud-api.graphql.dart';
-import '/models.dart';
-import '/modules/rating_tipping/providers/rating_provider_interface.dart';
+import 'package:anyupp/graphql/generated/crud-api.graphql.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/rating_tipping/providers/rating_provider_interface.dart';
 
 class MockRatingProvider implements IRatingProvider {
   @override

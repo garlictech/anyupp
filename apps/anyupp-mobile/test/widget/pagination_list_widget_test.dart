@@ -1,6 +1,6 @@
-import '/models.dart';
-import '/modules/transactions/transactions.dart';
-import '/shared/pagination/pagination.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/transactions/transactions.dart';
+import 'package:anyupp/shared/pagination/pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';

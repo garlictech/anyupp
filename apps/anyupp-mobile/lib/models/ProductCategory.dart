@@ -1,11 +1,12 @@
-import '/models.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:functional_data/functional_data.dart';
+
+import 'LocalizedItem.dart';
 
 part 'ProductCategory.g.dart';
 
 @FunctionalData()
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class ProductCategory extends $ProductCategory {
   final String id;
   final String ownerEntity;

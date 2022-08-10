@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import '/app-config.dart';
-import '/graphql/graphql_token_refresh_interceptor.dart';
-import '/shared/auth/auth.dart';
+import 'package:anyupp/app-config.dart';
+import 'package:anyupp/graphql/graphql_token_refresh_interceptor.dart';
+import 'package:anyupp/shared/auth/auth.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:mockito/mockito.dart';
