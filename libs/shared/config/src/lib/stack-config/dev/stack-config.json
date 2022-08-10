@@ -8,17 +8,22 @@
     "googleClientIdOutput": "1016713353610-q3nsj1t1flrjuo33sfakis645gl7ijv3.apps.googleusercontent.com",
     "facebookAppIdOutput": "166876958090898",
     "googleApiKeyOutput": "AIzaSyDGNIG1eIqvKsRoBsQ2T7PVff2d1XUhsVg",
-    "securityGroupId": "sg-067322e2345a84f7e",
+    "securityGroupId": "sg-0d8ed08b1456cac31",
     "slackChannelOutput": "net.cyberg.anyupp.cognito",
     "appleTeamIdOutput": "36CW47H75G",
     "appleKeyIdOutput": "8W2A8ZDZH8",
     "vpcIdOutput": "vpc-0880d26d0165c9f7f"
   },
   "anyupp-backend-sites": {
+    "VariantsBucket8636AB76": "dev-variants-anyupp-backend.anyupp.com",
+    "VariantsDistributionDomainName64CED8FD": "d2t8nlsqhi6kwd.cloudfront.net",
     "AdminSiteDomainA75B4E32": "dev-admin-anyupp-backend.anyupp.com",
+    "VariantsSiteDomain720640AD": "dev-variants-anyupp-backend.anyupp.com",
     "AdminDistributionDomainNameA4A4FE5B": "d3mlmasdngr8j1.cloudfront.net",
     "AdminSiteEAA17C78": "https://dev-admin-anyupp-backend.anyupp.com",
     "AdminDistributionIdB4DE25AB": "E2PY5D7IE75ACO",
+    "VariantsSite8C170134": "https://dev-variants-anyupp-backend.anyupp.com",
+    "VariantsDistributionIdEF1CC563": "EN905H33499AM",
     "AdminBucketCA57896C": "dev-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {
@@ -37,9 +42,9 @@
     "StripeWebhookEndpointE83D65EB": "https://0z8tk1xx72.execute-api.eu-west-1.amazonaws.com/dev/"
   },
   "anyupp-backend-rkeeper": {
-    "RKeeperWebhookEndpointCBC72BD4": "https://0d7gdz6keh.execute-api.eu-west-1.amazonaws.com/dev/",
+    "RKeeperWebhookEndpointCBC72BD4": "https://p6jhm1le31.execute-api.eu-west-1.amazonaws.com/dev/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-dev.anyupp.com/dev",
-    "RKeeperTaskBucketName": "dev-anyupp-backend-rkeep-anyupprkeepermenubucket4-1epfk17ibuuui",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-RkeeperECSTaskExecutionR-974JEKOLAQKZ"
+    "RKeeperTaskBucketName": "dev-anyupp-backend-rkeep-anyupprkeepermenubucket4-141h0nb439bvy",
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-rkeepe-RkeeperECSTaskExecutionR-1KC9N7TDZ1J1V"
   }
 }
