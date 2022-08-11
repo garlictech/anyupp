@@ -824,9 +824,6 @@ type Unit @aws_iam @aws_cognito_user_pools {
   adBanners: [ImageAsset!]
   adBannersEnabled: Boolean
   coverBanners: [ImageAsset!]
-  coverBannersEnabled: Boolean
-  groupId: ID
-  chainId: ID
   lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
@@ -853,7 +850,7 @@ type Unit @aws_iam @aws_cognito_user_pools {
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
-  location: LocationLatLon
+  location: LocationLatLon!
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
@@ -2389,9 +2386,6 @@ input ModelOrderPaymentPolicyInput {
 input ModelUnitFilterInput {
   id: ModelIDInput
   adBannersEnabled: ModelBooleanInput
-  coverBannersEnabled: ModelBooleanInput
-  groupId: ModelIDInput
-  chainId: ModelIDInput
   lastOrderNum: ModelIntInput
   isActive: ModelBooleanInput
   isAcceptingOrders: ModelBooleanInput
@@ -2418,9 +2412,6 @@ input ModelUnitFilterInput {
 
 input ModelUnitConditionInput {
   adBannersEnabled: ModelBooleanInput
-  coverBannersEnabled: ModelBooleanInput
-  groupId: ModelIDInput
-  chainId: ModelIDInput
   lastOrderNum: ModelIntInput
   isActive: ModelBooleanInput
   isAcceptingOrders: ModelBooleanInput
@@ -3325,9 +3316,6 @@ input SearchableFavoriteProductAggregationInput {
 input SearchableUnitFilterInput {
   id: SearchableIDFilterInput
   adBannersEnabled: SearchableBooleanFilterInput
-  coverBannersEnabled: SearchableBooleanFilterInput
-  groupId: SearchableIDFilterInput
-  chainId: SearchableIDFilterInput
   lastOrderNum: SearchableIntFilterInput
   isActive: SearchableBooleanFilterInput
   isAcceptingOrders: SearchableBooleanFilterInput
@@ -3357,9 +3345,6 @@ input SearchableUnitFilterInput {
 enum SearchableUnitSortableFields {
   id
   adBannersEnabled
-  coverBannersEnabled
-  groupId
-  chainId
   lastOrderNum
   isActive
   isAcceptingOrders
@@ -3386,9 +3371,6 @@ input SearchableUnitSortInput {
 enum SearchableUnitAggregateField {
   id
   adBannersEnabled
-  coverBannersEnabled
-  groupId
-  chainId
   lastOrderNum
   isActive
   isAcceptingOrders

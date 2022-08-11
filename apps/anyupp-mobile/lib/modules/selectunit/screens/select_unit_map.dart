@@ -237,11 +237,11 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
   }
 
   Future<void> _zoomToUnit(Unit unit) async {
-    log.d('_zoomToUnit()=${unit.loc}');
+    log.d('_zoomToUnit()=${unit.location}');
     return _animateMapToLocation(
       LatLng(
-        unit.loc.lat,
-        unit.loc.lng,
+        unit.location.lat,
+        unit.location.lng,
       ),
     );
   }
@@ -330,8 +330,8 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
               zIndex: selectedUnit?.id == units[i - 1].id ? 100 : 0,
               icon: BitmapDescriptor.fromBytes(bitmaps[i]),
               position: LatLng(
-                units[i - 1].loc.lat,
-                units[i - 1].loc.lng,
+                units[i - 1].location.lat,
+                units[i - 1].location.lng,
               ),
               onTap: () => selectUnitAndGoToMenuScreen(
                 context,

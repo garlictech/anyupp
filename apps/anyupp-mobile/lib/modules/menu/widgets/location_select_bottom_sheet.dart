@@ -126,15 +126,8 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
               ),
               child: Text(
                 UnitUtils.isClosed(unit)
-                    ? UnitUtils.getClosedText(
-                        unit,
-                        transEx(context, "selectUnit.closed"),
-                        transEx(context, "selectUnit.opens"),
-                        transEx(context, "selectUnit.weekdays.${UnitUtils.getOpenedHour(unit)?.getDayString()}"),
-                      )
-                    : transEx(context, "selectUnit.opened") +
-                        ": " +
-                        transEx(context, UnitUtils.getOpenedHour(unit)?.getOpenRangeString() ?? ''),
+                    ? transEx(context, "selectUnit.closed")
+                    : transEx(context, "selectUnit.opened"),
 
                 //'Nyitva: 09:00 - 22:00',
                 style: Fonts.satoshi(

@@ -33,7 +33,7 @@ void main() {
       name: 'Test Unit',
       currency: 'huf',
     ).copyWith(
-      packagingTax: 10,
+      packagingTaxPercentage: 10,
     );
     Cart mockCart = MockGenerator.generateBasicCart(
       unitId: mockUnit.id,

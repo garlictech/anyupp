@@ -56,9 +56,7 @@ class AwsUnitProvider implements IUnitProvider {
       throw GraphQLException.fromGraphQLError(
           GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
     }
-
     final jsonFormat = result.data?.getUnit?.toJson();
-
     return jsonFormat != null ? Unit.fromJson(jsonFormat) : null;
   }
 }

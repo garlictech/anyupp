@@ -42,7 +42,7 @@ extension CartExtension on Cart {
       return 0.0;
     }
 
-    double tax = currentUnit?.packagingTax ?? 0.0;
+    double tax = currentUnit?.packagingTaxPercentage ?? 0.0;
 
     double price = 0.0;
     items.forEach((orderItem) {

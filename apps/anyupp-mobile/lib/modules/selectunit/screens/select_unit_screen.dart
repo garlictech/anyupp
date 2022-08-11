@@ -282,6 +282,7 @@ class _UnitListWidgetState extends State<_UnitListWidget> {
                   }
 
                   var unit = widget.units[position];
+
                   return AnimationConfiguration.staggeredList(
                     position: position,
                     duration: const Duration(milliseconds: 200),
@@ -292,11 +293,9 @@ class _UnitListWidgetState extends State<_UnitListWidget> {
                           closeTime: getOpeningText(context, unit),
                           distance:
                               '${(unit.distance / 1000).toStringAsFixed(0)}m',
-                          imageList: unit.hasBanner
-                              ? unit.coverBanners
-                                  ?.map((e) => e.imageUrl)
-                                  .toList()
-                              : null,
+                          imageList: unit.coverBanners
+                              ?.map((e) => e.imageUrl)
+                              .toList(),
                           // isFavorite: false,
                           // unitFoodType: 'Casual',
                           unitName: widget.units[position].name,

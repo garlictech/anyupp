@@ -1,6 +1,5 @@
 import '/core/core.dart';
 import '/models/Unit.dart';
-import '/models/extensions/OpeningHoursExtension.dart';
 import '/modules/menu/menu.dart';
 import '/shared/locale.dart';
 import '/shared/widgets.dart';
@@ -72,19 +71,8 @@ class UnitCardWidget extends StatelessWidget {
                     fit: BoxFit.contain,
                     child: Text(
                       UnitUtils.isClosed(unit)
-                          ? UnitUtils.getClosedText(
-                              unit,
-                              transEx(context, "selectUnit.closed"),
-                              transEx(context, "selectUnit.opens"),
-                              transEx(context,
-                                  "selectUnit.weekdays.${UnitUtils.getOpenedHour(unit)?.getDayString()}"),
-                            )
-                          : transEx(context, "selectUnit.opened") +
-                              ": " +
-                              transEx(
-                                  context,
-                                  UnitUtils.getOpenedHour(unit)!
-                                      .getOpenRangeString()!),
+                          ? transEx(context, "selectUnit.closed")
+                          : transEx(context, "selectUnit.opened"),
                       style: Fonts.satoshi(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w400,

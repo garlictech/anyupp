@@ -81,9 +81,7 @@ export const seedBusinessData = (deps: SeederDependencies) =>
       switchMap(() =>
         concat(
           createConsumerUser()(deps).pipe(ce('### Consumer user')),
-          createTestUnit(1)(deps).pipe(ce('### Unit SEED 01')),
-          createTestUnit(2)(deps).pipe(ce('### Unit SEED 02')),
-          createTestUnit(3)(deps).pipe(ce('### Unit SEED 03')),
+          createTestUnit(deps).pipe(ce('### Unit SEED 01')),
           createTestUnitsForOrderHandling()(deps).pipe(
             ce('### Order handling units'),
           ),

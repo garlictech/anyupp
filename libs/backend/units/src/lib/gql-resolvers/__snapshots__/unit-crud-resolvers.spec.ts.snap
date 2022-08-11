@@ -70,7 +70,6 @@ Object {
     "postalCode": "UNIT POSTAL CODE",
     "title": "UNTI TITLE",
   },
-  "chainId": "UNIT CHAINID",
   "createdAt": "ORDER CREATEDAT",
   "currency": "EUR",
   "description": Object {
@@ -78,7 +77,6 @@ Object {
     "en": "UNIT DESCRIPTION EN",
     "hu": "UNIT DESCRIPTION HU",
   },
-  "groupId": "UNIT GROUPID",
   "id": "UNITID",
   "isAcceptingOrders": true,
   "isActive": true,

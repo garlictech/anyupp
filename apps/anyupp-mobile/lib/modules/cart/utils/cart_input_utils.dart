@@ -44,7 +44,7 @@ CreateOrderFromCartArguments createOrderFromCartArguments(
         tax: 0,
         taxSum: 0,
       ),
-      packagingFeeTaxPercentage: unit.packagingTax,
+      packagingFeeTaxPercentage: unit.packagingTaxPercentage,
       packagingSum: _priceToInput(cart.packagingSum),
       paymentMode: cart.paymentMode != null
           ? PaymentModeInput(
@@ -156,7 +156,7 @@ CreateOrderFromCartArguments createOrderFromCart(Unit unit, Cart cart) {
         priceSum: cart.sumPriceShown!.priceSum,
         taxSum: cart.sumPriceShown!.taxSum,
       ),
-      packagingFeeTaxPercentage: unit.packagingTax,
+      packagingFeeTaxPercentage: unit.packagingTaxPercentage,
       packagingSum: cart.packagingSum != null
           ? PriceInput(
               currency: unit.currency,

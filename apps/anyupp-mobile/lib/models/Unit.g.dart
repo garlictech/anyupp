@@ -14,20 +14,18 @@ abstract class $Unit {
   Address get address;
   ChainStyle get style;
   List<PaymentMode?>? get paymentModes;
-  int get distance;
   String get currency;
   bool get isAcceptingOrders;
-  List<OpeningHours> get openingHoursNext7;
   List<ServingMode> get supportedServingModes;
   List<OrderMode> get supportedOrderModes;
   OrderPolicy get orderPolicy;
-  double get packagingTax;
+  double get packagingTaxPercentage;
   List<RatingPolicy>? get ratingPolicies;
   TipPolicy? get tipPolicy;
   ServiceFeePolicy? get serviceFeePolicy;
   SoldOutVisibilityPolicy? get soldOutVisibilityPolicy;
   OrderPaymentPolicy? get orderPaymentPolicy;
-  Location? get location;
+  Location get location;
   bool? get adBannersEnabled;
   List<ImageAsset>? get adBanners;
   bool? get canRequestVatInvoice;
@@ -45,14 +43,12 @@ abstract class $Unit {
     Address? address,
     ChainStyle? style,
     List<PaymentMode?>? paymentModes,
-    int? distance,
     String? currency,
     bool? isAcceptingOrders,
-    List<OpeningHours>? openingHoursNext7,
     List<ServingMode>? supportedServingModes,
     List<OrderMode>? supportedOrderModes,
     OrderPolicy? orderPolicy,
-    double? packagingTax,
+    double? packagingTaxPercentage,
     List<RatingPolicy>? ratingPolicies,
     TipPolicy? tipPolicy,
     ServiceFeePolicy? serviceFeePolicy,
@@ -76,15 +72,14 @@ abstract class $Unit {
         address: address ?? this.address,
         style: style ?? this.style,
         paymentModes: paymentModes ?? this.paymentModes,
-        distance: distance ?? this.distance,
         currency: currency ?? this.currency,
         isAcceptingOrders: isAcceptingOrders ?? this.isAcceptingOrders,
-        openingHoursNext7: openingHoursNext7 ?? this.openingHoursNext7,
         supportedServingModes:
             supportedServingModes ?? this.supportedServingModes,
         supportedOrderModes: supportedOrderModes ?? this.supportedOrderModes,
         orderPolicy: orderPolicy ?? this.orderPolicy,
-        packagingTax: packagingTax ?? this.packagingTax,
+        packagingTaxPercentage:
+            packagingTaxPercentage ?? this.packagingTaxPercentage,
         ratingPolicies: ratingPolicies ?? this.ratingPolicies,
         tipPolicy: tipPolicy ?? this.tipPolicy,
         serviceFeePolicy: serviceFeePolicy ?? this.serviceFeePolicy,
@@ -111,14 +106,12 @@ abstract class $Unit {
       this.address,
       this.style,
       this.paymentModes,
-      this.distance,
       this.currency,
       this.isAcceptingOrders,
-      this.openingHoursNext7,
       this.supportedServingModes,
       this.supportedOrderModes,
       this.orderPolicy,
-      this.packagingTax,
+      this.packagingTaxPercentage,
       this.ratingPolicies,
       this.tipPolicy,
       this.serviceFeePolicy,
@@ -143,14 +136,12 @@ abstract class $Unit {
       address: change.address,
       style: change.style,
       paymentModes: change.paymentModes,
-      distance: change.distance,
       currency: change.currency,
       isAcceptingOrders: change.isAcceptingOrders,
-      openingHoursNext7: change.openingHoursNext7,
       supportedServingModes: change.supportedServingModes,
       supportedOrderModes: change.supportedOrderModes,
       orderPolicy: change.orderPolicy,
-      packagingTax: change.packagingTax,
+      packagingTaxPercentage: change.packagingTaxPercentage,
       ratingPolicies: change.ratingPolicies,
       tipPolicy: change.tipPolicy,
       serviceFeePolicy: change.serviceFeePolicy,
@@ -172,7 +163,7 @@ abstract class $Unit {
 
   @override
   String toString() =>
-      "Unit(id: $id, name: $name, address: $address, style: $style, paymentModes: $paymentModes, distance: $distance, currency: $currency, isAcceptingOrders: $isAcceptingOrders, openingHoursNext7: $openingHoursNext7, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes, orderPolicy: $orderPolicy, packagingTax: $packagingTax, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, serviceFeePolicy: $serviceFeePolicy, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, orderPaymentPolicy: $orderPaymentPolicy, location: $location, adBannersEnabled: $adBannersEnabled, adBanners: $adBanners, canRequestVatInvoice: $canRequestVatInvoice, description: $description, email: $email, phone: $phone, coverBannersEnabled: $coverBannersEnabled, coverBanners: $coverBanners, canCallWaiter: $canCallWaiter, isVisibleInApp: $isVisibleInApp)";
+      "Unit(id: $id, name: $name, address: $address, style: $style, paymentModes: $paymentModes, currency: $currency, isAcceptingOrders: $isAcceptingOrders, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes, orderPolicy: $orderPolicy, packagingTaxPercentage: $packagingTaxPercentage, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, serviceFeePolicy: $serviceFeePolicy, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, orderPaymentPolicy: $orderPaymentPolicy, location: $location, adBannersEnabled: $adBannersEnabled, adBanners: $adBanners, canRequestVatInvoice: $canRequestVatInvoice, description: $description, email: $email, phone: $phone, coverBannersEnabled: $coverBannersEnabled, coverBanners: $coverBanners, canCallWaiter: $canCallWaiter, isVisibleInApp: $isVisibleInApp)";
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
@@ -184,14 +175,12 @@ abstract class $Unit {
       address == other.address &&
       style == other.style &&
       paymentModes == other.paymentModes &&
-      distance == other.distance &&
       currency == other.currency &&
       isAcceptingOrders == other.isAcceptingOrders &&
-      openingHoursNext7 == other.openingHoursNext7 &&
       supportedServingModes == other.supportedServingModes &&
       supportedOrderModes == other.supportedOrderModes &&
       orderPolicy == other.orderPolicy &&
-      packagingTax == other.packagingTax &&
+      packagingTaxPercentage == other.packagingTaxPercentage &&
       ratingPolicies == other.ratingPolicies &&
       tipPolicy == other.tipPolicy &&
       serviceFeePolicy == other.serviceFeePolicy &&
@@ -218,14 +207,12 @@ abstract class $Unit {
     result = 37 * result + address.hashCode;
     result = 37 * result + style.hashCode;
     result = 37 * result + paymentModes.hashCode;
-    result = 37 * result + distance.hashCode;
     result = 37 * result + currency.hashCode;
     result = 37 * result + isAcceptingOrders.hashCode;
-    result = 37 * result + openingHoursNext7.hashCode;
     result = 37 * result + supportedServingModes.hashCode;
     result = 37 * result + supportedOrderModes.hashCode;
     result = 37 * result + orderPolicy.hashCode;
-    result = 37 * result + packagingTax.hashCode;
+    result = 37 * result + packagingTaxPercentage.hashCode;
     result = 37 * result + ratingPolicies.hashCode;
     result = 37 * result + tipPolicy.hashCode;
     result = 37 * result + serviceFeePolicy.hashCode;
@@ -253,14 +240,12 @@ class Unit$Change {
     this.address,
     this.style,
     this.paymentModes,
-    this.distance,
     this.currency,
     this.isAcceptingOrders,
-    this.openingHoursNext7,
     this.supportedServingModes,
     this.supportedOrderModes,
     this.orderPolicy,
-    this.packagingTax,
+    this.packagingTaxPercentage,
     this.ratingPolicies,
     this.tipPolicy,
     this.serviceFeePolicy,
@@ -284,20 +269,18 @@ class Unit$Change {
   Address address;
   ChainStyle style;
   List<PaymentMode?>? paymentModes;
-  int distance;
   String currency;
   bool isAcceptingOrders;
-  List<OpeningHours> openingHoursNext7;
   List<ServingMode> supportedServingModes;
   List<OrderMode> supportedOrderModes;
   OrderPolicy orderPolicy;
-  double packagingTax;
+  double packagingTaxPercentage;
   List<RatingPolicy>? ratingPolicies;
   TipPolicy? tipPolicy;
   ServiceFeePolicy? serviceFeePolicy;
   SoldOutVisibilityPolicy? soldOutVisibilityPolicy;
   OrderPaymentPolicy? orderPaymentPolicy;
-  Location? location;
+  Location location;
   bool? adBannersEnabled;
   List<ImageAsset>? adBanners;
   bool? canRequestVatInvoice;
@@ -338,12 +321,6 @@ class Unit$ {
         paymentModesContainer.copyWith(paymentModes: paymentModes),
   );
 
-  static final distance = Lens<Unit, int>(
-    (distanceContainer) => distanceContainer.distance,
-    (distanceContainer, distance) =>
-        distanceContainer.copyWith(distance: distance),
-  );
-
   static final currency = Lens<Unit, String>(
     (currencyContainer) => currencyContainer.currency,
     (currencyContainer, currency) =>
@@ -356,14 +333,6 @@ class Unit$ {
     (isAcceptingOrdersContainer, isAcceptingOrders) =>
         isAcceptingOrdersContainer.copyWith(
             isAcceptingOrders: isAcceptingOrders),
-  );
-
-  static final openingHoursNext7 = Lens<Unit, List<OpeningHours>>(
-    (openingHoursNext7Container) =>
-        openingHoursNext7Container.openingHoursNext7,
-    (openingHoursNext7Container, openingHoursNext7) =>
-        openingHoursNext7Container.copyWith(
-            openingHoursNext7: openingHoursNext7),
   );
 
   static final supportedServingModes = Lens<Unit, List<ServingMode>>(
@@ -388,10 +357,12 @@ class Unit$ {
         orderPolicyContainer.copyWith(orderPolicy: orderPolicy),
   );
 
-  static final packagingTax = Lens<Unit, double>(
-    (packagingTaxContainer) => packagingTaxContainer.packagingTax,
-    (packagingTaxContainer, packagingTax) =>
-        packagingTaxContainer.copyWith(packagingTax: packagingTax),
+  static final packagingTaxPercentage = Lens<Unit, double>(
+    (packagingTaxPercentageContainer) =>
+        packagingTaxPercentageContainer.packagingTaxPercentage,
+    (packagingTaxPercentageContainer, packagingTaxPercentage) =>
+        packagingTaxPercentageContainer.copyWith(
+            packagingTaxPercentage: packagingTaxPercentage),
   );
 
   static final ratingPolicies = Lens<Unit, List<RatingPolicy>?>(
@@ -428,7 +399,7 @@ class Unit$ {
             orderPaymentPolicy: orderPaymentPolicy),
   );
 
-  static final location = Lens<Unit, Location?>(
+  static final location = Lens<Unit, Location>(
     (locationContainer) => locationContainer.location,
     (locationContainer, location) =>
         locationContainer.copyWith(location: location),
@@ -495,4 +466,100 @@ class Unit$ {
     (isVisibleInAppContainer, isVisibleInApp) =>
         isVisibleInAppContainer.copyWith(isVisibleInApp: isVisibleInApp),
   );
+}
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Unit _$UnitFromJson(Map<String, dynamic> json) => Unit(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      address: Address.fromJson(json['address'] as Map<String, dynamic>),
+      style: ChainStyle.fromJson(json['style'] as Map<String, dynamic>),
+      currency: json['currency'] as String,
+      isAcceptingOrders: json['isAcceptingOrders'] as bool,
+      supportedServingModes: json['supportedServingModes'] as List<dynamic>,
+      supportedOrderModes: json['supportedOrderModes'] as List<dynamic>,
+      orderPolicy: json['orderPolicy'] ?? OrderPolicy.placeOnly,
+      packagingTaxPercentage:
+          (json['packagingTaxPercentage'] as num?)?.toDouble() ?? 0,
+      paymentModes: (json['paymentModes'] as List<dynamic>?)
+          ?.map((e) => e == null
+              ? null
+              : PaymentMode.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      ratingPolicies: (json['ratingPolicies'] as List<dynamic>?)
+          ?.map((e) => RatingPolicy.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      tipPolicy: json['tipPolicy'] == null
+          ? null
+          : TipPolicy.fromJson(json['tipPolicy'] as Map<String, dynamic>),
+      serviceFeePolicy: json['serviceFeePolicy'] == null
+          ? null
+          : ServiceFeePolicy.fromJson(
+              json['serviceFeePolicy'] as Map<String, dynamic>),
+      soldOutVisibilityPolicy: json['soldOutVisibilityPolicy'],
+      orderPaymentPolicy: json['orderPaymentPolicy'],
+      location: Location.fromJson(json['location'] as Map<String, dynamic>),
+      adBannersEnabled: json['adBannersEnabled'] as bool?,
+      adBanners: (json['adBanners'] as List<dynamic>?)
+          ?.map((e) => ImageAsset.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      canRequestVatInvoice: json['canRequestVatInvoice'] as bool?,
+      description: json['description'] == null
+          ? null
+          : LocalizedItem.fromJson(json['description'] as Map<String, dynamic>),
+      email: json['email'] as String?,
+      phone: json['phone'] as String?,
+      coverBannersEnabled: json['coverBannersEnabled'] as bool?,
+      coverBanners: (json['coverBanners'] as List<dynamic>?)
+          ?.map((e) => ImageAsset.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      canCallWaiter: json['canCallWaiter'] as bool?,
+      isVisibleInApp: json['isVisibleInApp'] as bool? ?? true,
+    );
+
+Map<String, dynamic> _$UnitToJson(Unit instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'name': instance.name,
+    'address': instance.address.toJson(),
+    'style': instance.style.toJson(),
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull(
+      'paymentModes', instance.paymentModes?.map((e) => e?.toJson()).toList());
+  val['currency'] = instance.currency;
+  val['isAcceptingOrders'] = instance.isAcceptingOrders;
+  val['supportedServingModes'] = instance.supportedServingModes;
+  val['supportedOrderModes'] = instance.supportedOrderModes;
+  writeNotNull('orderPolicy', instance.orderPolicy);
+  val['packagingTaxPercentage'] = instance.packagingTaxPercentage;
+  writeNotNull('ratingPolicies',
+      instance.ratingPolicies?.map((e) => e.toJson()).toList());
+  writeNotNull('tipPolicy', instance.tipPolicy?.toJson());
+  writeNotNull('serviceFeePolicy', instance.serviceFeePolicy?.toJson());
+  writeNotNull('soldOutVisibilityPolicy', instance.soldOutVisibilityPolicy);
+  writeNotNull('orderPaymentPolicy', instance.orderPaymentPolicy);
+  val['location'] = instance.location.toJson();
+  writeNotNull('adBannersEnabled', instance.adBannersEnabled);
+  writeNotNull(
+      'adBanners', instance.adBanners?.map((e) => e.toJson()).toList());
+  writeNotNull('canRequestVatInvoice', instance.canRequestVatInvoice);
+  writeNotNull('description', instance.description?.toJson());
+  writeNotNull('email', instance.email);
+  writeNotNull('phone', instance.phone);
+  writeNotNull('coverBannersEnabled', instance.coverBannersEnabled);
+  writeNotNull(
+      'coverBanners', instance.coverBanners?.map((e) => e.toJson()).toList());
+  writeNotNull('canCallWaiter', instance.canCallWaiter);
+  val['isVisibleInApp'] = instance.isVisibleInApp;
+  return val;
 }

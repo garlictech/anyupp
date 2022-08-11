@@ -14,7 +14,7 @@ void main() {
       name: 'Test Unit',
       currency: 'huf',
     ).copyWith(
-      packagingTax: 10,
+      packagingTaxPercentage: 10,
     );
     getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(mockUnit));
   });
@@ -127,8 +127,7 @@ void main() {
       expect(cart.totalPrice, equals(0));
       expect(cart.packaginFee, equals(0));
 
-      ProductConfigSet configSet =
-          MockGenerator.generateEmptyProductConfigSet(
+      ProductConfigSet configSet = MockGenerator.generateEmptyProductConfigSet(
         name: 'Test Modifier Set',
         type: ProductComponentSetType.modifier,
       );

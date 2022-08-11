@@ -221,8 +221,6 @@ const unit: Unit = {
   id: 'UNITID',
   createdAt: 'ORDER CREATEDAT',
   updatedAt: 'ORDER UPDATEDAT',
-  chainId: 'UNIT CHAINID',
-  groupId: 'UNIT GROUPID',
   isActive: true,
   isAcceptingOrders: true,
   name: 'UNIT NAME',

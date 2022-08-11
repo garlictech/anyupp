@@ -254,16 +254,16 @@ class MockGenerator {
     return Unit(
       id: id ?? faker.guid.guid(),
       name: name,
+      location: Location(
+        lat: 0,
+        lng: 0,
+      ),
       address: Address(
         address: 'Test Street',
         city: 'Budapest',
         country: 'Hungary',
         title: 'Test Address',
         postalCode: '1000',
-        location: Location(
-          lat: 0,
-          lng: 0,
-        ),
       ),
       style: ChainStyle(
         colors: ChainStyleColors(
@@ -280,10 +280,8 @@ class MockGenerator {
           secondary: '#ffffff',
         ),
       ),
-      distance: 0,
       currency: currency,
       isAcceptingOrders: true,
-      openingHoursNext7: [],
       supportedServingModes: [
         ServingMode.inPlace,
         ServingMode.takeAway,
@@ -293,7 +291,7 @@ class MockGenerator {
         OrderMode.pickup,
       ],
       orderPolicy: OrderPolicy.full,
-      packagingTax: 5.0,
+      packagingTaxPercentage: 5.0,
     );
   }
 

@@ -27,7 +27,6 @@ import {
   PosType,
   ProductType,
   ServingMode,
-  UnitMapObjectType,
 } from '@bgap/domain';
 import { DateTime } from 'luxon';
 import * as R from 'ramda';
@@ -92,226 +91,27 @@ export const createAdminUser =
     );
   };
 
-export const createTestUnit =
-  (unitIdx: number) => (deps: SeederDependencies) => {
-    console.debug('createTestUnit', {
-      unitIdx,
-    });
-    const input: CreateUnitInput = {
-      ...R.omit(['createdAt', 'updatedAt'], unitFixture.unitBase),
-      id: seedUtils.generateUnitId(unitIdx),
-      name: `Késdobáló #11${unitIdx}`,
-      timeZone: 'Europe/Budapest',
-      supportedServingModes:
-        unitIdx % 2 === 1
-          ? unitFixture.unitBase.supportedServingModes
-          : [ServingMode.inplace],
-      supportedOrderModes:
-        unitIdx % 2 === 1
-          ? unitFixture.unitBase.supportedOrderModes
-          : [OrderMode.instant],
-      lanes: [
-        {
-          color: '#e72222',
-          id: 'lane_01',
-          name: 'bár',
-        },
-        {
-          color: '#e123ef',
-          id: 'lane_02',
-          name: 'konyha',
-        },
-      ],
-      openingHours: {
-        mon: {
-          from: '09:00',
-          to: '17:00',
-        },
-        tue: {
-          from: '09:00',
-          to: '18:00',
-        },
-        wed: {
-          from: '09:00',
-          to: '19:00',
-        },
-        thu: {
-          from: '09:00',
-          to: '20:00',
-        },
-        fri: {
-          from: '09:00',
-          to: '21:00',
-        },
-        sat: {
-          from: '',
-          to: '',
-        },
-        sun: {
-          from: '',
-          to: '',
-        },
-        custom: [],
+export const createTestUnit = (deps: SeederDependencies) => {
+  console.debug('createTestUnit');
+  const input: CreateUnitInput = {
+    ...R.omit(['createdAt', 'updatedAt'], unitFixture.unitBase),
+    id: 'a-kesdobalo',
+    name: `Késdobáló`,
+    timeZone: 'Europe/Budapest',
+    supportedServingModes: [ServingMode.inplace],
+    supportedOrderModes: [OrderMode.instant],
+    coverBanners: [
+      {
+        imageUrl:
+          'http://1.bp.blogspot.com/--hTHo2uuDHM/UicXpXI-cNI/AAAAAAAAAzQ/zOrpgDVawJo/s1600/rejt%C5%91.jpg',
       },
-      floorMap: {
-        w: 800,
-        h: 300,
-        objects: [
-          {
-            id: 'caxj47xzn7n',
-            t: UnitMapObjectType.table_r,
-            c: '01',
-            w: 150,
-            h: 60,
-            r: null,
-            a: 0,
-            x: 10,
-            y: 10,
-            tID: '01',
-            sID: null,
-          },
-          {
-            id: 'f87azndb8ct',
-            t: UnitMapObjectType.table_r,
-            c: '03',
-            w: 150,
-            h: 60,
-            r: null,
-            a: 0,
-            x: 376,
-            y: 10,
-            tID: '03',
-            sID: null,
-          },
-          {
-            id: 'cyh9qwe2axr',
-            t: UnitMapObjectType.table_r,
-            c: '02',
-            w: 150,
-            h: 60,
-            r: null,
-            a: 0,
-            x: 192,
-            y: 10,
-            tID: '02',
-            sID: null,
-          },
-          {
-            id: 'ufegqdtf82h',
-            t: UnitMapObjectType.seat_r,
-            x: 20,
-            y: 60,
-            c: '01',
-            a: 0,
-            w: 30,
-            h: 30,
-            tID: '01',
-            sID: '01',
-          },
-          {
-            id: 'eohk3z8f9oq',
-            t: UnitMapObjectType.seat_r,
-            x: 68,
-            y: 60,
-            c: '02',
-            a: 0,
-            w: 30,
-            h: 30,
-            tID: '01',
-            sID: '02',
-          },
-          {
-            id: 'l4i62x7idpo',
-            t: UnitMapObjectType.seat_r,
-            x: 116,
-            y: 60,
-            c: '03',
-            a: 0,
-            w: 30,
-            h: 30,
-            tID: '01',
-            sID: '03',
-          },
-          {
-            id: 'nlqoylp88p9',
-            t: UnitMapObjectType.seat_r,
-            x: 206,
-            y: 60,
-            c: '01',
-            a: 0,
-            w: 30,
-            h: 30,
-            tID: '02',
-            sID: '01',
-          },
-          {
-            id: 'mxo7tnz53sh',
-            t: UnitMapObjectType.seat_r,
-            x: 254,
-            y: 60,
-            c: '02',
-            a: 0,
-            w: 30,
-            h: 30,
-            tID: '02',
-            sID: '02',
-          },
-          {
-            id: 'temzt4yr0uc',
-            t: UnitMapObjectType.seat_r,
-            x: 300,
-            y: 60,
-            c: '03',
-            a: 0,
-            w: 30,
-            h: 30,
-            tID: '02',
-            sID: '03',
-          },
-          {
-            id: '7r01h7bl7j2',
-            t: UnitMapObjectType.seat_r,
-            x: 386,
-            y: 60,
-            c: '01',
-            a: 0,
-            w: 30,
-            h: 30,
-            tID: '03',
-            sID: '01',
-          },
-          {
-            id: 't767czui7oj',
-            t: UnitMapObjectType.seat_r,
-            x: 436,
-            y: 60,
-            c: '02',
-            a: 0,
-            w: 30,
-            h: 30,
-            tID: '03',
-            sID: '02',
-          },
-          {
-            id: 'w6hsmjl8jo',
-            t: UnitMapObjectType.seat_r,
-            x: 484,
-            y: 60,
-            c: '03',
-            a: 0,
-            w: 30,
-            h: 30,
-            tID: '03',
-            sID: '03',
-          },
-        ],
-      },
-    };
-    return deleteCreate(
-      () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateUnit({ input }),
-    );
+    ],
   };
+  return deleteCreate(
+    () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
+    () => deps.crudSdk.CreateUnit({ input }),
+  );
+};
 
 export const createTestUnitsForOrderHandling =
   () => (deps: SeederDependencies) => {

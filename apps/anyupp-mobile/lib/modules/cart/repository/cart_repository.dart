@@ -38,7 +38,7 @@ class CartRepository implements ICartProvider {
         guestLabel: generateHash(user.id),
         servingMode: servingMode,
         orderMode: OrderMode.instant,
-        packagingFeeTaxPercentage: unit.packagingTax,
+        packagingFeeTaxPercentage: unit.packagingTaxPercentage,
         place: await getPlacePref(unit.id) ??
             Place(seat: EMPTY_SEAT, table: EMPTY_TABLE),
         orderPolicy: unit.orderPolicy,
@@ -183,8 +183,7 @@ class CartRepository implements ICartProvider {
     Unit unit,
     Product product,
     ProductVariant variant,
-    Map<ProductConfigSet, List<ProductConfigComponent>>
-        configSets,
+    Map<ProductConfigSet, List<ProductConfigComponent>> configSets,
   ) {
     return OrderItem(
       productType: product.productType,
@@ -233,8 +232,7 @@ class CartRepository implements ICartProvider {
   }
 
   List<OrderItemConfigSet>? _getConfigSets(
-      Map<ProductConfigSet, List<ProductConfigComponent>>
-          configSets) {
+      Map<ProductConfigSet, List<ProductConfigComponent>> configSets) {
     if (configSets.isEmpty) {
       return null;
     }

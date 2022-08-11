@@ -842,9 +842,6 @@ type Unit
   adBanners: [ImageAsset!]
   adBannersEnabled: Boolean
   coverBanners: [ImageAsset!]
-  coverBannersEnabled: Boolean
-  groupId: ID
-  chainId: ID
   lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
@@ -871,7 +868,7 @@ type Unit
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
-  location: LocationLatLon
+  location: LocationLatLon!
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
