@@ -62,7 +62,7 @@
         "cwd": "apps/variants-manager-site"
       }
     },
-    "test": {
+    "unit-test": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
         "command": "flutter test",
