@@ -1,7 +1,6 @@
 import '/models.dart';
 import '/graphql/generated/crud-api.dart';
 import 'package:functional_data/functional_data.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'Product.g.dart';
 

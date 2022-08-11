@@ -7,7 +7,7 @@ import '../mock/mock_data_faker.dart';
 
 void main() {
   String getHtmlHexColorStringFromColor(Color color) {
-    return '#' + TinyColor(color).toHex8().substring(2);
+    return '#' + TinyColor.fromColor(color).toHex8().substring(2);
   }
 
   group('Testing themes with the new theme system...', () {
