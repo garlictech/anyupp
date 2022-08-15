@@ -68,7 +68,6 @@ query GetUnitById($unitId: ID!) {
     coverBanners {
       imageUrl
     }
-    coverBannersEnabled
     tipPolicy {
       description {
         de
