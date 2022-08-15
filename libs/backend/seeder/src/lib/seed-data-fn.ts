@@ -105,6 +105,10 @@ export const createTestUnit = (deps: SeederDependencies) => {
         imageUrl:
           'http://1.bp.blogspot.com/--hTHo2uuDHM/UicXpXI-cNI/AAAAAAAAAzQ/zOrpgDVawJo/s1600/rejt%C5%91.jpg',
       },
+      {
+        imageUrl:
+          'https://scontent.fbud5-1.fna.fbcdn.net/v/t31.18172-8/178281_453909654650620_1346047036_o.jpg?_nc_cat=102&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=q_z1ac04pLUAX8CeQoA&_nc_ht=scontent.fbud5-1.fna&oh=00_AT-_OH7-46PdxRBSytAmnBWjdX4qO209yY51RjXo1yyEuA&oe=63209762',
+      },
     ],
   };
   return deleteCreate(

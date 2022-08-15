@@ -479,9 +479,15 @@ Unit _$UnitFromJson(Map<String, dynamic> json) => Unit(
       style: ChainStyle.fromJson(json['style'] as Map<String, dynamic>),
       currency: json['currency'] as String,
       isAcceptingOrders: json['isAcceptingOrders'] as bool,
-      supportedServingModes: json['supportedServingModes'] as List<dynamic>,
-      supportedOrderModes: json['supportedOrderModes'] as List<dynamic>,
-      orderPolicy: json['orderPolicy'] ?? OrderPolicy.placeOnly,
+      supportedServingModes: (json['supportedServingModes'] as List<dynamic>)
+          .map((e) => $enumDecode(_$ServingModeEnumMap, e))
+          .toList(),
+      supportedOrderModes: (json['supportedOrderModes'] as List<dynamic>)
+          .map((e) => $enumDecode(_$OrderModeEnumMap, e))
+          .toList(),
+      orderPolicy:
+          $enumDecodeNullable(_$OrderPolicyEnumMap, json['orderPolicy']) ??
+              OrderPolicy.placeOnly,
       packagingTaxPercentage:
           (json['packagingTaxPercentage'] as num?)?.toDouble() ?? 0,
       paymentModes: (json['paymentModes'] as List<dynamic>?)
@@ -499,8 +505,10 @@ Unit _$UnitFromJson(Map<String, dynamic> json) => Unit(
           ? null
           : ServiceFeePolicy.fromJson(
               json['serviceFeePolicy'] as Map<String, dynamic>),
-      soldOutVisibilityPolicy: json['soldOutVisibilityPolicy'],
-      orderPaymentPolicy: json['orderPaymentPolicy'],
+      soldOutVisibilityPolicy: $enumDecodeNullable(
+          _$SoldOutVisibilityPolicyEnumMap, json['soldOutVisibilityPolicy']),
+      orderPaymentPolicy: $enumDecodeNullable(
+          _$OrderPaymentPolicyEnumMap, json['orderPaymentPolicy']),
       location: Location.fromJson(json['location'] as Map<String, dynamic>),
       adBannersEnabled: json['adBannersEnabled'] as bool?,
       adBanners: (json['adBanners'] as List<dynamic>?)
@@ -538,16 +546,21 @@ Map<String, dynamic> _$UnitToJson(Unit instance) {
       'paymentModes', instance.paymentModes?.map((e) => e?.toJson()).toList());
   val['currency'] = instance.currency;
   val['isAcceptingOrders'] = instance.isAcceptingOrders;
-  val['supportedServingModes'] = instance.supportedServingModes;
-  val['supportedOrderModes'] = instance.supportedOrderModes;
-  writeNotNull('orderPolicy', instance.orderPolicy);
+  val['supportedServingModes'] = instance.supportedServingModes
+      .map((e) => _$ServingModeEnumMap[e]!)
+      .toList();
+  val['supportedOrderModes'] =
+      instance.supportedOrderModes.map((e) => _$OrderModeEnumMap[e]!).toList();
+  val['orderPolicy'] = _$OrderPolicyEnumMap[instance.orderPolicy]!;
   val['packagingTaxPercentage'] = instance.packagingTaxPercentage;
   writeNotNull('ratingPolicies',
       instance.ratingPolicies?.map((e) => e.toJson()).toList());
   writeNotNull('tipPolicy', instance.tipPolicy?.toJson());
   writeNotNull('serviceFeePolicy', instance.serviceFeePolicy?.toJson());
-  writeNotNull('soldOutVisibilityPolicy', instance.soldOutVisibilityPolicy);
-  writeNotNull('orderPaymentPolicy', instance.orderPaymentPolicy);
+  writeNotNull('soldOutVisibilityPolicy',
+      _$SoldOutVisibilityPolicyEnumMap[instance.soldOutVisibilityPolicy]);
+  writeNotNull('orderPaymentPolicy',
+      _$OrderPaymentPolicyEnumMap[instance.orderPaymentPolicy]);
   val['location'] = instance.location.toJson();
   writeNotNull('adBannersEnabled', instance.adBannersEnabled);
   writeNotNull(
@@ -563,3 +576,35 @@ Map<String, dynamic> _$UnitToJson(Unit instance) {
   val['isVisibleInApp'] = instance.isVisibleInApp;
   return val;
 }
+
+const _$ServingModeEnumMap = {
+  ServingMode.inPlace: 'inPlace',
+  ServingMode.takeAway: 'takeAway',
+  ServingMode.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+const _$OrderModeEnumMap = {
+  OrderMode.instant: 'instant',
+  OrderMode.pickup: 'pickup',
+  OrderMode.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+const _$OrderPolicyEnumMap = {
+  OrderPolicy.noOrders: 'noOrders',
+  OrderPolicy.placeOnly: 'placeOnly',
+  OrderPolicy.placeWithPaymentType: 'placeWithPaymentType',
+  OrderPolicy.full: 'full',
+  OrderPolicy.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+const _$SoldOutVisibilityPolicyEnumMap = {
+  SoldOutVisibilityPolicy.faded: 'faded',
+  SoldOutVisibilityPolicy.invisible: 'invisible',
+  SoldOutVisibilityPolicy.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+const _$OrderPaymentPolicyEnumMap = {
+  OrderPaymentPolicy.prepay: 'prepay',
+  OrderPaymentPolicy.afterpay: 'afterpay',
+  OrderPaymentPolicy.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
