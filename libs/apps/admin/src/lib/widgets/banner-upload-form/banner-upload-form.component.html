@@ -1,13 +1,13 @@
-<fieldset class="form">
+<fieldset class="form" *ngIf="type === 'ad'">
   <legend>{{ 'units.showBanners' | translate }}</legend>
 
   <div class="banner-status">
     <lib-admin-toggle-button-ui
-      [toggled]="currentUnitBannersEnabled"
+      [toggled]="currentAdUnitBannersEnabled"
       [disabled]="operationIsPending"
       [rounded]="true"
       [bordered]="true"
-      [color]="currentUnitBannersEnabled ? 'success' : 'danger'"
+      [color]="currentAdUnitBannersEnabled ? 'success' : 'danger'"
       [options]="toggleOptions"
       [size]="'sm'"
       (toggledEvent)="onToggleBanners()"

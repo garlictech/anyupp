@@ -61,15 +61,14 @@ export class UnitBannerService extends AbsUnitBannerService {
     });
   }
 
-  getBannersEnabledStatusForUnit(params: {
+  getAdBannersEnabledStatusForUnit(params: {
     unitId: string;
-    type: bannerType;
   }): Promise<boolean> {
-    const { unitId, type } = params;
+    const { unitId } = params;
     return this.getCurrentUnit$(unitId)
       .pipe(
         map(unit => {
-          return unit[`${type}BannersEnabled`] || false;
+          return !!unit.adBannersEnabled;
         }),
       )
       .toPromise();
@@ -102,20 +101,19 @@ export class UnitBannerService extends AbsUnitBannerService {
     });
   }
 
-  toggleBannersEnabledStatusForUnit(params: {
+  toggleAdBannersEnabledStatusForUnit(params: {
     unitId: string;
-    type: bannerType;
   }): Promise<boolean> {
-    const { unitId, type } = params;
+    const { unitId } = params;
 
     return unitBannersToggleUseCase({
       getCurrentBannersEnabledStatus: () =>
-        this.getBannersEnabledStatusForUnit({ unitId, type }),
+        this.getAdBannersEnabledStatusForUnit({ unitId }),
       setBannersEnabledStatus: ({ enabled }) => {
         return this._unitCollectionService
           .update$({
             id: unitId,
-            [`${type}BannersEnabled`]: enabled,
+            adBannersEnabled: enabled,
           })
           .pipe(catchGqlError(this._store))
           .toPromise();

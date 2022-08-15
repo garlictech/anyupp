@@ -31,7 +31,7 @@ export class BannerUploadFormComponent implements OnInit {
   validatorErrorTypes = FileUploadValidatorErrorTypes;
 
   currentUnitBanners: ImageAsset[] = [];
-  currentUnitBannersEnabled = false;
+  currentAdUnitBannersEnabled = false;
 
   toggleOptions: ToggleButtonOptions = {
     toggledText: 'common.allowed',
@@ -77,10 +77,9 @@ export class BannerUploadFormComponent implements OnInit {
         type: this.type,
       });
 
-      this.currentUnitBannersEnabled =
-        await this._bannerService.getBannersEnabledStatusForUnit({
+      this.currentAdUnitBannersEnabled =
+        await this._bannerService.getAdBannersEnabledStatusForUnit({
           unitId: this.unitId,
-          type: this.type,
         });
 
       this.operationsPending.initializeData = false;
@@ -92,10 +91,9 @@ export class BannerUploadFormComponent implements OnInit {
       this.operationsPending.toggleBanners = true;
 
       try {
-        this.currentUnitBannersEnabled =
-          await this._bannerService.toggleBannersEnabledStatusForUnit({
+        this.currentAdUnitBannersEnabled =
+          await this._bannerService.toggleAdBannersEnabledStatusForUnit({
             unitId: this.unitId,
-            type: this.type,
           });
 
         this.operationSuccess.emit(

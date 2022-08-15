@@ -20,13 +20,11 @@ export abstract class AbsUnitBannerService {
     type: bannerType;
   }): Promise<ImageAsset[]>;
 
-  abstract getBannersEnabledStatusForUnit(params: {
+  abstract getAdBannersEnabledStatusForUnit(params: {
     unitId: string;
-    type: bannerType;
   }): Promise<boolean>;
 
-  abstract toggleBannersEnabledStatusForUnit(params: {
+  abstract toggleAdBannersEnabledStatusForUnit(params: {
     unitId: string;
-    type: bannerType;
   }): Promise<boolean>;
 }
