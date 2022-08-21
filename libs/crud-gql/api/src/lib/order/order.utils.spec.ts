@@ -203,7 +203,6 @@ describe('calculateOrderSumPriceRounded function', () => {
       // PriceSum: 2, TaxSum: 0.01980198019
       ...orderItemFixture,
     };
-    const orderItemPrice_01 = 2;
     const orderItem_02: OrderItemInput = {
       // PriceSum: 0.125, TaxSum: 0.00595238095
       ...orderItemFixture,
@@ -216,7 +215,6 @@ describe('calculateOrderSumPriceRounded function', () => {
         taxSum: 0,
       },
     };
-    const orderItemPrice_02 = 0.125;
     const input: OrderItemInput[] = [
       orderItem_01,
       orderItem_02,

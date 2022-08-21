@@ -38,7 +38,6 @@ Object {
     "hu": "",
   },
   "ownerEntity": "",
-  "soldOut": false,
 }
 `;
 
@@ -47,16 +46,16 @@ Object {
   "data": Object {
     "createdAt": Any<String>,
     "deletedAt": null,
-    "description": "DESCRIPTION",
+    "description": "Kamu extra bizbaszok",
     "dirty": null,
     "externalId": null,
     "id": "test_ADMIN_PRODUCT_COMPONENT_SET_IT_COMP_SET_01",
     "items": Array [],
     "maxSelection": 0,
     "name": Object {
-      "de": "COMPONENT_SET",
-      "en": "COMPONENT_SET",
-      "hu": "KOMPONENS_SET",
+      "de": "huccen puccen",
+      "en": "Small stuffs",
+      "hu": "Extra bizbaszok",
     },
     "ownerEntity": "ownerEntity",
     "supportedServingModes": null,
@@ -100,16 +99,16 @@ Object {
   "data": Object {
     "createdAt": Any<String>,
     "deletedAt": null,
-    "description": "DESCRIPTION",
+    "description": "Kamu extra bizbaszok",
     "dirty": null,
     "externalId": null,
     "id": "test_ADMIN_PRODUCT_COMPONENT_SET_IT_COMP_SET_01",
     "items": Array [],
     "maxSelection": 0,
     "name": Object {
-      "de": "COMPONENT_SET",
-      "en": "COMPONENT_SET",
-      "hu": "KOMPONENS_SET",
+      "de": "huccen puccen",
+      "en": "Small stuffs",
+      "hu": "Extra bizbaszok",
     },
     "ownerEntity": "ownerEntity MOD",
     "supportedServingModes": null,
