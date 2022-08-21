@@ -234,7 +234,7 @@ export const createComponentSets = (deps: SeederDependencies) => {
         getComponentSet({
           id: 'kesdobalo_product_component_set',
           unitId: unitFixture.kesdobalo.id,
-          items: [productComponent.id],
+          itemIds: [productComponent.id],
         }),
       ),
     ),
