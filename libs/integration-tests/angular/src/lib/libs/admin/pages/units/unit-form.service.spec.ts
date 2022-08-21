@@ -83,10 +83,10 @@ describe('UnitFormService', () => {
       .spyOn(service, 'createUnit$')
       .mockImplementationOnce(() => of({ data: 'ok', type: 'insert' }));
 
-    service.saveForm$(unitFixture.unitInputBase, false).subscribe();
+    service.saveForm$(unitFixture.unitBase, false).subscribe();
 
     expect(createSpy).toHaveBeenCalledWith({
-      ...unitFixture.unitInputBase,
+      ...unitFixture.unitBase,
       isAcceptingOrders: false,
     });
 
@@ -98,11 +98,11 @@ describe('UnitFormService', () => {
       .spyOn(service, 'updateUnit$')
       .mockImplementationOnce(() => of({ data: 'ok', type: 'update' }));
 
-    service.saveForm$(unitFixture.unitInputBase, false, unitId).subscribe();
+    service.saveForm$(unitFixture.unitBase, false, unitId).subscribe();
 
     expect(updateSpy).toHaveBeenCalledWith(
       {
-        ...unitFixture.unitInputBase,
+        ...unitFixture.unitBase,
         id: unitId,
       },
       false,
@@ -116,7 +116,7 @@ describe('UnitFormService', () => {
       .pipe(
         switchMap(() =>
           service.createUnit$({
-            ...unitFixture.unitInputBase,
+            ...unitFixture.unitBase,
             id: unitId,
           }),
         ),
@@ -140,7 +140,7 @@ describe('UnitFormService', () => {
       .pipe(
         switchMap(() =>
           service.createUnit$({
-            ...unitFixture.unitInputBase,
+            ...unitFixture.unitBase,
             id: unitId,
           }),
         ),
@@ -149,9 +149,9 @@ describe('UnitFormService', () => {
           (<UpsertResponse<UnitProduct>>saveResponse).data.id
             ? service.updateUnit$(
                 {
-                  ...unitFixture.unitInputBase,
+                  ...unitFixture.unitBase,
                   id: unitId,
-                  name: `${unitFixture.unitInputBase} MOD`,
+                  name: `${unitFixture.unitBase} MOD`,
                   supportedOrderModes: [OrderMode.pickup],
                   supportedServingModes: [ServingMode.takeaway],
                 },
