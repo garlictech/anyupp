@@ -1,4 +1,3 @@
-import { cartFixture } from '@bgap/shared/fixtures';
 import { toFixed2Number } from '@bgap/shared/utils';
 import {
   calculateOrderItemPriceRounded,
@@ -59,6 +58,31 @@ const orderItemConfigSet_02: OrderItemConfigSetInput = {
   ],
 };
 
+const orderItemFixture: OrderItem = {
+  productId: 'PRODUCT_ID',
+  statusLog: [],
+  productName: {
+    en: 'PRODUCT_NAME',
+  },
+  sumPriceShown: {
+    currency: 'EUR',
+    pricePerUnit: 10,
+    tax: 10,
+    priceSum: 11,
+    taxSum: 1,
+  },
+  variantId: 'VARIANT_ID',
+  variantName: { en: 'VARIANT_NAME' },
+  quantity: 1,
+  priceShown: {
+    currency: 'EUR',
+    pricePerUnit: 10,
+    priceSum: 0,
+    tax: 0,
+    taxSum: 0,
+  },
+};
+
 describe('calculateTaxSumFromBrutto method', () => {
   it('should calculate the correct taxSum from tax and brutto inputs', () => {
     expect(calculateTaxSumFromBrutto({ tax: 0, brutto: 10 })).toEqual(0);
@@ -74,7 +98,20 @@ describe('calculateTaxSumFromBrutto method', () => {
 
 describe('calculateOrderItemPriceRounded method', () => {
   const item: OrderItem = {
-    ...cartFixture.getOrderItem(),
+    productId: 'PRODUCT_ID',
+    statusLog: [],
+    productName: {
+      en: 'PRODUCT_NAME',
+    },
+    sumPriceShown: {
+      currency: 'EUR',
+      pricePerUnit: 10,
+      tax: 10,
+      priceSum: 11,
+      taxSum: 1,
+    },
+    variantId: 'VARIANT_ID',
+    variantName: { en: 'VARIANT_NAME' },
     quantity: 1,
     priceShown: {
       currency: 'EUR',
@@ -140,7 +177,7 @@ describe('calculateOrderItemPriceRounded method', () => {
 
 describe('calculateOrderItemSumPriceRounded function', () => {
   const item: OrderItem = {
-    ...cartFixture.getOrderItem(),
+    ...orderItemFixture,
     quantity: 3,
     priceShown: {
       currency: 'EUR',
@@ -165,13 +202,12 @@ describe('calculateOrderSumPriceRounded function', () => {
   it('should summarize all the items prices and round only at the end', () => {
     const orderItem_01: OrderItemInput = {
       // PriceSum: 2, TaxSum: 0.01980198019
-      ...cartFixture.getOrderItem({ tax: 1 }),
+      ...orderItemFixture,
     };
     const orderItemPrice_01 = 2;
-    const orderItemTax_01 = 0.01980198019;
     const orderItem_02: OrderItemInput = {
       // PriceSum: 0.125, TaxSum: 0.00595238095
-      ...cartFixture.getOrderItem({ tax: 1 }),
+      ...orderItemFixture,
       quantity: 1,
       priceShown: {
         currency: 'EUR',
@@ -182,7 +218,6 @@ describe('calculateOrderSumPriceRounded function', () => {
       },
     };
     const orderItemPrice_02 = 0.125;
-    const orderItemTax_02 = 0.00595238095;
     const input: OrderItemInput[] = [
       orderItem_01,
       orderItem_02,
@@ -190,30 +225,28 @@ describe('calculateOrderSumPriceRounded function', () => {
       orderItem_02,
       orderItem_02,
     ];
-    const expectedBruttoPriceSum = 4 * orderItemPrice_02 + orderItemPrice_01; // Prices
-    const expectedTaxSum = 4 * orderItemTax_02 + orderItemTax_01;
     const result = calculateOrderSumPriceRounded(input);
     expect(result.tax).toEqual(0); // There is no summariezed tax percent because the tax can be different for every items
     expect(result.pricePerUnit).toEqual(0); // There is no summariezed pricePerUnit
     expect(result.currency).toEqual(orderItem_01.priceShown.currency);
-    expect(result.taxSum).toEqual(toFixed2Number(expectedTaxSum));
-    expect(result.priceSum).toEqual(toFixed2Number(expectedBruttoPriceSum));
+    expect(result.taxSum).toMatchSnapshot('expectedTaxSum');
+    expect(result.priceSum).toMatchSnapshot('priceSum');
   });
   it('should summarize all the items with all the config sets', () => {
     const orderItem_01: OrderItemInput = {
-      ...cartFixture.getOrderItem({ tax: 1 }), // PriceSum: 2 * 1, TaxSum: 0.01980...
+      ...orderItemFixture,
     };
     const orderItem_02: OrderItemInput = {
-      ...cartFixture.getOrderItem({ tax: 1 }),
+      ...orderItemFixture,
       configSets: [orderItemConfigSet_01], // PriceSum: 3.76 (2 * (1 + 0.88)), TaxSum: 0.0372277...
     };
     const orderItem_03: OrderItemInput = {
-      ...cartFixture.getOrderItem({ tax: 1 }),
+      ...orderItemFixture,
       configSets: [orderItemConfigSet_01, orderItemConfigSet_02], // PriceSum: 11.76 (2 * (1 + 0.88 + 4)), TaxSum: 0.11643...
     };
     const input: OrderItemInput[] = [orderItem_01, orderItem_02, orderItem_03];
     const result = calculateOrderSumPriceRounded(input);
-    expect(result.priceSum).toEqual(2 + 3.76 + 11.76);
-    expect(result.taxSum).toEqual(0.17); //  0.173459
+    expect(result.priceSum).toEqual(35.76);
+    expect(result.taxSum).toMatchSnapshot('taxSum');
   });
 });

@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`calculateOrderSumPriceRounded function should summarize all the items prices and round only at the end: expectedTaxSum 1`] = `0.02`;
+
+exports[`calculateOrderSumPriceRounded function should summarize all the items prices and round only at the end: priceSum 1`] = `10.5`;
+
+exports[`calculateOrderSumPriceRounded function should summarize all the items with all the config sets: taxSum 1`] = `0`;
