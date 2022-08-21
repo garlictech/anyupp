@@ -1,17 +1,8 @@
 import { cloneDeep } from 'lodash/fp';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { PosType, Unit } from '@bgap/domain';
 import { NbDialogService } from '@nebular/theme';
-import { Store } from '@ngrx/store';
-
-import { DataService } from '../../../../shared/data-access/data';
-import { ToasterService } from '../../../../shared/utils';
 import { UnitBannersComponent } from '../unit-banners/unit-banners.component';
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
@@ -27,13 +18,7 @@ export class UnitListItemComponent {
   public workingGenerateStatus = false;
   public ePosType = PosType;
 
-  constructor(
-    private _store: Store,
-    private _nbDialogService: NbDialogService,
-    private _dataService: DataService,
-    private _toasterService: ToasterService,
-    private _changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  constructor(private _nbDialogService: NbDialogService) {}
 
   public editUnit() {
     const dialog = this._nbDialogService.open(UnitFormComponent);

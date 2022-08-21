@@ -55,7 +55,7 @@ export class ProductComponentFormComponent
         .pipe(select(loggedUserSelectors.getSelectedUnitId), take(1))
         .subscribe((selectedunitId: string | undefined | null) => {
           if (selectedunitId) {
-            this.dialogForm?.controls['unitId'].patchValue(selectedunitId);
+            this.dialogForm?.controls['ownerEntity'].patchValue(selectedunitId);
           }
         });
     }

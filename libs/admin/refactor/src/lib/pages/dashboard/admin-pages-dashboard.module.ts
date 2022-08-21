@@ -38,15 +38,6 @@ import { OrderTicketBodyComponent } from './components/order-ticket-body/order-t
 import { OrderTicketHistoryListComponent } from './components/order-ticket-history-list/order-ticket-history-list.component';
 import { OrderTicketListItemComponent } from './components/order-ticket-list-item/order-ticket-list-item.component';
 import { OrderTicketListComponent } from './components/order-ticket-list/order-ticket-list.component';
-import { ReportsBodyComponent } from './components/reports-body/reports-body.component';
-import { ReportsDailySalesPerPaymentMethodComponent } from './components/reports-daily-sales-per-payment-method/reports-daily-sales-per-payment-method.component';
-import { ReportsDailySalesPerTypeComponent } from './components/reports-daily-sales-per-type/reports-daily-sales-per-type.component';
-import { ReportsDayHistoryComponent } from './components/reports-day-history/reports-day-history.component';
-import { ReportsHourlyBreakdownComponent } from './components/reports-hourly-breakdown/reports-hourly-breakdown.component';
-import { ReportsOrdersAmountAvgSalesComponent } from './components/reports-orders-amount-avg-sales/reports-orders-amount-avg-sales.component';
-import { ReportsProductMixComponent } from './components/reports-product-mix/reports-product-mix.component';
-import { ReportsUniqueGuestAvgSalesComponent } from './components/reports-unique-guest-avg-sales/reports-unique-guest-avg-sales.component';
-import { ReportsUnpayTableComponent } from './components/reports-unpay-table/reports-unpay-table.component';
 
 const NB_MODULES = [
   NbLayoutModule,
@@ -81,15 +72,6 @@ const NB_MODULES = [
     LaneItemComponent,
     FloorMapBodyComponent,
     FloorMapOrdersComponent,
-    ReportsBodyComponent,
-    ReportsDailySalesPerTypeComponent,
-    ReportsUniqueGuestAvgSalesComponent,
-    ReportsOrdersAmountAvgSalesComponent,
-    ReportsDayHistoryComponent,
-    ReportsDailySalesPerPaymentMethodComponent,
-    ReportsHourlyBreakdownComponent,
-    ReportsUnpayTableComponent,
-    ReportsProductMixComponent,
   ],
   imports: [
     CommonModule,

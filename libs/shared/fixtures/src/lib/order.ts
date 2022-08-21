@@ -11,7 +11,6 @@ import {
 } from '@bgap/domain';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { getOrderStatusLog } from './order-utils';
-import { productSnapshotFixture } from './product-snapshot';
 import { unitFixture } from './unit';
 
 const order_seeded_01_id = `${seededIdPrefix}order_1_id`;
@@ -77,12 +76,8 @@ const orderItemInputBase = (productFixture: CreateUnitProductInput) => ({
 
 const orderInputBase = {
   userId: 'test-monad',
-  unitId: unitFixture.unitId_seeded_01,
-  items: [
-    orderItemInputBase(productSnapshotFixture.unitProduct_1),
-    orderItemInputBase(productSnapshotFixture.unitProduct_2),
-    orderItemInputBase(productSnapshotFixture.unitProduct_3),
-  ],
+  unitId: unitFixture.kesdobalo.id,
+  items: [],
   sumPriceShown: {
     taxSum: 633.96,
     currency: 'HUF',

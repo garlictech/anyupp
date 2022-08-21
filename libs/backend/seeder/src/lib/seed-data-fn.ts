@@ -1,38 +1,27 @@
 import {
   productCategoryFixture,
-  productComponentSetFixture,
-  productSnapshotFixture,
-  seededIdPrefix,
   unitFixture,
+  getProductComponent,
+  getComponentSet,
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { pipe } from 'fp-ts/lib/function';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import {
   Allergen,
   CreateAdminUserInput,
   CreateOrderInput,
-  CreateProductCategoryInput,
   CreateProductComponentInput,
   CreateProductComponentSetInput,
-  CreateTransactionInput,
-  CreateUnitInput,
   CreateUnitProductInput,
   CreateUserInput,
   OrderMode,
-  OrderStatus,
-  PaymentMethod,
-  PaymentType,
   PosType,
   ProductType,
   ServingMode,
 } from '@bgap/domain';
-import { DateTime } from 'luxon';
-import * as R from 'ramda';
-import { forkJoin, from, Observable, of } from 'rxjs';
-import { catchError, concatMap, switchMap, tap, toArray } from 'rxjs/operators';
-import { seedUtils } from './utils';
+import { forkJoin, Observable, of } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 
 export interface SeederDependencies {
   crudSdk: CrudSdk;
@@ -93,158 +82,71 @@ export const createAdminUser =
 
 export const createTestUnit = (deps: SeederDependencies) => {
   console.debug('createTestUnit');
-  const input: CreateUnitInput = {
-    ...R.omit(['createdAt', 'updatedAt'], unitFixture.unitBase),
-    id: 'a-kesdobalo',
-    name: `Késdobáló`,
-    timeZone: 'Europe/Budapest',
-    supportedServingModes: [ServingMode.inplace],
-    supportedOrderModes: [OrderMode.instant],
-    coverBanners: [
-      {
-        imageUrl:
-          'http://1.bp.blogspot.com/--hTHo2uuDHM/UicXpXI-cNI/AAAAAAAAAzQ/zOrpgDVawJo/s1600/rejt%C5%91.jpg',
-      },
-      {
-        imageUrl:
-          'https://scontent.fbud5-1.fna.fbcdn.net/v/t31.18172-8/178281_453909654650620_1346047036_o.jpg?_nc_cat=102&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=q_z1ac04pLUAX8CeQoA&_nc_ht=scontent.fbud5-1.fna&oh=00_AT-_OH7-46PdxRBSytAmnBWjdX4qO209yY51RjXo1yyEuA&oe=63209762',
-      },
-    ],
-  };
+  const input = unitFixture.kesdobalo;
   return deleteCreate(
     () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
     () => deps.crudSdk.CreateUnit({ input }),
   );
 };
 
-export const createTestUnitsForOrderHandling =
-  () => (deps: SeederDependencies) => {
-    console.debug('createTestUnitForOrderhandling', {});
+export const createTestProductCategories = () => (deps: SeederDependencies) => {
+  console.debug('createTestProductCategories');
 
-    return pipe(
-      [
-        unitFixture.unitInstantInplace,
-        unitFixture.unitInstantTakeaway,
-        unitFixture.unitPickupInplace,
-        unitFixture.unitPickupTakeaway,
-      ],
-      R.map(input =>
-        deleteCreate(
-          () => deps.crudSdk.DeleteUnit({ input: { id: input.id ?? '' } }),
-          () => deps.crudSdk.CreateUnit({ input }),
-        ),
+  return deleteCreate(
+    () =>
+      deps.crudSdk.DeleteProductCategory({
+        input: { id: productCategoryFixture.seededProductCategory_01.id },
+      }),
+    () =>
+      deps.crudSdk.CreateProductCategory({
+        input: productCategoryFixture.seededProductCategory_01,
+      }),
+  ).pipe(
+    switchMap(() =>
+      deleteCreate(
+        () =>
+          deps.crudSdk.DeleteProductCategory({
+            input: { id: productCategoryFixture.seededProductCategory_02.id },
+          }),
+        () =>
+          deps.crudSdk.CreateProductCategory({
+            input: productCategoryFixture.seededProductCategory_02,
+          }),
       ),
-      x => forkJoin(x),
-    );
-  };
-
-export const createTestProductCategory =
-  (unitIdx: number, productCategoryId: number) =>
-  (deps: SeederDependencies) => {
-    console.debug('createTestProductCategory', {
-      unitIdx,
-      productCategoryId,
-    });
-
-    const input: DeletableInput<CreateProductCategoryInput> = {
-      id: seedUtils.generateProductCategoryId(unitIdx, productCategoryId),
-      ownerEntity: seedUtils.generateUnitId(unitIdx),
-      name: {
-        hu: `Teszt termék kategória #${productCategoryId}`,
-        en: `Test product category #${productCategoryId}`,
-      },
-      description: {
-        hu: `Teszt termék kategória #${productCategoryId} leírása`,
-        en: `Test product category #${productCategoryId} description`,
-      },
-      position: productCategoryId,
-      image: 'https://picsum.photos/100',
-    };
-
-    return deleteCreate(
-      () =>
-        deps.crudSdk.DeleteProductCategory({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateProductCategory({ input }),
-    );
-  };
-
-export const createTestProductCategoryFromFixtures =
-  () => (deps: SeederDependencies) => {
-    console.debug('createTestProductCategoryFromFixtures');
-
-    return deleteCreate(
-      () =>
-        deps.crudSdk.DeleteProductCategory({
-          input: { id: productCategoryFixture.seededProductCategory_01.id },
-        }),
-      () =>
-        deps.crudSdk.CreateProductCategory({
-          input: productCategoryFixture.seededProductCategory_01,
-        }),
-    ).pipe(
-      switchMap(() =>
-        deleteCreate(
-          () =>
-            deps.crudSdk.DeleteProductCategory({
-              input: { id: productCategoryFixture.seededProductCategory_02.id },
-            }),
-          () =>
-            deps.crudSdk.CreateProductCategory({
-              input: productCategoryFixture.seededProductCategory_02,
-            }),
-        ),
+    ),
+    switchMap(() =>
+      deleteCreate(
+        () =>
+          deps.crudSdk.DeleteProductCategory({
+            input: { id: productCategoryFixture.seededProductCategory_03.id },
+          }),
+        () =>
+          deps.crudSdk.CreateProductCategory({
+            input: productCategoryFixture.seededProductCategory_03,
+          }),
       ),
-      switchMap(() =>
-        deleteCreate(
-          () =>
-            deps.crudSdk.DeleteProductCategory({
-              input: { id: productCategoryFixture.seededProductCategory_03.id },
-            }),
-          () =>
-            deps.crudSdk.CreateProductCategory({
-              input: productCategoryFixture.seededProductCategory_03,
-            }),
-        ),
-      ),
-    );
-  };
-
-export const createUnitProductsFromSnapshot = (deps: SeederDependencies) => {
-  const deleteCreateUnitProduct = (input: CreateUnitProductInput) =>
-    deleteCreate(
-      () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateUnitProduct({ input }),
-    );
-
-  return forkJoin([
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_1),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_2),
-    deleteCreateUnitProduct(productSnapshotFixture.unitProduct_3),
-  ]);
+    ),
+  );
 };
 
 /**
  * Create UnitProduct and GeneratedProducts too
  */
 export const createTestUnitProduct =
-  (unitIdx: number, groupProductIdx: number, productIdx: number) =>
-  (deps: SeederDependencies) => {
-    console.debug('createTestUnitProduct', {
-      unitIdx,
-      groupProductIdx,
-      productIdx,
-    });
+  (unitId: string) => (deps: SeederDependencies) => {
+    console.debug('createTestUnitProduct');
     const input: DeletableInput<CreateUnitProductInput> = {
-      id: seedUtils.generateUnitProductId(unitIdx, productIdx),
-      unitId: seedUtils.generateUnitId(unitIdx),
+      id: 'kesdobalo_product_hambi',
+      unitId: unitId,
       laneId: 'lane_01',
       isVisible: true,
       takeaway: false,
       supportedServingModes: [ServingMode.takeaway],
-      position: productIdx,
+      position: 0,
       takeawayTax: 20,
       tax: 27,
-      image: 'https://picsum.photos/200?random=1',
+      image:
+        'https://archive.canadianbusiness.com/wp-content/uploads/2013/04/oldhamburger.jpg',
       name: {
         de: 'Hamburger',
         en: 'Hamburger',
@@ -268,31 +170,21 @@ export const createTestUnitProduct =
       },
       variants: [
         {
-          id: seedUtils.generateVariantId(unitIdx, productIdx, 1, 'unit'),
+          id: 'kesdobalo_product_hambi_variant',
           isAvailable: true,
           price: 150,
           position: 1,
           pack: {
-            size: 2,
-            unit: 'dl',
+            size: 1,
+            unit: 'db',
           },
           variantName: {
-            en: 'glass',
-            hu: 'pohár',
+            en: 'piece',
+            hu: 'darab',
           },
-          availabilities: [
-            {
-              dayFrom: '',
-              dayTo: '',
-              price: productIdx * 150,
-              timeFrom: '',
-              timeTo: '',
-              type: 'A',
-            },
-          ],
         },
       ],
-      configSets: productComponentSetFixture.seededUnitProductConfigSets,
+      configSets: [],
     };
     return deleteCreate(
       () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id ?? '' } }),
@@ -300,102 +192,8 @@ export const createTestUnitProduct =
     );
   };
 
-export const createTestOrder =
-  ({
-    unitIdx,
-    productIdx,
-    userIdx,
-    orderIdx,
-  }: {
-    unitIdx: number;
-    productIdx: number;
-    userIdx: number;
-    orderIdx: number;
-  }) =>
-  (deps: SeederDependencies) => {
-    console.debug('createTestOrder', {
-      unitIdx,
-      productIdx,
-      userIdx,
-      orderIdx,
-    });
-    const input: DeletableInput<CreateOrderInput> = {
-      id: seedUtils.generateOrderId(orderIdx),
-      userId: seedUtils.generateUserId(userIdx),
-      unitId: seedUtils.generateUnitId(unitIdx),
-      paymentMode: {
-        type: PaymentType.stripe,
-        method: PaymentMethod.inapp,
-      },
-      takeAway: false,
-      orderMode: OrderMode.pickup,
-      servingMode: ServingMode.takeaway,
-      archived: false,
-      place: {
-        seat: '00',
-        table: '70',
-      },
-      sumPriceShown: {
-        currency: 'HUF',
-        pricePerUnit: 0,
-        priceSum: 700,
-        tax: 0, // empty
-        taxSum: 0, // empty
-      },
-      paymentIntention: 0,
-      items: [
-        {
-          productName: {
-            en: 'Water',
-            hu: 'Viz',
-          },
-          priceShown: {
-            currency: 'HUF',
-            pricePerUnit: 350,
-            priceSum: 700,
-            tax: 27, // empty
-            taxSum: 149, // empty
-          },
-          sumPriceShown: {
-            currency: 'HUF',
-            pricePerUnit: 350,
-            priceSum: 700,
-            tax: 27, // empty
-            taxSum: 149, // empty
-          },
-          productId: seedUtils.generateUnitProductId(unitIdx, productIdx),
-          quantity: 2,
-          variantId: seedUtils.generateVariantId(
-            unitIdx,
-            productIdx,
-            1,
-            'unit',
-          ),
-          variantName: {
-            en: 'glass',
-            hu: 'pohár',
-          },
-          laneId: 'lane_01',
-          image: 'https://picsum.photos/100',
-          statusLog: [
-            {
-              userId: seedUtils.generateUserId(userIdx),
-              status: OrderStatus.none,
-              ts: DateTime.utc().toMillis(),
-            },
-          ],
-          productType: ProductType.drink,
-        },
-      ],
-    };
-    return deleteCreate(
-      () => deps.crudSdk.DeleteOrder({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateOrder({ input }),
-    );
-  };
-
 export const createComponentSets = (deps: SeederDependencies) => {
-  console.debug('createComponentSets - 3 components and 2 component sets');
+  console.debug('createComponentSets');
 
   const deleteCreateProductComponent = (
     comp: RequiredId<CreateProductComponentInput>,
@@ -425,52 +223,19 @@ export const createComponentSets = (deps: SeederDependencies) => {
         }),
     );
 
-  return deleteCreateProductComponent(
-    productComponentSetFixture.seededProdComp_11,
-  ).pipe(
-    switchMap(() =>
-      deleteCreateProductComponent(
-        productComponentSetFixture.seededProdComp_12,
-      ),
-    ),
-    switchMap(() =>
-      deleteCreateProductComponent(
-        productComponentSetFixture.seededProdComp_21,
-      ),
-    ),
-    switchMap(() =>
-      deleteCreateProductComponent(
-        productComponentSetFixture.seededProdComp_22,
-      ),
-    ),
-    switchMap(() =>
-      deleteCreateProductComponent(
-        productComponentSetFixture.seededProdComp_31,
-      ),
-    ),
-    switchMap(() =>
-      deleteCreateProductComponent(
-        productComponentSetFixture.seededProdComp_32,
-      ),
-    ),
-    switchMap(() =>
-      deleteCreateProductComponent(
-        productComponentSetFixture.seededProdComp_33,
-      ),
-    ),
+  const productComponent = getProductComponent({
+    id: 'kesdobalo_product_component',
+    ownerEntity: unitFixture.kesdobalo.id,
+  });
+
+  return deleteCreateProductComponent(productComponent).pipe(
     switchMap(() =>
       deleteCreateProductComponentSet(
-        productComponentSetFixture.seededProdCompSet_01,
-      ),
-    ),
-    switchMap(() =>
-      deleteCreateProductComponentSet(
-        productComponentSetFixture.seededProdCompSet_02,
-      ),
-    ),
-    switchMap(() =>
-      deleteCreateProductComponentSet(
-        productComponentSetFixture.seededProdCompSet_03,
+        getComponentSet({
+          id: 'kesdobalo_product_component_set',
+          unitId: unitFixture.kesdobalo.id,
+          items: [productComponent.id],
+        }),
       ),
     ),
   );
@@ -543,68 +308,3 @@ export const placeOrderToSeat = (
     seat,
   },
 });
-
-interface BulkOrderInput {
-  order: CreateOrderInput;
-  transaction: CreateTransactionInput;
-  tipTransaction: CreateTransactionInput;
-}
-
-export const seedLotsOfOrders = (
-  deps: SeederDependencies,
-  idxBase: number,
-  range: number,
-  orderInput: CreateOrderInput,
-  transactionInput: CreateTransactionInput,
-  tipTransactionInput: CreateTransactionInput,
-) => {
-  console.debug(`Creating a lot of test orders (${range}).`);
-
-  return pipe(
-    R.range(1, range + 1),
-    R.map((index): BulkOrderInput => {
-      const orderId = `${seededIdPrefix}order_id_${idxBase + index}`;
-      const userId = `${seededIdPrefix}user_id_${idxBase + index}`;
-      const transactionId = `${seededIdPrefix}transaction_id_${
-        idxBase + index
-      }`;
-      const tipTransactionId = `${seededIdPrefix}tipTransaction_id_${
-        idxBase + index
-      }`;
-
-      return {
-        order: {
-          ...orderInput,
-          id: orderId,
-          userId,
-        },
-        transaction: {
-          ...transactionInput,
-          id: transactionId,
-          orderId,
-        },
-        tipTransaction: {
-          ...tipTransactionInput,
-          id: tipTransactionId,
-          orderId,
-        },
-      };
-    }),
-    x => from(x),
-  ).pipe(
-    concatMap((input: BulkOrderInput) => {
-      console.error('input', input);
-      return of('magic').pipe(
-        switchMap(() =>
-          deps.crudSdk.CreateTransaction({ input: input.transaction }),
-        ),
-        switchMap(() =>
-          deps.crudSdk.CreateTransaction({ input: input.tipTransaction }),
-        ),
-        switchMap(() => deps.crudSdk.CreateOrder({ input: input.order })),
-      );
-    }),
-    toArray(),
-    tap(objects => console.debug(`Created ${objects?.length} test orders.`)),
-  );
-};

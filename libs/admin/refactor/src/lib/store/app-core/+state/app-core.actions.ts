@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { TempChainRestrictionObject } from './app-core.reducer';
+import { TempUnitRestrictionObject } from './app-core.reducer';
 
 export const gqlFailure = createAction(
   '[App Core] GQL failure',
@@ -27,7 +27,7 @@ export const setPlayNewOrderNotification = createAction(
 );
 
 // TEMP SECURITY
-export const setChainRestrictionObject = createAction(
-  '[App Core] Set chain restriction object',
-  props<{ chainRestrictions: TempChainRestrictionObject }>(),
+export const setUnitRestrictionObject = createAction(
+  '[App Core] Set unit restriction object',
+  props<{ unitRestrictions: TempUnitRestrictionObject }>(),
 );

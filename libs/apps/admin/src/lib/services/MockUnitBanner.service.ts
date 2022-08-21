@@ -83,28 +83,24 @@ export class MockUnitBannerService extends AbsUnitBannerService {
     });
   }
 
-  async getBannersEnabledStatusForUnit({
+  async getAdBannersEnabledStatusForUnit({
     unitId,
-    type,
   }: {
     unitId: string;
-    type: bannerType;
   }): Promise<boolean> {
     const unit = await this.getCurrentUnit(unitId);
 
-    return unit ? !!unit[`${type}BannersEnabled`] : false;
+    return unit ? !!unit[`adBannersEnabled`] : false;
   }
 
-  toggleBannersEnabledStatusForUnit({
+  toggleAdBannersEnabledStatusForUnit({
     unitId,
-    type,
   }: {
     unitId: string;
-    type: bannerType;
   }): Promise<boolean> {
     return unitBannersToggleUseCase({
       getCurrentBannersEnabledStatus: () =>
-        this.getBannersEnabledStatusForUnit({ unitId, type }),
+        this.getAdBannersEnabledStatusForUnit({ unitId }),
       setBannersEnabledStatus: async ({ enabled }) => {
         await this.unitRepository.update({
           id: unitId,

@@ -83,11 +83,11 @@ export class ProductFormService {
 
     dialogForm.addControl(
       'tax',
-      this._formBuilder.control('', Validators.required),
+      this._formBuilder.control(null, Validators.required),
     );
     dialogForm.addControl(
       'takeawayTax',
-      this._formBuilder.control('', optionalValueValidator),
+      this._formBuilder.control(null, optionalValueValidator),
     );
 
     dialogForm.addControl('laneId', this._formBuilder.control(''));
@@ -176,16 +176,19 @@ export class ProductFormService {
 
   public saveUnitForm$(
     formValue: CreateUnitProductInput | UpdateUnitProductInput,
-    unitId?: string,
+    id?: string,
   ) {
     return iif(
-      () => !unitId,
-      this.createUnitProduct$(<CreateUnitProductInput>formValue),
+      () => !id,
+      this.createUnitProduct$({
+        ...(<CreateUnitProductInput>formValue),
+        position: -1,
+      }),
       this.updateUnitProduct$({
         ...formValue,
         // see 4 lines above
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        id: unitId!,
+        id: id!,
       }),
     );
   }
