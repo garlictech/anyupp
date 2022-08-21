@@ -6,7 +6,7 @@ import * as appCoreActions from './app-core.actions';
 export const APP_CORE_FEATURE_KEY = 'appCore';
 
 // TEMP SECURITY
-export interface TempChainRestrictionObject {
+export interface TempUnitRestrictionObject {
   [userId: string]: string[];
 }
 
@@ -15,13 +15,13 @@ export interface AppCoreState {
   closableDialog: boolean;
   playNewOrderNotification: boolean;
   // TEMP SECURITY
-  chainRestrictions: TempChainRestrictionObject;
+  unitRestrictions: TempUnitRestrictionObject;
 }
 
 export const initialAppCoreState: AppCoreState = {
   closableDialog: false,
   playNewOrderNotification: false,
-  chainRestrictions: {},
+  unitRestrictions: {},
 };
 
 const reducer = createReducer(
@@ -43,10 +43,10 @@ const reducer = createReducer(
   ),
   // TEMP SECURITY
   on(
-    appCoreActions.setChainRestrictionObject,
-    (state, { chainRestrictions }) => ({
+    appCoreActions.setUnitRestrictionObject,
+    (state, { unitRestrictions }) => ({
       ...state,
-      chainRestrictions,
+      unitRestrictions,
     }),
   ),
 );

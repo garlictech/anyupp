@@ -28,7 +28,7 @@ import { UnitListComponent } from './components/unit-list/unit-list.component';
 import { UnitListService } from './services/unit-list.service';
 import { AppsAdminModule } from '@bgap/apps/admin';
 import { UnitBannersComponent } from './components/unit-banners/unit-banners.component';
-import { StyleColorPreviewModule } from '../chains/components/style-color-preview/style-color-preview.component';
+import { StyleColorPreviewModule } from '../style';
 
 const NB_MODULES = [
   NbLayoutModule,

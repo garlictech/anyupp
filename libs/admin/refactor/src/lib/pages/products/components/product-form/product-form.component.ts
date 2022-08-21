@@ -27,6 +27,7 @@ import { loggedUserSelectors } from '../../../../store/logged-user';
 import { PRODUCT_TYPES } from '../../const';
 import { ProductFormService } from '../../services/product-form.service';
 import { unitsSelectors } from '../../../../store/units';
+import assert from 'assert';
 
 @UntilDestroy()
 @Component({
@@ -113,6 +114,8 @@ export class ProductFormComponent
   }
 
   public submit() {
+    assert(!!this.selectedUnit?.id);
+
     if (this.dialogForm?.valid) {
       this.setWorking$(true)
         .pipe(
@@ -121,6 +124,8 @@ export class ProductFormComponent
               {
                 ...this.dialogForm?.value,
                 dirty: this.product?.dirty ? false : undefined,
+                // Asserted...
+                unitId: this.selectedUnit?.id ?? '',
               },
               this.product?.id || undefined,
             ),

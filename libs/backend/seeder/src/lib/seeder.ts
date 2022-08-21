@@ -4,30 +4,22 @@ import {
   otherAdminUsernames,
   testAdminUsername,
   testAdminUserPassword,
+  unitFixture,
 } from '@bgap/shared/fixtures';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 
 import { forkJoin, concat, defer, from, of } from 'rxjs';
-import {
-  catchError,
-  delay,
-  map,
-  switchMap,
-  tap,
-  toArray,
-} from 'rxjs/operators';
+import { catchError, map, switchMap, tap, toArray } from 'rxjs/operators';
 import {
   createAdminUser,
   createComponentSets,
-  createConsumerUser,
   createTestUnit,
-  createTestUnitsForOrderHandling,
   SeederDependencies,
   seedYellowRKeeperUnit,
   seedSportbarRKeeperUnit,
-  createTestProductCategoryFromFixtures,
-  createUnitProductsFromSnapshot,
+  createTestUnitProduct,
+  createTestProductCategories,
 } from './seed-data-fn';
 
 const ce = (tag: string) =>
@@ -80,14 +72,10 @@ export const seedBusinessData = (deps: SeederDependencies) =>
     .pipe(
       switchMap(() =>
         concat(
-          createConsumerUser()(deps).pipe(ce('### Consumer user')),
-          createTestUnit(deps).pipe(ce('### Unit SEED 01')),
-          createTestUnitsForOrderHandling()(deps).pipe(
-            ce('### Order handling units'),
-          ),
-          createTestProductCategoryFromFixtures()(deps),
-          createComponentSets(deps).pipe(ce('### ComponentSets')),
-          createUnitProductsFromSnapshot(deps).pipe(ce('### Unit products')),
+          createTestUnit(deps),
+          createTestProductCategories()(deps),
+          createComponentSets(deps),
+          createTestUnitProduct(unitFixture.kesdobalo.id)(deps),
         ),
       ),
       toArray(),
@@ -164,17 +152,7 @@ export const seedAll = (deps: SeederDependencies) =>
         name: 'Gombóc Artúr',
       }),
     ),
-    switchMap(() =>
-      seedConsumerUser(deps, {
-        username: 'test-alice',
-        email: 'testuser+alice@anyupp.com',
-        emailVerified: 'true',
-        name: 'Mekk Elek',
-      }),
-    ),
-    delay(2000),
     switchMap(() => seedBusinessData(deps)),
-    delay(2000),
     switchMap(() => seedYellowRKeeperUnit(deps)),
     switchMap(() => seedSportbarRKeeperUnit(deps)),
   );

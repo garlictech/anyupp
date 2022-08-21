@@ -67,7 +67,7 @@ export class ModifiersAndExtrasListService {
           limit: PAGINATION_LIMIT,
           nextToken: this._nextToken.component,
           filter: {
-            chainId: { eq: this._selectedUnitId },
+            ownerEntity: { eq: this._selectedUnitId },
             deletedAt: { exists: false },
           },
         })
@@ -87,7 +87,7 @@ export class ModifiersAndExtrasListService {
           limit: PAGINATION_LIMIT,
           nextToken: this._nextToken.componentSet,
           filter: {
-            chainId: { eq: this._selectedUnitId },
+            ownerEntity: { eq: this._selectedUnitId },
             deletedAt: { exists: false },
           },
         })

@@ -62,8 +62,6 @@ export class UnitFormService {
 
   public createUnitFormGroup() {
     return this._formBuilder.group({
-      groupId: ['', [Validators.required]],
-      chainId: ['', [Validators.required]],
       isActive: ['', [Validators.required]],
       name: ['', [Validators.required]],
       description: this._formBuilder.group(

@@ -6,11 +6,10 @@ import { seededIdPrefix, testIdPrefix } from './common';
 const productCategoryId_01 = `${seededIdPrefix}product_category_c1_1_id`;
 const productCategoryId_02 = `${seededIdPrefix}product_category_c1_2_id`;
 const productCategoryId_03 = `${seededIdPrefix}product_category_c1_3_id`;
-const unitId_01 = unitFixture.unitId_seeded_01;
 
 const productCategoryBase: RequiredId<CreateProductCategoryInput> = {
   id: `${testIdPrefix}generatedProduct_id_`,
-  ownerEntity: unitId_01,
+  ownerEntity: unitFixture.kesdobalo.id,
   name: { en: 'PRODUCT_CATEGORY' },
   description: { en: 'DESCRIPTION' },
   image: 'IMAGE',
@@ -19,7 +18,7 @@ const productCategoryBase: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_01: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_01,
-  ownerEntity: unitId_01,
+  ownerEntity: unitFixture.kesdobalo.id,
   name: {
     hu: `Hamburgerek`,
     en: `Hamburgers`,
@@ -34,7 +33,7 @@ const seededProductCategory_01: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_02: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_02,
-  ownerEntity: unitId_01,
+  ownerEntity: unitFixture.kesdobalo.id,
   name: {
     hu: `Alkoholmententes italok`,
     en: `Non-alcoholic drinks`,
@@ -49,7 +48,7 @@ const seededProductCategory_02: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_03: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_03,
-  ownerEntity: unitId_01,
+  ownerEntity: unitFixture.kesdobalo.id,
   name: {
     hu: `Sörök`,
     en: `Beers`,
@@ -61,7 +60,6 @@ const seededProductCategory_03: RequiredId<CreateProductCategoryInput> = {
   image: 'https://picsum.photos/100?random=3',
   position: 3,
 };
-
 export const productCategoryFixture = {
   seededProductCategory_01,
   seededProductCategory_02,

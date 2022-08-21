@@ -1,17 +1,12 @@
 import { currentStatus } from '@bgap/crud-gql/api';
-import { OrderStatus, Unit } from '@bgap/domain';
-import {
-  orderFixtureBase,
-  productSnapshotFixture,
-  unitFixture,
-} from '@bgap/shared/fixtures';
-import { FloorMapUserOrderObjects, LaneOrderItem } from '@bgap/shared/types';
+import { OrderStatus } from '@bgap/domain';
+import { orderFixtureBase } from '@bgap/shared/fixtures';
+import { FloorMapUserOrderObjects } from '@bgap/shared/types';
 
 import {
   getActiveOrdersByUser,
   getNextOrderItemStatus,
   getNextOrderStatus,
-  getOrderLaneColor,
   getStatusColor,
   getTableOrders,
 } from './orders';
@@ -72,23 +67,6 @@ describe('Orders pure function tests', () => {
       expect(
         getNextOrderItemStatus(OrderStatus.processing),
       ).toMatchInlineSnapshot(`"ready"`);
-    });
-  });
-
-  describe('getOrderLaneColor', () => {
-    const unit: Unit = unitFixture.unit_01;
-
-    const orderItem: LaneOrderItem = {
-      ...orderFixtureBase.orderItemInputBase(
-        productSnapshotFixture.unitProduct_1,
-      ),
-      productId: productSnapshotFixture.unitProduct_1.id || 'IS MUST EXIST',
-    };
-
-    it('should get order lane color', () => {
-      expect(getOrderLaneColor(orderItem, unit)).toMatchInlineSnapshot(
-        `"#e72222"`,
-      );
     });
   });
 

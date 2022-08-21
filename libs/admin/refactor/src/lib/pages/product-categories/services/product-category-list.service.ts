@@ -22,7 +22,7 @@ export class ProductCategoryListService {
   constructor(
     private _store: Store,
     private _productCategoryCollectionService: ProductCategoryCollectionService,
-    private _chainCollectionService: UnitCollectionService,
+    private _unitCollectionService: UnitCollectionService,
   ) {
     this._store
       .select(loggedUserSelectors.getSelectedUnitId)
@@ -67,12 +67,12 @@ export class ProductCategoryListService {
   }
 
   public updateProductCategoryOrders$(
-    chainId: string,
+    unitId: string,
     categoryOrders: NestedSortItem[],
   ) {
-    return this._chainCollectionService
+    return this._unitCollectionService
       .update$({
-        id: chainId,
+        id: unitId,
         categoryOrders,
       })
       .pipe(catchGqlError(this._store), take(1));
@@ -91,7 +91,7 @@ export class ProductCategoryListService {
           limit: PAGINATION_LIMIT,
           nextToken: this._nextToken,
           filter: {
-            chainId: { eq: this._selectedUnitId },
+            unitId: { eq: this._selectedUnitId },
           },
         })
         .subscribe(result => {

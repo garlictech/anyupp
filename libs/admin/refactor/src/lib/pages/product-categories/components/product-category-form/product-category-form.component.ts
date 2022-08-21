@@ -66,7 +66,6 @@ export class ProductCategoryFormComponent
             this._productCategoryFormService.saveForm$(
               {
                 ...this.dialogForm?.value,
-                chainId: this._selectedUnitId,
                 position: this.productCategory?.position || 0,
               },
               this.productCategory?.id,
