@@ -1,12 +1,12 @@
 import { combineLatest, EMPTY } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap, delay } from 'rxjs/operators';
 
 import { TestBed } from '@angular/core/testing';
 import { UntypedFormArray, ReactiveFormsModule } from '@angular/forms';
 import { ProductFormService } from '@bgap/admin/refactor';
 import { CrudSdkService } from '@bgap/admin/refactor';
 
-import { productFixture, testIdPrefix } from '@bgap/shared/fixtures';
+import { testIdPrefix, createProductFixture } from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import { StoreModule } from '@ngrx/store';
 
@@ -32,7 +32,7 @@ describe('ProductFormService', () => {
       crudSdk.sdk.DeleteUnitProduct({
         input: { id: unitProductId },
       }),
-    ]);
+    ]).pipe(delay(3000));
 
   beforeAll(async () => {
     await signInToCognito();
@@ -77,10 +77,9 @@ describe('ProductFormService', () => {
     cleanup()
       .pipe(
         switchMap(() =>
-          service.createUnitProduct$({
-            ...productFixture.unitProductInputBase,
-            id: unitProductId,
-          }),
+          service.createUnitProduct$(
+            createProductFixture(unitProductId, 'PRODUCT CATEGORY ID'),
+          ),
         ),
         tap(saveResponse => {
           expect(saveResponse).toMatchSnapshot({
@@ -101,16 +100,15 @@ describe('ProductFormService', () => {
     cleanup()
       .pipe(
         switchMap(() =>
-          service.createUnitProduct$({
-            ...productFixture.unitProductInputBase,
-            id: unitProductId,
-          }),
+          service.createUnitProduct$(
+            createProductFixture(unitProductId, 'PRODUCT CATEGORY ID'),
+          ),
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
           (<UpsertResponse<UnitProduct>>saveResponse).data.id
             ? service.updateUnitProduct$({
-                ...productFixture.unitProductInputBase,
+                ...createProductFixture(unitProductId, 'PRODUCT CATEGORY ID'),
                 id: unitProductId,
                 supportedServingModes: [ServingMode.inplace],
                 isVisible: false,
