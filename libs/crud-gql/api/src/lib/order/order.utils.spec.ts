@@ -1,4 +1,3 @@
-import { toFixed2Number } from '@bgap/shared/utils';
 import {
   calculateOrderItemPriceRounded,
   calculateOrderItemSumPriceRounded,
