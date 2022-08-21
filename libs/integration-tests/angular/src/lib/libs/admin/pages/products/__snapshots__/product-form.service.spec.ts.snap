@@ -20,8 +20,8 @@ Object {
   "productCategoryId": "",
   "productType": "",
   "supportedServingModes": Array [],
-  "takeawayTax": "",
-  "tax": "",
+  "takeawayTax": null,
+  "tax": null,
   "variants": Array [],
 }
 `;
