@@ -27,6 +27,7 @@ export const handleProducts =
         Body,
       }),
       params => defer(() => s3.upload(params).promise()),
+      tap(x => console.log('*****1', x)),
       map(() => ({
         launchType: 'FARGATE',
         networkConfiguration: {
@@ -55,6 +56,7 @@ export const handleProducts =
           ],
         },
       })),
+      tap(x => console.log('*****2', x)),
       switchMap(params =>
         bindNodeCallback(
           (
@@ -63,6 +65,7 @@ export const handleProducts =
           ) => deps.ecs.runTask(p, callback),
         )(params),
       ),
+      tap(x => console.log('*****3', x)),
       tap(result =>
         console.log(
           'Task submission result: ',

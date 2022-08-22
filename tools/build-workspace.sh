@@ -10,7 +10,8 @@ aws ecr get-login-password --region eu-west-1 | docker login --username AWS --pa
 
 yarn nx config crud-backend --env=$ENVNAME --skip-nx-cache
 yarn nx run-many --target=config --all --skip-nx-cache --exclude=crud-backend --env=$ENVNAME
-yarn nx run-many --target=build --projects=crud-backend,anyupp-global,anyupp-backend,anyupp-mobile --env=$ENVNAME --mode=$MODE --skip-nx-cache
+yarn nx build crud-backend --env=$ENVNAME --skip-nx-cache
+yarn nx run-many --target=build --projects=anyupp-global,anyupp-backend,anyupp-mobile --env=$ENVNAME --mode=$MODE --skip-nx-cache
 
 if [ $MODE = 'ci' ]; then
   yarn nx run-many --target=build-ci --projects=variants-manager-site --skip-nx-cache
