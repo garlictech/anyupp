@@ -447,7 +447,8 @@ test('send order to rkeeper by sendRkeeperOrder', done => {
   })(fixtures.yellowUnit, fixtures.orderInput)
     .pipe(
       tap(result => {
-        expect(result).toEqual('UUID');
+        expect(result.externalId).toEqual('UUID');
+        expect(!!result.visitId).toBeTruthy();
       }),
     )
     .subscribe({
@@ -526,8 +527,8 @@ test('send an unpaid order to rkeeper by HTTP post, then send another request to
     });
 }, 60000);
 
-test('test the menusync route', done => {
-  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.yellowRestaurantId}/menusync`;
+test.only('test the menusync route', done => {
+  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.yellowRestaurantId}/menusync/xx`;
   console.warn(url);
 
   defer(() =>

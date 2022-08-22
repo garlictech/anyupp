@@ -1,12 +1,16 @@
 import { combineLatest, EMPTY } from 'rxjs';
-import { catchError, switchMap, tap, delay } from 'rxjs/operators';
+import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { TestBed } from '@angular/core/testing';
 import { UntypedFormArray, ReactiveFormsModule } from '@angular/forms';
 import { ProductFormService } from '@bgap/admin/refactor';
 import { CrudSdkService } from '@bgap/admin/refactor';
 
-import { testIdPrefix, createProductFixture } from '@bgap/shared/fixtures';
+import {
+  testIdPrefix,
+  createProductFixture,
+  maskAll,
+} from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import { StoreModule } from '@ngrx/store';
 
@@ -27,12 +31,17 @@ describe('ProductFormService', () => {
   let service: ProductFormService;
   let crudSdk: CrudSdkService;
 
+  const productFixure = {
+    ...createProductFixture('UNIT_ID', 'PRODUCT CATEGORY ID'),
+    id: unitProductId,
+  };
+
   const cleanup = () =>
     combineLatest([
       crudSdk.sdk.DeleteUnitProduct({
         input: { id: unitProductId },
       }),
-    ]).pipe(delay(3000));
+    ]);
 
   beforeAll(async () => {
     await signInToCognito();
@@ -76,18 +85,9 @@ describe('ProductFormService', () => {
   it('createUnitProduct$ should create unit product', done => {
     cleanup()
       .pipe(
-        switchMap(() =>
-          service.createUnitProduct$(
-            createProductFixture(unitProductId, 'PRODUCT CATEGORY ID'),
-          ),
-        ),
+        switchMap(() => service.createUnitProduct$(productFixure)),
         tap(saveResponse => {
-          expect(saveResponse).toMatchSnapshot({
-            data: {
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            },
-          });
+          expect(maskAll(saveResponse)).toMatchSnapshot();
         }),
         switchMap(() => cleanup()),
       )
@@ -99,11 +99,7 @@ describe('ProductFormService', () => {
   it('updateUnitProduct$ should update unit product', done => {
     cleanup()
       .pipe(
-        switchMap(() =>
-          service.createUnitProduct$(
-            createProductFixture(unitProductId, 'PRODUCT CATEGORY ID'),
-          ),
-        ),
+        switchMap(() => service.createUnitProduct$(productFixure)),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
           (<UpsertResponse<UnitProduct>>saveResponse).data.id
@@ -117,12 +113,7 @@ describe('ProductFormService', () => {
         ),
         catchError(() => cleanup()),
         tap(updateResponse => {
-          expect(updateResponse).toMatchSnapshot({
-            data: {
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            },
-          });
+          expect(maskAll(updateResponse)).toMatchSnapshot();
         }),
         switchMap(() => cleanup()),
       )

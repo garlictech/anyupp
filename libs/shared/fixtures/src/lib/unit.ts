@@ -68,7 +68,7 @@ const openingHours: WeeklySchedule = {
   ],
 };
 
-const unitBase = {
+export const unitBase = {
   isActive: true,
   isAcceptingOrders: true,
   name: `Késdobáló S`,
@@ -142,7 +142,7 @@ const unitBase = {
   },
 };
 
-const createRkeeperUnit: RequiredId<CreateUnitInput> = {
+export const createRkeeperUnit: RequiredId<CreateUnitInput> = {
   ...unitBase,
   id: 'rkeeper-unit',
   externalId: 'restaurantid',

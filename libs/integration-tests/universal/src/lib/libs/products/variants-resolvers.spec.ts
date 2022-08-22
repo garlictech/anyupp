@@ -28,14 +28,11 @@ describe('Product variants resolver tests', () => {
   };
 
   const unitProductFixture = {
-    chainId: '',
-    groupId: '',
     unitId: '',
     isVisible: true,
     id: 'product_variants_c93e2c8e-b088-4885-993e-7d48d9f9d252',
     position: 1,
     __operation: 'Mutation',
-    parentId: '',
     variants: [variantFixture],
     name: { en: 'UNIT NAME' },
     tax: 0,

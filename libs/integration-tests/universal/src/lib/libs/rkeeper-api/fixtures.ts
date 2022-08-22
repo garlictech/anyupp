@@ -6,11 +6,11 @@ import {
 import { RequiredId } from '@bgap/shared/types';
 import {
   unitFixture,
-  productFixture,
   rkeeperEndpoint,
   yellowRestaurantId,
   yellowRkeeperUsername,
   yellowRkeeperPassword,
+  createProductFixture,
 } from '@bgap/shared/fixtures';
 import {
   CreateOrderInput,
@@ -46,6 +46,11 @@ export const rkeeperProductGuid = 'RKEEPERGUID';
 
 const unitId = `${testIdPrefix}-unit`;
 
+const productFixture = createProductFixture(
+  unitId,
+  'RKEEPER PRODUCT CATEGORY ID',
+);
+
 export const rkeeperUnit: RequiredId<CreateUnitInput> = {
   ...unitFixture.createRkeeperUnit,
   id: unitId,
@@ -53,7 +58,7 @@ export const rkeeperUnit: RequiredId<CreateUnitInput> = {
 };
 
 export const rkeeperUnitProduct: RequiredId<CreateUnitProductInput> = {
-  ...productFixture.unitProductInputBase,
+  ...productFixture,
   id: `${testIdPrefix}-unitproduct`,
   variants: [
     {
@@ -68,7 +73,7 @@ export const rkeeperUnitProduct: RequiredId<CreateUnitProductInput> = {
 };
 
 export const rkeeperUnitProduct2: RequiredId<CreateUnitProductInput> = {
-  ...productFixture.unitProductInputBase,
+  ...productFixture,
   id: `${testIdPrefix}-unitproduct2`,
   variants: [
     {

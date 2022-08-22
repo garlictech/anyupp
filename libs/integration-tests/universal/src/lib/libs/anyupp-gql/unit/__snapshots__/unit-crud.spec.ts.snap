@@ -22,20 +22,17 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": null,
   "externalId": "restaurantid",
   "floorMap": null,
-  "groupId": null,
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
   "isActive": true,
@@ -95,36 +92,8 @@ Object {
     },
     "type": "rkeeper",
   },
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -154,14 +123,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -181,20 +143,17 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": null,
   "externalId": "restaurantid",
   "floorMap": null,
-  "groupId": null,
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
   "isActive": true,
@@ -254,36 +213,8 @@ Object {
     },
     "type": "rkeeper",
   },
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -313,14 +244,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -342,20 +266,17 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": null,
   "externalId": "restaurantid",
   "floorMap": null,
-  "groupId": null,
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
   "isActive": true,
@@ -415,36 +336,8 @@ Object {
     },
     "type": "rkeeper",
   },
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -474,14 +367,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -501,20 +387,17 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": null,
   "externalId": "restaurantid",
   "floorMap": null,
-  "groupId": null,
   "id": "rkeeper-unit",
   "isAcceptingOrders": true,
   "isActive": true,
@@ -574,36 +457,8 @@ Object {
     },
     "type": "rkeeper",
   },
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -633,14 +488,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -660,21 +508,18 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": null,
   "externalId": null,
   "floorMap": null,
-  "groupId": null,
-  "id": "test_unit_1_id",
+  "id": "test-unit-crud",
   "isAcceptingOrders": true,
   "isActive": true,
   "isVisibleInApp": null,
@@ -724,36 +569,8 @@ Object {
   ],
   "phone": null,
   "pos": null,
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -783,14 +600,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -810,21 +620,18 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": "NEW EMAIL",
   "externalId": null,
   "floorMap": null,
-  "groupId": null,
-  "id": "test_unit_1_id",
+  "id": "test-unit-crud",
   "isAcceptingOrders": true,
   "isActive": true,
   "isVisibleInApp": null,
@@ -874,36 +681,8 @@ Object {
   ],
   "phone": null,
   "pos": null,
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -933,14 +712,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -962,21 +734,18 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": null,
   "externalId": null,
   "floorMap": null,
-  "groupId": null,
-  "id": "test_unit_1_id",
+  "id": "test-unit-crud",
   "isAcceptingOrders": true,
   "isActive": true,
   "isVisibleInApp": null,
@@ -1026,36 +795,8 @@ Object {
   ],
   "phone": null,
   "pos": null,
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -1085,14 +826,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1112,21 +846,18 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": "NEW EMAIL",
   "externalId": null,
   "floorMap": null,
-  "groupId": null,
-  "id": "test_unit_1_id",
+  "id": "test-unit-crud",
   "isAcceptingOrders": true,
   "isActive": true,
   "isVisibleInApp": null,
@@ -1176,36 +907,8 @@ Object {
   ],
   "phone": null,
   "pos": null,
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -1235,14 +938,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1259,10 +955,10 @@ Object {
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
-  "id": "test_unit_1_id",
+  "id": "test-unit-crud",
   "isAcceptingOrders": true,
   "isActive": true,
   "lanes": Array [
@@ -1302,29 +998,6 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "en": "Desc",
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "text": Object {
-            "en": "good",
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "en": "Question",
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
   "style": Object {
     "colors": Object {
       "backgroundDark": "#d6dde0",
@@ -1351,11 +1024,6 @@ Object {
     "inPlace",
     "takeAway",
   ],
-  "tipPolicy": Object {
-    "percents": Array [
-      2,
-    ],
-  },
   "updatedAt": Any<String>,
 }
 `;
@@ -1375,21 +1043,18 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": "NEW EMAIL",
   "externalId": null,
   "floorMap": null,
-  "groupId": null,
-  "id": "test_unit_1_id",
+  "id": "test-unit-crud",
   "isAcceptingOrders": true,
   "isActive": true,
   "isVisibleInApp": null,
@@ -1439,36 +1104,8 @@ Object {
   ],
   "phone": null,
   "pos": null,
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -1498,14 +1135,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1527,21 +1157,18 @@ Object {
   "canCallWaiter": null,
   "canRequestVatInvoice": null,
   "categoryOrders": null,
-  "chainId": null,
   "coverBanners": null,
-  "coverBannersEnabled": null,
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
     "de": null,
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": null,
   "externalId": null,
   "floorMap": null,
-  "groupId": null,
-  "id": "test_unit_1_id",
+  "id": "test-unit-crud",
   "isAcceptingOrders": true,
   "isActive": true,
   "isVisibleInApp": null,
@@ -1591,36 +1218,8 @@ Object {
   ],
   "phone": null,
   "pos": null,
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "de": null,
-        "en": "Desc",
-        "hu": null,
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "icon": null,
-          "text": Object {
-            "de": null,
-            "en": "good",
-            "hu": null,
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "de": null,
-        "en": "Question",
-        "hu": null,
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
+  "ratingPolicies": null,
+  "serviceFeePolicy": null,
   "soldOutVisibilityPolicy": null,
   "style": Object {
     "colors": Object {
@@ -1650,14 +1249,7 @@ Object {
     "takeAway",
   ],
   "timeZone": null,
-  "tipPolicy": Object {
-    "description": null,
-    "minOtherAmount": null,
-    "percents": Array [
-      2,
-    ],
-    "title": null,
-  },
+  "tipPolicy": null,
   "updatedAt": Any<String>,
 }
 `;
@@ -1674,11 +1266,11 @@ Object {
   "createdAt": Any<String>,
   "currency": "EUR",
   "description": Object {
-    "en": "Test unit #test_unit_1_id description",
-    "hu": "Teszt unit #test_unit_1_id leírás",
+    "en": "Test unit",
+    "hu": "Teszt unit",
   },
   "email": "NEW EMAIL",
-  "id": "test_unit_1_id",
+  "id": "test-unit-crud",
   "isAcceptingOrders": true,
   "isActive": true,
   "lanes": Array [
@@ -1718,29 +1310,6 @@ Object {
       "type": "stripe",
     },
   ],
-  "ratingPolicies": Array [
-    Object {
-      "description": Object {
-        "en": "Desc",
-      },
-      "key": "question1",
-      "ratings": Array [
-        Object {
-          "text": Object {
-            "en": "good",
-          },
-          "value": 1,
-        },
-      ],
-      "title": Object {
-        "en": "Question",
-      },
-    },
-  ],
-  "serviceFeePolicy": Object {
-    "percentage": 10,
-    "type": "applicable",
-  },
   "style": Object {
     "colors": Object {
       "backgroundDark": "#d6dde0",
@@ -1767,11 +1336,6 @@ Object {
     "inPlace",
     "takeAway",
   ],
-  "tipPolicy": Object {
-    "percents": Array [
-      2,
-    ],
-  },
   "updatedAt": Any<String>,
 }
 `;

@@ -14,12 +14,6 @@
         ],
         "cwd": "apps/variants-manager-site"
       },
-      "dependsOn": [
-        {
-          "projects": "dependencies",
-          "target": "build"
-        }
-      ],
       "outputs": ["dist/apps/variants-manager"]
     },
     "build-ci": {
@@ -33,12 +27,6 @@
         ],
         "cwd": "apps/variants-manager-site"
       },
-      "dependsOn": [
-        {
-          "projects": "dependencies",
-          "target": "build"
-        }
-      ],
       "outputs": ["dist/apps/variants-manager"]
     },
     "analyze": {

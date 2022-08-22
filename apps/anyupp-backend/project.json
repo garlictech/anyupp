@@ -22,12 +22,6 @@
         "apps/anyupp-backend/build/stuck-order-cleanup/index.js",
         "libs/shared/config/src/lib/stack-config/'{args.env}'/stack-config.json",
         "libs/shared/config/src/lib/stack-config/generated/stack-config.json"
-      ],
-      "dependsOn": [
-        {
-          "projects": "dependencies",
-          "target": "build"
-        }
       ]
     },
     "synth": {
@@ -47,12 +41,6 @@
       },
       "outputs": [
         "libs/shared/config/src/lib/stack-config/{args.env}/stack-config.json"
-      ],
-      "dependsOn": [
-        {
-          "projects": "dependencies",
-          "target": "config"
-        }
       ]
     },
     "deploy": {
