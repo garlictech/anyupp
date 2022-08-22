@@ -266,7 +266,7 @@ packages:
       name: easy_debounce
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "2.0.2+1"
   equatable:
     dependency: "direct main"
     description:
@@ -636,7 +636,7 @@ packages:
       name: page_transition
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.0.9"
   path:
     dependency: transitive
     description:

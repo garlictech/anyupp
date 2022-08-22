@@ -1,7 +1,0 @@
-FROM public.ecr.aws/bitnami/node:14
-
-WORKDIR /
-
-COPY build/report-generator.js /
-
-ENTRYPOINT node /report-generator.js

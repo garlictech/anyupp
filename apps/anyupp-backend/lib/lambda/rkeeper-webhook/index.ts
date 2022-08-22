@@ -1,4 +1,4 @@
-import awsLambdaFastify from 'aws-lambda-fastify';
+import awsLambdaFastify from '@fastify/aws-lambda';
 import * as fastify from 'fastify';
 import { menusyncHandler, orderStatusHandler } from '@bgap/rkeeper-api';
 

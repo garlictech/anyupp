@@ -13,8 +13,7 @@ crud-api-updater
 stack-seeder
 stuck-order-cleanup"
 
-DOCKER_PROCESSES="report-generator
-rkeeper-product-processor"
+DOCKER_PROCESSES="rkeeper-product-processor"
 
 IFS=$'\n'
 

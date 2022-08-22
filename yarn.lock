@@ -5118,6 +5118,11 @@
   dependencies:
     ajv "^6.12.6"
 
+"@fastify/aws-lambda@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@fastify/aws-lambda/-/aws-lambda-3.1.1.tgz#1c080ed8086632c9710e4dd2184fcbeb86fd2063"
+  integrity sha512-oKaTr1ZiT5ymDAoMvRhkC1ujOJLwJaScBcAAW6IxA2xlChgGStSH8vkeYSkJ68McOBFkzhrN15jBHikI7X+MSw==
+
 "@fastify/cors@^7.0.0":
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/@fastify/cors/-/cors-7.0.0.tgz#c67c5a5909498b696bb19578e903f36037ac6f32"
@@ -11205,19 +11210,6 @@ aws-elasticsearch-js@1.0.3:
     aws-sdk "^2.873.0"
     debug "^4.3.1"
     pump "^3.0.0"
-
-"aws-lambda-fastify-deprecated@npm:aws-lambda-fastify@2.1.6":
-  version "2.1.6"
-  resolved "https://registry.yarnpkg.com/aws-lambda-fastify/-/aws-lambda-fastify-2.1.6.tgz#3e87f77a1c490e7c5613cfcdd6923158be975c35"
-  integrity sha512-56OHxiVrA5CjkjkLaO9VWGoWqLSIwMrrkZCDH+2XS/yprHqlGCJdzihaAhpTDB2FWrqwB9wp4ikINiHX3AcXXg==
-
-aws-lambda-fastify@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/aws-lambda-fastify/-/aws-lambda-fastify-2.2.0.tgz#38a4d060676147bfe919f9fc771c3ee276c29c72"
-  integrity sha512-19AR/u7XEOEDFtWATWjSJMb5vCTR2+HXjOAf/b5SkBJIcCGzOcQkBLu72o6ZpLVzIssM1pz45vn40mbngwxy/g==
-  dependencies:
-    aws-lambda-fastify-deprecated "npm:aws-lambda-fastify@2.1.6"
-    process-warning "^1.0.0"
 
 aws-lambda@1.0.7:
   version "1.0.7"

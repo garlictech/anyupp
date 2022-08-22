@@ -17,7 +17,7 @@ export const menusyncHandler = (
 ) => {
   const externalUnitId = request.params.externalUnitId;
   console.log('Handling request for unit ', externalUnitId);
-  console.debug('Request:', request);
+  console.debug('Request:', JSON.stringify(request.body, null, 2));
 
   const deps = {
     ecs,
