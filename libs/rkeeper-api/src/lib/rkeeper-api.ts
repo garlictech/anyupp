@@ -1,8 +1,9 @@
 import { AWSError, ECS } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
-import { bindNodeCallback, defer } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { bindNodeCallback, defer, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { S3 } from 'aws-sdk';
+import * as R from 'ramda';
 
 export interface HandleProductsDeps {
   ecs: ECS;
@@ -26,7 +27,9 @@ export const handleProducts =
         Key: objectKey,
         Body,
       }),
+      R.tap(x => console.log('*****0', x)),
       params => defer(() => s3.upload(params).promise()),
+      catchError(err => of(err)),
       tap(x => console.log('*****1', x)),
       map(() => ({
         launchType: 'FARGATE',
