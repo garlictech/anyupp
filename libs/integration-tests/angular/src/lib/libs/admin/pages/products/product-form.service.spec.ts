@@ -1,5 +1,5 @@
 import { combineLatest, EMPTY } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap, tap, delay } from 'rxjs/operators';
 
 import { TestBed } from '@angular/core/testing';
 import { UntypedFormArray, ReactiveFormsModule } from '@angular/forms';
@@ -41,7 +41,7 @@ describe('ProductFormService', () => {
       crudSdk.sdk.DeleteUnitProduct({
         input: { id: unitProductId },
       }),
-    ]);
+    ]).pipe(delay(3000));
 
   beforeAll(async () => {
     await signInToCognito();
