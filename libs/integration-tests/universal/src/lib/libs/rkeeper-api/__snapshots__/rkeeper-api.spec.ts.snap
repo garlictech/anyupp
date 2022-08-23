@@ -4,6 +4,8 @@ exports[`Test the rkeeper api basic functionality Test full rkeeper product hand
 
 exports[`Test the rkeeper api basic functionality Test the menusync handler 1`] = `[InvalidBucketName: The specified bucket is not valid.]`;
 
+exports[`Test the rkeeper api basic functionality Test the product handling logic in fargate in case of non-existing unit 1`] = `"Unit with external ID foobar cannot be found"`;
+
 exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - existing restaurant 1`] = `
 Object {
   "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
@@ -12,8 +14,16 @@ Object {
 
 exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - not existing restaurant 1`] = `[Error: Cannot find unit belonging to external unit id NOT EXISTING RESTO\`]`;
 
-exports[`test the order status route 1`] = `
+exports[`test the menusync handler - reply with unit not found 1`] = `undefined`;
+
+exports[`test the menusync route - reply with unit not found 1`] = `
 Object {
   "message": "Internal server error",
+}
+`;
+
+exports[`test the order status route - reply with unit not found 1`] = `
+Object {
+  "error": "Unit with restaurant ID foobar cannot be found",
 }
 `;

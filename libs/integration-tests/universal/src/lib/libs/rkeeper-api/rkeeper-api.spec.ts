@@ -1,5 +1,6 @@
+import * as fastify from 'fastify';
 import { searchExternalVariant, sendRkeeperOrder } from '@bgap/rkeeper-api';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
 import * as fs from 'fs';
@@ -50,10 +51,9 @@ import {
 import { deleteTestUnitProduct } from '../../seeds/unit-product';
 
 const commonBackendName = 'common-backend2-anyupp';
+const crudSdk = createIamCrudSdk();
 
 describe('Test the rkeeper api basic functionality', () => {
-  const crudSdk = createIamCrudSdk();
-
   const testItemDeleter = <Y extends { id: string }, FILTER>(
     searchOp: (x: { filter: FILTER }) => Observable<
       | {
@@ -343,7 +343,7 @@ describe('Test the rkeeper api basic functionality', () => {
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    const res = await menusyncHandler(
+    const res = await menusyncHandler(crudSdk)(
       {
         params: { externalUnitId: fixtures.yellowRestaurantId },
         body: rawData,
@@ -358,7 +358,7 @@ describe('Test the rkeeper api basic functionality', () => {
     expect(res).toMatchSnapshot();
   }, 60000);
 
-  test.skip('Test the product handling logic in fargate', done => {
+  test('Test the product handling logic in fargate in case of non-existing unit', done => {
     const deps = {
       ecs: new ECS({ apiVersion: '2014-11-13' }),
       RKeeperProcessProductSubnet:
@@ -369,16 +369,21 @@ describe('Test the rkeeper api basic functionality', () => {
       bucketName:
         anyuppStackConfig['anyupp-backend-rkeeper'].RKeeperTaskBucketName,
       uuidGenerator: uuidV1,
+      sdk: crudSdk,
     };
 
-    const rawData = JSON.parse(
-      fs.readFileSync(__dirname + '/menu-data.json').toString(),
-    );
-
-    handleProducts(deps)(fixtures.yellowRestaurantId, rawData)
+    handleProducts(deps)('foobar', {})
       .pipe(tap(result => expect(result.failures).toMatchSnapshot()))
-      .subscribe(() => done(), console.error);
-  }, 500000);
+      .subscribe(
+        () => {
+          throw 'THIS TEST MUST THROW ERROR';
+        },
+        error => {
+          expect(error).toMatchSnapshot();
+          done();
+        },
+      );
+  }, 10000);
 
   test('createDefaultProductCategory', done => {
     getBusinessEntityInfo(crudSdk)(
@@ -527,9 +532,8 @@ test('send an unpaid order to rkeeper by HTTP post, then send another request to
     });
 }, 60000);
 
-test.only('test the menusync route', done => {
-  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.yellowRestaurantId}/menusync/xx`;
-  console.warn(url);
+test('test the menusync route - reply with unit not found', done => {
+  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/foobar/menusync`;
 
   defer(() =>
     from(
@@ -539,25 +543,38 @@ test.only('test the menusync route', done => {
         data: {},
       }),
     ),
-  )
-    .pipe(
-      tap((result: AxiosResponse) => {
-        expect(result?.status).toEqual(200);
-      }),
-    )
-    .subscribe({
-      next: () => console.log,
-      error: error => {
-        console.error('Error', error);
-        throw error;
-      },
-      complete: () => done(),
-    });
-}, 60000);
+  ).subscribe({
+    next: res => {
+      console.warn(res);
+      throw 'MUST BE ERRORED';
+    },
+    error: (error: AxiosError) => {
+      expect(error.response?.data).toMatchSnapshot();
+      expect(error.response?.status).toEqual(400);
+      done();
+    },
+    complete: () => done(),
+  });
+}, 30000);
 
-test('test the order status route', done => {
-  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/${fixtures.rkeeperUnit.externalId}/order-status`;
-  console.warn(url);
+test('test the menusync handler - reply with unit not found', done => {
+  defer(() => from(menusyncHandler(crudSdk)({} as any, {} as any))).subscribe({
+    next: res => {
+      console.warn(res);
+      throw 'MUST BE ERRORED';
+    },
+    error: (error: AxiosError) => {
+      console.warn(error);
+      expect(error.response?.data).toMatchSnapshot();
+      expect(error.response?.status).toEqual(400);
+      done();
+    },
+    complete: () => done(),
+  });
+}, 30000);
+
+test.only('test the order status route - reply with unit not found', done => {
+  const url = `${anyuppStackConfig['anyupp-backend-rkeeper'].rkeeperwebhookEndpoint}/foobar/order-status`;
 
   defer(() =>
     from(
