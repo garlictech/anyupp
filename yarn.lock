@@ -5178,7 +5178,7 @@
   dependencies:
     ajv "^6.12.6"
 
-"@fastify/aws-lambda@^3.1.1":
+"@fastify/aws-lambda@3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@fastify/aws-lambda/-/aws-lambda-3.1.1.tgz#1c080ed8086632c9710e4dd2184fcbeb86fd2063"
   integrity sha512-oKaTr1ZiT5ymDAoMvRhkC1ujOJLwJaScBcAAW6IxA2xlChgGStSH8vkeYSkJ68McOBFkzhrN15jBHikI7X+MSw==
