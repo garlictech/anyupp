@@ -148,7 +148,13 @@ const getFirstFoundItem = <T>(): UnaryFunction<
     filterNullishGraphqlListWithDefault<T>([]),
     tap(items => {
       if (items.length > 1) {
-        console.warn('Found multiple unit products with the same clientid!');
+        console.warn(
+          `Found multiple items with the same clientid! ${JSON.stringify(
+            items,
+            null,
+            2,
+          )}`,
+        );
       }
     }),
     map(items => items?.[0] ?? null),
@@ -215,7 +221,6 @@ export const createRkeeperProduct =
         supportedServingModes: [ServingMode.inplace],
         variants: [
           {
-            id: 'id',
             variantName: {
               hu: dish.name,
             },

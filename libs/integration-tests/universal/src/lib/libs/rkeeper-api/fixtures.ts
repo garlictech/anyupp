@@ -123,6 +123,7 @@ export const rkeeperOrder = {
 
 export const yellowUnit = {
   ...rkeeperUnit,
+  id: 'test-yellowunit-id',
   externalId: yellowRestaurantId,
   pos: {
     ...rkeeperUnit.pos,

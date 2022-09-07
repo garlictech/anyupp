@@ -14,7 +14,6 @@ const ecs = new ECS({ apiVersion: '2014-11-13' });
 
 export const menusyncHandler =
   (sdk: CrudSdk) => (request: RKeeperRequest, reply: fastify.FastifyReply) => {
-    console.log('*****', request?.params);
     const externalUnitId = request?.params?.externalUnitId;
     console.log('Handling request for unit', externalUnitId);
 
@@ -41,7 +40,8 @@ export const menusyncHandler =
         }),
         catchError(error => {
           console.error('Request failed:', error);
-          reply.status(400).send({ error });
+          reply.status(400);
+          reply.send({ error });
           return of(error);
         }),
       )

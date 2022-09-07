@@ -27,7 +27,6 @@ export const handleProducts =
       deps.sdk.SearchUnits({
         filter: { externalId: { eq: externalUnitId } },
       }),
-      tap(x => console.log('***0', JSON.stringify(x, null, 2))),
       switchMap(res =>
         res?.items?.[0]?.externalId === externalUnitId
           ? of(true)

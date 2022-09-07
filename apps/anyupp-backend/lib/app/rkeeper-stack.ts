@@ -133,7 +133,7 @@ export class RKeeperStack extends sst.Stack {
       {
         ...commonLambdaProps,
         memorySize: 512,
-        timeout: Duration.seconds(20),
+        timeout: Duration.seconds(30),
         handler: 'index.handler',
         code: aws_lambda.Code.fromAsset(
           path.join(__dirname, '../../build/rkeeper-webhook'),
@@ -146,7 +146,6 @@ export class RKeeperStack extends sst.Stack {
           RKeeperProcessProductSubnet: props.vpc.privateSubnets[0].subnetId,
           BUCKET_NAME: menuBucket.bucketName,
         },
-        vpc: props.vpc,
       },
     );
 

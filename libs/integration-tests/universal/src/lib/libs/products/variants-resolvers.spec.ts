@@ -15,6 +15,7 @@ import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
 import { maskDate, maskAll, sanitizeField } from '@bgap/shared/fixtures';
+import { deleteTestUnitProduct } from '../../seeds/unit-product';
 
 describe('Product variants resolver tests', () => {
   let sdk: CrudSdk;
@@ -163,6 +164,19 @@ describe('Product variants resolver tests', () => {
       .pipe(
         delay(3000),
         switchMap(() => sdk.GetUnitProduct({ id: unitProductFixture.id })),
+        tap(result => expect(maskAll(result)).toMatchSnapshot()),
+      )
+      .toPromise();
+  }, 10000);
+
+  test('DeleteUnitProduct with API call', async () => {
+    await sdk
+      .CreateUnitProduct({ input: createUnitProductFixture })
+      .pipe(
+        delay(3000),
+        switchMap(product =>
+          product ? deleteTestUnitProduct(product, sdk) : of({}),
+        ),
         tap(result => expect(maskAll(result)).toMatchSnapshot()),
       )
       .toPromise();

@@ -1674,6 +1674,65 @@ input ModelIDInput {
   size: ModelSizeInput
 }
 
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
 enum ModelAttributeTypes {
   binary
   binarySet
@@ -1839,6 +1898,26 @@ input UpdateUnitProductInput {
   allergens: [Allergen]
 }
 
+input ModelSubscriptionUnitProductFilterInput {
+  id: ModelSubscriptionIDInput
+  unitId: ModelSubscriptionIDInput
+  isVisible: ModelSubscriptionBooleanInput
+  takeaway: ModelSubscriptionBooleanInput
+  laneId: ModelSubscriptionIDInput
+  position: ModelSubscriptionIntInput
+  supportedServingModes: ModelSubscriptionStringInput
+  dirty: ModelSubscriptionBooleanInput
+  deletedAt: ModelSubscriptionStringInput
+  tax: ModelSubscriptionIntInput
+  takeawayTax: ModelSubscriptionIntInput
+  productCategoryId: ModelSubscriptionIDInput
+  productType: ModelSubscriptionStringInput
+  image: ModelSubscriptionStringInput
+  allergens: ModelSubscriptionStringInput
+  and: [ModelSubscriptionUnitProductFilterInput]
+  or: [ModelSubscriptionUnitProductFilterInput]
+}
+
 type ModelVariantConnection @aws_iam @aws_cognito_user_pools {
   items: [Variant]!
   nextToken: String
@@ -1903,6 +1982,19 @@ input DeleteVariantInput {
   id: ID!
 }
 
+input ModelSubscriptionVariantFilterInput {
+  id: ModelSubscriptionIDInput
+  isAvailable: ModelSubscriptionBooleanInput
+  price: ModelSubscriptionFloatInput
+  position: ModelSubscriptionIntInput
+  netPackagingFee: ModelSubscriptionFloatInput
+  soldOut: ModelSubscriptionBooleanInput
+  ownerProduct: ModelSubscriptionStringInput
+  externalId: ModelSubscriptionStringInput
+  and: [ModelSubscriptionVariantFilterInput]
+  or: [ModelSubscriptionVariantFilterInput]
+}
+
 input CardChecksInput {
   address_line1_check: String
   address_postal_code_check: String
@@ -1949,6 +2041,16 @@ input ModelAdminUserConditionInput {
   and: [ModelAdminUserConditionInput]
   or: [ModelAdminUserConditionInput]
   not: ModelAdminUserConditionInput
+}
+
+input ModelSubscriptionAdminUserFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  phone: ModelSubscriptionStringInput
+  profileImage: ModelSubscriptionStringInput
+  and: [ModelSubscriptionAdminUserFilterInput]
+  or: [ModelSubscriptionAdminUserFilterInput]
 }
 
 type ModelOrderConnection @aws_iam @aws_cognito_user_pools {
@@ -2093,6 +2195,35 @@ input UpdateOrderInput {
   visitId: String
 }
 
+input ModelSubscriptionOrderFilterInput {
+  id: ModelSubscriptionIDInput
+  version: ModelSubscriptionIntInput
+  userId: ModelSubscriptionIDInput
+  unitId: ModelSubscriptionIDInput
+  orderNum: ModelSubscriptionStringInput
+  archived: ModelSubscriptionBooleanInput
+  paymentIntention: ModelSubscriptionFloatInput
+  transactionStatus: ModelSubscriptionStringInput
+  transactionId: ModelSubscriptionIDInput
+  unpayCategory: ModelSubscriptionStringInput
+  orderMode: ModelSubscriptionStringInput
+  servingMode: ModelSubscriptionStringInput
+  hasRated: ModelSubscriptionBooleanInput
+  tipTransactionStatus: ModelSubscriptionStringInput
+  tipTransactionId: ModelSubscriptionIDInput
+  orderPolicy: ModelSubscriptionStringInput
+  soldOutVisibilityPolicy: ModelSubscriptionStringInput
+  packagingFeeTaxPercentage: ModelSubscriptionFloatInput
+  externalId: ModelSubscriptionStringInput
+  guestLabel: ModelSubscriptionStringInput
+  currentStatus: ModelSubscriptionStringInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  visitId: ModelSubscriptionStringInput
+  and: [ModelSubscriptionOrderFilterInput]
+  or: [ModelSubscriptionOrderFilterInput]
+}
+
 type ModelProductCategoryConnection @aws_iam @aws_cognito_user_pools {
   items: [ProductCategory]!
   nextToken: String
@@ -2141,6 +2272,16 @@ input UpdateProductCategoryInput {
 
 input DeleteProductCategoryInput {
   id: ID!
+}
+
+input ModelSubscriptionProductCategoryFilterInput {
+  id: ModelSubscriptionIDInput
+  ownerEntity: ModelSubscriptionIDInput
+  parentId: ModelSubscriptionIDInput
+  image: ModelSubscriptionStringInput
+  position: ModelSubscriptionIntInput
+  and: [ModelSubscriptionProductCategoryFilterInput]
+  or: [ModelSubscriptionProductCategoryFilterInput]
 }
 
 type ModelProductComponentConnection @aws_iam @aws_cognito_user_pools {
@@ -2197,6 +2338,18 @@ input UpdateProductComponentInput {
 
 input DeleteProductComponentInput {
   id: ID!
+}
+
+input ModelSubscriptionProductComponentFilterInput {
+  id: ModelSubscriptionIDInput
+  ownerEntity: ModelSubscriptionIDInput
+  description: ModelSubscriptionStringInput
+  allergens: ModelSubscriptionStringInput
+  externalId: ModelSubscriptionStringInput
+  dirty: ModelSubscriptionBooleanInput
+  deletedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionProductComponentFilterInput]
+  or: [ModelSubscriptionProductComponentFilterInput]
 }
 
 type ModelProductComponentSetConnection @aws_iam @aws_cognito_user_pools {
@@ -2270,6 +2423,21 @@ input UpdateProductComponentSetInput {
 
 input DeleteProductComponentSetInput {
   id: ID!
+}
+
+input ModelSubscriptionProductComponentSetFilterInput {
+  id: ModelSubscriptionIDInput
+  externalId: ModelSubscriptionStringInput
+  ownerEntity: ModelSubscriptionIDInput
+  type: ModelSubscriptionStringInput
+  description: ModelSubscriptionStringInput
+  items: ModelSubscriptionIDInput
+  maxSelection: ModelSubscriptionIntInput
+  supportedServingModes: ModelSubscriptionStringInput
+  dirty: ModelSubscriptionBooleanInput
+  deletedAt: ModelSubscriptionStringInput
+  and: [ModelSubscriptionProductComponentSetFilterInput]
+  or: [ModelSubscriptionProductComponentSetFilterInput]
 }
 
 input GeneratedProductInput {
@@ -2361,6 +2529,14 @@ input DeleteFavoriteProductInput {
   id: ID!
 }
 
+input ModelSubscriptionFavoriteProductFilterInput {
+  id: ModelSubscriptionIDInput
+  userId: ModelSubscriptionIDInput
+  unitId: ModelSubscriptionIDInput
+  and: [ModelSubscriptionFavoriteProductFilterInput]
+  or: [ModelSubscriptionFavoriteProductFilterInput]
+}
+
 input DateIntervalOpenInput {
   from: String
   to: String
@@ -2440,6 +2616,32 @@ input DeleteUnitInput {
   id: ID!
 }
 
+input ModelSubscriptionUnitFilterInput {
+  id: ModelSubscriptionIDInput
+  adBannersEnabled: ModelSubscriptionBooleanInput
+  lastOrderNum: ModelSubscriptionIntInput
+  isActive: ModelSubscriptionBooleanInput
+  isAcceptingOrders: ModelSubscriptionBooleanInput
+  name: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  phone: ModelSubscriptionStringInput
+  merchantId: ModelSubscriptionStringInput
+  timeZone: ModelSubscriptionStringInput
+  externalId: ModelSubscriptionStringInput
+  supportedServingModes: ModelSubscriptionStringInput
+  supportedOrderModes: ModelSubscriptionStringInput
+  orderPolicy: ModelSubscriptionStringInput
+  packagingTaxPercentage: ModelSubscriptionFloatInput
+  soldOutVisibilityPolicy: ModelSubscriptionStringInput
+  orderPaymentPolicy: ModelSubscriptionStringInput
+  canRequestVatInvoice: ModelSubscriptionBooleanInput
+  canCallWaiter: ModelSubscriptionBooleanInput
+  isVisibleInApp: ModelSubscriptionBooleanInput
+  currency: ModelSubscriptionStringInput
+  and: [ModelSubscriptionUnitFilterInput]
+  or: [ModelSubscriptionUnitFilterInput]
+}
+
 type ModelUserConnection @aws_iam @aws_cognito_user_pools {
   items: [User]!
   nextToken: String
@@ -2490,6 +2692,17 @@ input UpdateUserInput {
 
 input DeleteUserInput {
   id: ID!
+}
+
+input ModelSubscriptionUserFilterInput {
+  id: ModelSubscriptionIDInput
+  name: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  phone: ModelSubscriptionStringInput
+  profileImage: ModelSubscriptionStringInput
+  stripeCustomerId: ModelSubscriptionStringInput
+  and: [ModelSubscriptionUserFilterInput]
+  or: [ModelSubscriptionUserFilterInput]
 }
 
 type ModelCartConnection @aws_iam @aws_cognito_user_pools {
@@ -2558,6 +2771,20 @@ input UpdateCartInput {
 
 input DeleteCartInput {
   id: ID!
+}
+
+input ModelSubscriptionCartFilterInput {
+  id: ModelSubscriptionIDInput
+  version: ModelSubscriptionIntInput
+  userId: ModelSubscriptionIDInput
+  unitId: ModelSubscriptionIDInput
+  takeAway: ModelSubscriptionBooleanInput
+  servingMode: ModelSubscriptionStringInput
+  orderMode: ModelSubscriptionStringInput
+  orderPolicy: ModelSubscriptionStringInput
+  guestLabel: ModelSubscriptionStringInput
+  and: [ModelSubscriptionCartFilterInput]
+  or: [ModelSubscriptionCartFilterInput]
 }
 
 type ModelTransactionConnection @aws_iam @aws_cognito_user_pools {
@@ -2636,6 +2863,24 @@ input UpdateTransactionInput {
 
 input DeleteTransactionInput {
   id: ID!
+}
+
+input ModelSubscriptionTransactionFilterInput {
+  id: ModelSubscriptionIDInput
+  userId: ModelSubscriptionIDInput
+  orderId: ModelSubscriptionIDInput
+  type: ModelSubscriptionStringInput
+  total: ModelSubscriptionFloatInput
+  currency: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
+  externalTransactionId: ModelSubscriptionStringInput
+  invoiceId: ModelSubscriptionIDInput
+  receiptId: ModelSubscriptionIDInput
+  createdAt: ModelSubscriptionStringInput
+  updatedAt: ModelSubscriptionStringInput
+  paymentMethodId: ModelSubscriptionStringInput
+  and: [ModelSubscriptionTransactionFilterInput]
+  or: [ModelSubscriptionTransactionFilterInput]
 }
 
 type ModelInvoiceConnection @aws_iam @aws_cognito_user_pools {
@@ -2725,6 +2970,25 @@ input DeleteInvoiceInput {
   id: ID!
 }
 
+input ModelSubscriptionInvoiceFilterInput {
+  id: ModelSubscriptionIDInput
+  userId: ModelSubscriptionIDInput
+  orderId: ModelSubscriptionIDInput
+  transactionId: ModelSubscriptionIDInput
+  externalInvoiceId: ModelSubscriptionStringInput
+  customerName: ModelSubscriptionStringInput
+  taxNumber: ModelSubscriptionStringInput
+  country: ModelSubscriptionStringInput
+  city: ModelSubscriptionStringInput
+  streetAddress: ModelSubscriptionStringInput
+  postalCode: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  pdfUrl: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
+  and: [ModelSubscriptionInvoiceFilterInput]
+  or: [ModelSubscriptionInvoiceFilterInput]
+}
+
 type ModelReceiptConnection @aws_iam @aws_cognito_user_pools {
   items: [Receipt]!
   nextToken: String
@@ -2786,6 +3050,19 @@ input UpdateReceiptInput {
 
 input DeleteReceiptInput {
   id: ID!
+}
+
+input ModelSubscriptionReceiptFilterInput {
+  id: ModelSubscriptionIDInput
+  userId: ModelSubscriptionIDInput
+  orderId: ModelSubscriptionIDInput
+  transactionId: ModelSubscriptionIDInput
+  externalReceiptId: ModelSubscriptionStringInput
+  email: ModelSubscriptionStringInput
+  pdfData: ModelSubscriptionStringInput
+  status: ModelSubscriptionStringInput
+  and: [ModelSubscriptionReceiptFilterInput]
+  or: [ModelSubscriptionReceiptFilterInput]
 }
 
 input ModelIDKeyConditionInput {

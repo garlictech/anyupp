@@ -15,7 +15,7 @@ import { StripeStack } from './app/stripe-stack';
 import { AnyuppBackupStack } from './app/backup-stack';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
 import { OpenSearchCustomStack } from './app/opensearch-custom-stack';
-import { WafStack } from './app/waf-stack';
+//import { WafStack } from './app/waf-stack';
 
 export class AnyUppStack extends Stack {
   constructor(scope: App, id: string) {
@@ -54,7 +54,7 @@ export class AnyUppStack extends Stack {
       certificateArn,
     );
 
-    if (scope.stage === ('dev' || 'prod')) {
+    if (scope.stage === 'prod') {
       new AnyuppBackupStack(scope, 'backups');
     }
 
@@ -120,11 +120,11 @@ export class AnyUppStack extends Stack {
       openSearchArn: CrudApiConfig.openSearchArn,
     });
 
-    if (['prod', 'qa', 'dev', 'staging'].includes(scope.stage)) {
+    /*if (['prod', 'qa', 'dev', 'staging'].includes(scope.stage)) {
       new WafStack(scope, 'waf', {
         graphqlApiId: CrudApiConfig.appsyncApiId,
       });
-    }
+    }*/
   }
 }
 

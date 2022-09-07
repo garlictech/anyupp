@@ -32,7 +32,6 @@ export class WebsiteConstruct extends Construct {
 
     // Content bucket
     const siteBucket = new s3.Bucket(this, 'SiteBucket', {
-      bucketName: siteDomain,
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: 'index.html',
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL, // Cloudfront can still access it through the originAccess Identity
