@@ -56,5 +56,6 @@ export default {
     '<rootDir>/libs/apps/backend-anyupp',
     '<rootDir>/libs/apps/shared',
     '<rootDir>/libs/anyupp-schema',
+    '<rootDir>/$"14.4.0-beta.5"root}',
   ],
 };

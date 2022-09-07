@@ -9,17 +9,15 @@ import {
 } from '@bgap/crud-gql/api';
 import { productVariantsResolver } from '@bgap/backend/products';
 import { tap, map, switchMap, delay } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
 import {} from '@bgap/domain';
-import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
 import { maskDate, maskAll, sanitizeField } from '@bgap/shared/fixtures';
 import { deleteTestUnitProduct } from '../../seeds/unit-product';
+import { of } from 'rxjs';
 
 describe('Product variants resolver tests', () => {
   let sdk: CrudSdk;
-  const productId = 'product_variants_c93e2c8e-b088-4885-993e-7d48d9f9d252';
 
   const variantFixture: ProductVariantInput = {
     isAvailable: true,
@@ -45,33 +43,8 @@ describe('Product variants resolver tests', () => {
     '__operation',
   ])(unitProductFixture);
 
-  const cleanup = () =>
-    forkJoin([
-      sdk.DeleteUnitProduct({ input: { id: productId } }),
-      getAllPaginatedData(sdk.SearchVariants, {
-        query: {
-          filter: {
-            ownerProduct: {
-              eq: productId,
-            },
-          },
-        },
-      }).pipe(
-        switchMap(result =>
-          pipe(
-            result?.items ?? [],
-            R.map(variant => variant?.id),
-            ids => R.reject(R.isNil)(ids),
-            R.map(id => sdk.DeleteVariant({ input: { id } })),
-            R.ifElse(
-              R.isEmpty,
-              x => of(x),
-              res => forkJoin(res).pipe(delay(3000)),
-            ),
-          ),
-        ),
-      ),
-    ]).toPromise();
+  const cleanup = (product?: UnitProduct | null) =>
+    product ? deleteTestUnitProduct(product, sdk) : of({});
 
   beforeAll(async () => {
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';
@@ -79,13 +52,9 @@ describe('Product variants resolver tests', () => {
     sdk = getCrudSdkForIAM(accessKeyId, secretAccessKey);
   }, 10000);
 
-  afterAll(async () => {
-    await cleanup();
-  }, 10000);
-
-  beforeEach(async () => {
-    await cleanup();
-  }, 10000);
+  afterEach(async () => {
+    await of(1).pipe(delay(3000)).toPromise();
+  });
 
   test('CreateUnitProduct with direct resolver', async () => {
     await productVariantsResolver({ crudSdk: sdk })({}, unitProductFixture)
@@ -109,6 +78,7 @@ describe('Product variants resolver tests', () => {
             pipe(result, maskDate, sanitizeField([0, 'id'])),
           ).toMatchSnapshot('GET PRODUCT'),
         ),
+        switchMap(cleanup),
       )
       .toPromise();
   }, 10000);
@@ -118,11 +88,11 @@ describe('Product variants resolver tests', () => {
       .CreateUnitProduct({ input: createUnitProductFixture })
       .pipe(
         tap(result => expect(maskAll(result)).toMatchSnapshot()),
-        delay(3000),
+        switchMap(cleanup),
       )
 
       .toPromise();
-  });
+  }, 10000);
 
   test('UpdateUnitProduct with API call', async () => {
     let testedVariantId: string | undefined = 'foobar';
@@ -154,6 +124,7 @@ describe('Product variants resolver tests', () => {
         tap(result =>
           expect(result?.variants?.[0]?.id).toEqual(testedVariantId),
         ),
+        switchMap(cleanup),
       )
       .toPromise();
   }, 10000);
@@ -165,19 +136,7 @@ describe('Product variants resolver tests', () => {
         delay(3000),
         switchMap(() => sdk.GetUnitProduct({ id: unitProductFixture.id })),
         tap(result => expect(maskAll(result)).toMatchSnapshot()),
-      )
-      .toPromise();
-  }, 10000);
-
-  test('DeleteUnitProduct with API call', async () => {
-    await sdk
-      .CreateUnitProduct({ input: createUnitProductFixture })
-      .pipe(
-        delay(3000),
-        switchMap(product =>
-          product ? deleteTestUnitProduct(product, sdk) : of({}),
-        ),
-        tap(result => expect(maskAll(result)).toMatchSnapshot()),
+        switchMap(cleanup),
       )
       .toPromise();
   }, 10000);

@@ -85,7 +85,7 @@ export const productVariantsResolver =
     // __operation: 'Mutation' field to the parent. We decide if the
     // mutation is crete or ubdate by checking the parent (source) id.
     // If it does not exist, then it is a create. If it exists, and the data
-    // alos exists, then it is an update.
+    // also exists, then it is an update.
     //
     // see: https://www.apollographql.com/docs/apollo-server/data/resolvers/#resolver-chains
     const selectHandler = () =>

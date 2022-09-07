@@ -125,6 +125,11 @@ export interface BillingDetailsInput {
   phone?: InputMaybe<Scalars['String']>;
 }
 
+export interface CallWaiterInput {
+  info?: InputMaybe<Scalars['String']>;
+  unitId: Scalars['ID'];
+}
+
 export enum CardBrand {
   amex = 'amex',
   diners = 'diners',
@@ -1830,6 +1835,7 @@ export interface ModelVariantFilterInput {
 }
 
 export interface Mutation {
+  callWaiter?: Maybe<Scalars['Boolean']>;
   createAdminUser?: Maybe<AdminUser>;
   createAnonymUser?: Maybe<CreateAnonymUserOutput>;
   createCart?: Maybe<Cart>;
@@ -1881,6 +1887,11 @@ export interface Mutation {
   updateUnitRKeeperData?: Maybe<Unit>;
   updateUser?: Maybe<User>;
   updateVariant?: Maybe<Variant>;
+}
+
+
+export interface MutationCallWaiterArgs {
+  input?: InputMaybe<CallWaiterInput>;
 }
 
 
@@ -4816,6 +4827,13 @@ export type DeleteMyStripeCardMutationVariables = Exact<{
 
 export type DeleteMyStripeCardMutation = { deleteMyStripeCard?: boolean | null };
 
+export type CallWaiterMutationVariables = Exact<{
+  input?: InputMaybe<CallWaiterInput>;
+}>;
+
+
+export type CallWaiterMutation = { callWaiter?: boolean | null };
+
 export type CreateUnitProductMutationVariables = Exact<{
   input: CreateUnitProductInput;
   condition?: InputMaybe<ModelUnitProductConditionInput>;
@@ -6960,6 +6978,11 @@ export const UpdateMyStripeCardDocument = gql`
 export const DeleteMyStripeCardDocument = gql`
     mutation DeleteMyStripeCard($input: StripeCardDeleteInput!) {
   deleteMyStripeCard(input: $input)
+}
+    `;
+export const CallWaiterDocument = gql`
+    mutation CallWaiter($input: CallWaiterInput) {
+  callWaiter(input: $input)
 }
     `;
 export const CreateUnitProductDocument = gql`
@@ -16575,6 +16598,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     DeleteMyStripeCard(variables: DeleteMyStripeCardMutationVariables, options?: C): Promise<DeleteMyStripeCardMutation> {
       return requester<DeleteMyStripeCardMutation, DeleteMyStripeCardMutationVariables>(DeleteMyStripeCardDocument, variables, options);
+    },
+    CallWaiter(variables?: CallWaiterMutationVariables, options?: C): Promise<CallWaiterMutation> {
+      return requester<CallWaiterMutation, CallWaiterMutationVariables>(CallWaiterDocument, variables, options);
     },
     CreateUnitProduct(variables: CreateUnitProductMutationVariables, options?: C): Promise<CreateUnitProductMutation> {
       return requester<CreateUnitProductMutation, CreateUnitProductMutationVariables>(CreateUnitProductDocument, variables, options);

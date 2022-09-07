@@ -1,7 +1,8 @@
 import { CrudSdk } from '@bgap/crud-gql/api';
-import { CreateUnitProductInput, UnitProduct } from '@bgap/domain';
+import { CreateUnitProductInput } from '@bgap/domain';
 import { RequiredId } from '@bgap/shared/types';
-import { defer, forkJoin } from 'rxjs';
+import { defer, forkJoin, of } from 'rxjs';
+import { switchMap, tap, delay, catchError } from 'rxjs/operators';
 
 import { resultTap } from './seed.util';
 
@@ -20,9 +21,24 @@ export const deleteTestUnitProduct = (
   },
   crudSdk: CrudSdk,
 ) =>
-  forkJoin([
-    crudSdk.DeleteUnitProduct({ input: { id: product.id } }),
-    ...(product.variants?.map(variant =>
-      crudSdk.DeleteVariant({ input: { id: variant?.id || '' } }),
-    ) || []),
-  ]).pipe(resultTap('UNIT PRODUCT delete with its variants', product.id));
+  crudSdk.UpdateUnitProduct({ input: { id: product.id, variants: [] } }).pipe(
+    switchMap(() => crudSdk.DeleteUnitProduct({ input: { id: product.id } })),
+    switchMap(() =>
+      forkJoin([
+        ...(product.variants?.map(variant => {
+          const obs = variant?.id
+            ? crudSdk.DeleteVariant({ input: { id: variant.id } })
+            : of({});
+          return obs;
+        }) || []),
+      ]),
+    ),
+    delay(3000),
+    catchError(err => {
+      console.warn(
+        'Potential error during product delete:',
+        JSON.stringify(err, null, 2),
+      );
+      return of(err);
+    }),
+  );

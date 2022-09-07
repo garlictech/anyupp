@@ -1335,6 +1335,11 @@ input SearchByRadiusInput {
   nextToken: String
 }
 
+input CallWaiterInput {
+  unitId: ID!
+  info: String
+}
+
 type GeoSearchConnection {
   items: [String] @aws_iam @aws_cognito_user_pools
   nextToken: String @aws_iam @aws_cognito_user_pools
@@ -1404,6 +1409,7 @@ type Mutation {
   createStripeCard(input: StripeCardCreateInput!): StripeCard @aws_cognito_user_pools @aws_iam
   updateMyStripeCard(input: StripeCardUpdateInput!): StripeCard @aws_iam @aws_cognito_user_pools
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean @aws_cognito_user_pools @aws_iam
+  callWaiter(input: CallWaiterInput): Boolean @aws_cognito_user_pools @aws_iam
   createUnitProduct(input: CreateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
   updateUnitProduct(input: UpdateUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools
   deleteUnitProduct(input: DeleteUnitProductInput!, condition: ModelUnitProductConditionInput): UnitProduct @aws_iam @aws_cognito_user_pools

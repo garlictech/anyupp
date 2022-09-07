@@ -1364,6 +1364,11 @@ input SearchByRadiusInput {
   nextToken: String
 }
 
+input CallWaiterInput {
+  unitId: ID!
+  info: String
+}
+
 type GeoSearchConnection {
   items: [String]
     @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
@@ -1465,6 +1470,11 @@ type Mutation {
     @aws_cognito_user_pools
 
   deleteMyStripeCard(input: StripeCardDeleteInput!): Boolean
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
+
+  callWaiter(input: CallWaiterInput): Boolean
     @aws_cognito_user_pools
     @aws_iam
     @function(name: "${env}-anyupp-graphql-resolvers")

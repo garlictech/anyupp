@@ -64,6 +64,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
   _context: Context,
 ): Promise<unknown> => {
   console.debug('### Appsync Lambda handler ~ event:AnyuppRequest', event);
+  console.debug(`Source: ${JSON.stringify(event.source, null, 2)}`);
   const szamlazzClient = createSzamlazzClient(
     process.env.SZAMLAZZ_HU_AGENT_KEY || 'unknown key',
   );
@@ -124,6 +125,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       createUnit: createUnitResolver(unitsDeps),
       updateUnit: updateUnitResolver(unitsDeps),
       updateUnitRKeeperData: updateUnitRKeeperDataResolver(unitsDeps),
+      //callWaiter: callWaiterResolver,
     },
     Query: {
       listStripeCards: stripeRequestHandlers.listStripeCards,

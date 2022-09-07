@@ -13,6 +13,7 @@
     "apps-admin": "libs/apps/admin",
     "apps-backend-anyupp": "libs/apps/backend-anyupp",
     "apps-shared": "libs/apps/shared",
+    "backend-gql-resolvers": "libs/backend/gql-resolvers",
     "backend-orders": "libs/backend/orders",
     "backend-products": "libs/backend/products",
     "backend-search": "libs/backend/search",
