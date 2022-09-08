@@ -9230,10 +9230,10 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
-"@types/fabric@4.5.11":
-  version "4.5.11"
-  resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-4.5.11.tgz#ca7be016c6d803bf1066ce7072836ac1e7f2350d"
-  integrity sha512-JgOnbIm03EDYI+X5/hjstMZUbQ9W3704BQ4Dlu7t9JwWzNSdJE4cTV/4XtIHFCCfiFpcL756re+qCazTA84InA==
+"@types/fabric@4.5.12":
+  version "4.5.12"
+  resolved "https://registry.yarnpkg.com/@types/fabric/-/fabric-4.5.12.tgz#9c340075e166710c9da5e92afa157e5e171d9b12"
+  integrity sha512-rhRMpy+LMrRyxsDEjD78N48Qo+v7t1GEQvaEz8sm5efNsV+p4CHQCnN2wvgIyqPAIkiAGPPwSfVIBgluQP89Aw==
 
 "@types/file-saver@2.0.5":
   version "2.0.5"
