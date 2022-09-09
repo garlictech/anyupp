@@ -81,6 +81,7 @@ dependencies:
   bubble_box: ^0.5.2
   modal_bottom_sheet: ^2.1.0
   functional_data: ^1.0.0
+  flutter_riverpod: ^1.0.4
 
 dev_dependencies:
   flutter_test:

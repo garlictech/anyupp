@@ -9,7 +9,11 @@
     "today": "Today",
     "yesterday": "Yesterday",
     "exit": "Tap the back button again to exit app.",
-    "ok2": "OK"
+    "ok2": "OK",
+    "waiter": "Waiter",
+    "callingWaiter": "Calling waiter",
+    "waiterCalledTitle": "Success!",
+    "waiterCalledContent": "Waiter arrives soon."
   },
   "locale": {
     "EN": "English",

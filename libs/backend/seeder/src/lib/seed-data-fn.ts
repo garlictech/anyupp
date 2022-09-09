@@ -141,7 +141,7 @@ export const createTestUnitProduct =
       laneId: 'lane_01',
       isVisible: true,
       takeaway: false,
-      supportedServingModes: [ServingMode.takeaway],
+      supportedServingModes: [ServingMode.takeaway, ServingMode.inplace],
       position: 0,
       takeawayTax: 20,
       tax: 27,

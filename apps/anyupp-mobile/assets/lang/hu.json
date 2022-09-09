@@ -9,7 +9,11 @@
     "today": "Ma",
     "yesterday": "Tegnap",
     "ok2": "RENDBEN",
-    "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez..."
+    "waiter": "Pincér",
+    "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez...",
+    "callingWaiter": "Hívunk egy pincért...",
+    "waiterCalledTitle": "Sikerült!",
+    "waiterCalledContent": "Nemsokára érkezik egy pincér."
   },
   "locale": {
     "EN": "Angol",
