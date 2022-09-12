@@ -15,7 +15,7 @@ part 'units_state.dart';
 class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
   final UnitRepository _unitRepository;
   final LocationRepository _locationService;
-  static const int radiusInMeter = 10000; // 10 Km
+  static const int radiusInMeter = 100000; // 10 Km
 
   UnitsBloc(this._unitRepository, this._locationService)
       : super(UnitsInitial()) {
@@ -62,7 +62,6 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
       log.d('****** Start getting location');
       // --- Get device current location (ask permissions if not granted)
       _userLocation = await _locationService.getUserCurrentLocation();
-      _userLocation = LatLng(47.003841, 19.053478); // TODO kiszedni!
       log.d('****** Current Location=$_userLocation');
       if (_userLocation == null) {
         emit(UnitsNotLoaded(
