@@ -15,6 +15,6 @@ void main() async {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
   await initDependencyInjection();
+
   configureCatcherAndRunZonedApp(ProviderScope(child: MyApp()));
-  //runApp(MyApp());
 }

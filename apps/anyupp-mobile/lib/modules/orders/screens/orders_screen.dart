@@ -1,4 +1,4 @@
-import 'package:anyupp/ui/waiter_caller_button/waiter_caller_button.dart';
+import 'package:anyupp/app/ui/waiter_caller.dart';
 
 import '/core/core.dart';
 import '/models.dart';
@@ -216,7 +216,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                   ),
                 ),
               ),
-            if (true) WaiterCallerButton()
+            if (true) WaiterCaller()
           ],
         ),
       ),
