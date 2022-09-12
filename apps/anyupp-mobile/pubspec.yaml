@@ -82,6 +82,7 @@ dependencies:
   modal_bottom_sheet: ^2.1.0
   functional_data: ^1.0.0
   flutter_riverpod: ^1.0.4
+  one_context: ^2.1.0
 
 dev_dependencies:
   flutter_test:
