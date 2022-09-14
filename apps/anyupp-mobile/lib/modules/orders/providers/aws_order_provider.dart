@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.graphql.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
+import '/modules/login/login.dart';
+import '/shared/auth.dart';
 
 import 'aws/aws_order_history_subscription_handler.dart';
 import 'aws/aws_order_subscription_handler.dart';

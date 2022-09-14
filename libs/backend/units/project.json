@@ -1,5 +1,4 @@
 {
-  "root": "libs/backend/units",
   "sourceRoot": "libs/backend/units/src",
   "projectType": "library",
   "targets": {

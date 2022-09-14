@@ -1,6 +1,6 @@
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:anyupp/graphql/generated/crud-api.graphql.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class MockCartRepository implements CartRepository {
@@ -16,7 +16,7 @@ class MockCartRepository implements CartRepository {
 
   @override
   Future<Cart?> addProductToCart(
-      GeoUnit unit, OrderItem item, ServingMode servingMode) {
+      Unit unit, OrderItem item, ServingMode servingMode) {
     throw UnimplementedError();
   }
 
@@ -27,7 +27,7 @@ class MockCartRepository implements CartRepository {
   }
 
   @override
-  Future<Cart?> clearPlaceInCart(GeoUnit unit) async {
+  Future<Cart?> clearPlaceInCart(Unit unit) async {
     return _cart;
   }
 
@@ -57,7 +57,7 @@ class MockCartRepository implements CartRepository {
   }
 
   @override
-  Future<Cart?> updatePlaceInCart(GeoUnit unit, Place place) async {
+  Future<Cart?> updatePlaceInCart(Unit unit, Place place) async {
     return _cart;
   }
 
@@ -70,5 +70,39 @@ class MockCartRepository implements CartRepository {
   @override
   Future<Cart?> setServingMode(String unitId, ServingMode mode) async {
     return _cart;
+  }
+
+  @override
+  OrderItem getOrderItem(
+    String userId,
+    Unit unit,
+    Product product,
+    ProductVariant variant,
+    Map<ProductConfigSet, List<ProductConfigComponent>>
+        configSets,
+  ) {
+    return OrderItem(
+      productId: product.id,
+      variantId: variant.id!,
+      productName: product.name,
+      priceShown: PriceShown(
+        currency: unit.currency,
+        pricePerUnit: variant.price,
+        priceSum: variant.price,
+        tax: product.tax,
+        taxSum: 0,
+      ),
+      sumPriceShown: PriceShown(
+        currency: unit.currency,
+        pricePerUnit: variant.price,
+        priceSum: variant.price,
+        tax: product.tax,
+        taxSum: 0,
+      ),
+      quantity: 1,
+      statusLog: [],
+      variantName: variant.variantName,
+      productType: ProductType.food,
+    );
   }
 }

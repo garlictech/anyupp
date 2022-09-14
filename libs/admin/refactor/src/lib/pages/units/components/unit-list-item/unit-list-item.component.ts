@@ -1,21 +1,8 @@
 import { cloneDeep } from 'lodash/fp';
-import { EMPTY } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  Input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { PosType, Unit } from '@bgap/domain';
-import { jsonParsedOrNull } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
-import { Store } from '@ngrx/store';
-
-import { DataService } from '../../../../shared/data-access/data';
-import { ToasterService } from '../../../../shared/utils';
-import { appCoreActions } from '../../../../store/app-core';
 import { UnitBannersComponent } from '../unit-banners/unit-banners.component';
 import { UnitFloorMapComponent } from '../unit-floor-map/unit-floor-map.component';
 import { UnitFormComponent } from '../unit-form/unit-form.component';
@@ -31,13 +18,7 @@ export class UnitListItemComponent {
   public workingGenerateStatus = false;
   public ePosType = PosType;
 
-  constructor(
-    private _store: Store,
-    private _nbDialogService: NbDialogService,
-    private _dataService: DataService,
-    private _toasterService: ToasterService,
-    private _changeDetectorRef: ChangeDetectorRef,
-  ) {}
+  constructor(private _nbDialogService: NbDialogService) {}
 
   public editUnit() {
     const dialog = this._nbDialogService.open(UnitFormComponent);
@@ -60,39 +41,6 @@ export class UnitListItemComponent {
 
     if (this.unit) {
       dialog.componentRef.instance.unit = cloneDeep(this.unit);
-    }
-  }
-
-  public async regenerateData(): Promise<void> {
-    this.workingGenerateStatus = true;
-
-    if (this.unit) {
-      this._dataService
-        .regenerateUnitData$(this.unit?.id)
-        .pipe(
-          catchError(err => {
-            const _err = jsonParsedOrNull(err.graphQLErrors?.[0]?.message);
-
-            if (_err?.code === 'ERROR_NO_PRODUCT_IN_UNIT') {
-              this._toasterService.showSimpleDanger(
-                'errors.ERROR_NO_PRODUCT_IN_UNIT',
-              );
-            } else {
-              this._store.dispatch(appCoreActions.gqlFailure({ error: err }));
-            }
-
-            this.workingGenerateStatus = false;
-            this._changeDetectorRef.detectChanges();
-
-            return EMPTY;
-          }),
-        )
-        .subscribe(() => {
-          this._toasterService.showSimpleSuccess('update');
-
-          this.workingGenerateStatus = false;
-          this._changeDetectorRef.detectChanges();
-        });
     }
   }
 }

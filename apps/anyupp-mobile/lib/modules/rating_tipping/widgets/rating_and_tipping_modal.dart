@@ -1,11 +1,11 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/shared/widgets/modal_top_widget.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.graphql.dart';
+import '/models.dart';
+import '/modules/rating_tipping/rating_tipping.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/widgets.dart';
+import '/shared/widgets/modal_top_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 abstract class StripePaymentState extends Equatable {
   const StripePaymentState();

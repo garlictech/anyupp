@@ -11,7 +11,6 @@ import {
   OnInit,
 } from '@angular/core';
 import {
-  Chain,
   Invoice,
   Order,
   OrderItem,
@@ -30,7 +29,6 @@ import { select, Store } from '@ngrx/store';
 
 import { LocalizePipe } from '../../../../shared/pipes';
 import { net2gross } from '../../../../shared/utils';
-import { chainsSelectors } from '../../../../store/chains';
 import { unitsSelectors } from '../../../../store/units';
 import {
   addIncludedServiceFeeToOrderItems,
@@ -52,7 +50,6 @@ type ParsedVariant = OrderItem & { servingMode: ServingMode };
 export class OrderPrintComponent implements OnInit, OnChanges {
   @Input() orders!: Order[];
   public unit?: Unit;
-  public chain?: Chain;
   public now = '';
   public parsedOrders: ParsedVariant[] = [];
   public parsedVats: PriceShownInput[] = [];
@@ -82,17 +79,11 @@ export class OrderPrintComponent implements OnInit, OnChanges {
   ngOnInit() {
     combineLatest([
       this._store.pipe(
-        select(chainsSelectors.getSelectedChain),
-        filter((chain): boolean => !!chain),
-        take(1),
-      ),
-      this._store.pipe(
         select(unitsSelectors.getSelectedUnit),
         filter((unit): boolean => !!unit),
         take(1),
       ),
-    ]).subscribe(([chain, unit]: [Chain | undefined, Unit | undefined]) => {
-      this.chain = chain;
+    ]).subscribe(([unit]: [Unit | undefined]) => {
       this.unit = unit;
 
       this._changeDetectorRef.detectChanges();

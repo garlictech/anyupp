@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  TempChainRestrictionObject,
+  TempUnitRestrictionObject,
   appCoreActions,
 } from '../../../../../store/app-core';
 import { Store } from '@ngrx/store';
@@ -12,7 +12,7 @@ interface TempAccessObj {
   info: string;
   access: {
     userId: string;
-    chainId: string;
+    unitId: string;
   }[];
 }
 
@@ -25,24 +25,24 @@ export class AppInitializerService {
   public init$() {
     return this._httpClient
       .get<TempAccessObj>(
-        `https://anyuppbackendaa64d58f0bde4eacba269384314b213c180553-staging.s3.eu-west-1.amazonaws.com/public/temp-sec/chain-admin.json?t=${new Date().getTime()}`,
+        `https://anyuppbackendaa64d58f0bde4eacba269384314b213c180553-staging.s3.eu-west-1.amazonaws.com/public/temp-sec/unit-admin.json?t=${new Date().getTime()}`,
       )
       .pipe(
         tap(data => {
-          const restrictionObject: TempChainRestrictionObject = {};
+          const restrictionObject: TempUnitRestrictionObject = {};
 
           data.access.forEach(item => {
             if (!restrictionObject[item.userId]) {
-              restrictionObject[item.userId] = [item.chainId];
+              restrictionObject[item.userId] = [item.unitId];
             } else {
-              restrictionObject[item.userId].push(item.chainId);
+              restrictionObject[item.userId].push(item.unitId);
             }
           });
 
           // TEMP SECURITY
           this._store.dispatch(
-            appCoreActions.setChainRestrictionObject({
-              chainRestrictions: restrictionObject,
+            appCoreActions.setUnitRestrictionObject({
+              unitRestrictions: restrictionObject,
             }),
           );
         }),

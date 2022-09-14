@@ -21,7 +21,7 @@ import {
   ProductConfigSet,
   ServingMode,
 } from '@bgap/domain';
-import { EProductLevel, KeyValue } from '@bgap/shared/types';
+import { KeyValue } from '@bgap/shared/types';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -38,9 +38,7 @@ import { FormsService } from '../../services/forms/forms.service';
 })
 export class FormProductComponentsComponent implements OnInit {
   @Input() componentFormArray?: UntypedFormArray;
-  @Input() productLevel!: EProductLevel;
   @Input() currency?: string;
-  public eProductLevel = EProductLevel;
   public eServingMode = ServingMode;
 
   public componentSetForm?: UntypedFormGroup;

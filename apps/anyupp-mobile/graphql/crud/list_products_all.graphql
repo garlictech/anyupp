@@ -30,7 +30,14 @@ query ListAllProducts($unitId: ID!, $nextToken: String, $limit: Int) {
         netPackagingFee
         soldOut
         isAvailable
-        refGroupPrice
+        availabilities {
+          dayTo
+          dayFrom
+          price
+          timeFrom
+          timeTo
+          type
+        }
       }
       configSets {
         productSetId
@@ -40,109 +47,27 @@ query ListAllProducts($unitId: ID!, $nextToken: String, $limit: Int) {
           price
           netPackagingFee
           productComponentId
-          externalId
-          refGroupPrice
         }
       }
       supportedServingModes
       dirty
-      groupProduct {
-        variants {
-          isAvailable
-          netPackagingFee
-          pack {
-            size
-            unit
-          }
-          position
-          price
-          soldOut
-          variantName {
-            de
-            en
-            hu
-          }
-          refGroupPrice
-        }
-        configSets {
-          position
-          items {
-            position
-            price
-            netPackagingFee
-            productComponentId
-            externalId
-            refGroupPrice
-          }
-          productSetId
-        }
-        chainProduct {
-          allergens
-          name {
-            de
-            en
-            hu
-          }
-          productType
-          variants {
-            isAvailable
-            netPackagingFee
-            pack {
-              size
-              unit
-            }
-            id
-            position
-            price
-            soldOut
-            variantName {
-              de
-              en
-              hu
-            }
-            refGroupPrice
-          }
-          image
-          dirty
-          configSets {
-            position
-            items {
-              netPackagingFee
-              position
-              price
-              productComponentId
-              refGroupPrice
-              externalId
-            }
-            productSetId
-          }
-          isVisible
-          description {
-            de
-            en
-            hu
-          }
-          productCategoryId
-          externalId
-          id
-        }
-        dirty
-        groupId
-        id
-        isVisible
-        takeawayTax
-        tax
-        externalId
-        parentId
-        deletedAt
-        createdAt
-        updatedAt
-      }
       isVisible
-      parentId
-      chainId
-      groupId
-      externalId
+      tax
+      takeawayTax
+      name {
+        de
+        en
+        hu
+      }
+      description {
+        de
+        en
+        hu
+      }
+      productCategoryId
+      productType
+      image
+      allergens
       createdAt
       deletedAt
       updatedAt

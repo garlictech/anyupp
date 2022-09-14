@@ -10,12 +10,13 @@ abstract class UnitSelectState extends Equatable {
 class NoUnitSelected extends UnitSelectState {}
 
 class UnitSelected extends UnitSelectState {
-  final GeoUnit unit;
+  final Unit unit;
   const UnitSelected(this.unit);
 
   @override
   List<Object?> get props => [unit];
 
   @override
-  String toString() => 'UnitSelected { unitId: $unit.id, groupId: $unit.groupId, chainId: $unit.chainId }';
+  String toString() =>
+      'UnitSelected { unitId: $unit.id, groupId: $unit.groupId, chainId: $unit.chainId }';
 }

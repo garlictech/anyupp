@@ -27,15 +27,17 @@ const { createConnector } = require('aws-elasticsearch-js');
 import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
 import { searchByRadiusResolver } from '@bgap/backend/search';
+import { productVariantsResolver } from '@bgap/backend/products';
 
-export interface AnyuppRequest {
+export type AnyuppRequest<SOURCE = undefined> = {
   typeName: string;
   fieldName: string;
   identity?: {
     username?: string;
   };
   arguments: unknown;
-}
+  source?: SOURCE;
+};
 
 const consumerUserPoolId = config.ConsumerUserPoolId;
 const userPoolId = process.env.userPoolId || '';
@@ -62,6 +64,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
   _context: Context,
 ): Promise<unknown> => {
   console.debug('### Appsync Lambda handler ~ event:AnyuppRequest', event);
+  console.debug(`Source: ${JSON.stringify(event.source, null, 2)}`);
   const szamlazzClient = createSzamlazzClient(
     process.env.SZAMLAZZ_HU_AGENT_KEY || 'unknown key',
   );
@@ -118,20 +121,26 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       deleteAdminUser: adminUserRequestHandlers.deleteAdminUser,
       createOrderFromCart: orderRequestHandlers.createOrderFromCart,
       createOrder: orderRequestHandlers.createOrder,
-      regenerateUnitData: unitRequestHandlers.regenerateUnitData,
       createAnonymUser: userRequestHandlers.createAnonymUser,
       createUnit: createUnitResolver(unitsDeps),
       updateUnit: updateUnitResolver(unitsDeps),
       updateUnitRKeeperData: updateUnitRKeeperDataResolver(unitsDeps),
+      //callWaiter: callWaiterResolver,
     },
     Query: {
       listStripeCards: stripeRequestHandlers.listStripeCards,
       getUnitsNearLocation: unitRequestHandlers.getUnitsNearLocation,
       searchByRadius: searchByRadiusResolver(searchDeps),
     },
+    UnitProduct: {
+      variants: productVariantsResolver({ crudSdk }),
+    },
   };
 
-  const op = resolverMap[event.typeName]?.[event.fieldName]?.(event.arguments);
+  const op = resolverMap[event.typeName]?.[event.fieldName]?.(
+    event.arguments,
+    event.source,
+  );
 
   if (op === undefined) {
     return Promise.reject(

@@ -1,28 +1,29 @@
 import 'dart:io';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/core/theme/theme.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/payment/stripe/stripe.dart';
+import '/shared/locale.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SendCartButtonWidget extends StatelessWidget {
-  final Cart cart;
-  final PaymentMethodExt? selectedPaymentMethod;
   final ValueChanged<bool> onLoading;
   final VoidCallback onPressed;
+  final PaymentMethodExt? selectedPaymentMethod;
+  final Place? place;
+
   const SendCartButtonWidget({
     Key? key,
-    required this.cart,
-    this.selectedPaymentMethod,
     required this.onLoading,
     required this.onPressed,
+    this.selectedPaymentMethod,
+    this.place,
   }) : super(key: key);
 
   @override
@@ -77,7 +78,7 @@ class SendCartButtonWidget extends StatelessWidget {
                       Positioned.fill(
                         child: Align(
                           alignment: Alignment.centerRight,
-                          child: cart.isPlaceEmpty
+                          child: place?.isEmpty != false
                               ? SvgPicture.asset(
                                   'assets/icons/qr_code_scanner.svg',
                                   color: theme.buttonText,

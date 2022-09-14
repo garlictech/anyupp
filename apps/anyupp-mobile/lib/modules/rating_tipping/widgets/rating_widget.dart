@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/locale.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/shared/locale.dart';
 import 'package:flutter/material.dart';
 
 import 'rating_icon_widget.dart';

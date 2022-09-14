@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:fa_prev/core/theme/theme.dart';
+import '/core/theme/theme.dart';
 
 class ThemeChainCoffeeshop extends ThemeChainData {
   ThemeChainCoffeeshop()

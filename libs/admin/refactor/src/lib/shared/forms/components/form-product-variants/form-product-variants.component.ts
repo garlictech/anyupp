@@ -7,7 +7,6 @@ import {
 import { AbstractControl, UntypedFormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
-import { EProductLevel } from '@bgap/shared/types';
 import { Availability, ProductVariant, ServiceFeePolicy } from '@bgap/domain';
 
 @Component({
@@ -18,12 +17,9 @@ import { Availability, ProductVariant, ServiceFeePolicy } from '@bgap/domain';
 export class FormProductVariantsComponent {
   @Input() variantFormArray?: UntypedFormArray;
   @Input() allowAddVariant: boolean;
-  @Input() productLevel?: EProductLevel;
   @Input() currency?: string;
   @Input() unitServiceFeePolicy?: ServiceFeePolicy | null;
   @Input() productTax?: number;
-
-  public eProductLevel = EProductLevel;
 
   constructor(
     private _formsService: FormsService,

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/login/login.dart';
+import '/core/core.dart';
+import '/modules/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cognito_local_storage.dart';

@@ -16,8 +16,6 @@ import { Address, OpeningHoursByDate, Unit } from '@bgap/domain';
 const unitBase: Unit = {
   ...unitFixture.unitBase,
   id: 'unitId',
-  groupId: 'groupId',
-  chainId: 'chainid',
   createdAt: '',
   updatedAt: '',
 };

@@ -1,15 +1,15 @@
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/dependency_indjection/dependency_injection.dart';
+import '/core/units/units.dart';
+import '/models.dart';
+import '/modules/menu/menu.dart';
+import '/modules/screens.dart';
+import '/shared/locale.dart';
+import '/core/theme/theme.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:fa_prev/shared/nav.dart';
+import '/shared/nav.dart';
 
 void showLocationSelectionBottomSheet(BuildContext context) {
   final ThemeChainData theme = getIt<ThemeBloc>().state.theme;
@@ -36,7 +36,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
   return BlocBuilder<UnitSelectBloc, UnitSelectState>(
     builder: (context, state) {
       if (state is UnitSelected) {
-        final GeoUnit unit = state.unit;
+        final Unit unit = state.unit;
         return Wrap(
           alignment: WrapAlignment.start,
           direction: Axis.horizontal,
@@ -125,16 +125,9 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                 left: 14.0,
               ),
               child: Text(
-                GeoUnitUtils.isClosed(unit)
-                    ? GeoUnitUtils.getClosedText(
-                        unit,
-                        transEx(context, "selectUnit.closed"),
-                        transEx(context, "selectUnit.opens"),
-                        transEx(context, "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
-                      )
-                    : transEx(context, "selectUnit.opened") +
-                        ": " +
-                        transEx(context, GeoUnitUtils.getOpenedHour(unit)?.getOpenRangeString() ?? ''),
+                UnitUtils.isClosed(unit)
+                    ? transEx(context, "selectUnit.closed")
+                    : transEx(context, "selectUnit.opened"),
 
                 //'Nyitva: 09:00 - 22:00',
                 style: Fonts.satoshi(

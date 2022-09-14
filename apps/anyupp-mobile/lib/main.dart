@@ -1,6 +1,8 @@
 import 'dart:io';
 
-import 'package:fa_prev/app.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -13,6 +15,6 @@ void main() async {
     await AndroidInAppWebViewController.setWebContentsDebuggingEnabled(true);
   }
   await initDependencyInjection();
-  configureCatcherAndRunZonedApp(MyApp());
+  configureCatcherAndRunZonedApp(ProviderScope(child: MyApp()));
   //runApp(MyApp());
 }

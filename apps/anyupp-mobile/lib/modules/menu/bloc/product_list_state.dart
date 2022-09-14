@@ -16,7 +16,7 @@ class ProductListLoading extends ProductListState {
 }
 
 class ProductListLoaded extends ProductListState {
-  final List<GeneratedProduct> products;
+  final List<Product> products;
   final List<ProductCategory>? productCategories;
   final List<FavoriteProduct>? favorites;
   const ProductListLoaded(

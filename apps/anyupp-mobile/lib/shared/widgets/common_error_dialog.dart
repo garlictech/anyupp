@@ -1,7 +1,7 @@
-import 'package:fa_prev/core/dependency_indjection/dependency_injection.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/dependency_indjection/dependency_injection.dart';
+import '/core/theme/theme.dart';
+import '/shared/nav.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 

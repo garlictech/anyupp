@@ -18,10 +18,7 @@
       />
 
       <button
-        [disabled]="
-          selectedProductLevel !== eProductLevel.CHAIN ||
-          !(loggedUser$ | async)?.settings?.selectedProductCategoryId
-        "
+        [disabled]="!(loggedUser$ | async)?.settings?.selectedProductCategoryId"
         nbButton
         class="float-right"
         type="button"
@@ -40,122 +37,35 @@
     </div>
   </nb-card-header>
   <nb-card-body class="p-2">
-    <nb-tabset (changeTab)="selectLevel($event)" fullWidth #tabset>
-      <nb-tab
-        [tabTitle]="'products.chainProducts' | translate"
-        [tabId]="eProductLevel.CHAIN"
-        [active]="selectedProductLevel === eProductLevel.CHAIN"
-        [badgeText]="
-          dirtyChainProductsCount > 0 &&
-          (loggedUser$ | async)?.settings?.selectedGroupId
-            ? dirtyChainProductsCount.toString()
-            : ''
+    <ng-container *ngIf="(loggedUser$ | async)?.settings?.selectedUnitId">
+      <cdk-virtual-scroll-viewport
+        style="height: calc(100vh - 255px)"
+        itemSize="90"
+        (scrolledIndexChange)="
+          loadNextUnitProductPaginatedData($event, unitProducts.length)
         "
-        badgeStatus="danger"
-        [disabled]="!(loggedUser$ | async)?.settings?.selectedChainId"
+        data-testid="unitProductsVSVP"
+        #unitProductsVSVP
       >
-        <cdk-virtual-scroll-viewport
-          style="height: calc(100vh - 255px)"
-          itemSize="90"
-          (scrolledIndexChange)="
-            loadNextChainProductPaginatedData($event, chainProducts.length)
-          "
-          data-testid="chainProductsVSVP"
-          #chainProductsVSVP
-        >
-          <nb-list>
-            <nb-list-item *cdkVirtualFor="let product of chainProducts">
-              <bgap-product-list-item
-                class="w-100"
-                [product]="product"
-                [productLevel]="eProductLevel.CHAIN"
-                [currency]="groupCurrency"
-              ></bgap-product-list-item>
-            </nb-list-item>
-          </nb-list>
-        </cdk-virtual-scroll-viewport>
-      </nb-tab>
-      <nb-tab
-        [tabTitle]="'products.groupProducts' | translate"
-        [tabId]="eProductLevel.GROUP"
-        [active]="selectedProductLevel === eProductLevel.GROUP"
-        [badgeText]="
-          pendingAndDirtyGroupProductsCount > 0 &&
-          (loggedUser$ | async)?.settings?.selectedGroupId
-            ? pendingAndDirtyGroupProductsCount.toString()
-            : ''
-        "
-        badgeStatus="danger"
-        [disabled]="!(loggedUser$ | async)?.settings?.selectedGroupId"
-      >
-        <ng-container *ngIf="(loggedUser$ | async)?.settings?.selectedGroupId">
-          <cdk-virtual-scroll-viewport
-            style="height: calc(100vh - 255px)"
-            itemSize="90"
-            (scrolledIndexChange)="
-              loadNextGroupProductPaginatedData($event, groupProducts.length)
+        <nb-list>
+          <nb-list-item
+            *cdkVirtualFor="
+              let product of unitProducts;
+              first as isFirst;
+              last as isLast
             "
-            data-testid="groupProductsVSVP"
-            #groupProductsVSVP
           >
-            <nb-list>
-              <nb-list-item *cdkVirtualFor="let product of groupProducts">
-                <bgap-product-list-item
-                  class="w-100"
-                  [product]="product"
-                  [productLevel]="eProductLevel.GROUP"
-                  [currency]="groupCurrency"
-                ></bgap-product-list-item>
-              </nb-list-item>
-            </nb-list>
-          </cdk-virtual-scroll-viewport>
-        </ng-container>
-      </nb-tab>
-      <nb-tab
-        [tabTitle]="'products.unitProducts' | translate"
-        [tabId]="eProductLevel.UNIT"
-        [active]="selectedProductLevel === eProductLevel.UNIT"
-        [badgeText]="
-          pendingAndDirtyUnitProductsCount > 0 &&
-          (loggedUser$ | async)?.settings?.selectedUnitId
-            ? pendingAndDirtyUnitProductsCount.toString()
-            : ''
-        "
-        badgeStatus="danger"
-        [disabled]="!(loggedUser$ | async)?.settings?.selectedUnitId"
-      >
-        <ng-container *ngIf="(loggedUser$ | async)?.settings?.selectedUnitId">
-          <cdk-virtual-scroll-viewport
-            style="height: calc(100vh - 255px)"
-            itemSize="90"
-            (scrolledIndexChange)="
-              loadNextUnitProductPaginatedData($event, unitProducts.length)
-            "
-            data-testid="unitProductsVSVP"
-            #unitProductsVSVP
-          >
-            <nb-list>
-              <nb-list-item
-                *cdkVirtualFor="
-                  let product of unitProducts;
-                  first as isFirst;
-                  last as isLast
-                "
-              >
-                <bgap-product-list-item
-                  class="w-100"
-                  [product]="product"
-                  [productLevel]="eProductLevel.UNIT"
-                  [currency]="groupCurrency"
-                  (positionChange)="unitProductPositionChange($event)"
-                  [isFirst]="isFirst"
-                  [isLast]="isLast"
-                ></bgap-product-list-item>
-              </nb-list-item>
-            </nb-list>
-          </cdk-virtual-scroll-viewport>
-        </ng-container>
-      </nb-tab>
-    </nb-tabset>
+            <bgap-product-list-item
+              class="w-100"
+              [product]="product"
+              [currency]="groupCurrency"
+              (positionChange)="unitProductPositionChange($event)"
+              [isFirst]="isFirst"
+              [isLast]="isLast"
+            ></bgap-product-list-item>
+          </nb-list-item>
+        </nb-list>
+      </cdk-virtual-scroll-viewport>
+    </ng-container>
   </nb-card-body>
 </nb-card>

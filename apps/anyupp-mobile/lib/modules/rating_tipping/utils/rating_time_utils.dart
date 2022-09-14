@@ -1,7 +1,7 @@
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/models.dart';
+import '/app-config.dart';
+import '/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
+import '/graphql/generated/crud-api.graphql.dart';
 
 Duration calculateNotificationScheduleDelay(Order order, DateTime now) {
   return order.updatedAt.add(AppConfig.ratingNotificationTimer).difference(now);
@@ -19,10 +19,9 @@ bool isNeedScheduleNotification(
     return false;
   }
 
-  OrderStatus status = order.status;
   bool isInScheduleTime =
       now.difference(order.updatedAt) < AppConfig.ratingNotificationTimer;
-  if (status == OrderStatus.served && isInScheduleTime) {
+  if (order.status == OrderStatus.served && isInScheduleTime) {
     bool alreadyScheduled =
         prefs.getBool('rating_schedule_${order.id}') ?? false;
     return !alreadyScheduled;

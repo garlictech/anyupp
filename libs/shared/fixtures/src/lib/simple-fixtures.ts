@@ -173,8 +173,6 @@ const order: Order = {
 
 const createUnitInput: CreateUnitInput = {
   id: 'UNITID',
-  chainId: 'UNIT CHAINID',
-  groupId: 'UNIT GROUPID',
   isActive: true,
   isAcceptingOrders: true,
   name: 'UNIT NAME',
@@ -185,10 +183,6 @@ const createUnitInput: CreateUnitInput = {
     country: 'UNIT COUNTRY',
     title: 'UNTI TITLE',
     postalCode: 'UNIT POSTAL CODE',
-    location: {
-      lat: 47,
-      lng: 19,
-    },
   },
   location: {
     lat: 47,
@@ -218,13 +212,15 @@ const createUnitInput: CreateUnitInput = {
   },
   supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
   supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
+  currency: 'EUR',
+  style: {
+    colors: {},
+  },
 };
 const unit: Unit = {
   id: 'UNITID',
   createdAt: 'ORDER CREATEDAT',
   updatedAt: 'ORDER UPDATEDAT',
-  chainId: 'UNIT CHAINID',
-  groupId: 'UNIT GROUPID',
   isActive: true,
   isAcceptingOrders: true,
   name: 'UNIT NAME',
@@ -268,6 +264,25 @@ const unit: Unit = {
   },
   supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
   supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
+  style: {
+    colors: {
+      backgroundDark: '#d6dde0',
+      backgroundLight: '#ffffff',
+      borderDark: '#c3cacd',
+      borderLight: '#e7e5d0',
+      disabled: '#303030',
+      indicator: '#30bf60',
+      textDark: '#303030',
+      textLight: '#ffffff',
+      primary: '#30bf60', // indicator
+      secondary: '#303030', // textDark
+      button: '#30bf60',
+      buttonText: '#fffffb',
+      icon: '#30bf60',
+      highlight: '#30bf60',
+    },
+  },
+  currency: 'EUR',
 };
 
 const rkeeperUnit: Unit = {

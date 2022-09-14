@@ -8,6 +8,9 @@ interface SSMParameterReaderProps {
   account: string;
 }
 
+/**
+ * This custom resource is to fetch a secret parameter value.
+ */
 export class SSMParameterReader extends AwsCustomResource {
   constructor(scope: Construct, name: string, props: SSMParameterReaderProps) {
     const { parameterName, region, account } = props;

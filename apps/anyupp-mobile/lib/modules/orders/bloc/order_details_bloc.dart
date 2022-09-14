@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/logger.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
+import '/core/logger.dart';
+import '/models.dart';
+import '/modules/orders/orders.dart';
 
 part 'order_details_event.dart';
 part 'order_details_state.dart';

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fa_prev/models/core/parsers.dart';
+import '/models/core/parsers.dart';
 import 'package:flutter/foundation.dart';
 
 enum NotificationPayloadType {

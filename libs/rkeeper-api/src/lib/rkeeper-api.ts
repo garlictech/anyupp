@@ -1,8 +1,9 @@
 import { AWSError, ECS } from 'aws-sdk';
 import { pipe } from 'fp-ts/lib/function';
-import { bindNodeCallback, defer } from 'rxjs';
+import { bindNodeCallback, defer, of, throwError } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { S3 } from 'aws-sdk';
+import { CrudSdk } from '@bgap/crud-gql/api';
 
 export interface HandleProductsDeps {
   ecs: ECS;
@@ -11,22 +12,34 @@ export interface HandleProductsDeps {
   taskDefinitionArn: string;
   bucketName: string;
   uuidGenerator: () => string;
+  sdk: CrudSdk;
 }
 
 export const handleProducts =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  (deps: HandleProductsDeps) => (unitId: string, rawData: any) => {
+  (deps: HandleProductsDeps) => (externalUnitId: string, rawData: any) => {
+    console.log(`Looking up unit ${externalUnitId}`);
     const objectKey = deps.uuidGenerator();
     const s3 = new S3();
+    console.log(`Looking up unit `);
 
     return pipe(
-      JSON.stringify(rawData),
-      Body => ({
+      deps.sdk.SearchUnits({
+        filter: { externalId: { eq: externalUnitId } },
+      }),
+      switchMap(res =>
+        res?.items?.[0]?.externalId === externalUnitId
+          ? of(true)
+          : throwError(
+              `Unit with external ID ${externalUnitId} cannot be found`,
+            ),
+      ),
+      map(() => ({
         Bucket: deps.bucketName,
         Key: objectKey,
-        Body,
-      }),
-      params => defer(() => s3.upload(params).promise()),
+        Body: JSON.stringify(rawData),
+      })),
+      switchMap(params => defer(() => s3.upload(params).promise())),
       map(() => ({
         launchType: 'FARGATE',
         networkConfiguration: {
@@ -44,7 +57,7 @@ export const handleProducts =
               environment: [
                 {
                   name: 'unitId',
-                  value: unitId,
+                  value: externalUnitId,
                 },
                 {
                   name: 'objectKey',

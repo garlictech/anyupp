@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
+import '/core/core.dart';
+import '/modules/cart/cart.dart';
+import '/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 
 class AddNewPaymentMethodTextLinkWidget extends StatelessWidget {

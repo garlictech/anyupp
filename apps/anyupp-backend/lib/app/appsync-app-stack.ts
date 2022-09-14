@@ -6,11 +6,11 @@ import {
   aws_lambda,
 } from 'aws-cdk-lib';
 import { tableConfig } from '@bgap/crud-gql/backend';
-import * as sst from '@serverless-stack/resources';
+import { App, Stack, StackProps } from '@serverless-stack/resources';
 import { commonLambdaProps } from './lambda-common';
 import path from 'path';
 
-export interface AppsyncAppStackProps extends sst.StackProps {
+export interface AppsyncAppStackProps extends StackProps {
   adminUserPool: cognito.UserPool;
   consumerUserPool: cognito.UserPool;
   stripeSecretKey: string;
@@ -21,10 +21,10 @@ export interface AppsyncAppStackProps extends sst.StackProps {
   apiSecretAccessKey: string;
 }
 
-export class AppsyncAppStack extends sst.Stack {
+export class AppsyncAppStack extends Stack {
   readonly appSyncLogPublisherRole: iam.Role;
 
-  constructor(scope: sst.App, id: string, props: AppsyncAppStackProps) {
+  constructor(scope: App, id: string, props: AppsyncAppStackProps) {
     super(scope, id);
 
     const apiLambda = new aws_lambda.Function(this, 'AppsyncLambda', {
@@ -76,14 +76,11 @@ export class AppsyncAppStack extends sst.Stack {
             'dynamodb:UpdateItem',
           ],
           resources: [
-            tableConfig.GeneratedProduct.TableArn,
-            tableConfig.GeneratedProductCategory.TableArn,
             tableConfig.Unit.TableArn,
             tableConfig.AdminUser.TableArn,
             tableConfig.UnitProduct.TableArn,
-            tableConfig.GroupProduct.TableArn,
-            tableConfig.ChainProduct.TableArn,
             tableConfig.Order.TableArn,
+            tableConfig.Variant.TableArn,
           ],
         }),
       );

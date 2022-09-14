@@ -2,12 +2,12 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:artemis/artemis.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
+import '/modules/orders/orders.dart';
+import '/modules/rating_tipping/rating_tipping.dart';
 
 // const REPEAT_TIMEOUT_MS = 120000;
 
@@ -149,6 +149,7 @@ class AwsOrderSubscription {
       log.d('_getOrderList().result.data=${result.data}');
       log.d('_getOrderList().result.errors=${result.errors}');
       if (result.hasErrors) {
+        log.d('_getOrderList().result.errors=${result.errors}');
         throw GraphQLException.fromGraphQLError(
             GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
       }
@@ -174,8 +175,11 @@ class AwsOrderSubscription {
 
       List<Order> results = [];
       for (int i = 0; i < items.length; i++) {
-        results.add(Order.fromJson(items[i]!.toJson()));
+        Order order = Order.fromJson(items[i]!.toJson());
+        log.d('_getOrderList.order[${order.id}].createdAt=${order.createdAt}');
+        results.add(order);
       }
+      results.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
       log.d('***** _getOrderList().results.length=${results.length}');
       return results;

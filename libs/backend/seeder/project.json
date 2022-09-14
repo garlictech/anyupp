@@ -1,5 +1,4 @@
 {
-  "root": "libs/backend/seeder",
   "sourceRoot": "libs/backend/seeder/src",
   "projectType": "library",
   "targets": {

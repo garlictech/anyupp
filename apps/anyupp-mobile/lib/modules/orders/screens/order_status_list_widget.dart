@@ -1,12 +1,17 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/main/main.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/main/main.dart';
+import '/modules/orders/orders.dart';
+import '/modules/orders/utils/order_afterpay_utils.dart';
+import '/modules/screens.dart';
+import '/shared/locale.dart';
+import '/shared/utils/format_utils.dart';
+import '/shared/utils/navigator.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import '/graphql/generated/crud-api.graphql.dart';
 
 import '../../../graphql/generated/crud-api.graphql.dart';
 
@@ -20,6 +25,11 @@ class OrderStatusListWidget extends StatefulWidget {
 class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
   OrderNotificationService _orderNotificationService =
       getIt<OrderNotificationService>();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +46,20 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
               (state.orders != null && state.orders!.isEmpty)) {
             return NoOrderWidget(orderPolicy: OrderPolicy.full);
           }
+
           _orderNotificationService.checkIfShowOrderStatusNotification(
               context, state.orders!);
+
+          // TODO AFTERPAY
+          // if (widget.unit.orderPaymentPolicy == OrderPaymentPolicy.afterpay) {
+          //   return Padding(
+          //     padding: const EdgeInsets.all(16.0),
+          //     child: OrderAfterPayWidget(
+          //       unit: widget.unit,
+          //       orders: state.orders!,
+          //     ),
+          //   );
+          // }
           return OrderListWidget(
             list: state.orders!,
           );
@@ -53,6 +75,224 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
           child: CenterLoadingWidget(),
         );
       },
+    );
+  }
+}
+
+class OrderAfterPayWidget extends StatelessWidget {
+  final Unit unit;
+  final List<Order> orders;
+  late final Order aggregatedOrder;
+
+  OrderAfterPayWidget({Key? key, required this.unit, required this.orders})
+      : super(key: key) {
+    aggregatedOrder = aggregateOrders(orders)!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.secondary0.withOpacity(0.8),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8.0),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: theme.secondary16,
+            offset: Offset(0.0, 1.0), //(x,y)
+            blurRadius: 4.0,
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          // HEADER
+          Container(
+            decoration: BoxDecoration(
+              color: theme.secondary0,
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(8.0),
+                topLeft: Radius.circular(8.0),
+              ),
+            ),
+            child: InkWell(
+              onTap: () => Nav.to(
+                OrderDetailsScreen(
+                  order: aggregatedOrder,
+                ),
+              ),
+              child: OrderAfterPayHeaderWidget(
+                order: aggregatedOrder,
+                unit: unit,
+              ),
+            ),
+          ),
+          Divider(
+            color: theme.secondary64.withOpacity(0.3),
+            height: 1.0,
+          ),
+          ListView.separated(
+            shrinkWrap: true,
+            itemCount: orders.length,
+            physics: NeverScrollableScrollPhysics(),
+            itemBuilder: (context, index) {
+              return InkWell(
+                onTap: () => Nav.to(
+                  OrderDetailsScreen(
+                    order: orders[index],
+                  ),
+                ),
+                child: OrderAfterPayItemWidget(
+                  unit: unit,
+                  order: orders[index],
+                ),
+              );
+            },
+            separatorBuilder: (context, index) => Divider(
+              color: theme.secondary64.withOpacity(0.3),
+              height: 1.0,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class OrderAfterPayItemWidget extends StatelessWidget {
+  final Unit unit;
+  final Order order;
+
+  const OrderAfterPayItemWidget(
+      {Key? key, required this.unit, required this.order})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var status = order.status;
+
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 32.0,
+              right: 12.0,
+              top: 16.0,
+              bottom: 16.0,
+            ),
+            child: Icon(
+              STATUS_ICON_MAP[status],
+              size: 24.0,
+              color: theme.icon,
+            ),
+          ),
+          Baseline(
+            baseline: 16.0,
+            baselineType: TextBaseline.alphabetic,
+            child: Text(
+              formatOrderTime(order.createdAt),
+              style: Fonts.satoshi(
+                fontSize: 15.0,
+                color: theme.secondary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Baseline(
+              baseline: 21.0,
+              baselineType: TextBaseline.alphabetic,
+              child: Text(
+                formatCurrency(order.totalPrice, order.sumPriceShown.currency),
+                style: Fonts.satoshi(
+                  fontSize: 13.0,
+                  color: theme.secondary,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class OrderAfterPayHeaderWidget extends StatelessWidget {
+  const OrderAfterPayHeaderWidget({
+    Key? key,
+    required this.order,
+    required this.unit,
+  }) : super(key: key);
+
+  final Order order;
+  final Unit unit;
+
+  @override
+  Widget build(BuildContext context) {
+    var status = order.status;
+
+    return Container(
+      child: Row(
+        children: [
+          Container(
+            margin: EdgeInsets.only(
+              left: 16.0,
+              top: 26.0,
+              bottom: 18.0,
+              right: 16.0,
+            ),
+            child: Icon(
+              STATUS_ICON_MAP[status],
+              // size: 24.0,
+              color: theme.icon,
+            ),
+          ),
+          // Date and status text
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                formatOrderDate(context, order.createdAt),
+                style: Fonts.satoshi(
+                  fontSize: 16.0,
+                  color: theme.secondary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              Text(
+                trans(context,
+                    'orders.infos.status.${enumToString(status)!}.title'),
+                style: Fonts.satoshi(
+                  fontSize: 15.0,
+                  color: theme.secondary,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              formatCurrency(order.totalPrice, order.sumPriceShown.currency),
+              style: Fonts.satoshi(
+                fontSize: 16.0,
+                color: theme.secondary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -120,6 +360,7 @@ class OrderListWidget extends StatelessWidget {
 
 class NoOrderWidget extends StatelessWidget {
   final OrderPolicy orderPolicy;
+  final ThemeChainData theme = defaultTheme();
   NoOrderWidget({required this.orderPolicy});
 
   @override

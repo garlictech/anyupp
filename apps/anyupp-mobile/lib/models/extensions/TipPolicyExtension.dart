@@ -1,4 +1,4 @@
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 extension TipPolicyExtension on TipPolicy {
   bool get isEmpty => title == null || title!.isEmpty || percents.isEmpty;

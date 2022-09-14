@@ -1,197 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProductFormService createChainProduct$ should create chain product 1`] = `
-Object {
-  "data": Object {
-    "allergens": Array [
-      "egg",
-      "gluten",
-    ],
-    "chainId": "chainId_",
-    "configSets": null,
-    "createdAt": Any<String>,
-    "deletedAt": null,
-    "description": Object {
-      "de": null,
-      "en": "DESCRIPTION",
-      "hu": null,
-    },
-    "dirty": null,
-    "externalId": null,
-    "id": "test_ADMIN_PRODUCT_IT_CHAIN_PRODUCT_ID_01",
-    "image": "IMAGE",
-    "isVisible": true,
-    "name": Object {
-      "de": null,
-      "en": "CHAIN_PRODUCT",
-      "hu": null,
-    },
-    "productCategoryId": "productCategoryId_",
-    "productType": "drink",
-    "updatedAt": Any<String>,
-    "variants": Array [
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 0.5,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_ChainProductVariant_id_1",
-        "isAvailable": true,
-        "netPackagingFee": 200,
-        "pack": Object {
-          "size": 1,
-          "unit": "CHAIN_UNIT",
-        },
-        "position": 1,
-        "price": 10,
-        "refGroupPrice": 10,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_1",
-          "hu": null,
-        },
-      },
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 1,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_ChainProductVariant_id_2",
-        "isAvailable": true,
-        "netPackagingFee": 200,
-        "pack": Object {
-          "size": 2,
-          "unit": "CHAIN_UNIT",
-        },
-        "position": 2,
-        "price": 20,
-        "refGroupPrice": 20,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_2",
-          "hu": null,
-        },
-      },
-    ],
-  },
-  "type": "insert",
-}
-`;
-
-exports[`ProductFormService createGroupProduct$ should create group product 1`] = `
-Object {
-  "data": Object {
-    "chainId": "chainId_",
-    "chainProduct": null,
-    "configSets": null,
-    "createdAt": Any<String>,
-    "deletedAt": null,
-    "dirty": null,
-    "externalId": null,
-    "groupId": "groupId_",
-    "id": "test_ADMIN_PRODUCT_IT_GROUP_PRODUCT_ID_01",
-    "isVisible": true,
-    "parentId": "parentId_",
-    "takeawayTax": 12,
-    "tax": 27,
-    "updatedAt": Any<String>,
-    "variants": Array [
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 1,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_GroupProductVariant_id_1",
-        "isAvailable": true,
-        "netPackagingFee": 300,
-        "pack": Object {
-          "size": 1,
-          "unit": "GROUP_UNIT",
-        },
-        "position": 1,
-        "price": 20,
-        "refGroupPrice": 20,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_1",
-          "hu": null,
-        },
-      },
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 2,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_GroupProductVariant_id_2",
-        "isAvailable": true,
-        "netPackagingFee": 300,
-        "pack": Object {
-          "size": 2,
-          "unit": "GROUP_UNIT",
-        },
-        "position": 2,
-        "price": 40,
-        "refGroupPrice": 40,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_2",
-          "hu": null,
-        },
-      },
-    ],
-  },
-  "type": "insert",
-}
-`;
-
-exports[`ProductFormService createProductExtendFormGroup should create form group 1`] = `
-Object {
-  "configSets": Array [],
-  "isVisible": "",
-  "takeawayTax": "",
-  "tax": "",
-  "variants": Array [],
-}
-`;
-
-exports[`ProductFormService createProductExtendFormGroup should create form group 2`] = `
-Object {
-  "configSets": Array [],
-  "isVisible": "",
-  "laneId": "",
-  "supportedServingModes": Array [],
-  "variants": Array [],
-}
-`;
-
 exports[`ProductFormService createProductFormGroup should create form group 1`] = `
 Object {
   "allergens": Array [],
@@ -203,6 +11,7 @@ Object {
   },
   "image": "",
   "isVisible": "",
+  "laneId": "",
   "name": Object {
     "de": "",
     "en": "",
@@ -210,6 +19,9 @@ Object {
   },
   "productCategoryId": "",
   "productType": "",
+  "supportedServingModes": Array [],
+  "takeawayTax": null,
+  "tax": null,
   "variants": Array [],
 }
 `;
@@ -217,80 +29,63 @@ Object {
 exports[`ProductFormService createUnitProduct$ should create unit product 1`] = `
 Object {
   "data": Object {
-    "chainId": "chainId_",
-    "configSets": null,
-    "createdAt": Any<String>,
+    "allergens": Array [
+      "egg",
+      "gluten",
+      "mustard",
+      "milk",
+      "soya",
+      "fish",
+      "sesame",
+    ],
+    "configSets": Array [],
+    "createdAt": "MASKED DATE",
     "deletedAt": null,
+    "description": Object {
+      "de": "laktató szendvics",
+      "en": "laktató szendvics",
+      "hu": "laktató szendvics",
+    },
     "dirty": null,
-    "externalId": null,
-    "groupId": "groupId_",
-    "groupProduct": null,
     "id": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
+    "image": "https://archive.canadianbusiness.com/wp-content/uploads/2013/04/oldhamburger.jpg",
     "isVisible": true,
-    "laneId": "laneId_",
-    "parentId": "parentId_",
-    "position": 1,
+    "laneId": "lane_01",
+    "name": Object {
+      "de": "Hamburger",
+      "en": "Hamburger",
+      "hu": "Hamburger",
+    },
+    "position": 0,
+    "productCategoryId": "PRODUCT CATEGORY ID",
+    "productType": "food",
     "supportedServingModes": Array [
       "takeAway",
     ],
-    "takeaway": true,
-    "unitId": "unitId_",
-    "updatedAt": Any<String>,
+    "takeaway": false,
+    "takeawayTax": 20,
+    "tax": 27,
+    "unitId": "UNIT_ID",
+    "updatedAt": "MASKED DATE",
     "variants": Array [
       Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 1.5,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_UnitProductVariant_id_1",
+        "availabilities": null,
+        "externalId": null,
+        "id": "MASKED ID",
         "isAvailable": true,
-        "netPackagingFee": 400,
+        "netPackagingFee": null,
+        "ownerProduct": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT_UNIT",
+          "unit": "db",
         },
         "position": 1,
-        "price": 30,
-        "refGroupPrice": 30,
-        "soldOut": true,
+        "price": 150,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
-          "en": "VARIANT_NAME_1",
-          "hu": null,
-        },
-      },
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 3,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_UnitProductVariant_id_2",
-        "isAvailable": true,
-        "netPackagingFee": 400,
-        "pack": Object {
-          "size": 2,
-          "unit": "UNIT_UNIT",
-        },
-        "position": 2,
-        "price": 60,
-        "refGroupPrice": 60,
-        "soldOut": true,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_2",
-          "hu": null,
+          "en": "piece",
+          "hu": "darab",
         },
       },
     ],
@@ -301,359 +96,66 @@ Object {
 
 exports[`ProductFormService patchConfigSet should add configsets to form array 1`] = `Array []`;
 
-exports[`ProductFormService patchExtendedProductVariants should add variants to form array 1`] = `
-Array [
-  Object {
-    "availabilities": Array [
-      Object {
-        "dayFrom": "",
-        "dayTo": "",
-        "price": 1,
-        "timeFrom": "",
-        "timeTo": "",
-        "type": "A",
-      },
-    ],
-    "id": "test_GroupProductVariant_id_1",
-    "isAvailable": true,
-    "netPackagingFee": 300,
-    "pack": Object {
-      "size": 1,
-      "unit": "GROUP_UNIT",
-    },
-    "position": 1,
-    "price": 20,
-    "refGroupPrice": 20,
-    "soldOut": false,
-    "variantName": Object {
-      "de": "",
-      "en": "VARIANT_NAME_1",
-      "hu": "",
-    },
-  },
-  Object {
-    "availabilities": Array [
-      Object {
-        "dayFrom": "",
-        "dayTo": "",
-        "price": 2,
-        "timeFrom": "",
-        "timeTo": "",
-        "type": "A",
-      },
-    ],
-    "id": "test_GroupProductVariant_id_2",
-    "isAvailable": true,
-    "netPackagingFee": 300,
-    "pack": Object {
-      "size": 2,
-      "unit": "GROUP_UNIT",
-    },
-    "position": 2,
-    "price": 40,
-    "refGroupPrice": 40,
-    "soldOut": false,
-    "variantName": Object {
-      "de": "",
-      "en": "VARIANT_NAME_2",
-      "hu": "",
-    },
-  },
-]
-`;
-
-exports[`ProductFormService patchProductVariants should add variants to form array 1`] = `
-Array [
-  Object {
-    "availabilities": Array [],
-    "id": "test_ChainProductVariant_id_1",
-    "isAvailable": true,
-    "netPackagingFee": 200,
-    "pack": Object {
-      "size": 1,
-      "unit": "CHAIN_UNIT",
-    },
-    "position": 1,
-    "price": 10,
-    "refGroupPrice": 10,
-    "soldOut": false,
-    "variantName": Object {
-      "de": "",
-      "en": "VARIANT_NAME_1",
-      "hu": "",
-    },
-  },
-  Object {
-    "availabilities": Array [],
-    "id": "test_ChainProductVariant_id_2",
-    "isAvailable": true,
-    "netPackagingFee": 200,
-    "pack": Object {
-      "size": 2,
-      "unit": "CHAIN_UNIT",
-    },
-    "position": 2,
-    "price": 20,
-    "refGroupPrice": 20,
-    "soldOut": false,
-    "variantName": Object {
-      "de": "",
-      "en": "VARIANT_NAME_2",
-      "hu": "",
-    },
-  },
-]
-`;
-
-exports[`ProductFormService updateChainProduct$ should update chain product 1`] = `
+exports[`ProductFormService updateUnitProduct$ should update unit product 1`] = `
 Object {
   "data": Object {
     "allergens": Array [
       "egg",
       "gluten",
+      "mustard",
+      "milk",
+      "soya",
+      "fish",
+      "sesame",
     ],
-    "chainId": "chainId_",
-    "configSets": null,
-    "createdAt": Any<String>,
+    "configSets": Array [],
+    "createdAt": "MASKED DATE",
     "deletedAt": null,
     "description": Object {
-      "de": null,
-      "en": "DESCRIPTION",
-      "hu": null,
+      "de": "laktató szendvics",
+      "en": "laktató szendvics",
+      "hu": "laktató szendvics",
     },
     "dirty": null,
-    "externalId": null,
-    "id": "test_ADMIN_PRODUCT_IT_CHAIN_PRODUCT_ID_01",
-    "image": "IMAGE_MOD",
-    "isVisible": true,
-    "name": Object {
-      "de": null,
-      "en": "CHAIN_PRODUCT",
-      "hu": null,
-    },
-    "productCategoryId": "productCategoryId_",
-    "productType": "other",
-    "updatedAt": Any<String>,
-    "variants": Array [
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 0.5,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_ChainProductVariant_id_1",
-        "isAvailable": true,
-        "netPackagingFee": 200,
-        "pack": Object {
-          "size": 1,
-          "unit": "CHAIN_UNIT",
-        },
-        "position": 1,
-        "price": 10,
-        "refGroupPrice": 10,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_1",
-          "hu": null,
-        },
-      },
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 1,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_ChainProductVariant_id_2",
-        "isAvailable": true,
-        "netPackagingFee": 200,
-        "pack": Object {
-          "size": 2,
-          "unit": "CHAIN_UNIT",
-        },
-        "position": 2,
-        "price": 20,
-        "refGroupPrice": 20,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_2",
-          "hu": null,
-        },
-      },
-    ],
-  },
-  "type": "update",
-}
-`;
-
-exports[`ProductFormService updateGroupProduct$ should update group product 1`] = `
-Object {
-  "data": Object {
-    "chainId": "chainId_",
-    "chainProduct": null,
-    "configSets": null,
-    "createdAt": Any<String>,
-    "deletedAt": null,
-    "dirty": null,
-    "externalId": null,
-    "groupId": "groupId_",
-    "id": "test_ADMIN_PRODUCT_IT_GROUP_PRODUCT_ID_01",
-    "isVisible": true,
-    "parentId": "parentId_",
-    "takeawayTax": 30,
-    "tax": 33,
-    "updatedAt": Any<String>,
-    "variants": Array [
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 1,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_GroupProductVariant_id_1",
-        "isAvailable": true,
-        "netPackagingFee": 300,
-        "pack": Object {
-          "size": 1,
-          "unit": "GROUP_UNIT",
-        },
-        "position": 1,
-        "price": 20,
-        "refGroupPrice": 20,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_1",
-          "hu": null,
-        },
-      },
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 2,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_GroupProductVariant_id_2",
-        "isAvailable": true,
-        "netPackagingFee": 300,
-        "pack": Object {
-          "size": 2,
-          "unit": "GROUP_UNIT",
-        },
-        "position": 2,
-        "price": 40,
-        "refGroupPrice": 40,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_2",
-          "hu": null,
-        },
-      },
-    ],
-  },
-  "type": "update",
-}
-`;
-
-exports[`ProductFormService updateUnitProduct$ should update unit product 1`] = `
-Object {
-  "data": Object {
-    "chainId": "chainId_",
-    "configSets": null,
-    "createdAt": Any<String>,
-    "deletedAt": null,
-    "dirty": null,
-    "externalId": null,
-    "groupId": "groupId_",
-    "groupProduct": null,
     "id": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
+    "image": "https://archive.canadianbusiness.com/wp-content/uploads/2013/04/oldhamburger.jpg",
     "isVisible": false,
-    "laneId": "laneId_",
-    "parentId": "parentId_",
-    "position": 1,
+    "laneId": "lane_01",
+    "name": Object {
+      "de": "Hamburger",
+      "en": "Hamburger",
+      "hu": "Hamburger",
+    },
+    "position": 0,
+    "productCategoryId": "PRODUCT CATEGORY ID",
+    "productType": "food",
     "supportedServingModes": Array [
       "inPlace",
     ],
-    "takeaway": true,
-    "unitId": "unitId_",
-    "updatedAt": Any<String>,
+    "takeaway": false,
+    "takeawayTax": 20,
+    "tax": 27,
+    "unitId": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
+    "updatedAt": "MASKED DATE",
     "variants": Array [
       Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 1.5,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_UnitProductVariant_id_1",
+        "availabilities": null,
+        "externalId": null,
+        "id": "MASKED ID",
         "isAvailable": true,
-        "netPackagingFee": 400,
+        "netPackagingFee": null,
+        "ownerProduct": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
         "pack": Object {
           "size": 1,
-          "unit": "UNIT_UNIT",
+          "unit": "db",
         },
         "position": 1,
-        "price": 30,
-        "refGroupPrice": 30,
-        "soldOut": true,
+        "price": 150,
+        "soldOut": null,
         "variantName": Object {
           "de": null,
-          "en": "VARIANT_NAME_1",
-          "hu": null,
-        },
-      },
-      Object {
-        "availabilities": Array [
-          Object {
-            "dayFrom": "",
-            "dayTo": "",
-            "price": 3,
-            "timeFrom": "",
-            "timeTo": "",
-            "type": "A",
-          },
-        ],
-        "id": "test_UnitProductVariant_id_2",
-        "isAvailable": true,
-        "netPackagingFee": 400,
-        "pack": Object {
-          "size": 2,
-          "unit": "UNIT_UNIT",
-        },
-        "position": 2,
-        "price": 60,
-        "refGroupPrice": 60,
-        "soldOut": true,
-        "variantName": Object {
-          "de": null,
-          "en": "VARIANT_NAME_2",
-          "hu": null,
+          "en": "piece",
+          "hu": "darab",
         },
       },
     ],

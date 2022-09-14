@@ -1,7 +1,7 @@
 import { switchMap, tap } from 'rxjs/operators';
 
 import { tableConfig } from '@bgap/crud-gql/backend';
-import { testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
+import { testIdPrefix, unitBase } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 
 import { createTestUnit, deleteTestUnit } from '../../seeds/unit';
@@ -13,7 +13,7 @@ const UNIT_TABLE_NAME = tableConfig.Unit.TableName;
 const TEST_NAME = 'DYNAMO_DB_TEST_';
 
 const unit_01: RequiredId<CreateUnitInput> = {
-  ...unitFixture.createUnit_01,
+  ...unitBase,
   id: `${testIdPrefix}unit_${TEST_NAME}_id`,
   lastOrderNum: undefined,
 };

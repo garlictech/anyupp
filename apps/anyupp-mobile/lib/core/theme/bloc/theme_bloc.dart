@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 
 part 'theme_event.dart';
 part 'theme_state.dart';
@@ -21,6 +21,9 @@ class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
       if (unitSelectedState is UnitSelected) {
         add(ThemeSelected(
             theme: unitThemeToThemeChainData(unitSelectedState.unit)));
+      }
+      if (unitSelectedState is NoUnitSelected) {
+        add(ThemeSelected(theme: defaultTheme()));
       }
     });
   }

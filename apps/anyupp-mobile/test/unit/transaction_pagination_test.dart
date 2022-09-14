@@ -1,4 +1,4 @@
-import 'package:fa_prev/modules/transactions/transactions.dart';
+import 'package:anyupp/modules/transactions/transactions.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'mock/mock_transaction_provider.dart';
 

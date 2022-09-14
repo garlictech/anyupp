@@ -1,12 +1,12 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/selectunit/selectunit.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/shared/locale.dart';
+import '/shared/utils/unit_utils.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -22,6 +22,7 @@ class SelectUnitScreen extends StatefulWidget {
 }
 
 class _SelectUnitScreenState extends State<SelectUnitScreen> {
+  final ThemeChainData theme = defaultTheme();
   RefreshController _refreshController = RefreshController(
     initialRefresh: false,
   );
@@ -164,7 +165,7 @@ class _SelectUnitScreenState extends State<SelectUnitScreen> {
     );
   }
 
-  Widget _buildList(List<GeoUnit> units, ServingMode mode) {
+  Widget _buildList(List<Unit> units, ServingMode mode) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -242,7 +243,7 @@ class _StartQRCodeScanButton extends StatelessWidget {
 }
 
 class _UnitListWidget extends StatefulWidget {
-  final List<GeoUnit> units;
+  final List<Unit> units;
   const _UnitListWidget({Key? key, required this.units}) : super(key: key);
 
   @override
@@ -281,6 +282,7 @@ class _UnitListWidgetState extends State<_UnitListWidget> {
                   }
 
                   var unit = widget.units[position];
+
                   return AnimationConfiguration.staggeredList(
                     position: position,
                     duration: const Duration(milliseconds: 200),
@@ -291,11 +293,9 @@ class _UnitListWidgetState extends State<_UnitListWidget> {
                           closeTime: getOpeningText(context, unit),
                           distance:
                               '${(unit.distance / 1000).toStringAsFixed(0)}m',
-                          imageList: unit.hasBanner
-                              ? unit.coverBanners
-                                  ?.map((e) => e.imageUrl)
-                                  .toList()
-                              : null,
+                          imageList: unit.coverBanners
+                              ?.map((e) => e.imageUrl)
+                              .toList(),
                           // isFavorite: false,
                           // unitFoodType: 'Casual',
                           unitName: widget.units[position].name,

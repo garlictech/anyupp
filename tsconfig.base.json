@@ -44,12 +44,11 @@
       "@bgap/apps/admin": ["libs/apps/admin/src/index.ts"],
       "@bgap/apps/backend-anyupp": ["libs/apps/backend-anyupp/src/index.ts"],
       "@bgap/apps/shared": ["libs/apps/shared/src/index.ts"],
-      "@bgap/backend/orders": ["libs/backend/orders/src/index.ts"],
-      "@bgap/backend/product-categories": [
-        "libs/backend/product-categories/src/index.ts"
+      "@bgap/backend/gql-resolvers": [
+        "libs/backend/gql-resolvers/src/index.ts"
       ],
+      "@bgap/backend/orders": ["libs/backend/orders/src/index.ts"],
       "@bgap/backend/products": ["libs/backend/products/src/index.ts"],
-      "@bgap/backend/reports": ["libs/backend/reports/src/index.ts"],
       "@bgap/backend/search": ["libs/backend/search/src/index.ts"],
       "@bgap/backend/seeder": ["libs/backend/seeder/src/index.ts"],
       "@bgap/backend/shared/utils": ["libs/backend/shared/utils/src/index.ts"],

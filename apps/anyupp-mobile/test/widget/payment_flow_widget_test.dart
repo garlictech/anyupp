@@ -1,13 +1,13 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/cart/screens/select_payment_method_screen.dart';
-import 'package:fa_prev/modules/main/main.dart';
-import 'package:fa_prev/modules/payment/payment.dart';
-import 'package:fa_prev/modules/takeaway/bloc/takeaway_bloc.dart';
-import 'package:fa_prev/shared/user-details/user_details.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
+import 'package:anyupp/modules/cart/screens/select_payment_method_screen.dart';
+import 'package:anyupp/modules/main/main.dart';
+import 'package:anyupp/modules/payment/payment.dart';
+import 'package:anyupp/modules/takeaway/bloc/takeaway_bloc.dart';
+import 'package:anyupp/shared/user-details/user_details.dart';
+import 'package:anyupp/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -22,7 +22,7 @@ void main() {
   // 2. placeWithPaymentType
   // 3. full
   late Cart _mockCart;
-  late GeoUnit _mockUnit;
+  late Unit _mockUnit;
 
   setUpAll(() async {
     GoogleFonts.config.allowRuntimeFetching = false;
@@ -120,7 +120,7 @@ void main() {
 
         Widget root = _createBoilerPlateApp(
           child: SelectPaymentMethodScreen(
-            cart: _mockCart,
+            // cart: _mockCart,
             unit: _mockUnit,
           ),
         );
@@ -167,7 +167,7 @@ void main() {
         await tester.pumpWidget(
           _createBoilerPlateApp(
             child: SelectPaymentMethodScreen(
-              cart: _mockCart,
+              // cart: _mockCart,
               unit: _mockUnit,
             ),
           ),
@@ -221,7 +221,7 @@ void main() {
         await tester.pumpWidget(
           _createBoilerPlateApp(
             child: SelectPaymentMethodScreen(
-              cart: _mockCart,
+              // cart: _mockCart,
               unit: _mockUnit,
             ),
           ),
@@ -276,7 +276,7 @@ void main() {
         await tester.pumpWidget(
           _createBoilerPlateApp(
             child: SelectPaymentMethodScreen(
-              cart: _mockCart,
+              // cart: _mockCart,
               unit: _mockUnit,
             ),
           ),

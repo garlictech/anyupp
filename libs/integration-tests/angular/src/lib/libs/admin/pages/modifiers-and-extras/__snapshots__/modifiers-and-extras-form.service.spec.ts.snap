@@ -10,7 +10,6 @@ Object {
       "soya",
       "peanut",
     ],
-    "chainId": "chainId",
     "createdAt": Any<String>,
     "deletedAt": null,
     "description": "DESCRIPTION",
@@ -22,7 +21,7 @@ Object {
       "en": "PRODUCT_COMPONENT",
       "hu": "TERMEK_KOMPONENS",
     },
-    "soldOut": null,
+    "ownerEntity": "ownerEntity",
     "updatedAt": Any<String>,
   },
   "type": "insert",
@@ -32,34 +31,33 @@ Object {
 exports[`ModifiersAndExtrasFormService createProductComponentFormGroup should create form group 1`] = `
 Object {
   "allergens": Array [],
-  "chainId": "",
   "description": "",
   "name": Object {
     "de": "",
     "en": "",
     "hu": "",
   },
-  "soldOut": false,
+  "ownerEntity": "",
 }
 `;
 
 exports[`ModifiersAndExtrasFormService createProductComponentSet$ should create product component set 1`] = `
 Object {
   "data": Object {
-    "chainId": "chainId",
     "createdAt": Any<String>,
     "deletedAt": null,
-    "description": "DESCRIPTION",
+    "description": "Kamu extra bizbaszok",
     "dirty": null,
     "externalId": null,
     "id": "test_ADMIN_PRODUCT_COMPONENT_SET_IT_COMP_SET_01",
     "items": Array [],
     "maxSelection": 0,
     "name": Object {
-      "de": "COMPONENT_SET",
-      "en": "COMPONENT_SET",
-      "hu": "KOMPONENS_SET",
+      "de": "huccen puccen",
+      "en": "Small stuffs",
+      "hu": "Extra bizbaszok",
     },
+    "ownerEntity": "ownerEntity",
     "supportedServingModes": null,
     "type": "extras",
     "updatedAt": Any<String>,
@@ -78,7 +76,6 @@ Object {
       "soya",
       "peanut",
     ],
-    "chainId": "chainId MOD",
     "createdAt": Any<String>,
     "deletedAt": null,
     "description": "DESCRIPTION",
@@ -90,7 +87,7 @@ Object {
       "en": "PRODUCT_COMPONENT",
       "hu": "TERMEK_KOMPONENS",
     },
-    "soldOut": null,
+    "ownerEntity": "ownerEntity MOD",
     "updatedAt": Any<String>,
   },
   "type": "update",
@@ -100,20 +97,20 @@ Object {
 exports[`ModifiersAndExtrasFormService updateProductComponentSet$ should update product component set 1`] = `
 Object {
   "data": Object {
-    "chainId": "chainId MOD",
     "createdAt": Any<String>,
     "deletedAt": null,
-    "description": "DESCRIPTION",
+    "description": "Kamu extra bizbaszok",
     "dirty": null,
     "externalId": null,
     "id": "test_ADMIN_PRODUCT_COMPONENT_SET_IT_COMP_SET_01",
     "items": Array [],
     "maxSelection": 0,
     "name": Object {
-      "de": "COMPONENT_SET",
-      "en": "COMPONENT_SET",
-      "hu": "KOMPONENS_SET",
+      "de": "huccen puccen",
+      "en": "Small stuffs",
+      "hu": "Extra bizbaszok",
     },
+    "ownerEntity": "ownerEntity MOD",
     "supportedServingModes": null,
     "type": "extras",
     "updatedAt": Any<String>,

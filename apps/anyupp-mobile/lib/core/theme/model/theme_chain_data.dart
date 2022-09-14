@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 @immutable
 class ThemeChainData {

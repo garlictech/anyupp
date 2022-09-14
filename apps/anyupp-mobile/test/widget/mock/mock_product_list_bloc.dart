@@ -1,4 +1,4 @@
-import 'package:fa_prev/modules/menu/menu.dart';
+import 'package:anyupp/modules/menu/menu.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 class MockProductListBloc extends Fake implements ProductListBloc {

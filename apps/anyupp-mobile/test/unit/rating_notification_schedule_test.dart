@@ -1,7 +1,7 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/rating_tipping/rating_tipping.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
+import 'package:anyupp/graphql/generated/crud-api.graphql.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../mock/mock_api_values.dart';

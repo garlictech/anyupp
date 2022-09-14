@@ -1,8 +1,8 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.graphql.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
+import '/modules/rating_tipping/rating_tipping.dart';
 
 class AwsRatingProvider implements IRatingProvider {
   @override

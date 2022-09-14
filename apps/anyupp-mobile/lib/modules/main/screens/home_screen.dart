@@ -1,9 +1,9 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/main/main.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/connectivity/connectivity.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
+import '/core/core.dart';
+import '/modules/main/main.dart';
+import '/modules/screens.dart';
+import '/shared/connectivity/connectivity.dart';
+import '/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
-  // final ThemeChainData theme = defaultTheme();
+  final ThemeChainData theme = defaultTheme();
 
   // Caching pages
   List<Widget> _pages = [
@@ -37,6 +37,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     super.initState();
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   log.e('HomeScreen.didChangeDependencies()');
+  //   getIt<ThemeBloc>().add(ResetTheme());
+  // }
 
   @override
   Widget build(BuildContext context) {

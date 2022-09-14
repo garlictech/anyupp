@@ -1,3 +1,5 @@
+import { cloneDeep } from 'lodash/fp';
+import { filterNullish } from '@bgap/shared/utils';
 import { EMPTY, iif } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
@@ -9,20 +11,20 @@ import {
 } from '@angular/forms';
 import { Maybe } from '@bgap/crud-gql/api';
 import {
+  ChainStyleImages,
   CreateUnitInput,
-  Group,
   OrderPaymentPolicy,
   OrderPolicy,
   PosType,
   RatingPolicy,
   SoldOutVisibilityPolicy,
+  Unit,
   UpdateRKeeperDataInput,
   UpdateUnitInput,
 } from '@bgap/domain';
 import {
   defaultOrderMode,
   defaultServingMode,
-  KeyValue,
   UpsertResponse,
 } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -44,7 +46,6 @@ import {
   TIME_FORMAT_PATTERN,
 } from '../../../shared/utils';
 import { catchGqlError } from '../../../store/app-core';
-import { GroupCollectionService } from '../../../store/groups';
 import { UnitCollectionService } from '../../../store/units';
 
 @Injectable({ providedIn: 'root' })
@@ -57,13 +58,10 @@ export class UnitFormService {
     private _nbDialogService: NbDialogService,
     private _translateService: TranslateService,
     private _unitCollectionService: UnitCollectionService,
-    private _groupCollectionService: GroupCollectionService,
   ) {}
 
   public createUnitFormGroup() {
     return this._formBuilder.group({
-      groupId: ['', [Validators.required]],
-      chainId: ['', [Validators.required]],
       isActive: ['', [Validators.required]],
       name: ['', [Validators.required]],
       description: this._formBuilder.group(
@@ -91,6 +89,19 @@ export class UnitFormService {
         type: [PosType.anyupp],
         rkeeper: this._formsService.createRkeeperFormGroup(),
       }),
+      style: this._formBuilder.group({
+        colors: this._formBuilder.group({
+          button: ['#30bf60', [Validators.required]],
+          buttonText: ['#ffffff', [Validators.required]],
+          icon: ['#30bf60', [Validators.required]],
+          highlight: ['#30bf60', [Validators.required]],
+        }),
+        images: this._formBuilder.group({
+          logo: [''],
+          header: [''],
+        }),
+      }),
+      currency: ['', [Validators.required]],
       externalId: [''],
       merchantId: [''],
       packagingTaxPercentage: [''],
@@ -174,15 +185,13 @@ export class UnitFormService {
     });
   }
 
-  public getGroupOptions$() {
-    return this._groupCollectionService.filteredEntities$.pipe(
-      map((groups: Group[]) =>
-        groups.map(
-          (group: Group): KeyValue => ({
-            key: group.id,
-            value: group.name,
-          }),
-        ),
+  public getUnitOptions$() {
+    return this._unitCollectionService.filteredEntities$.pipe(
+      map(units =>
+        units.map(unit => ({
+          key: unit.id,
+          value: unit.name,
+        })),
       ),
     );
   }
@@ -212,10 +221,6 @@ export class UnitFormService {
     if (formValue.address) {
       formValue.address = {
         ...formValue.address,
-        location: {
-          lat: formValue.location?.lat || 0,
-          lng: formValue.location?.lon || 0,
-        },
       };
     }
 
@@ -311,6 +316,33 @@ export class UnitFormService {
     return this._crudSdk.sdk.UpdateUnitRKeeperData({ input }).pipe(
       catchGqlError(this._store),
       map(data => ({ data, type: 'update' })),
+    );
+  }
+
+  public updateImageStyles$(unitId: string, param: string, image?: string) {
+    return this._unitCollectionService.getByKey$(unitId, true, true).pipe(
+      filterNullish(),
+      switchMap(data => {
+        const _data: Unit = cloneDeep(data);
+        const unitStyleImagesRecord: Record<string, keyof ChainStyleImages> = {
+          header: 'header',
+          logo: 'logo',
+        };
+
+        if (!_data.style.images) {
+          _data.style.images = {};
+        }
+
+        if (unitStyleImagesRecord[param]) {
+          _data.style.images[unitStyleImagesRecord[param]] = image;
+        }
+
+        return this._unitCollectionService.update$<UpdateUnitInput>({
+          id: _data.id,
+          style: _data.style,
+        });
+      }),
+      catchGqlError(this._store),
     );
   }
 }

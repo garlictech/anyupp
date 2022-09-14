@@ -1,13 +1,13 @@
-subscription OnOrderHistoryChanged($userId: String) {
-  onOrderChanged(userId: $userId) {
+subscription OnOrderHistoryChanged($userId: String!) {
+  onOrderChanged(userId: $userId, archived: true) {
     id
     orderNum
     currentStatus
     unitId
     userId
+    paymentIntention
     orderMode
     servingMode
-    paymentIntention
     archived
     paymentMode {
       caption
@@ -87,6 +87,7 @@ subscription OnOrderHistoryChanged($userId: String) {
         updatedAt
       }
       userId
+      paymentMethodId
     }
     items {
       productId
@@ -113,6 +114,7 @@ subscription OnOrderHistoryChanged($userId: String) {
           }
           price
           productComponentId
+          netPackagingFee
         }
         name {
           de
@@ -146,6 +148,11 @@ subscription OnOrderHistoryChanged($userId: String) {
       laneId
       created
       productType
+      serviceFee {
+        currency
+        netPrice
+        taxPercentage
+      }
     }
     transactionId
     transactionStatus
@@ -207,7 +214,22 @@ subscription OnOrderHistoryChanged($userId: String) {
         en
         hu
       }
+      description {
+        de
+        en
+        hu
+      }
     }
     soldOutVisibilityPolicy
+    guestLabel
+    packagingFeeTaxPercentage
+    statusLog {
+      status
+      ts
+      userId
+    }
+    unpayCategory
+    version
+    visitId
   }
 }

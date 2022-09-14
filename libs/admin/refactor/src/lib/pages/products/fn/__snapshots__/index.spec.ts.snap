@@ -10,21 +10,18 @@ Object {
           "position": 1,
           "price": 500,
           "productComponentId": "seeded_product_component_31_id",
-          "refGroupPrice": 500,
         },
         Object {
           "netPackagingFee": null,
           "position": 2,
           "price": 500,
           "productComponentId": "seeded_product_component_32_id",
-          "refGroupPrice": 500,
         },
         Object {
           "netPackagingFee": null,
           "position": 3,
           "price": 500,
           "productComponentId": "seeded_product_component_33_id",
-          "refGroupPrice": 500,
         },
       ],
       "position": 1,
@@ -34,8 +31,16 @@ Object {
   "id": "seeded_unit_product_c1_g1_u1_9_id",
   "isVisible": true,
   "laneId": "lane_01",
+  "name": Object {
+    "en": "PRODUCT NAME",
+  },
+  "position": 0,
+  "productCategoryId": "PRODUCT CATEGORY ID",
+  "productType": "food",
   "supportedServingModes": Array [],
   "takeaway": true,
+  "tax": 3,
+  "unitId": "UNIT ID",
   "variants": Array [
     Object {
       "availabilities": Array [
@@ -57,7 +62,6 @@ Object {
       },
       "position": 0,
       "price": 0,
-      "refGroupPrice": 1200,
       "variantName": Object {
         "de": "normal",
         "en": "normal",
@@ -84,7 +88,6 @@ Object {
       },
       "position": 0,
       "price": 0,
-      "refGroupPrice": 1500,
       "variantName": Object {
         "de": "double",
         "en": "double",

@@ -1,13 +1,13 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/shared/widgets/platform_alert_dialog.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/widgets.dart';
+import '/shared/widgets/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 Future<int?> showSelectServingModeSheet(BuildContext context,
     {int initialPosition = 0,

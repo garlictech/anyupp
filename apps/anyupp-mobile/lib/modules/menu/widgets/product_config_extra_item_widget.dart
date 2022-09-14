@@ -1,14 +1,14 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/menu/menu.dart';
+import '/shared/locale.dart';
+import '/shared/utils/format_utils.dart';
+import '/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 
 class ProductConfigExtrasItemWidget extends StatefulWidget {
-  final GeneratedProductConfigSet extraSet;
-  final GeoUnit unit;
+  final ProductConfigSet extraSet;
+  final Unit unit;
   final OnExtraSetItemSelected onExtraSelected;
 
   const ProductConfigExtrasItemWidget(
@@ -92,8 +92,8 @@ class _ProductConfigExtrasItemWidgetState
 
   List<Widget> _buildSingleExtraList(
       BuildContext context,
-      List<GeneratedProductConfigComponent> components,
-      GeneratedProductConfigSet productSet) {
+      List<ProductConfigComponent> components,
+      ProductConfigSet productSet) {
     List<Widget> widgets = [];
     components.forEach((extra) {
       bool isSelected = _selectedExtras['${extra.productComponentId}'] != null;
@@ -201,7 +201,7 @@ class _ProductConfigExtrasItemWidgetState
   }
 
   Future<void> _updateSelectedCount(
-      GeneratedProductConfigSet productSet) async {
+      ProductConfigSet productSet) async {
     int selectedCount = 0;
     _selectedExtras.forEach(
         (key, value) => value != null ? ++selectedCount : selectedCount);

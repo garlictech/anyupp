@@ -23,5 +23,5 @@ export const getPlayNewOrderNotification = createSelector(
 export const getChainRestrictionsByUserId = (id: string) =>
   createSelector(
     getAppCoreState,
-    (state: AppCoreState) => state.chainRestrictions[id] || [],
+    (state: AppCoreState) => state.unitRestrictions[id] || [],
   );

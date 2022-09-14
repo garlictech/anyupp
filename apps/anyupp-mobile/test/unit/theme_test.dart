@@ -1,5 +1,5 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models.dart';
+import 'package:anyupp/core/theme/theme.dart';
+import 'package:anyupp/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tinycolor2/tinycolor2.dart';
@@ -7,12 +7,12 @@ import '../mock/mock_data_faker.dart';
 
 void main() {
   String getHtmlHexColorStringFromColor(Color color) {
-    return '#' + TinyColor(color).toHex8().substring(2);
+    return '#' + TinyColor.fromColor(color).toHex8().substring(2);
   }
 
   group('Testing themes with the new theme system...', () {
     late ThemeChainData _theme;
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() async {
       _theme = ThemeChainData(
@@ -41,7 +41,7 @@ void main() {
       expect(_theme, isNotNull);
       expect(_unit, isNotNull);
 
-      GeoUnit testUnit = _unit.copyWith(
+      Unit testUnit = _unit.copyWith(
         style: _unit.style.copyWith(
           colors: _unit.style.colors.copyWith(
             primary: getHtmlHexColorStringFromColor(_theme.highlight),
@@ -63,7 +63,7 @@ void main() {
       expect(_theme, isNotNull);
       expect(_unit, isNotNull);
 
-      GeoUnit testUnit = _unit.copyWith(
+      Unit testUnit = _unit.copyWith(
         style: _unit.style.copyWith(
           colors: ChainStyleColors(
             indicator: getHtmlHexColorStringFromColor(_theme.highlight),
@@ -84,7 +84,7 @@ void main() {
       expect(_theme, isNotNull);
       expect(_unit, isNotNull);
 
-      GeoUnit testUnit = _unit.copyWith(
+      Unit testUnit = _unit.copyWith(
         style: _unit.style.copyWith(
           colors: ChainStyleColors(),
         ),

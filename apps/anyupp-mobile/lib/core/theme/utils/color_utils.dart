@@ -1,6 +1,6 @@
 import 'package:catcher/catcher.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
+import '/core/core.dart';
+import '/models.dart';
 import 'package:flutter/material.dart';
 import 'package:tinycolor2/tinycolor2.dart';
 
@@ -71,14 +71,14 @@ ThemeChainData generateTheme(Color primary, Color secondary) {
     secondary16: secondary16,
     secondary40: secondary40,
     button: primary,
-    buttonText: secondary,
+    buttonText: secondary0,
     icon: primary,
     highlight: primary,
     light: secondary0.isLight,
   );
 }
 
-ThemeChainData unitThemeToThemeChainData(GeoUnit unit) {
+ThemeChainData unitThemeToThemeChainData(Unit unit) {
   log.d('***** unitThemeToThemeChainData().unit=${unit.style.colors}');
   try {
     String primaryString =

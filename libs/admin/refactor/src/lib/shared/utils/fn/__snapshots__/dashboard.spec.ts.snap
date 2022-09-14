@@ -8,207 +8,9 @@ Object {
 }
 `;
 
-exports[`Dashboard pure function tests calculateProductMix should calculate 1 item 1`] = `
-Array [
-  Object {
-    "components": Array [
-      Object {
-        "componentId": "test_product_component_id",
-        "name": Object {
-          "de": "Room temperature",
-          "en": "Room temperature",
-          "hu": "Szobahőmérsékletű",
-        },
-        "quantity": 5,
-      },
-    ],
-    "name": Object {
-      "de": "Hamburger",
-      "en": "Hamburger",
-      "hu": "Hamburger",
-    },
-    "productId": "seeded_chain_product_c1_1_id",
-    "productType": "drink",
-    "quantity": 5,
-    "variants": Array [
-      Object {
-        "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
-        },
-        "quantity": 5,
-        "variantId": "seeded_chain_product_variant_c1_p1_1_id",
-      },
-    ],
-  },
-  Object {
-    "components": Array [
-      Object {
-        "componentId": "test_product_component_id",
-        "name": Object {
-          "de": "Room temperature",
-          "en": "Room temperature",
-          "hu": "Szobahőmérsékletű",
-        },
-        "quantity": 5,
-      },
-    ],
-    "name": Object {
-      "de": "Fishburger",
-      "en": "Fishburger",
-      "hu": "Halburger",
-    },
-    "productId": "seeded_chain_product_c1_2_id",
-    "productType": "drink",
-    "quantity": 5,
-    "variants": Array [
-      Object {
-        "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
-        },
-        "quantity": 5,
-        "variantId": "16853de0-528d-11ec-90c0-fdfe82b3802d",
-      },
-    ],
-  },
-  Object {
-    "components": Array [
-      Object {
-        "componentId": "test_product_component_id",
-        "name": Object {
-          "de": "Room temperature",
-          "en": "Room temperature",
-          "hu": "Szobahőmérsékletű",
-        },
-        "quantity": 5,
-      },
-    ],
-    "name": Object {
-      "de": "Sajtburger",
-      "en": "Sajtburger",
-      "hu": "Sajtburger",
-    },
-    "productId": "seeded_chain_product_c1_3_id",
-    "productType": "drink",
-    "quantity": 5,
-    "variants": Array [
-      Object {
-        "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
-        },
-        "quantity": 5,
-        "variantId": "d22dee40-528b-11ec-afe3-15e1afd659e2",
-      },
-    ],
-  },
-]
-`;
+exports[`Dashboard pure function tests calculateProductMix should calculate 1 item 1`] = `Array []`;
 
-exports[`Dashboard pure function tests calculateProductMix should calculate lots of order items 1`] = `
-Array [
-  Object {
-    "components": Array [
-      Object {
-        "componentId": "test_product_component_id",
-        "name": Object {
-          "de": "Room temperature",
-          "en": "Room temperature",
-          "hu": "Szobahőmérsékletű",
-        },
-        "quantity": 115,
-      },
-    ],
-    "name": Object {
-      "de": "Hamburger",
-      "en": "Hamburger",
-      "hu": "Hamburger",
-    },
-    "productId": "seeded_chain_product_c1_1_id",
-    "productType": "drink",
-    "quantity": 115,
-    "variants": Array [
-      Object {
-        "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
-        },
-        "quantity": 115,
-        "variantId": "seeded_chain_product_variant_c1_p1_1_id",
-      },
-    ],
-  },
-  Object {
-    "components": Array [
-      Object {
-        "componentId": "test_product_component_id",
-        "name": Object {
-          "de": "Room temperature",
-          "en": "Room temperature",
-          "hu": "Szobahőmérsékletű",
-        },
-        "quantity": 115,
-      },
-    ],
-    "name": Object {
-      "de": "Fishburger",
-      "en": "Fishburger",
-      "hu": "Halburger",
-    },
-    "productId": "seeded_chain_product_c1_2_id",
-    "productType": "drink",
-    "quantity": 115,
-    "variants": Array [
-      Object {
-        "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
-        },
-        "quantity": 115,
-        "variantId": "16853de0-528d-11ec-90c0-fdfe82b3802d",
-      },
-    ],
-  },
-  Object {
-    "components": Array [
-      Object {
-        "componentId": "test_product_component_id",
-        "name": Object {
-          "de": "Room temperature",
-          "en": "Room temperature",
-          "hu": "Szobahőmérsékletű",
-        },
-        "quantity": 115,
-      },
-    ],
-    "name": Object {
-      "de": "Sajtburger",
-      "en": "Sajtburger",
-      "hu": "Sajtburger",
-    },
-    "productId": "seeded_chain_product_c1_3_id",
-    "productType": "drink",
-    "quantity": 115,
-    "variants": Array [
-      Object {
-        "name": Object {
-          "de": "normal",
-          "en": "normal",
-          "hu": "normál",
-        },
-        "quantity": 115,
-        "variantId": "d22dee40-528b-11ec-afe3-15e1afd659e2",
-      },
-    ],
-  },
-]
-`;
+exports[`Dashboard pure function tests calculateProductMix should calculate lots of order items 1`] = `Array []`;
 
 exports[`Dashboard pure function tests calculateUnpayCategoryStat should calculate 1 item 1`] = `
 Object {
@@ -250,7 +52,7 @@ Object {
 
 exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate 1 item 1`] = `
 Object {
-  "drink": 4473,
+  "drink": 0,
   "food": 0,
   "other": 0,
   "tip": 0,
@@ -259,7 +61,7 @@ Object {
 
 exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate failed history items 1`] = `
 Object {
-  "drink": 89460,
+  "drink": 0,
   "food": 0,
   "other": 0,
   "tip": 0,
@@ -268,7 +70,7 @@ Object {
 
 exports[`Dashboard pure function tests dailySalesPerTypeOrderAmounts should calculate success history items 1`] = `
 Object {
-  "drink": 13419,
+  "drink": 0,
   "food": 0,
   "other": 0,
   "tip": 0,
@@ -287,7 +89,7 @@ Object {
     0,
     0,
     0,
-    4500,
+    0,
     0,
     0,
     0,
@@ -391,7 +193,7 @@ Object {
     0,
     0,
     0,
-    4500,
+    0,
     0,
     0,
     0,
@@ -448,7 +250,7 @@ Object {
     0,
     0,
     0,
-    90000,
+    0,
     0,
     0,
     0,
@@ -552,7 +354,7 @@ Object {
     0,
     0,
     0,
-    90000,
+    0,
     0,
     0,
     0,
@@ -609,7 +411,7 @@ Object {
     0,
     0,
     0,
-    13500,
+    0,
     0,
     0,
     0,
@@ -713,7 +515,7 @@ Object {
     0,
     0,
     0,
-    13500,
+    0,
     0,
     0,
     0,

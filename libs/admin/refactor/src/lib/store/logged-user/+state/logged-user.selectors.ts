@@ -24,30 +24,6 @@ export const getLoggedUserRole = createSelector(
   (state: LoggedUserState) => state.role,
 );
 
-export const getSelectedChainId = createSelector(
-  getLoggedUserState,
-  (state: LoggedUserState): string | undefined | null =>
-    state.loggedUser?.settings?.selectedChainId,
-);
-
-export const hasSelectedChainId = createSelector(
-  getLoggedUserState,
-  (state: LoggedUserState): boolean =>
-    !!state.loggedUser?.settings?.selectedChainId,
-);
-
-export const getSelectedGroupId = createSelector(
-  getLoggedUserState,
-  (state: LoggedUserState): string | undefined | null =>
-    state.loggedUser?.settings?.selectedGroupId,
-);
-
-export const hasSelectedGroupId = createSelector(
-  getLoggedUserState,
-  (state: LoggedUserState): boolean =>
-    !!state.loggedUser?.settings?.selectedGroupId,
-);
-
 export const getSelectedUnitId = createSelector(
   getLoggedUserState,
   (state: LoggedUserState): string | undefined | null =>

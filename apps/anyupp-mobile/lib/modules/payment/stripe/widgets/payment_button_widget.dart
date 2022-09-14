@@ -1,8 +1,8 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_bloc.dart';
-import 'package:fa_prev/modules/payment/stripe/bloc/stripe_payment_state.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets/loading_widget.dart';
+import '/core/theme/theme.dart';
+import '/modules/payment/stripe/bloc/stripe_payment_bloc.dart';
+import '/modules/payment/stripe/bloc/stripe_payment_state.dart';
+import '/shared/locale.dart';
+import '/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

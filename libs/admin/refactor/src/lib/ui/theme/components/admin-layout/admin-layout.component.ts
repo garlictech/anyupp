@@ -41,16 +41,6 @@ const menuItems = {
     icon: { icon: 'store', pack: 'material-icons' },
     link: '/admin/units',
   },
-  groups: {
-    title: 'menu.groups',
-    icon: { icon: 'group_work', pack: 'material-icons' },
-    link: '/admin/groups',
-  },
-  chains: {
-    title: 'menu.chains',
-    icon: { icon: 'stars', pack: 'material-icons' },
-    link: '/admin/chains',
-  },
   admins: {
     title: 'menu.admins',
     icon: { icon: 'people', pack: 'material-icons' },

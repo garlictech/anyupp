@@ -1,6 +1,6 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/theme/theme.dart';
+import '/modules/selectunit/selectunit.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 class UnitMapCardWidget extends StatelessWidget {
@@ -18,7 +18,7 @@ class UnitMapCardWidget extends StatelessWidget {
   final double? rating;
   final double height;
   final Color imageBackgroundColor;
-  // final GeoUnit unit;
+  // final Unit unit;
   UnitMapCardWidget({
     required this.unitName,
     required this.closeTime,

@@ -1,16 +1,23 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/graphql/generated/crud-api.dart';
+import '/modules/cart/cart.dart';
+import '/modules/takeaway/takeaway.dart';
 
-GeoUnit? get currentUnit {
+import 'place_preferences.dart';
+
+Unit? get currentUnit {
   var state = getIt<UnitSelectBloc>().state;
   if (state is UnitSelected) {
     return state.unit;
   }
   return null;
 }
+
+Cart? get currentCart => getIt.get<CartRepository>().cart;
+
+Future<Place?> get currentPlace async =>
+    (currentUnit != null ? await getPlacePref(currentUnit!.id) : null);
 
 ServingMode get currentServingMode {
   var state = getIt<TakeAwayBloc>().state;
@@ -19,8 +26,6 @@ ServingMode get currentServingMode {
   }
   return ServingMode.inPlace;
 }
-
-Cart? get currentCart => getIt.get<CartRepository>().cart;
 
 double get serviceFeeMul =>
     // 1.0 + ((currentUnit?.serviceFeePolicy?.percentage ?? 0.0) / 100.0);

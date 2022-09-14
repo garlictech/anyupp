@@ -1,12 +1,12 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/login/login.dart';
+import '/modules/selectunit/selectunit.dart';
+import '/shared/auth.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -275,27 +275,6 @@ class SelectUnitUserInfoRowWidget extends StatelessWidget {
           Expanded(
             child: Container(),
           ),
-          // Container(
-          //   width: 46.0,
-          //   height: 46.0,
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(10),
-          //     border: Border.all(
-          //       width: 1.5,
-          //       color: Color(0x33857C18),
-          //     ),
-          //   ),
-          //   child: IconButton(
-          //     icon: Icon(
-          //       Icons.refresh,
-          //       color: Colors.black,
-          //     ),
-          //     onPressed: () {
-          //       // Nav.to(DataStoreDemoScreen());
-          //       getIt<UnitsBloc>().add(DetectLocationAndLoadUnits());
-          //     },
-          //   ),
-          // ),
           Container(
             width: 46.0,
             height: 46.0,

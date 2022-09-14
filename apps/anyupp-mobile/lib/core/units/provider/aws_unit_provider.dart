@@ -1,48 +1,62 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.graphql.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:collection/collection.dart';
 
 class AwsUnitProvider implements IUnitProvider {
   @override
-  Future<List<GeoUnit>> searchUnitsNearLocation(
-      LatLng location, int radius) async {
+  Future<List<Unit>> searchUnitsNearRadius(LatLng location, int radius) async {
     log.d(
-        '***** searchUnitsNearLocation().start(): lat=${location.latitude} lng:${location.longitude}');
-    try {
-      var result = await GQL.amplify.execute(
-        GetUnitsNearLocationQuery(
-          variables: GetUnitsNearLocationArguments(
-            lat: location.latitude,
-            lng: location.longitude,
-          ),
+        'AwsUnitProvider.searchUnitsNearRadius()=location:$location, radius:$radius');
+    var unit_id_list = await _searchByRadius(location, radius);
+    var units =
+        await Future.wait<Unit?>(unit_id_list.map((id) => _getUnit(id)));
+    units.removeWhere((unit) => unit == null);
+    var finalUnits = units.map((u) => u!).toList();
+
+    log.d('AwsUnitProvider.searchUnitsNearRadius().units=$finalUnits');
+    return finalUnits;
+  }
+
+  Future<List<String>> _searchByRadius(LatLng location, int radius,
+      [int limit = 100, String? nextToken]) async {
+    log.d('AwsUnitProvider._searchByRadius().location=$location');
+    var result = await GQL.amplify.execute(
+      SearchByRadiusQuery(
+        variables: SearchByRadiusArguments(
+          lat: location.latitude,
+          lon: location.longitude,
+          radiusInMeters: radius.toDouble(),
+          limit: limit,
+          nextToken: nextToken,
         ),
-      );
+      ),
+    );
 
-      if (result.hasErrors) {
-        throw GraphQLException.fromGraphQLError(
-            GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
-      }
+    var unit_id_list =
+        result.data?.searchByRadius?.items?.whereNotNull().toList() ?? [];
+    log.d('AwsUnitProvider._searchByRadius().unit_id_list=$unit_id_list');
 
-      if (result.data == null || result.data?.getUnitsNearLocation == null) {
-        log.w('***** searchUnitsNearLocation():No units found.');
-        return [];
-      }
+    return unit_id_list;
+  }
 
-      var items = result.data?.getUnitsNearLocation?.items;
-      log.d('***** searchUnitsNearLocation().items.length=${items?.length}');
-      List<GeoUnit> results = [];
-      if (items != null) {
-        for (int i = 0; i < items.length; i++) {
-          results.add(GeoUnit.fromJson(items[i]!.toJson()));
-        }
-      }
+  Future<Unit?> _getUnit(String unitId) async {
+    var result = await GQL.amplify.execute(
+      GetUnitByIdQuery(
+        variables: GetUnitByIdArguments(
+          unitId: unitId,
+        ),
+      ),
+    );
 
-      return results;
-    } on Exception catch (e) {
-      log.e('***** searchUnitsNearLocation().Exception: $e');
-      rethrow;
+    if (result.hasErrors) {
+      log.d('AwsUnitProvider._getUnit().result.errors=${result.errors}');
+      throw GraphQLException.fromGraphQLError(
+          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
     }
+    final jsonFormat = result.data?.getUnit?.toJson();
+    return jsonFormat != null ? Unit.fromJson(jsonFormat) : null;
   }
 }

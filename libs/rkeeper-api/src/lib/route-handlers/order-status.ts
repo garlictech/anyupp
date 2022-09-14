@@ -7,7 +7,7 @@ import { of } from 'rxjs';
 
 import { validateSchema } from '@bgap/shared/data-validators';
 import { oeTryCatch } from '@bgap/shared/utils';
-import { CrudSdk, getCrudSdkForIAM } from '@bgap/crud-gql/api';
+import { CrudSdk } from '@bgap/crud-gql/api';
 import { Order, OrderStatus, Unit } from '@bgap/domain';
 import {
   FCMPushNotificationService,
@@ -41,9 +41,6 @@ export interface OrderStatusHandlerDeps {
   getPushNotificationService: () => IFCMPushNotificationService;
 }
 
-const awsAccesskeyId = process.env.API_ACCESS_KEY_ID || '';
-const awsSecretAccessKey = process.env.API_SECRET_ACCESS_KEY || '';
-
 /*
   base64 encode the json after removing line breaks, and set the result as the env variable
   e.g.: cat /file/path/to/firebase/cert.json | tr -d '\n' | base64 | tr -d '\n'
@@ -53,8 +50,6 @@ const serviceAccountCertJSONString = Buffer.from(
   process.env.FIREBASE_SERVICE_ACCOUNT_CERT || 'READ_COMMENT_ABOVE',
   'base64',
 ).toString();
-
-const anyuppSdk = getCrudSdkForIAM(awsAccesskeyId, awsSecretAccessKey);
 
 export interface State_UnitFetched {
   unit: Unit;
@@ -175,7 +170,7 @@ export const orderStatusHandlerLogic =
   (request: RKeeperRequest, reply: fastify.FastifyReply) => {
     const externalUnitId = request.params.externalUnitId;
     console.log('Handling order status update for unit ', externalUnitId);
-    console.debug('Request:', request);
+    console.debug('Request:', request.body);
 
     return pipe(
       request.body,
@@ -197,16 +192,15 @@ export const orderStatusHandlerLogic =
     ).toPromise();
   };
 
-export const orderStatusHandler = (
-  request: RKeeperRequest,
-  reply: fastify.FastifyReply,
-) =>
-  orderStatusHandlerLogic({
-    anyuppSdk,
-    timestamp: () => Date.now(),
-    getPushNotificationService: () =>
-      new FCMPushNotificationService({
-        sdk: anyuppSdk,
-        serviceAccountCertJSONString,
-      }),
-  })(request, reply);
+export const orderStatusHandler =
+  (anyuppSdk: CrudSdk) =>
+  (request: RKeeperRequest, reply: fastify.FastifyReply) =>
+    orderStatusHandlerLogic({
+      anyuppSdk,
+      timestamp: () => Date.now(),
+      getPushNotificationService: () =>
+        new FCMPushNotificationService({
+          sdk: anyuppSdk,
+          serviceAccountCertJSONString,
+        }),
+    })(request, reply);

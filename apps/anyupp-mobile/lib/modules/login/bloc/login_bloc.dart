@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/exception.dart';
+import '/core/core.dart';
+import '/graphql/graphql.dart';
+import '/modules/login/login.dart';
+import '/modules/screens.dart';
+import '/shared/exception.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/shared/nav.dart';
+import '/shared/nav.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginRepository _repository;

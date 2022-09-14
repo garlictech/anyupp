@@ -1,4 +1,4 @@
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/shared/pagination/pagination.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 

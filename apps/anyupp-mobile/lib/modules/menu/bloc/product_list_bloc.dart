@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/exception.dart';
+import '/core/core.dart';
+import '/graphql/graphql.dart';
+import '/modules/favorites/favorites.dart';
+import '/modules/menu/menu.dart';
+import '/models.dart';
+import '/shared/exception.dart';
 
 part 'product_list_event.dart';
 part 'product_list_state.dart';
@@ -18,37 +18,13 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
 
   ProductListBloc(this._productRepository, this._favoritesRepository)
       : super(NoProductListLoaded()) {
-    on<LoadProductList>(_onLoadProductList);
     on<LoadAllProductList>(_onLoadAllProductList);
     on<RefreshFavoritesInProductList>(_onRefreshFavoritesInProductList);
   }
 
-  List<GeneratedProduct>? _products;
+  List<Product>? _products;
   List<ProductCategory>? _categories;
   List<FavoriteProduct>? _favorites;
-
-  FutureOr<void> _onLoadProductList(
-      LoadProductList event, Emitter<ProductListState> emit) async {
-    try {
-      log.d('********* ProductListBloc.LoadProductList()');
-      emit(ProductListLoading());
-      var response = await _productRepository.getProductList(
-        event.unitId,
-        event.categoryId,
-        event.nextToken,
-      );
-      emit(ProductListLoaded(products: response.data ?? []));
-    } on GraphQLException catch (e) {
-      log.e('********* ProductListBloc.PlatformException()=$e');
-      getIt<ExceptionBloc>().add(ShowException(e));
-    } on Exception catch (e) {
-      log.e('********* ProductListBloc.Exception()=$e');
-      getIt<ExceptionBloc>().add(ShowException(ProductException.fromException(
-        ProductException.ERROR_LOADING_PRODUCT_CATEGORIES,
-        e,
-      )));
-    }
-  }
 
   FutureOr<void> _onLoadAllProductList(
       LoadAllProductList event, Emitter<ProductListState> emit) async {
@@ -65,7 +41,6 @@ class ProductListBloc extends Bloc<ProductListEvent, ProductListState> {
       // Load products
       var products = await _productRepository.getAllProductList(
         unitId: event.unitId,
-        chainId: event.chainId,
         nextToken: event.nextToken,
       );
 

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fa_prev/modules/favorites/favorites.dart';
+import '/modules/favorites/favorites.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FavoritesBloc extends Bloc<FavoritesEvent, FavoritesState> {

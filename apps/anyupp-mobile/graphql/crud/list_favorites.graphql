@@ -46,7 +46,6 @@ query ListFavoriteProducts(
             hu
           }
           netPackagingFee
-          soldOut
         }
         configSets {
           type
@@ -70,11 +69,9 @@ query ListFavoriteProducts(
             price
             netPackagingFee
             productComponentId
-            soldOut
           }
         }
         supportedServingModes
-        soldOut
       }
     }
     nextToken

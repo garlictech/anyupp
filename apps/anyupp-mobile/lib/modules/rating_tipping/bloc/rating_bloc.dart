@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/shared/notifications/notifications.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.graphql.dart';
+import '/models.dart';
+import '/modules/orders/orders.dart';
+import '/modules/rating_tipping/rating_tipping.dart';
+import '/shared/notifications/notifications.dart';
+import '/shared/utils/unit_utils.dart';
 
 part 'rating_event.dart';
 part 'rating_state.dart';
@@ -103,7 +103,7 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
   }
 
   void _refreshOrdersIfUnitSelected() {
-    GeoUnit? unit = currentUnit;
+    Unit? unit = currentUnit;
     if (unit != null) {
       getIt<OrderBloc>().add(StartGetOrderListSubscription());
     }

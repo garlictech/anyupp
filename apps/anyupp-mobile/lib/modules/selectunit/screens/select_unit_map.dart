@@ -1,15 +1,15 @@
 import 'dart:async';
 
 import 'package:bubble_box/bubble_box.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/modules/selectunit/utils/marker_generator.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/selectunit/selectunit.dart';
+import '/modules/selectunit/utils/marker_generator.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/shared/locale.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -136,7 +136,7 @@ class _SelectUnitMapScreenState extends State<SelectUnitMapScreen> {
 }
 
 class SelectUnitMapScreenInner extends StatefulWidget {
-  final List<GeoUnit> units;
+  final List<Unit> units;
   final LatLng? userLocation;
 
   const SelectUnitMapScreenInner({
@@ -154,7 +154,7 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
   Completer<GoogleMapController> _mapController = Completer();
   Marker? _userMarker;
   Set<Marker> _markers = {};
-  GeoUnit? _selectedUnit;
+  Unit? _selectedUnit;
 
   final LatLng _center = const LatLng(47.4744579, 19.0754983);
 
@@ -184,6 +184,7 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
           compassEnabled: true,
           myLocationButtonEnabled: false,
           mapToolbarEnabled: false,
+          zoomControlsEnabled: false,
           mapType: MapType.normal,
           zoomGesturesEnabled: true,
           initialCameraPosition: CameraPosition(
@@ -225,7 +226,7 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
     );
   }
 
-  _onPageChanged(int index, GeoUnit unit) {
+  _onPageChanged(int index, Unit unit) {
     _zoomToUnit(unit);
     if (mounted) {
       setState(() {
@@ -235,12 +236,12 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
     _createMarkers(widget.units, widget.userLocation, _selectedUnit);
   }
 
-  Future<void> _zoomToUnit(GeoUnit unit) async {
-    log.d('_zoomToUnit()=${unit.loc}');
+  Future<void> _zoomToUnit(Unit unit) async {
+    log.d('_zoomToUnit()=${unit.location}');
     return _animateMapToLocation(
       LatLng(
-        unit.loc.lat,
-        unit.loc.lng,
+        unit.location.lat,
+        unit.location.lng,
       ),
     );
   }
@@ -260,9 +261,9 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
   }
 
   Future<void> _createMarkers(
-    List<GeoUnit> units,
+    List<Unit> units,
     LatLng? userLocation,
-    GeoUnit? selectedUnit,
+    Unit? selectedUnit,
   ) async {
     List<Widget> unitMarkers = [];
 
@@ -278,7 +279,7 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
       );
       unitMarkers.add(userMarker);
     }
-    for (GeoUnit unit in units) {
+    for (Unit unit in units) {
       final isInplace =
           unit.supportedServingModes.contains(ServingMode.inPlace);
 
@@ -329,8 +330,8 @@ class _SelectUnitMapScreenInnerState extends State<SelectUnitMapScreenInner> {
               zIndex: selectedUnit?.id == units[i - 1].id ? 100 : 0,
               icon: BitmapDescriptor.fromBytes(bitmaps[i]),
               position: LatLng(
-                units[i - 1].loc.lat,
-                units[i - 1].loc.lng,
+                units[i - 1].location.lat,
+                units[i - 1].location.lng,
               ),
               onTap: () => selectUnitAndGoToMenuScreen(
                 context,
@@ -439,7 +440,7 @@ class _MarkerWidget extends StatelessWidget {
 }
 
 class _MapUnitListWidget extends StatelessWidget {
-  final List<GeoUnit> units;
+  final List<Unit> units;
   final ValueChanged<int> onPageChanged;
   const _MapUnitListWidget({
     Key? key,

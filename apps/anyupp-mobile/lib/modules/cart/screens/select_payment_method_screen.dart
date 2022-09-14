@@ -1,14 +1,15 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/cart/widgets/payment/payment_success_widget.dart';
-import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/modules/selectunit/widgets/flutter_qr_code_scanner.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/user-details/user_details.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/cart/widgets/payment/payment_success_widget.dart';
+import '/modules/payment/stripe/stripe.dart';
+import '/modules/selectunit/widgets/flutter_qr_code_scanner.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/user-details/user_details.dart';
+import '/shared/utils/unit_utils.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,13 +17,14 @@ import '../../main/bloc/main_navigation_bloc.dart';
 import '../../main/bloc/main_navigation_event.dart';
 
 class SelectPaymentMethodScreen extends StatefulWidget {
+  final Unit unit;
   final String? orderId;
-  final GeoUnit unit;
-  final Cart cart;
+  final Place? place;
+
   const SelectPaymentMethodScreen({
     Key? key,
     required this.unit,
-    required this.cart,
+    this.place,
     this.orderId,
   }) : super(key: key);
 
@@ -55,7 +57,10 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
       }
     }
 
-    _placeSelected = widget.cart.place?.isNotEmpty ?? false;
+    _placeSelected = currentCart?.place?.isNotEmpty ??
+            widget.unit.orderPaymentPolicy == OrderPaymentPolicy.afterpay
+        ? true
+        : false;
     log.d('SelectPaymentMethodScreen._placeSelected=$_placeSelected');
     log.d('SelectPaymentMethodScreen._orderPolicy=$_orderPolicy');
     _checkInitialStatus();
@@ -107,11 +112,10 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
     setState(() {
       _loading = true;
     });
-    getIt<CartBloc>().add(CreateAndSendOrder(widget.unit, 'cash'));
+    getIt<CartBloc>().add(CreateAndSendOrder(widget.unit));
   }
 
   showStatusModal() async {
-    Nav.pop();
     Nav.pop();
 
     return showModalBottomSheet(
@@ -249,7 +253,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
         listeners: [
           BlocListener<CartBloc, BaseCartState>(
             listener: (BuildContext context, BaseCartState state) {
-              log.d('SelectPaymentMethodScreen.CartBloc.state=$state');
+              // log.d('SelectPaymentMethodScreen.CartBloc.state=$state');
               if (state is EmptyCartState) {
                 if (_orderPolicy != OrderPolicy.full) {
                   setState(() {
@@ -294,7 +298,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
     );
   }
 
-  Widget _buildPaymentMethodList(BuildContext context, GeoUnit unit) {
+  Widget _buildPaymentMethodList(BuildContext context, Unit unit) {
     // log.d('_buildPaymentMethodList().unit.paymentModes=${unit.id}: ${unit.paymentModes}');
 
     if (_loading) {
@@ -416,7 +420,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
           Align(
             alignment: Alignment.bottomCenter,
             child: SendCartButtonWidget(
-              cart: widget.cart,
+              place: widget.place,
               selectedPaymentMethod: _selectedPaymentMethod,
               onLoading: (loading) => setState(
                 () {
@@ -432,29 +436,6 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
   }
 
   Future<void> _handleStartOrderPressed() async {
-    if (widget.cart.isPlaceEmpty) {
-      bool? success = await showModalBottomSheet<bool?>(
-        context: context,
-        isDismissible: true,
-        enableDrag: true,
-        isScrollControlled: true,
-        elevation: 4.0,
-        backgroundColor: Colors.transparent,
-        builder: (context) {
-          return QRCodeScannerWidget(
-            popWhenClose: true,
-            loadUnits: true,
-          );
-        },
-      );
-      if (success != true) {
-        setState(() {
-          _loading = false;
-        });
-        return;
-      }
-    }
-
     if (_selectedPaymentMethod!.method == PaymentMethod.inapp) {
       getIt<StripePaymentBloc>().add(StartStripePaymentWithExistingCardEvent(
         orderId: widget.orderId,

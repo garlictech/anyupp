@@ -57,16 +57,6 @@ const routes: Routes = [
         },
       },
       {
-        path: 'groups',
-        loadChildren: () =>
-          import('./pages/groups/admin-pages-groups.module').then(
-            m => m.AdminPagesGroupsModule,
-          ),
-        data: {
-          roles: MENU_ROLES.GROUPS,
-        },
-      },
-      {
         path: 'units',
         loadChildren: () =>
           import('./pages/units/admin-pages-units.module').then(
@@ -74,16 +64,6 @@ const routes: Routes = [
           ),
         data: {
           roles: MENU_ROLES.UNITS,
-        },
-      },
-      {
-        path: 'chains',
-        loadChildren: () =>
-          import('./pages/chains/admin-pages-chains.module').then(
-            m => m.AdminPagesChainsModule,
-          ),
-        data: {
-          roles: MENU_ROLES.CHAINS,
         },
       },
       {

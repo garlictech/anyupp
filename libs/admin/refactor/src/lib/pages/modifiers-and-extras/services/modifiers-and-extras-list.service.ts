@@ -27,7 +27,7 @@ export class ModifiersAndExtrasListService {
     component: false,
     componentSet: false,
   };
-  private _selectedChainId?: string | null;
+  private _selectedUnitId?: string | null;
 
   constructor(
     private _store: Store,
@@ -37,9 +37,9 @@ export class ModifiersAndExtrasListService {
     private _crudSdk: CrudSdkService,
   ) {
     this._store
-      .select(loggedUserSelectors.getSelectedChainId)
-      .subscribe(selectedChainId => {
-        this._selectedChainId = selectedChainId;
+      .select(loggedUserSelectors.getSelectedUnitId)
+      .subscribe(selectedUnitId => {
+        this._selectedUnitId = selectedUnitId;
       });
   }
 
@@ -67,7 +67,7 @@ export class ModifiersAndExtrasListService {
           limit: PAGINATION_LIMIT,
           nextToken: this._nextToken.component,
           filter: {
-            chainId: { eq: this._selectedChainId },
+            ownerEntity: { eq: this._selectedUnitId },
             deletedAt: { exists: false },
           },
         })
@@ -87,7 +87,7 @@ export class ModifiersAndExtrasListService {
           limit: PAGINATION_LIMIT,
           nextToken: this._nextToken.componentSet,
           filter: {
-            chainId: { eq: this._selectedChainId },
+            ownerEntity: { eq: this._selectedUnitId },
             deletedAt: { exists: false },
           },
         })

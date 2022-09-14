@@ -1,4 +1,4 @@
-import { OrderHandlerDeps } from '@bgap/shared/types';
+import { OrderHandlerDeps } from './utils';
 
 export const archiveOrder = (deps: OrderHandlerDeps) => (orderId: string) =>
   deps.crudSdk.UpdateOrder({

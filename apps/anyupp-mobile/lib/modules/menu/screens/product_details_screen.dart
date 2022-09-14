@@ -1,24 +1,24 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/main/main.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/connectivity.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
-import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/shared/widgets/fade_on_scroll_widget.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/favorites/favorites.dart';
+import '/modules/main/main.dart';
+import '/modules/menu/menu.dart';
+import '/modules/screens.dart';
+import '/shared/connectivity.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/utils/format_utils.dart';
+import '/shared/utils/unit_utils.dart';
+import '/shared/widgets.dart';
+import '/shared/widgets/fade_on_scroll_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  final GeoUnit unit;
-  final GeneratedProduct item;
+  final Unit unit;
+  final Product item;
   final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
 
@@ -46,6 +46,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     var unit = currentUnit!;
+    var disabled = isDisabled(unit);
     return NetworkConnectionWrapperWidget(
       child: Scaffold(
         key: _key,
@@ -83,10 +84,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       top: kToolbarHeight + 50,
                       bottom: 16.0,
                     ),
-                    child: _ProductDetailsImageWidget(
-                      item: widget.item,
-                      url: widget.item.image!,
-                    ),
+                    child: disabled
+                        ? ColorFiltered(
+                            colorFilter: ColorFilter.mode(
+                                Colors.black.withOpacity(0.5), BlendMode.dstIn),
+                            child: _ProductDetailsImageWidget(
+                              item: widget.item,
+                              url: widget.item.image!,
+                              disabled: disabled,
+                            ),
+                          )
+                        : _ProductDetailsImageWidget(
+                            item: widget.item,
+                            url: widget.item.image!,
+                            disabled: disabled,
+                          ),
                   ),
                 ),
                 elevation: 4.0,
@@ -139,6 +151,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 unit: unit,
                 displayState: widget.displayState,
                 servingMode: widget.servingMode,
+                disabled: disabled,
               ),
             ],
           ),
@@ -146,19 +159,29 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       ),
     );
   }
+
+  bool isDisabled(Unit unit) =>
+      widget.displayState == ProductItemDisplayState.DISABLED ||
+      (widget.displayState == ProductItemDisplayState.SOLDOUT &&
+          unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.faded);
+  bool isHidden(Unit unit) =>
+      widget.displayState == ProductItemDisplayState.SOLDOUT &&
+      unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.invisible;
 }
 
 class ProductDetailsWidget extends StatelessWidget {
-  final GeoUnit unit;
-  final GeneratedProduct item;
+  final Unit unit;
+  final Product item;
   final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
+  final bool disabled;
 
   const ProductDetailsWidget({
     Key? key,
     required this.unit,
     required this.item,
     required this.displayState,
+    required this.disabled,
     this.servingMode,
   }) : super(key: key);
 
@@ -189,7 +212,7 @@ class ProductDetailsWidget extends StatelessWidget {
                       servingMode: servingMode,
                       displayState: displayState,
                     ),
-                    if (isDisabled && item.allergens != null)
+                    if (disabled && item.allergens != null)
                       Container(
                         color: theme.secondary12,
                         child: _buildAllergensListWidget(
@@ -263,22 +286,15 @@ class ProductDetailsWidget extends StatelessWidget {
       ),
     );
   }
-
-  bool get isDisabled =>
-      displayState == ProductItemDisplayState.DISABLED ||
-      (displayState == ProductItemDisplayState.SOLDOUT &&
-          unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.faded);
-  bool get isHidden =>
-      displayState == ProductItemDisplayState.SOLDOUT &&
-      unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.invisible;
 }
 
 class _ProductDetailsImageWidget extends StatelessWidget {
   final String url;
-  final GeneratedProduct item;
+  final Product item;
+  final bool disabled;
 
   const _ProductDetailsImageWidget(
-      {Key? key, required this.url, required this.item})
+      {Key? key, required this.url, required this.item, required this.disabled})
       : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -298,7 +314,7 @@ class _ProductDetailsImageWidget extends StatelessWidget {
           url: url,
           fit: BoxFit.fitHeight,
           placeholder: Container(
-            padding: EdgeInsets.all(50.0),
+            // padding: EdgeInsets.all(50.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(14.0),
@@ -308,12 +324,11 @@ class _ProductDetailsImageWidget extends StatelessWidget {
                 color: theme.secondary16.withOpacity(0.4),
               ),
             ),
-            child: CircularProgressIndicator(
+            child: CenterLoadingWidget(
               backgroundColor: theme.secondary12,
             ),
           ),
           errorWidget: Container(
-            padding: EdgeInsets.all(50.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(14.0),
@@ -323,10 +338,12 @@ class _ProductDetailsImageWidget extends StatelessWidget {
                 color: theme.secondary16.withOpacity(0.4),
               ),
             ),
-            child: Icon(
-              Icons.error,
-              color: Colors.red,
-              size: 32.0,
+            child: Center(
+              child: Icon(
+                Icons.error,
+                color: Colors.red,
+                size: 32.0,
+              ),
             ),
           ),
         ),
@@ -336,7 +353,7 @@ class _ProductDetailsImageWidget extends StatelessWidget {
 }
 
 class ProductImageAndInfoWidget extends StatelessWidget {
-  final GeneratedProduct item;
+  final Product item;
 
   const ProductImageAndInfoWidget({Key? key, required this.item})
       : super(key: key);
@@ -409,8 +426,8 @@ class ProductImageAndInfoWidget extends StatelessWidget {
 }
 
 class ProductDetailsToolBarButtonsWidget extends StatelessWidget {
-  final GeneratedProduct item;
-  final GeoUnit unit;
+  final Product item;
+  final Unit unit;
 
   const ProductDetailsToolBarButtonsWidget(
       {Key? key, required this.item, required this.unit})

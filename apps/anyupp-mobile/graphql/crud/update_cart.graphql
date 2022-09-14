@@ -1,5 +1,0 @@
-mutation UpdateCart($updateCartInput: UpdateCartInput!) {
-  updateCart(input: $updateCartInput) {
-    id
-  }
-}

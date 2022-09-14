@@ -1,4 +1,4 @@
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 const Map<Allergen, int> allergenMap = {
   Allergen.gluten: 1,

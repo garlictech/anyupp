@@ -1,5 +1,5 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 
 class ChromeSafariBrowserExt extends ChromeSafariBrowser {
   final Function? whenClosed;

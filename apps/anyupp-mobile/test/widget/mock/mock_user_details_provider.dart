@@ -1,5 +1,5 @@
-import 'package:fa_prev/models/User.dart';
-import 'package:fa_prev/shared/user-details/user_details.dart';
+import 'package:anyupp/models/User.dart';
+import 'package:anyupp/shared/user-details/user_details.dart';
 
 // class MockUserDetailsBloc extends UserDetailsBloc {
 //   final ServingMode servingMode;

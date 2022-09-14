@@ -1,10 +1,10 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models/User.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/auth/auth.dart';
-import 'package:fa_prev/shared/user-details/user_details.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/graphql/graphql.dart';
+import '/models/User.dart';
+import '/modules/login/login.dart';
+import '/shared/auth/auth.dart';
+import '/shared/user-details/user_details.dart';
 
 class AwsUserDetailsProvider implements IUserDetailsProvider {
   final IAuthProvider _authProvider;

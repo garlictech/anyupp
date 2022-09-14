@@ -1,8 +1,8 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/widgets/allergen_grid_widget.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets/app_bar.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/menu/widgets/allergen_grid_widget.dart';
+import '/shared/locale.dart';
+import '/shared/widgets/app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -26,7 +26,7 @@ class AllergenDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget buildDetailsScreen(BuildContext context, GeoUnit? unit) {
+  Widget buildDetailsScreen(BuildContext context, Unit? unit) {
     return Padding(
       padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 32.0),
       child: CustomScrollView(

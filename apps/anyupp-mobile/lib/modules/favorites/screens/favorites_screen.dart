@@ -1,10 +1,10 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/modules/favorites/favorites.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/graphql/generated/crud-api.dart';
 
 class FavoritesScreen extends StatefulWidget {
   @override

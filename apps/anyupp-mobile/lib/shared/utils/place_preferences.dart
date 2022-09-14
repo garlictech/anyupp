@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> setPlacePref(String unitId, Place place) async {

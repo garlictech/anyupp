@@ -1,10 +1,10 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/widgets/loading_widget.dart';
+import '/core/core.dart';
+import '/shared/widgets/loading_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
+import '/models.dart';
+import '/modules/favorites/favorites.dart';
 
 class FavoriteIconWidget extends StatefulWidget {
   const FavoriteIconWidget({
@@ -16,8 +16,8 @@ class FavoriteIconWidget extends StatefulWidget {
   }) : super(key: key);
 
   final ThemeChainData theme;
-  final GeneratedProduct product;
-  final GeoUnit unit;
+  final Product product;
+  final Unit unit;
   final double iconSize;
 
   @override
@@ -77,7 +77,7 @@ class _FavoriteIconWidgetState extends State<FavoriteIconWidget> {
     );
   }
 
-  void _addRemoveFavorite(BuildContext context, GeneratedProduct product) {
+  void _addRemoveFavorite(BuildContext context, Product product) {
     BlocProvider.of<FavoritesBloc>(context).add(AddOrRemoveFavoriteProduct(
       widget.unit.id,
       product.productCategoryId,

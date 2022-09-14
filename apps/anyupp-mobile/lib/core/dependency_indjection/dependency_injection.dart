@@ -1,23 +1,23 @@
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/main/main.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/modules/transactions/transactions.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/connectivity.dart';
-import 'package:fa_prev/shared/exception.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/location.dart';
-import 'package:fa_prev/shared/notifications/notifications.dart';
-import 'package:fa_prev/shared/user-details/user_details.dart';
+import '/app-config.dart';
+import '/core/core.dart';
+import '/graphql/graphql.dart';
+import '/modules/cart/cart.dart';
+import '/modules/favorites/favorites.dart';
+import '/modules/login/login.dart';
+import '/modules/main/main.dart';
+import '/modules/menu/menu.dart';
+import '/modules/orders/orders.dart';
+import '/modules/payment/stripe/stripe.dart';
+import '/modules/rating_tipping/rating_tipping.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/modules/transactions/transactions.dart';
+import '/shared/auth.dart';
+import '/shared/connectivity.dart';
+import '/shared/exception.dart';
+import '/shared/locale.dart';
+import '/shared/location.dart';
+import '/shared/notifications/notifications.dart';
+import '/shared/user-details/user_details.dart';
 import 'package:get_it/get_it.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 
@@ -61,7 +61,7 @@ void _initProviders() {
   getIt.registerLazySingleton<IFavoritesProvider>(
       () => AwsFavoritesProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<ICartProvider>(
-      () => AwsCartProvider(getIt<IAuthProvider>()));
+      () => AwsCartMemoryProvider(getIt<IAuthProvider>()));
   getIt.registerFactory<IOrdersProvider>(
       () => AwsOrderProvider(getIt<IAuthProvider>()));
   getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());

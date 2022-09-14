@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
+import '/core/core.dart';
+import '/modules/orders/orders.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OrderCounterBloc

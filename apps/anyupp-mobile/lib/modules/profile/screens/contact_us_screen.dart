@@ -1,5 +1,5 @@
-// import 'package:fa_prev/core/theme/theme.dart';
-// import 'package:fa_prev/shared/locale.dart';
+// import '/core/theme/theme.dart';
+// import '/shared/locale.dart';
 // import 'package:flutter/material.dart';
 
 // class ContactUsScreen extends StatelessWidget {

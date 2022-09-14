@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
+import '/core/core.dart';
+import '/models.dart';
 
 Map<String, dynamic> createStartPaymentRequestVariables({
   String? orderId,

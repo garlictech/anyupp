@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { tap, switchMap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
@@ -47,11 +48,17 @@ export class ActiveUnitSelectorComponent implements OnInit {
       .pipe(
         select(loggedUserSelectors.getLoggedUser),
         filterNullish(),
+        tap((loggedUser: AdminUser) => {
+          this._loggedUser = loggedUser;
+        }),
+        switchMap(() =>
+          this._unitCollectionService.getAllCachedPaginatedData$({
+            filter: {},
+          }),
+        ),
         untilDestroyed(this),
       )
-      .subscribe(loggedUser => {
-        this._loggedUser = loggedUser;
-
+      .subscribe(() => {
         this._changeDetectorRef.detectChanges();
       });
   }

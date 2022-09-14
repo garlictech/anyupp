@@ -1,5 +1,4 @@
 {
-  "root": "libs/apps/shared",
   "sourceRoot": "libs/apps/shared/src",
   "projectType": "library",
   "targets": {

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 import 'package:collection/collection.dart';
-import 'package:fa_prev/graphql/generated/crud-api.graphql.dart';
+import '/graphql/generated/crud-api.graphql.dart';
 
 @immutable
 class OrderItem {
@@ -17,7 +17,7 @@ class OrderItem {
   final List<Allergen>? allergens;
   final ProductType productType;
   final List<OrderItemConfigSet>? configSets;
-  final Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
+  final Map<ProductConfigSet, List<ProductConfigComponent>>?
       selectedConfigMap;
   final double? netPackagingFee;
   final Price? serviceFee;
@@ -56,7 +56,7 @@ class OrderItem {
     List<Allergen>? allergens,
     ProductType? productType,
     List<OrderItemConfigSet>? configSets,
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>?
+    Map<ProductConfigSet, List<ProductConfigComponent>>?
         selectedConfigMap,
     double? netPackagingFee,
     Price? serviceFee,
@@ -93,7 +93,7 @@ class OrderItem {
       'statusLog': statusLog.map((x) => x.toJson()).toList(),
       'variantName': variantName.toJson(),
       'image': image,
-      'allergens': allergens,
+      'allergens': allergens?.map((x) => enumToString(x)).toList(),
       'productType': enumToString(productType),
       'configSets': configSets?.map((x) => x.toJson()).toList(),
       'netPackagingFee': netPackagingFee,
@@ -125,9 +125,9 @@ class OrderItem {
               map['configSets']?.map((x) => OrderItemConfigSet.fromJson(x)))
           : null,
       selectedConfigMap: map['configSets'] != null
-          ? getSelectdConfigMap(List<GeneratedProductConfigSet>.from(
+          ? getSelectdConfigMap(List<ProductConfigSet>.from(
               map['configSets']
-                  ?.map((x) => GeneratedProductConfigSet.fromJson(x))))
+                  ?.map((x) => ProductConfigSet.fromJson(x))))
           : null,
       netPackagingFee: map['netPackagingFee'],
       serviceFee:
@@ -184,11 +184,11 @@ class OrderItem {
         serviceFee.hashCode;
   }
 
-  static Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
-      getSelectdConfigMap(List<GeneratedProductConfigSet> mapList) {
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+  static Map<ProductConfigSet, List<ProductConfigComponent>>
+      getSelectdConfigMap(List<ProductConfigSet> mapList) {
+    Map<ProductConfigSet, List<ProductConfigComponent>>
         selectedConfigMap = {};
-    for (GeneratedProductConfigSet temp in mapList) {
+    for (ProductConfigSet temp in mapList) {
       selectedConfigMap[temp] = temp.items;
     }
     return selectedConfigMap;

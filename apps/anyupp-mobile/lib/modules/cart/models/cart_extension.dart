@@ -1,10 +1,8 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/models.dart';
+import '/graphql/generated/crud-api.dart';
+import '/shared/utils/unit_utils.dart';
 
 extension CartExtension on Cart {
-  int get orderCount => items.length;
-
   int get totalCount {
     int count = 0;
     items.forEach((order) => count += order.quantity);
@@ -31,7 +29,7 @@ extension CartExtension on Cart {
     return value;
   }
 
-  int variantCount(GeneratedProduct item, ProductVariant variant) {
+  int variantCount(Product item, ProductVariant variant) {
     int index = items.indexWhere(
         (order) => order.productId == item.id && order.variantId == variant.id);
     return index != -1 ? items[index].quantity : 0;
@@ -44,7 +42,7 @@ extension CartExtension on Cart {
       return 0.0;
     }
 
-    double tax = currentUnit?.packagingTax ?? 0.0;
+    double tax = currentUnit?.packagingTaxPercentage ?? 0.0;
 
     double price = 0.0;
     items.forEach((orderItem) {

@@ -1,16 +1,15 @@
 import { RequiredId } from '@bgap/shared/types';
 import { CreateProductCategoryInput } from '@bgap/domain';
-import { chainFixture } from './chain';
+import { unitFixture } from './unit';
 import { seededIdPrefix, testIdPrefix } from './common';
 
 const productCategoryId_01 = `${seededIdPrefix}product_category_c1_1_id`;
 const productCategoryId_02 = `${seededIdPrefix}product_category_c1_2_id`;
 const productCategoryId_03 = `${seededIdPrefix}product_category_c1_3_id`;
-const chainId_01 = chainFixture.chainId_seeded_01;
 
 const productCategoryBase: RequiredId<CreateProductCategoryInput> = {
   id: `${testIdPrefix}generatedProduct_id_`,
-  chainId: chainId_01,
+  ownerEntity: unitFixture.kesdobalo.id,
   name: { en: 'PRODUCT_CATEGORY' },
   description: { en: 'DESCRIPTION' },
   image: 'IMAGE',
@@ -19,7 +18,7 @@ const productCategoryBase: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_01: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_01,
-  chainId: chainId_01,
+  ownerEntity: unitFixture.kesdobalo.id,
   name: {
     hu: `Hamburgerek`,
     en: `Hamburgers`,
@@ -34,7 +33,7 @@ const seededProductCategory_01: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_02: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_02,
-  chainId: chainId_01,
+  ownerEntity: unitFixture.kesdobalo.id,
   name: {
     hu: `Alkoholmententes italok`,
     en: `Non-alcoholic drinks`,
@@ -49,7 +48,7 @@ const seededProductCategory_02: RequiredId<CreateProductCategoryInput> = {
 
 const seededProductCategory_03: RequiredId<CreateProductCategoryInput> = {
   id: productCategoryId_03,
-  chainId: chainId_01,
+  ownerEntity: unitFixture.kesdobalo.id,
   name: {
     hu: `Sörök`,
     en: `Beers`,
@@ -61,7 +60,6 @@ const seededProductCategory_03: RequiredId<CreateProductCategoryInput> = {
   image: 'https://picsum.photos/100?random=3',
   position: 3,
 };
-
 export const productCategoryFixture = {
   seededProductCategory_01,
   seededProductCategory_02,

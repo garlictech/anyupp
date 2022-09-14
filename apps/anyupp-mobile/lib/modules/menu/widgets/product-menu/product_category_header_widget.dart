@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 
 class ProductCategoryHeaderWidget extends StatelessWidget {
   final String name;

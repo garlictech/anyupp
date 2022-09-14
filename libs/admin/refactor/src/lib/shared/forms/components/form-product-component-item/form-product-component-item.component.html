@@ -4,11 +4,7 @@
     *ngFor="let item of itemFormArray | iterableAbstractControls"
   >
     <div
-      class="col-md-5 pt-3"
-      [ngClass]="{
-        'col-md-10': productLevel === eProductLevel.GROUP,
-        'col-md-6': productLevel === eProductLevel.UNIT
-      }"
+      class="col-md-6 pt-3"
       *ngIf="
         item.value.productComponentId
           | productComponentInfo
@@ -20,19 +16,11 @@
         <bgap-allergens [allergens]="component.allergens"></bgap-allergens>
       </div>
     </div>
-    <div class="col-md-2" *ngIf="productLevel === eProductLevel.GROUP">
-      <bgap-form-text-input
-        caption="products.refPrice"
-        type="number"
-        [control]="item.get('refGroupPrice') | asFormControl"
-        inputId="refGroupPrice"
-      ></bgap-form-text-input>
-    </div>
-    <ng-container *ngIf="productLevel === eProductLevel.UNIT">
+    <ng-container>
       <div class="col-md-2">
         <bgap-form-static-text
           caption="products.refPrice"
-          [value]="item.value.refGroupPrice | currencyFormatter: currency!"
+          [value]="item.value.price | currencyFormatter: currency!"
         ></bgap-form-static-text>
       </div>
       <div class="col-md-2">

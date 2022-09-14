@@ -1,14 +1,14 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
-import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/shared/widgets/tooltip/simple_tooltip.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/menu/menu.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/shared/locale/locale.dart';
+import '/shared/nav.dart';
+import '/shared/utils/unit_utils.dart';
+import '/shared/widgets.dart';
+import '/shared/widgets/tooltip/simple_tooltip.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,7 +45,7 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
 
   Future<void> _checkNeedToShowTooltip() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    GeoUnit? unit = currentUnit;
+    Unit? unit = currentUnit;
     if (unit != null) {
       bool? showed = preferences.getBool('TOOLTIP_${unit.id}');
       // log.d('_checkNeedToShowTooltip.showed=$showed');
@@ -112,12 +112,11 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
     );
   }
 
-  void _resetPlaceAndGoToUnitSelection(GeoUnit? unit) {
+  void _resetPlaceAndGoToUnitSelection(Unit? unit) {
     if (unit != null) {
       getIt<CartBloc>().add(ClearPlaceInCart(unit));
     }
-    getIt<ThemeBloc>().add(ResetTheme());
-    // Nav.reset(OnBoarding());
+    getIt<UnitSelectBloc>().add(DeSelectUnit());
     Nav.pop();
   }
 
@@ -145,7 +144,6 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
       // );
       BlocProvider.of<ProductListBloc>(context).add(LoadAllProductList(
         unitId: currentUnit!.id,
-        chainId: currentUnit!.chainId,
       ));
       return true;
     }

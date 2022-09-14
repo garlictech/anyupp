@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fa_prev/shared/locale.dart';
+import '/shared/locale.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import 'package:fa_prev/core/theme/theme.dart';
+import '/core/theme/theme.dart';
 
 typedef OnEmptyWidgetButtonTap = void Function();
 

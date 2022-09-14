@@ -1,19 +1,21 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/profile/profile.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/modules/transactions/screens/transactions_screen.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/login/login.dart';
+import '/modules/menu/menu.dart';
+import '/modules/profile/profile.dart';
+import '/modules/screens.dart';
+import '/modules/transactions/screens/transactions_screen.dart';
+import '/shared/auth.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/utils/unit_utils.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class Profile extends StatelessWidget {
+  final ThemeChainData theme = defaultTheme();
+
   Profile({Key? key});
 
   @override

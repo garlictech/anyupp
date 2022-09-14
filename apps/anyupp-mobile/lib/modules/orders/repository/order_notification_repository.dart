@@ -1,12 +1,12 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/notifications/notifications.dart';
-import 'package:fa_prev/shared/utils/order_status_preferences.dart';
-import 'package:fa_prev/shared/widgets/common_success_dialog.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/rating_tipping/rating_tipping.dart';
+import '/modules/screens.dart';
+import '/shared/locale.dart';
+import '/shared/notifications/notifications.dart';
+import '/shared/utils/order_status_preferences.dart';
+import '/shared/widgets/common_success_dialog.dart';
 import 'package:flutter/material.dart';
 
 class OrderNotificationService {
@@ -105,12 +105,12 @@ class OrderNotificationService {
   }
 
   void _showNotification(BuildContext context, String titleKey,
-      String messageKey, String orderNum) {
+      String messageKey, String? orderNum) {
     showSuccessDialog(
       context: context,
       title: transEx(context, titleKey),
       message: transEx(context, messageKey, [orderNum]),
-      bigTitle: '#$orderNum',
+      bigTitle: orderNum != null ? '#$orderNum' : '',
     );
 
     // showNotification(

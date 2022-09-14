@@ -12,15 +12,15 @@ import {
 import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 import { calculatePackagingFeeOfOrder } from '../packaging-utils';
-import { getGeneratedProduct } from './utils';
+import { getUnitProduct } from './utils';
 
 const getNetPackagingFeeOfOrderItem =
   (sdk: CrudSdk) =>
   (item: OrderItemInput): Observable<number> =>
     pipe(
-      getGeneratedProduct(sdk)(item.productId),
-      map(genProd => genProd?.variants),
-      map(R.find(variant => variant.id === item.variantId)),
+      getUnitProduct(sdk)(item.productId),
+      map(genProd => genProd?.variants || []),
+      map(R.find(variant => variant?.id === item.variantId)),
       throwIfEmptyValue(`Variant not found: ${item.variantId}`),
       map(variant => variant.netPackagingFee || 0),
     );
@@ -33,7 +33,7 @@ const getNetPackagingFeeOfConfigComponent =
     productComponentId: string,
   ): Observable<number> =>
     pipe(
-      getGeneratedProduct(sdk)(item.productId),
+      getUnitProduct(sdk)(item.productId),
       map(genProd =>
         pipe(
           genProd?.configSets || [],

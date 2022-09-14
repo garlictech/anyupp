@@ -5,9 +5,14 @@ abstract class UnitSelectEvent extends Equatable {
 }
 
 class SelectUnit extends UnitSelectEvent {
-  final GeoUnit unit;
-  const SelectUnit(this.unit);
+  final Unit unit;
+  SelectUnit(this.unit);
 
   @override
   List<Object?> get props => [unit];
+}
+
+class DeSelectUnit extends UnitSelectEvent {
+  @override
+  List<Object?> get props => [];
 }

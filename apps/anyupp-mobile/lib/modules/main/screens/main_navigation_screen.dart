@@ -1,19 +1,19 @@
 import 'package:double_back_to_close_app/double_back_to_close_app.dart';
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/main/main.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/auth/auth.dart';
-import 'package:fa_prev/shared/connectivity.dart';
-import 'package:fa_prev/shared/exception.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/app-config.dart';
+import '/core/core.dart';
+import '/modules/cart/cart.dart';
+import '/modules/main/main.dart';
+import '/modules/orders/orders.dart';
+import '/modules/screens.dart';
+import '/shared/auth/auth.dart';
+import '/shared/connectivity.dart';
+import '/shared/exception.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 class MainNavigation extends StatefulWidget {
   final int pageIndex;
@@ -43,7 +43,7 @@ class _MainNavigationState extends State<MainNavigation>
   List<Widget> _pages = [
     MenuScreen(),
     FavoritesScreen(),
-    OrdersScreen(key: UniqueKey()),
+    OrdersScreen(),
     Profile(),
     CartScreen(),
   ];
@@ -281,11 +281,11 @@ class _MainNavigationState extends State<MainNavigation>
     }
     if (_selectedIndex == index) return;
 
-    if (index == 2) {
-      _pages[2] = OrdersScreen(
-        key: UniqueKey(),
-      );
-    }
+    // if (index == 2) {
+    //   _pages[2] = OrdersScreen(
+    //     key: UniqueKey(),
+    //   );
+    // }
 
     if (index == 0 || index == 4) {
       // Menu + Cart
@@ -297,6 +297,7 @@ class _MainNavigationState extends State<MainNavigation>
 
     if (index == 4) {
       index = 0;
+      log.d('MainNavigationScreen.NAVTO CART!!!!');
       Future.delayed(Duration(seconds: 1))
           .then((value) => Nav.to(CartScreen()));
     }

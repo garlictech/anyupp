@@ -1,8 +1,8 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets/platform_alert_dialog.dart';
+import '/core/core.dart';
+import '/modules/login/login.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/widgets/platform_alert_dialog.dart';
 import 'package:flutter/material.dart';
 
 showConfirmLogoutDialog(BuildContext context,

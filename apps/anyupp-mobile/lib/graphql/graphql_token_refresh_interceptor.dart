@@ -1,10 +1,10 @@
 import 'dart:math';
 
 import 'package:dio/dio.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/auth/auth.dart';
-import 'package:fa_prev/shared/connectivity/bloc/network_event.dart';
-import 'package:fa_prev/shared/connectivity/bloc/network_status_bloc.dart';
+import '/core/core.dart';
+import '/shared/auth/auth.dart';
+import '/shared/connectivity/bloc/network_event.dart';
+import '/shared/connectivity/bloc/network_status_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils/http_utils.dart';

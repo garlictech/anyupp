@@ -1,7 +1,7 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/shared/auth/auth.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/rating_tipping/rating_tipping.dart';
+import 'package:anyupp/shared/auth/auth.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

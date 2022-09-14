@@ -1,12 +1,12 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/auth/auth.dart';
-import 'package:fa_prev/shared/exception.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
+import 'package:anyupp/modules/favorites/favorites.dart';
+import 'package:anyupp/modules/menu/menu.dart';
+import 'package:anyupp/modules/takeaway/takeaway.dart';
+import 'package:anyupp/shared/auth/auth.dart';
+import 'package:anyupp/shared/exception.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,11 +29,11 @@ void main() {
       email: 'test_user_profile@anyupp.com',
       name: 'John Doe',
     );
-    GeoUnit mockUnit = MockGenerator.generateUnit(
+    Unit mockUnit = MockGenerator.generateUnit(
       name: 'Test Unit',
       currency: 'huf',
     ).copyWith(
-      packagingTax: 10,
+      packagingTaxPercentage: 10,
     );
     Cart mockCart = MockGenerator.generateBasicCart(
       unitId: mockUnit.id,

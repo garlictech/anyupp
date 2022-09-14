@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`getCart test should throw error without id as input 1`] = `[Error: GraphQL error: Variable 'id' has coerced Null value for NonNull type 'ID!']`;

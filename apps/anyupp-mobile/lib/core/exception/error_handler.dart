@@ -1,6 +1,6 @@
 import 'package:catcher/catcher.dart';
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/core.dart';
+import '/app-config.dart';
+import '/core/core.dart';
 import 'package:flutter/material.dart';
 
 void configureCatcherAndRunZonedApp(Widget mainApp) {

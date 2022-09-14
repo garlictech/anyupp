@@ -1,5 +1,4 @@
 {
-  "root": "libs/anyupp-gql/backend",
   "sourceRoot": "libs/anyupp-gql/backend/src",
   "projectType": "library",
   "targets": {

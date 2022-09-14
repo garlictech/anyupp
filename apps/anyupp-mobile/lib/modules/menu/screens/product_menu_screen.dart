@@ -1,21 +1,20 @@
 import 'dart:io';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/adbanner/adbanner.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/shared/exception.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/adbanner/adbanner.dart';
+import '/modules/cart/cart.dart';
+import '/modules/favorites/favorites.dart';
+import '/modules/menu/menu.dart';
+import '/modules/selectunit/selectunit.dart';
+import '/shared/exception.dart';
+import '/shared/locale/locale.dart';
+import '/shared/nav.dart';
+import '/shared/utils/format_utils.dart';
+import '/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-// import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class _CategoryMenuWidgets {
   // final List<Widget> widgets;
@@ -41,16 +40,21 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) {
-        var bloc = getIt<ProductListBloc>();
-        bloc.add(LoadAllProductList(
-          unitId: currentUnit!.id,
-          chainId: currentUnit!.chainId,
-        ));
-        return bloc;
+    return WillPopScope(
+      onWillPop: () async {
+        getIt<ThemeBloc>().add(ResetTheme());
+        return true;
       },
-      child: MenuScreenInner(),
+      child: BlocProvider(
+        create: (BuildContext context) {
+          var bloc = getIt<ProductListBloc>();
+          bloc.add(LoadAllProductList(
+            unitId: currentUnit!.id,
+          ));
+          return bloc;
+        },
+        child: MenuScreenInner(),
+      ),
     );
   }
 }
@@ -90,7 +94,6 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   void _onRefresh() async {
     BlocProvider.of<ProductListBloc>(context).add(LoadAllProductList(
       unitId: currentUnit!.id,
-      chainId: currentUnit!.chainId,
     ));
   }
 
@@ -102,7 +105,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
 
   @override
   Widget build(BuildContext context) {
-    GeoUnit? unit = currentUnit;
+    Unit? unit = currentUnit;
     assert(unit != null);
     return Scaffold(
       appBar: ProductMenuAppBar(
@@ -227,9 +230,9 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
 
   Widget _buildMainMenu(
     BuildContext context,
-    GeoUnit unit,
+    Unit unit,
     List<ProductCategory> productCategories,
-    List<GeneratedProduct> products,
+    List<Product> products,
     List<FavoriteProduct>? favorites,
   ) {
     var menu = _buildProductList(
@@ -243,106 +246,109 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     // log.e('_tabIndexMap=${_tabIndexMap}');
 
     return RefreshIndicator(
-      onRefresh: () async => _onRefresh(),
-      color: theme.button,
-      child: NestedScrollView(
-        physics: BouncingScrollPhysics(),
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-          // Animated Unit info
-          return <Widget>[
-            SliverAppBar(
-              backgroundColor: theme.secondary0,
-              automaticallyImplyLeading: false,
-              expandedHeight: 270.0,
-              flexibleSpace: FlexibleSpaceBar(
-                background: UnitInfoHeaderWidget(
-                  unit: unit,
+        onRefresh: () async => _onRefresh(),
+        color: theme.button,
+        child: NestedScrollView(
+          physics: const BouncingScrollPhysics(),
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            // Animated Unit info
+            return <Widget>[
+              SliverAppBar(
+                backgroundColor: theme.secondary0,
+                automaticallyImplyLeading: false,
+                expandedHeight: 270.0,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: UnitInfoHeaderWidget(
+                    unit: unit,
+                  ),
                 ),
               ),
-            ),
-            // Sticky Category header
-            // Main and SubCategory
-            SliverPersistentHeader(
-              pinned: true,
-              floating: true,
-              delegate: SliverAppBarDelegate(
-                minHeight:
-                    58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
-                maxHeight:
-                    58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
-                child: Material(
-                  elevation: 1.0,
-                  shadowColor: theme.secondary12,
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                    // margin: const EdgeInsets.only(top: 4.0, bottom: 8.0),
-                    color: theme.secondary0,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Main category tabbar
-                        ProductCategoryTabWidget(
-                          tabController: _tabController!,
-                          addFavorites: menu.hasFavorites,
-                          productCategories: menu.productCategories,
-                          onTap: (index) => _handleTabTap(context, index),
-                        ),
-                        // Subcategory tabbar
-                        if (menu.subCategoryWidgets != null)
-                          IndexedStack(
-                            index: 0,
-                            children: menu.productCategories
-                                .map(
-                                  (e) => DefaultTabController(
-                                    length: menu.productCategories.length,
-                                    initialIndex: 0,
-                                    child: SubCategoryTabBarWidget(
-                                      // controller: _subTabController!,
-                                      // controller: ,
-                                      productCategories: menu.productCategories,
-                                      onTap: (index) => log.i('onTap $index'),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
+              // Sticky Category header
+              // Main and SubCategory
+              SliverPersistentHeader(
+                pinned: true,
+                floating: true,
+                delegate: SliverAppBarDelegate(
+                  minHeight:
+                      58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
+                  maxHeight:
+                      58.0 + (menu.subCategoryWidgets != null ? 62.0 : 0.0),
+                  child: Material(
+                    elevation: 1.0,
+                    shadowColor: theme.secondary12,
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
+                      // margin: const EdgeInsets.only(top: 4.0, bottom: 8.0),
+                      color: theme.secondary0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Main category tabbar
+                          ProductCategoryTabWidget(
+                            tabController: _tabController!,
+                            addFavorites: menu.hasFavorites,
+                            productCategories: menu.productCategories,
+                            onTap: (index) => _handleTabTap(context, index),
                           ),
-                      ],
+                          // Subcategory tabbar
+                          if (menu.subCategoryWidgets != null)
+                            IndexedStack(
+                              index: 0,
+                              children: menu.productCategories
+                                  .map(
+                                    (e) => DefaultTabController(
+                                      length: menu.productCategories.length,
+                                      initialIndex: 0,
+                                      child: SubCategoryTabBarWidget(
+                                        // controller: _subTabController!,
+                                        // controller: ,
+                                        productCategories:
+                                            menu.productCategories,
+                                        onTap: (index) => log.i('onTap $index'),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ];
-        },
-        // Menu list
-        body: TabBarView(
-          controller: _tabController,
-          physics: BouncingScrollPhysics(),
-          children: [
-            ...menu.mainCategoryWidgets.entries
-                .map((entry) => SingleChildScrollView(
-                      // controller: _scrollController,
-                      primary: true,
-                      // physics: BouncingScrollPhysics(),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: menu.mainCategoryWidgets[entry.key] ?? [],
-                      ),
-                    ))
-                .toList(),
-          ],
-        ),
-      ),
-    );
+            ];
+          },
+          // Menu list
+          body: TabBarView(
+            controller: _tabController,
+            physics: NeverScrollableScrollPhysics(), //BouncingScrollPhysics(),
+            children: [
+              ...menu.mainCategoryWidgets.entries
+                  .map((entry) => RefreshIndicator(
+                      onRefresh: () async => _onRefresh(),
+                      color: theme.button,
+                      child: SingleChildScrollView(
+                        // controller: _scrollController,
+                        primary: true,
+                        // physics: BouncingScrollPhysics(),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: menu.mainCategoryWidgets[entry.key] ?? [],
+                        ),
+                      )))
+                  .toList(),
+            ],
+          ),
+        ));
   }
 
   _CategoryMenuWidgets _buildProductList({
     required BuildContext context,
-    required GeoUnit unit,
+    required Unit unit,
     required List<ProductCategory> productCategories,
-    required List<GeneratedProduct> products,
+    required List<Product> products,
     List<FavoriteProduct>? favorites,
   }) {
     _favoritesIndex = favorites?.isNotEmpty == true ? 1 : 0;
@@ -427,7 +433,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
 
   List<Widget> _getWidgetsFromMenuItems(
     List<MenuListItem> menuItems,
-    GeoUnit unit,
+    Unit unit,
     ServingMode servingMode,
   ) {
     List<Widget> results = [];

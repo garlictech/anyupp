@@ -1,5 +1,4 @@
 {
-  "root": "libs/shared/graphql/api-client",
   "sourceRoot": "libs/shared/graphql/api-client/src",
   "projectType": "library",
   "targets": {

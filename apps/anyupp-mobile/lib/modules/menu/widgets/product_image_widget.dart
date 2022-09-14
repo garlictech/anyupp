@@ -1,6 +1,6 @@
-import 'package:fa_prev/shared/widgets.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/core/theme/theme.dart';
+import '/core/theme/theme.dart';
 
 class ProductImageWidget extends StatelessWidget {
   final String url;
@@ -23,7 +23,7 @@ class ProductImageWidget extends StatelessWidget {
       height: height,
       fit: fit,
       placeholder: Container(
-        padding: EdgeInsets.all(50.0),
+        // padding: EdgeInsets.all(50.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(14.0),
@@ -35,12 +35,14 @@ class ProductImageWidget extends StatelessWidget {
         ),
         width: width,
         height: height,
-        child: CircularProgressIndicator(
+        child: CenterLoadingWidget(
           backgroundColor: theme.secondary12,
         ),
+        // child: CircularProgressIndicator(
+        //   backgroundColor: theme.secondary12,
+        // ),
       ),
       errorWidget: Container(
-        padding: EdgeInsets.all(50.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(
             Radius.circular(14.0),
@@ -50,10 +52,12 @@ class ProductImageWidget extends StatelessWidget {
             color: theme.secondary16.withOpacity(0.4),
           ),
         ),
-        child: Icon(
-          Icons.error,
-          color: Colors.red,
-          size: 32.0,
+        child: Center(
+          child: Icon(
+            Icons.error,
+            color: Colors.red,
+            size: 32.0,
+          ),
         ),
       ),
     );

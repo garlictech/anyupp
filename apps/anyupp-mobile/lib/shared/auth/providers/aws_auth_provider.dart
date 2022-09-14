@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/auth.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/shared/auth.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';

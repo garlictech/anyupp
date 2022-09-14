@@ -8,6 +8,9 @@ export const resultTap = <T>(typename: string, id: string) =>
     //   // }
     // },
     error(err) {
-      console.error(`### Error during ${typename} with id: ${id}`, err.message);
+      console.error(
+        `### Error during ${typename} with id: ${id}`,
+        JSON.stringify(err, null, 2),
+      );
     },
   });

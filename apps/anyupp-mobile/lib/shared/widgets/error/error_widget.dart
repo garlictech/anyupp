@@ -1,4 +1,4 @@
-import 'package:fa_prev/shared/widgets/error/status_widget.dart';
+import '/shared/widgets/error/status_widget.dart';
 import 'package:flutter/material.dart';
 
 class CommonErrorWidget extends StatusWidget {

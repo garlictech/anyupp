@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:artemis/artemis.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
 
 const REPEAT_TIMEOUT_MS = 120000;
 
@@ -131,7 +131,7 @@ class AwsOrderHistorySubscription {
         nextToken: _nextToken,
       )));
 
-      log.d('_getOrderHistoryList().result.data=${result.data}');
+      // log.d('_getOrderHistoryList().result.data=${result.data}');
       // log.d('_getOrderHistoryList().result.exception=${result.exception}');
       if (result.data?.searchOrders == null) {
         _nextToken = null;
@@ -154,8 +154,8 @@ class AwsOrderHistorySubscription {
 
       List<Order> results = [];
       for (int i = 0; i < items.length; i++) {
-        log.d(
-            '**** _getOrderHistoryList._getList.order[${items[i]!.id}].hasRated=${items[i]!.hasRated}');
+        // log.d(
+        //     '**** _getOrderHistoryList._getList.order[${items[i]!.id}].hasRated=${items[i]!.hasRated}');
 
         results.add(Order.fromJson(items[i]!.toJson()));
       }

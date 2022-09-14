@@ -1,15 +1,15 @@
 import 'dart:math';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
-import 'package:fa_prev/shared/utils/pdf_utils.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/graphql/utils/graphql_coercers.dart';
+import '/models.dart';
+import '/modules/orders/orders.dart';
+import '/modules/rating_tipping/rating_tipping.dart';
+import '/shared/locale.dart';
+import '/shared/utils/format_utils.dart';
+import '/shared/utils/pdf_utils.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,7 +17,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final Order order;
-  // final GeoUnit unit;
+  // final Unit unit;
 
   const OrderDetailsScreen({Key? key, required this.order}) : super(key: key);
 
@@ -858,7 +858,7 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
     List<String> extraNames = [];
     if (item.selectedConfigMap != null) {
       item.selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent
+        for (ProductConfigComponent generatedProductConfigComponent
             in value) {
           extraNames.add(
               getLocalizedText(context, generatedProductConfigComponent.name));
@@ -1269,7 +1269,7 @@ class OrderDetailsInfoTable extends StatelessWidget {
           ListView.builder(
             shrinkWrap: true,
             primary: false,
-            itemCount: 5,
+            itemCount: 4,
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               return OrderDetailsInfoTableItem(
@@ -1304,8 +1304,8 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
   }) : super(key: key);
 
   OrderDetailsInfoTableItemData _generateItemData(BuildContext context) {
-    // List<GeoUnit>? units = getIt<UnitsBloc>().state;
-    GeoUnit? unit;
+    // List<Unit>? units = getIt<UnitsBloc>().state;
+    Unit? unit;
     var state = getIt<UnitsBloc>().state;
     if (state is UnitsLoaded) {
       int index = state.units.indexWhere((unit) => unit.id == order.unitId);
@@ -1331,19 +1331,13 @@ class OrderDetailsInfoTableItem extends StatelessWidget {
               : trans(context, 'cart.inPlace').capitalize(),
         );
       case 2:
-        return OrderDetailsInfoTableItemData(
-          icon: Icons.receipt_long_rounded,
-          title: trans(context, 'orders.infos.titles.2'),
-          value: '#${order.orderNum}',
-        );
-      case 3:
         var createdAt = dateFormatter.format(order.createdAt);
         return OrderDetailsInfoTableItemData(
           icon: Icons.event,
           title: trans(context, 'orders.infos.titles.3'),
           value: createdAt,
         );
-      case 4:
+      case 3:
         var createdAt = timeFormatter.format(order.createdAt);
         return OrderDetailsInfoTableItemData(
           icon: Icons.schedule_rounded,

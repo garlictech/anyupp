@@ -1,217 +1,71 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: CHAINPRODUCTST 1`] = `
-Array [
-  Object {
-    "allergens": null,
-    "chainId": "rkeeper-MASKED ID-chain",
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "description": null,
-    "dirty": true,
-    "externalId": null,
-    "id": "MASKED ID",
-    "image": null,
-    "isVisible": true,
-    "name": Object {
-      "de": null,
-      "en": null,
-      "hu": "Próba ital",
-    },
-    "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-    "productType": "dish",
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 50000,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
-]
+exports[`Test the communication between anyupp/rkeeper send an unpaid order to rkeeper by HTTP post, then send another request to set it to Paid status: config.auth 1`] = `
+Object {
+  "password": "f3e7c8260b2f9b1cc62208a441410a",
+  "username": "590_49_985_540",
+}
 `;
 
-exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: GROUPPRODUCTST 1`] = `
-Array [
-  Object {
-    "chainId": "rkeeper-MASKED ID-chain",
-    "chainProduct": Object {
-      "allergens": null,
-      "chainId": "rkeeper-MASKED ID-chain",
-      "configSets": null,
-      "createdAt": "MASKED DATE",
-      "deletedAt": null,
-      "description": null,
-      "dirty": true,
-      "externalId": null,
-      "id": "MASKED ID",
-      "image": null,
-      "isVisible": true,
-      "name": Object {
-        "de": null,
-        "en": null,
-        "hu": "Próba ital",
-      },
-      "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-      "productType": "dish",
-      "updatedAt": "MASKED DATE",
-      "variants": Array [
-        Object {
-          "availabilities": null,
-          "id": "id",
-          "isAvailable": true,
-          "netPackagingFee": null,
-          "pack": null,
-          "position": -1,
-          "price": 50000,
-          "refGroupPrice": null,
-          "soldOut": null,
-          "variantName": Object {
-            "de": null,
-            "en": null,
-            "hu": "foobar",
-          },
-        },
-      ],
-    },
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "dirty": true,
-    "externalId": null,
-    "groupId": "rkeeper-MASKED ID-group",
-    "id": "MASKED ID",
-    "isVisible": true,
-    "parentId": "MASKED ID",
-    "takeawayTax": null,
-    "tax": -1,
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 50000,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
-]
+exports[`Test the communication between anyupp/rkeeper send an unpaid order to rkeeper by HTTP post, then send another request to set it to Paid status: config.auth 2`] = `
+Object {
+  "password": "f3e7c8260b2f9b1cc62208a441410a",
+  "username": "590_49_985_540",
+}
+`;
+
+exports[`Test the communication between anyupp/rkeeper send order to rkeeper by HTTP post: config.auth 1`] = `
+Object {
+  "password": "f3e7c8260b2f9b1cc62208a441410a",
+  "username": "590_49_985_540",
+}
+`;
+
+exports[`Test the communication between anyupp/rkeeper test the menusync handler - reply with unit not found 1`] = `
+Object {
+  "error": "Unit with external ID foobar cannot be found",
+}
+`;
+
+exports[`Test the communication between anyupp/rkeeper test the menusync route - reply with unit not found 1`] = `
+Object {
+  "error": "Unit with external ID foobar cannot be found",
+}
+`;
+
+exports[`Test the communication between anyupp/rkeeper test the order status route - reply with unit not found 1`] = `
+Object {
+  "error": "Unit with restaurant ID foobar cannot be found",
+}
 `;
 
 exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: UNITPRODUCTST 1`] = `
 Array [
   Object {
-    "chainId": "rkeeper-MASKED ID-chain",
+    "allergens": null,
     "configSets": Array [],
     "createdAt": "MASKED DATE",
     "deletedAt": null,
+    "description": null,
     "dirty": true,
-    "externalId": "9991000114",
-    "groupId": "rkeeper-MASKED ID-group",
-    "groupProduct": Object {
-      "chainId": "rkeeper-MASKED ID-chain",
-      "chainProduct": Object {
-        "allergens": null,
-        "chainId": "rkeeper-MASKED ID-chain",
-        "configSets": null,
-        "createdAt": "MASKED DATE",
-        "deletedAt": null,
-        "description": null,
-        "dirty": true,
-        "externalId": null,
-        "id": "MASKED ID",
-        "image": null,
-        "isVisible": true,
-        "name": Object {
-          "de": null,
-          "en": null,
-          "hu": "Próba ital",
-        },
-        "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-        "productType": "dish",
-        "updatedAt": "MASKED DATE",
-        "variants": Array [
-          Object {
-            "availabilities": null,
-            "id": "id",
-            "isAvailable": true,
-            "netPackagingFee": null,
-            "pack": null,
-            "position": -1,
-            "price": 50000,
-            "refGroupPrice": null,
-            "soldOut": null,
-            "variantName": Object {
-              "de": null,
-              "en": null,
-              "hu": "foobar",
-            },
-          },
-        ],
-      },
-      "configSets": null,
-      "createdAt": "MASKED DATE",
-      "deletedAt": null,
-      "dirty": true,
-      "externalId": null,
-      "groupId": "rkeeper-MASKED ID-group",
-      "id": "MASKED ID",
-      "isVisible": true,
-      "parentId": "MASKED ID",
-      "takeawayTax": null,
-      "tax": -1,
-      "updatedAt": "MASKED DATE",
-      "variants": Array [
-        Object {
-          "availabilities": null,
-          "id": "id",
-          "isAvailable": true,
-          "netPackagingFee": null,
-          "pack": null,
-          "position": -1,
-          "price": 50000,
-          "refGroupPrice": null,
-          "soldOut": null,
-          "variantName": Object {
-            "de": null,
-            "en": null,
-            "hu": "foobar",
-          },
-        },
-      ],
-    },
     "id": "MASKED ID",
+    "image": null,
     "isVisible": true,
     "laneId": null,
-    "parentId": "MASKED ID",
+    "name": Object {
+      "de": null,
+      "en": null,
+      "hu": "Próba ital",
+    },
     "position": -1,
+    "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+    "productType": "dish",
     "supportedServingModes": Array [
       "inPlace",
     ],
     "takeaway": null,
+    "takeawayTax": null,
+    "tax": -1,
     "unitId": "rkeeper-MASKED ID-unit",
     "updatedAt": "MASKED DATE",
     "variants": Array [
@@ -226,16 +80,17 @@ Array [
             "type": "A",
           },
         ],
-        "id": "id",
+        "externalId": "9991000114",
+        "id": "MASKED ID",
         "isAvailable": true,
         "netPackagingFee": null,
+        "ownerProduct": "MASKED ID",
         "pack": Object {
           "size": 1,
           "unit": "zsák",
         },
         "position": -1,
         "price": 50000,
-        "refGroupPrice": null,
         "soldOut": null,
         "variantName": Object {
           "de": null,
@@ -249,725 +104,107 @@ Array [
 `;
 
 exports[`Test the rkeeper api basic functionality Create products by an rkeeper product: update rkeeper product 1`] = `
-Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "configSets": Array [],
-  "createdAt": "MASKED DATE",
-  "deletedAt": null,
-  "dirty": true,
-  "externalId": "9991000114",
-  "groupId": "rkeeper-MASKED ID-group",
-  "groupProduct": Object {
-    "chainId": "rkeeper-MASKED ID-chain",
-    "chainProduct": Object {
-      "allergens": null,
-      "chainId": "rkeeper-MASKED ID-chain",
-      "configSets": null,
-      "createdAt": "MASKED DATE",
-      "deletedAt": null,
-      "description": null,
-      "dirty": true,
-      "externalId": null,
-      "id": "MASKED ID",
-      "image": null,
-      "isVisible": true,
-      "name": Object {
-        "de": null,
-        "en": null,
-        "hu": "Próba ital",
-      },
-      "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-      "productType": "dish",
-      "updatedAt": "MASKED DATE",
-      "variants": Array [
-        Object {
-          "availabilities": null,
-          "id": "id",
-          "isAvailable": true,
-          "netPackagingFee": null,
-          "pack": null,
-          "position": -1,
-          "price": 50000,
-          "refGroupPrice": null,
-          "soldOut": null,
-          "variantName": Object {
-            "de": null,
-            "en": null,
-            "hu": "foobar",
-          },
-        },
-      ],
-    },
-    "configSets": null,
+Array [
+  Object {
+    "allergens": null,
+    "configSets": Array [],
     "createdAt": "MASKED DATE",
     "deletedAt": null,
+    "description": null,
     "dirty": true,
-    "externalId": null,
-    "groupId": "rkeeper-MASKED ID-group",
     "id": "MASKED ID",
+    "image": null,
     "isVisible": true,
-    "parentId": "MASKED ID",
+    "laneId": null,
+    "name": Object {
+      "de": null,
+      "en": null,
+      "hu": "Próba ital",
+    },
+    "position": -1,
+    "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+    "productType": "dish",
+    "supportedServingModes": Array [
+      "inPlace",
+    ],
+    "takeaway": null,
     "takeawayTax": null,
     "tax": -1,
+    "unitId": "rkeeper-MASKED ID-unit",
     "updatedAt": "MASKED DATE",
     "variants": Array [
       Object {
-        "availabilities": null,
-        "id": "id",
+        "availabilities": Array [
+          Object {
+            "dayFrom": null,
+            "dayTo": null,
+            "price": 50000,
+            "timeFrom": null,
+            "timeTo": null,
+            "type": "A",
+          },
+        ],
+        "externalId": "9991000114",
+        "id": "MASKED ID",
         "isAvailable": true,
         "netPackagingFee": null,
-        "pack": null,
+        "ownerProduct": "MASKED ID",
+        "pack": Object {
+          "size": 1,
+          "unit": "zsák",
+        },
         "position": -1,
         "price": 50000,
-        "refGroupPrice": null,
         "soldOut": null,
         "variantName": Object {
           "de": null,
           "en": null,
-          "hu": "foobar",
+          "hu": "Próba ital",
         },
       },
     ],
   },
-  "id": "MASKED ID",
-  "isVisible": true,
-  "laneId": null,
-  "parentId": "MASKED ID",
-  "position": -1,
-  "supportedServingModes": Array [
-    "inPlace",
-  ],
-  "takeaway": null,
-  "unitId": "rkeeper-MASKED ID-unit",
-  "updatedAt": "MASKED DATE",
-  "variants": Array [
-    Object {
-      "availabilities": Array [
-        Object {
-          "dayFrom": null,
-          "dayTo": null,
-          "price": 1000000,
-          "timeFrom": null,
-          "timeTo": null,
-          "type": "A",
-        },
-      ],
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": Object {
-        "size": 1,
-        "unit": "zsák",
+  Object {
+    "availabilities": Array [
+      Object {
+        "dayFrom": null,
+        "dayTo": null,
+        "price": 1000000,
+        "timeFrom": null,
+        "timeTo": null,
+        "type": "A",
       },
-      "position": -1,
-      "price": 1000000,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "Próba ital",
-      },
-    },
-  ],
-}
-`;
-
-exports[`Test the rkeeper api basic functionality It shouls be able to search for external product: NOT existing external product 1`] = `null`;
-
-exports[`Test the rkeeper api basic functionality It shouls be able to search for external product: existing external product 1`] = `"rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unitproduct"`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - not not existing unit 1`] = `[Error: Cannot find unit belonging to external unit id NOT EXISTING RESTAURANT]`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 1`] = `
-Object {
-  "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "description": null,
-  "dirty": true,
-  "externalId": null,
-  "id": "MASKED ID",
-  "image": null,
-  "isVisible": true,
-  "name": Object {
-    "de": null,
-    "en": null,
-    "hu": "Próba kaja",
-  },
-  "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "dish",
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 600,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
-`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 2`] = `
-Object {
-  "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "description": null,
-  "dirty": true,
-  "externalId": null,
-  "id": "MASKED ID",
-  "image": null,
-  "isVisible": true,
-  "name": Object {
-    "de": null,
-    "en": null,
-    "hu": "TA KM Kiotói Szilvás Krémkávé",
-  },
-  "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "dish",
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 700,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
-`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 3`] = `
-Object {
-  "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "description": null,
-  "dirty": true,
-  "externalId": null,
-  "id": "MASKED ID",
-  "image": null,
-  "isVisible": true,
-  "name": Object {
-    "de": null,
-    "en": null,
-    "hu": "TA Kiotói Szilvás Krémkávé",
-  },
-  "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "dish",
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 700,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
-`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 4`] = `
-Object {
-  "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "description": null,
-  "dirty": true,
-  "externalId": null,
-  "id": "MASKED ID",
-  "image": null,
-  "isVisible": true,
-  "name": Object {
-    "de": null,
-    "en": null,
-    "hu": "próba ital inactive",
-  },
-  "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "dish",
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 500,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
-`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Chain products 5`] = `
-Object {
-  "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "description": null,
-  "dirty": true,
-  "externalId": null,
-  "id": "MASKED ID",
-  "image": null,
-  "isVisible": true,
-  "name": Object {
-    "de": null,
-    "en": null,
-    "hu": "próba ital",
-  },
-  "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-  "productType": "dish",
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 500,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
-`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 1`] = `
-Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "chainProduct": Object {
-    "allergens": null,
-    "chainId": "rkeeper-MASKED ID-chain",
-    "configSets": null,
+    ],
     "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "description": null,
-    "dirty": true,
-    "externalId": null,
+    "externalId": "9991000114",
     "id": "MASKED ID",
-    "image": null,
-    "isVisible": true,
-    "name": Object {
+    "isAvailable": true,
+    "netPackagingFee": null,
+    "ownerProduct": "MASKED ID",
+    "pack": Object {
+      "size": 1,
+      "unit": "zsák",
+    },
+    "position": -1,
+    "price": 1000000,
+    "soldOut": null,
+    "updatedAt": "MASKED DATE",
+    "variantName": Object {
       "de": null,
       "en": null,
-      "hu": "próba ital inactive",
+      "hu": "NEW NAME",
     },
-    "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-    "productType": "dish",
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 500,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
   },
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "dirty": true,
-  "externalId": null,
-  "groupId": "rkeeper-MASKED ID-group",
-  "id": "MASKED ID",
-  "isVisible": true,
-  "parentId": "MASKED ID",
-  "takeawayTax": null,
-  "tax": -1,
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 500,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
+]
 `;
 
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 2`] = `
-Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "chainProduct": Object {
-    "allergens": null,
-    "chainId": "rkeeper-MASKED ID-chain",
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "description": null,
-    "dirty": true,
-    "externalId": null,
-    "id": "MASKED ID",
-    "image": null,
-    "isVisible": true,
-    "name": Object {
-      "de": null,
-      "en": null,
-      "hu": "próba ital",
-    },
-    "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-    "productType": "dish",
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 500,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "dirty": true,
-  "externalId": null,
-  "groupId": "rkeeper-MASKED ID-group",
-  "id": "MASKED ID",
-  "isVisible": true,
-  "parentId": "MASKED ID",
-  "takeawayTax": null,
-  "tax": -1,
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 500,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
-`;
+exports[`Test the rkeeper api basic functionality It shouls be able to search for external variant: NOT existing external product 1`] = `null`;
 
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 3`] = `
-Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "chainProduct": Object {
-    "allergens": null,
-    "chainId": "rkeeper-MASKED ID-chain",
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "description": null,
-    "dirty": true,
-    "externalId": null,
-    "id": "MASKED ID",
-    "image": null,
-    "isVisible": true,
-    "name": Object {
-      "de": null,
-      "en": null,
-      "hu": "Próba kaja",
-    },
-    "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-    "productType": "dish",
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 600,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "dirty": true,
-  "externalId": null,
-  "groupId": "rkeeper-MASKED ID-group",
-  "id": "MASKED ID",
-  "isVisible": true,
-  "parentId": "MASKED ID",
-  "takeawayTax": null,
-  "tax": -1,
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 600,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
-`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 4`] = `
-Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "chainProduct": Object {
-    "allergens": null,
-    "chainId": "rkeeper-MASKED ID-chain",
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "description": null,
-    "dirty": true,
-    "externalId": null,
-    "id": "MASKED ID",
-    "image": null,
-    "isVisible": true,
-    "name": Object {
-      "de": null,
-      "en": null,
-      "hu": "TA KM Kiotói Szilvás Krémkávé",
-    },
-    "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-    "productType": "dish",
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 700,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "dirty": true,
-  "externalId": null,
-  "groupId": "rkeeper-MASKED ID-group",
-  "id": "MASKED ID",
-  "isVisible": true,
-  "parentId": "MASKED ID",
-  "takeawayTax": null,
-  "tax": -1,
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 700,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
-`;
-
-exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Group products 5`] = `
-Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "chainProduct": Object {
-    "allergens": null,
-    "chainId": "rkeeper-MASKED ID-chain",
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "description": null,
-    "dirty": true,
-    "externalId": null,
-    "id": "MASKED ID",
-    "image": null,
-    "isVisible": true,
-    "name": Object {
-      "de": null,
-      "en": null,
-      "hu": "TA Kiotói Szilvás Krémkávé",
-    },
-    "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-    "productType": "dish",
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 700,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "dirty": true,
-  "externalId": null,
-  "groupId": "rkeeper-MASKED ID-group",
-  "id": "MASKED ID",
-  "isVisible": true,
-  "parentId": "MASKED ID",
-  "takeawayTax": null,
-  "tax": -1,
-  "updatedAt": Any<String>,
-  "variants": Array [
-    Object {
-      "availabilities": null,
-      "id": "id",
-      "isAvailable": true,
-      "netPackagingFee": null,
-      "pack": null,
-      "position": -1,
-      "price": 700,
-      "refGroupPrice": null,
-      "soldOut": null,
-      "variantName": Object {
-        "de": null,
-        "en": null,
-        "hu": "foobar",
-      },
-    },
-  ],
-}
-`;
+exports[`Test the rkeeper api basic functionality It shouls be able to search for external variant: existing external product 1`] = `"rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unitproduct"`;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product component sets 1`] = `
 Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
   "description": "describe me",
   "dirty": true,
@@ -986,16 +223,16 @@ Object {
     "en": null,
     "hu": "Tejek 90ml",
   },
+  "ownerEntity": "rkeeper-MASKED ID-unit",
   "supportedServingModes": null,
   "type": "rkeeper",
-  "updatedAt": Any<String>,
+  "updatedAt": "MASKED DATE",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product component sets 2`] = `
 Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
   "description": "describe me",
   "dirty": true,
@@ -1011,17 +248,17 @@ Object {
     "en": null,
     "hu": "2dl papírpohár",
   },
+  "ownerEntity": "rkeeper-MASKED ID-unit",
   "supportedServingModes": null,
   "type": "rkeeper",
-  "updatedAt": Any<String>,
+  "updatedAt": "MASKED DATE",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 1`] = `
 Object {
   "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
   "description": null,
   "dirty": true,
@@ -1032,16 +269,15 @@ Object {
     "en": null,
     "hu": "Kókuszital (90ml)",
   },
-  "soldOut": null,
-  "updatedAt": Any<String>,
+  "ownerEntity": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 2`] = `
 Object {
   "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
   "description": null,
   "dirty": true,
@@ -1052,16 +288,15 @@ Object {
     "en": null,
     "hu": "Laktózmentes tej (90ml)",
   },
-  "soldOut": null,
-  "updatedAt": Any<String>,
+  "ownerEntity": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 3`] = `
 Object {
   "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
   "description": null,
   "dirty": true,
@@ -1072,16 +307,15 @@ Object {
     "en": null,
     "hu": "Mandulaital (90ml)",
   },
-  "soldOut": null,
-  "updatedAt": Any<String>,
+  "ownerEntity": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 4`] = `
 Object {
   "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
   "description": null,
   "dirty": true,
@@ -1092,16 +326,15 @@ Object {
     "en": null,
     "hu": "Papírpohár 2dl",
   },
-  "soldOut": null,
-  "updatedAt": Any<String>,
+  "ownerEntity": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 5`] = `
 Object {
   "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
   "description": null,
   "dirty": true,
@@ -1112,16 +345,15 @@ Object {
     "en": null,
     "hu": "Saját pohár",
   },
-  "soldOut": null,
-  "updatedAt": Any<String>,
+  "ownerEntity": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 6`] = `
 Object {
   "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
   "description": null,
   "dirty": true,
@@ -1132,16 +364,15 @@ Object {
     "en": null,
     "hu": "Tej sima (90ml)",
   },
-  "soldOut": null,
-  "updatedAt": Any<String>,
+  "ownerEntity": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product components 7`] = `
 Object {
   "allergens": null,
-  "chainId": "rkeeper-MASKED ID-chain",
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
   "description": null,
   "dirty": true,
@@ -1152,130 +383,67 @@ Object {
     "en": null,
     "hu": "Zabital (90ml)",
   },
-  "soldOut": null,
-  "updatedAt": Any<String>,
+  "ownerEntity": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 1`] = `
 Object {
-  "chainId": "rkeeper-MASKED ID-chain",
+  "allergens": null,
   "configSets": null,
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
+  "description": null,
   "dirty": true,
-  "externalId": "99911000114",
-  "groupId": "rkeeper-MASKED ID-group",
-  "groupProduct": Object {
-    "chainId": "rkeeper-MASKED ID-chain",
-    "chainProduct": Object {
-      "allergens": null,
-      "chainId": "rkeeper-MASKED ID-chain",
-      "configSets": null,
-      "createdAt": "MASKED DATE",
-      "deletedAt": null,
-      "description": null,
-      "dirty": true,
-      "externalId": null,
-      "id": "MASKED ID",
-      "image": null,
-      "isVisible": true,
-      "name": Object {
-        "de": null,
-        "en": null,
-        "hu": "próba ital inactive",
-      },
-      "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-      "productType": "dish",
-      "updatedAt": "MASKED DATE",
-      "variants": Array [
-        Object {
-          "availabilities": null,
-          "id": "id",
-          "isAvailable": true,
-          "netPackagingFee": null,
-          "pack": null,
-          "position": -1,
-          "price": 500,
-          "refGroupPrice": null,
-          "soldOut": null,
-          "variantName": Object {
-            "de": null,
-            "en": null,
-            "hu": "foobar",
-          },
-        },
-      ],
-    },
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "dirty": true,
-    "externalId": null,
-    "groupId": "rkeeper-MASKED ID-group",
-    "id": "MASKED ID",
-    "isVisible": true,
-    "parentId": "MASKED ID",
-    "takeawayTax": null,
-    "tax": -1,
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 500,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
   "id": "MASKED ID",
-  "isVisible": false,
+  "image": null,
+  "isVisible": true,
   "laneId": null,
-  "parentId": "MASKED ID",
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "Próba kaja",
+  },
   "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
   "supportedServingModes": Array [
     "inPlace",
   ],
   "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
   "unitId": "rkeeper-MASKED ID-unit",
-  "updatedAt": Any<String>,
+  "updatedAt": "MASKED DATE",
   "variants": Array [
     Object {
       "availabilities": Array [
         Object {
           "dayFrom": null,
           "dayTo": null,
-          "price": 500,
+          "price": 600,
           "timeFrom": null,
           "timeTo": null,
           "type": "A",
         },
       ],
-      "id": "id",
-      "isAvailable": false,
+      "externalId": "9991000115",
+      "id": "MASKED ID",
+      "isAvailable": true,
       "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
       },
       "position": -1,
-      "price": 500,
-      "refGroupPrice": null,
+      "price": 600,
       "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
-        "hu": "próba ital inactive",
+        "hu": "Próba kaja",
       },
     },
   ],
@@ -1284,123 +452,122 @@ Object {
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 2`] = `
 Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "configSets": null,
-  "createdAt": Any<String>,
-  "deletedAt": null,
-  "dirty": true,
-  "externalId": "9991000115",
-  "groupId": "rkeeper-MASKED ID-group",
-  "groupProduct": Object {
-    "chainId": "rkeeper-MASKED ID-chain",
-    "chainProduct": Object {
-      "allergens": null,
-      "chainId": "rkeeper-MASKED ID-chain",
-      "configSets": null,
-      "createdAt": "MASKED DATE",
-      "deletedAt": null,
-      "description": null,
-      "dirty": true,
-      "externalId": null,
-      "id": "MASKED ID",
-      "image": null,
-      "isVisible": true,
-      "name": Object {
-        "de": null,
-        "en": null,
-        "hu": "Próba kaja",
-      },
-      "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-      "productType": "dish",
-      "updatedAt": "MASKED DATE",
-      "variants": Array [
+  "allergens": null,
+  "configSets": Array [
+    Object {
+      "items": Array [
         Object {
-          "availabilities": null,
-          "id": "id",
-          "isAvailable": true,
           "netPackagingFee": null,
-          "pack": null,
           "position": -1,
-          "price": 600,
-          "refGroupPrice": null,
+          "price": 0,
+          "productComponentId": "MASKED ID",
           "soldOut": null,
-          "variantName": Object {
-            "de": null,
-            "en": null,
-            "hu": "foobar",
-          },
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
+      "position": -1,
+      "productSetId": "MASKED ID",
     },
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "dirty": true,
-    "externalId": null,
-    "groupId": "rkeeper-MASKED ID-group",
-    "id": "MASKED ID",
-    "isVisible": true,
-    "parentId": "MASKED ID",
-    "takeawayTax": null,
-    "tax": -1,
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 600,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
+    Object {
+      "items": Array [
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 0,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
-      },
-    ],
-  },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 50,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+      ],
+      "position": -1,
+      "productSetId": "MASKED ID",
+    },
+  ],
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": null,
+  "dirty": true,
   "id": "MASKED ID",
+  "image": null,
   "isVisible": true,
   "laneId": null,
-  "parentId": "MASKED ID",
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "TA KM Kiotói Szilvás Krémkávé",
+  },
   "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
   "supportedServingModes": Array [
     "inPlace",
   ],
   "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
   "unitId": "rkeeper-MASKED ID-unit",
-  "updatedAt": Any<String>,
+  "updatedAt": "MASKED DATE",
   "variants": Array [
     Object {
       "availabilities": Array [
         Object {
           "dayFrom": null,
           "dayTo": null,
-          "price": 600,
+          "price": 700,
           "timeFrom": null,
           "timeTo": null,
           "type": "A",
         },
       ],
-      "id": "id",
+      "externalId": "9991008661",
+      "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
       },
       "position": -1,
-      "price": 600,
-      "refGroupPrice": null,
+      "price": 700,
       "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
-        "hu": "Próba kaja",
+        "hu": "TA KM Kiotói Szilvás Krémkávé",
       },
     },
   ],
@@ -1409,25 +576,44 @@ Object {
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 3`] = `
 Object {
-  "chainId": "rkeeper-MASKED ID-chain",
+  "allergens": null,
   "configSets": Array [
     Object {
       "items": Array [
         Object {
-          "externalId": "9991011517",
           "netPackagingFee": null,
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
-          "refGroupPrice": 0,
+          "soldOut": null,
         },
         Object {
-          "externalId": "9991011504",
           "netPackagingFee": null,
           "position": -1,
-          "price": 50,
+          "price": 100,
           "productComponentId": "MASKED ID",
-          "refGroupPrice": 50,
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
         },
       ],
       "position": -1,
@@ -1436,138 +622,48 @@ Object {
     Object {
       "items": Array [
         Object {
-          "externalId": "9991017196",
           "netPackagingFee": null,
           "position": -1,
           "price": 0,
           "productComponentId": "MASKED ID",
-          "refGroupPrice": 0,
+          "soldOut": null,
         },
         Object {
-          "externalId": "9991017191",
           "netPackagingFee": null,
           "position": -1,
-          "price": 100,
+          "price": 50,
           "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": "9991017193",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": "9991017194",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": "9991017195",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
+          "soldOut": null,
         },
       ],
       "position": -1,
       "productSetId": "MASKED ID",
     },
   ],
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
+  "description": null,
   "dirty": true,
-  "externalId": "9991008661",
-  "groupId": "rkeeper-MASKED ID-group",
-  "groupProduct": Object {
-    "chainId": "rkeeper-MASKED ID-chain",
-    "chainProduct": Object {
-      "allergens": null,
-      "chainId": "rkeeper-MASKED ID-chain",
-      "configSets": null,
-      "createdAt": "MASKED DATE",
-      "deletedAt": null,
-      "description": null,
-      "dirty": true,
-      "externalId": null,
-      "id": "MASKED ID",
-      "image": null,
-      "isVisible": true,
-      "name": Object {
-        "de": null,
-        "en": null,
-        "hu": "TA KM Kiotói Szilvás Krémkávé",
-      },
-      "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-      "productType": "dish",
-      "updatedAt": "MASKED DATE",
-      "variants": Array [
-        Object {
-          "availabilities": null,
-          "id": "id",
-          "isAvailable": true,
-          "netPackagingFee": null,
-          "pack": null,
-          "position": -1,
-          "price": 700,
-          "refGroupPrice": null,
-          "soldOut": null,
-          "variantName": Object {
-            "de": null,
-            "en": null,
-            "hu": "foobar",
-          },
-        },
-      ],
-    },
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "dirty": true,
-    "externalId": null,
-    "groupId": "rkeeper-MASKED ID-group",
-    "id": "MASKED ID",
-    "isVisible": true,
-    "parentId": "MASKED ID",
-    "takeawayTax": null,
-    "tax": -1,
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 700,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
   "id": "MASKED ID",
+  "image": null,
   "isVisible": true,
   "laneId": null,
-  "parentId": "MASKED ID",
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "TA Kiotói Szilvás Krémkávé",
+  },
   "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
   "supportedServingModes": Array [
     "inPlace",
   ],
   "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
   "unitId": "rkeeper-MASKED ID-unit",
-  "updatedAt": Any<String>,
+  "updatedAt": "MASKED DATE",
   "variants": Array [
     Object {
       "availabilities": Array [
@@ -1580,21 +676,22 @@ Object {
           "type": "A",
         },
       ],
-      "id": "id",
+      "externalId": "9991008660",
+      "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
       },
       "position": -1,
       "price": 700,
-      "refGroupPrice": null,
       "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
-        "hu": "TA KM Kiotói Szilvás Krémkávé",
+        "hu": "TA Kiotói Szilvás Krémkávé",
       },
     },
   ],
@@ -1603,192 +700,60 @@ Object {
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 4`] = `
 Object {
-  "chainId": "rkeeper-MASKED ID-chain",
-  "configSets": Array [
-    Object {
-      "items": Array [
-        Object {
-          "externalId": "9991011517",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 0,
-        },
-        Object {
-          "externalId": "9991011504",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 50,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 50,
-        },
-      ],
-      "position": -1,
-      "productSetId": "MASKED ID",
-    },
-    Object {
-      "items": Array [
-        Object {
-          "externalId": "9991017196",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 0,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 0,
-        },
-        Object {
-          "externalId": "9991017191",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": "9991017193",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": "9991017194",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-        Object {
-          "externalId": "9991017195",
-          "netPackagingFee": null,
-          "position": -1,
-          "price": 100,
-          "productComponentId": "MASKED ID",
-          "refGroupPrice": 100,
-        },
-      ],
-      "position": -1,
-      "productSetId": "MASKED ID",
-    },
-  ],
-  "createdAt": Any<String>,
+  "allergens": null,
+  "configSets": null,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
+  "description": null,
   "dirty": true,
-  "externalId": "9991008660",
-  "groupId": "rkeeper-MASKED ID-group",
-  "groupProduct": Object {
-    "chainId": "rkeeper-MASKED ID-chain",
-    "chainProduct": Object {
-      "allergens": null,
-      "chainId": "rkeeper-MASKED ID-chain",
-      "configSets": null,
-      "createdAt": "MASKED DATE",
-      "deletedAt": null,
-      "description": null,
-      "dirty": true,
-      "externalId": null,
-      "id": "MASKED ID",
-      "image": null,
-      "isVisible": true,
-      "name": Object {
-        "de": null,
-        "en": null,
-        "hu": "TA Kiotói Szilvás Krémkávé",
-      },
-      "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-      "productType": "dish",
-      "updatedAt": "MASKED DATE",
-      "variants": Array [
-        Object {
-          "availabilities": null,
-          "id": "id",
-          "isAvailable": true,
-          "netPackagingFee": null,
-          "pack": null,
-          "position": -1,
-          "price": 700,
-          "refGroupPrice": null,
-          "soldOut": null,
-          "variantName": Object {
-            "de": null,
-            "en": null,
-            "hu": "foobar",
-          },
-        },
-      ],
-    },
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "dirty": true,
-    "externalId": null,
-    "groupId": "rkeeper-MASKED ID-group",
-    "id": "MASKED ID",
-    "isVisible": true,
-    "parentId": "MASKED ID",
-    "takeawayTax": null,
-    "tax": -1,
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 700,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
   "id": "MASKED ID",
+  "image": null,
   "isVisible": true,
   "laneId": null,
-  "parentId": "MASKED ID",
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "próba ital inactive",
+  },
   "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
   "supportedServingModes": Array [
     "inPlace",
   ],
   "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
   "unitId": "rkeeper-MASKED ID-unit",
-  "updatedAt": Any<String>,
+  "updatedAt": "MASKED DATE",
   "variants": Array [
     Object {
       "availabilities": Array [
         Object {
           "dayFrom": null,
           "dayTo": null,
-          "price": 700,
+          "price": 500,
           "timeFrom": null,
           "timeTo": null,
           "type": "A",
         },
       ],
-      "id": "id",
-      "isAvailable": true,
+      "externalId": "99911000114",
+      "id": "MASKED ID",
+      "isAvailable": false,
       "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
       },
       "position": -1,
-      "price": 700,
-      "refGroupPrice": null,
+      "price": 500,
       "soldOut": null,
       "variantName": Object {
         "de": null,
         "en": null,
-        "hu": "TA Kiotói Szilvás Krémkávé",
+        "hu": "próba ital inactive",
       },
     },
   ],
@@ -1797,96 +762,32 @@ Object {
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 5`] = `
 Object {
-  "chainId": "rkeeper-MASKED ID-chain",
+  "allergens": null,
   "configSets": null,
-  "createdAt": Any<String>,
+  "createdAt": "MASKED DATE",
   "deletedAt": null,
+  "description": null,
   "dirty": true,
-  "externalId": "9991000114",
-  "groupId": "rkeeper-MASKED ID-group",
-  "groupProduct": Object {
-    "chainId": "rkeeper-MASKED ID-chain",
-    "chainProduct": Object {
-      "allergens": null,
-      "chainId": "rkeeper-MASKED ID-chain",
-      "configSets": null,
-      "createdAt": "MASKED DATE",
-      "deletedAt": null,
-      "description": null,
-      "dirty": true,
-      "externalId": null,
-      "id": "MASKED ID",
-      "image": null,
-      "isVisible": true,
-      "name": Object {
-        "de": null,
-        "en": null,
-        "hu": "próba ital",
-      },
-      "productCategoryId": "default-product-category-rkeeper-MASKED ID-chain",
-      "productType": "dish",
-      "updatedAt": "MASKED DATE",
-      "variants": Array [
-        Object {
-          "availabilities": null,
-          "id": "id",
-          "isAvailable": true,
-          "netPackagingFee": null,
-          "pack": null,
-          "position": -1,
-          "price": 500,
-          "refGroupPrice": null,
-          "soldOut": null,
-          "variantName": Object {
-            "de": null,
-            "en": null,
-            "hu": "foobar",
-          },
-        },
-      ],
-    },
-    "configSets": null,
-    "createdAt": "MASKED DATE",
-    "deletedAt": null,
-    "dirty": true,
-    "externalId": null,
-    "groupId": "rkeeper-MASKED ID-group",
-    "id": "MASKED ID",
-    "isVisible": true,
-    "parentId": "MASKED ID",
-    "takeawayTax": null,
-    "tax": -1,
-    "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "id": "id",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "pack": null,
-        "position": -1,
-        "price": 500,
-        "refGroupPrice": null,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": null,
-          "hu": "foobar",
-        },
-      },
-    ],
-  },
   "id": "MASKED ID",
+  "image": null,
   "isVisible": true,
   "laneId": null,
-  "parentId": "MASKED ID",
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "próba ital",
+  },
   "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
   "supportedServingModes": Array [
     "inPlace",
   ],
   "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
   "unitId": "rkeeper-MASKED ID-unit",
-  "updatedAt": Any<String>,
+  "updatedAt": "MASKED DATE",
   "variants": Array [
     Object {
       "availabilities": Array [
@@ -1899,16 +800,17 @@ Object {
           "type": "A",
         },
       ],
-      "id": "id",
+      "externalId": "9991000114",
+      "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
       },
       "position": -1,
       "price": 500,
-      "refGroupPrice": null,
       "soldOut": null,
       "variantName": Object {
         "de": null,
@@ -1920,22 +822,149 @@ Object {
 }
 `;
 
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 6`] = `
+Object {
+  "allergens": Array [
+    "egg",
+    "gluten",
+    "mustard",
+    "milk",
+    "soya",
+    "fish",
+    "sesame",
+  ],
+  "configSets": Array [],
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": Object {
+    "de": "laktató szendvics",
+    "en": "laktató szendvics",
+    "hu": "laktató szendvics",
+  },
+  "dirty": null,
+  "id": "rkeeper-MASKED ID-unitproduct",
+  "image": "https://archive.canadianbusiness.com/wp-content/uploads/2013/04/oldhamburger.jpg",
+  "isVisible": true,
+  "laneId": "lane_01",
+  "name": Object {
+    "de": "Hamburger",
+    "en": "Hamburger",
+    "hu": "Hamburger",
+  },
+  "position": 0,
+  "productCategoryId": "RKEEPER PRODUCT CATEGORY ID",
+  "productType": "food",
+  "supportedServingModes": Array [
+    "takeAway",
+  ],
+  "takeaway": false,
+  "takeawayTax": 20,
+  "tax": 27,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": null,
+      "externalId": "RKEEPERGUID",
+      "id": "rkeeper-MASKED IDUnitProductVariant_id_1",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "rkeeper-MASKED ID-unitproduct",
+      "pack": null,
+      "position": -1,
+      "price": 30,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 7`] = `
+Object {
+  "allergens": Array [
+    "egg",
+    "gluten",
+    "mustard",
+    "milk",
+    "soya",
+    "fish",
+    "sesame",
+  ],
+  "configSets": Array [],
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": Object {
+    "de": "laktató szendvics",
+    "en": "laktató szendvics",
+    "hu": "laktató szendvics",
+  },
+  "dirty": null,
+  "id": "rkeeper-MASKED ID-unitproduct2",
+  "image": "https://archive.canadianbusiness.com/wp-content/uploads/2013/04/oldhamburger.jpg",
+  "isVisible": true,
+  "laneId": "lane_01",
+  "name": Object {
+    "de": "Hamburger",
+    "en": "Hamburger",
+    "hu": "Hamburger",
+  },
+  "position": 0,
+  "productCategoryId": "RKEEPER PRODUCT CATEGORY ID",
+  "productType": "food",
+  "supportedServingModes": Array [
+    "takeAway",
+  ],
+  "takeaway": false,
+  "takeawayTax": 20,
+  "tax": 27,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": null,
+      "externalId": "RKEEPERGUID-2",
+      "id": "rkeeper-MASKED IDUnitProductVariant_id_2",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "rkeeper-MASKED ID-unitproduct2",
+      "pack": null,
+      "position": -1,
+      "price": 30,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
+      },
+    },
+  ],
+}
+`;
+
 exports[`Test the rkeeper api basic functionality Test the menusync handler 1`] = `[InvalidBucketName: The specified bucket is not valid.]`;
+
+exports[`Test the rkeeper api basic functionality Test the product handling logic in fargate in case of non-existing unit 1`] = `"Unit with external ID foobar cannot be found"`;
 
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category created 1`] = `true`;
 
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category data 1`] = `
 Object {
-  "chainId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
   "createdAt": Any<String>,
   "description": null,
-  "id": "default-product-category-rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
+  "id": "default-product-category-rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
   "image": null,
   "name": Object {
     "de": null,
     "en": "Default category",
     "hu": "Alap kategória",
   },
+  "ownerEntity": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
+  "parentId": null,
   "position": -1,
   "updatedAt": Any<String>,
 }
@@ -1945,37 +974,8 @@ exports[`Test the rkeeper api basic functionality createDefaultProductCategory: 
 
 exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - existing restaurant 1`] = `
 Object {
-  "chainId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-chain",
-  "groupId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-group",
   "unitId": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
 }
 `;
 
 exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - not existing restaurant 1`] = `[Error: Cannot find unit belonging to external unit id NOT EXISTING RESTO\`]`;
-
-exports[`send an unpaid order to rkeeper by HTTP post, then send another request to set it to Paid status: config.auth 1`] = `
-Object {
-  "password": "f3e7c8260b2f9b1cc62208a441410a",
-  "username": "590_49_985_540",
-}
-`;
-
-exports[`send an unpaid order to rkeeper by HTTP post, then send another request to set it to Paid status: config.auth 2`] = `
-Object {
-  "password": "f3e7c8260b2f9b1cc62208a441410a",
-  "username": "590_49_985_540",
-}
-`;
-
-exports[`send order to rkeeper by HTTP post: config.auth 1`] = `
-Object {
-  "password": "f3e7c8260b2f9b1cc62208a441410a",
-  "username": "590_49_985_540",
-}
-`;
-
-exports[`test the order status route 1`] = `
-Object {
-  "error": "Unit with restaurant ID EXTERNAL-RESTAURANT-ID cannot be found",
-}
-`;

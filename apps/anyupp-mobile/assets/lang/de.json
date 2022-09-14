@@ -7,8 +7,13 @@
     "select": "Select",
     "ok": "OK",
     "today": "Today",
+    "yesterday": "Yesterday",
+    "exit": "Tap the back button again to exit app.",
     "ok2": "OK",
-    "exit": "Tap back again to exit app."
+    "waiter": "Waiter",
+    "callingWaiter": "Calling waiter",
+    "waiterCalledTitle": "Success!",
+    "waiterCalledContent": "Waiter arrives soon."
   },
   "locale": {
     "EN": "English",
@@ -241,6 +246,11 @@
           "title": "Deleted",
           "titleShort": "Deleted",
           "description": "Your order has been canceled. Our colleague will contact you."
+        },
+        "failed": {
+          "title": "Deleted",
+          "titleShort": "Deleted",
+          "description": "Your order has been cancelled. Our colleague will contact you soon."
         },
         "served": {
           "title": "Served",

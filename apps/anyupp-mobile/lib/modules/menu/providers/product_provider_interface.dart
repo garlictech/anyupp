@@ -1,17 +1,13 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/pagination/pagination.dart';
+import '/models.dart';
+import '/shared/pagination/pagination.dart';
 
 abstract class IProductProvider {
-  Future<PageResponse<ProductCategory>> getProductCategoryList(String unitId,
+  Future<PageResponse<ProductCategory>> getProductCategoryList(
+      String ownerEntity,
       [String? nextToken]);
 
-  Future<PageResponse<GeneratedProduct>> getProductList(
-      String unitId, String categoryId,
-      [String? nextToken]);
-
-  Future<PageResponse<GeneratedProduct>> getAllProductList({
+  Future<PageResponse<Product>> getAllProductList({
     required String unitId,
-    required String chainId,
     String? nextToken,
   });
 }

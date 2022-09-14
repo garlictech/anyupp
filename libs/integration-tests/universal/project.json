@@ -1,5 +1,4 @@
 {
-  "root": "libs/integration-tests/universal",
   "sourceRoot": "libs/integration-tests/universal/src",
   "projectType": "library",
   "targets": {

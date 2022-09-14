@@ -1,10 +1,10 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/selectunit/selectunit.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -75,7 +75,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget>
     );
   }
 
-  Widget _buildButtons(BuildContext context, [GeoUnit? unit, Cart? cart]) {
+  Widget _buildButtons(BuildContext context, [Unit? unit, Cart? cart]) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -100,7 +100,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget>
     );
   }
 
-  Widget _buildPaymentButton(BuildContext context, GeoUnit unit, Cart cart) {
+  Widget _buildPaymentButton(BuildContext context, Unit unit, Cart cart) {
     return SlideTransition(
       position: _offset,
       child: Container(

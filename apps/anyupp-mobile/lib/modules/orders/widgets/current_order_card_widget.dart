@@ -1,34 +1,24 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/graphql/utils/graphql_coercers.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
+import '/core/core.dart';
+import '/core/theme/theme.dart';
+import '/graphql/utils/graphql_coercers.dart';
+import '/models.dart';
+import '/modules/orders/orders.dart';
+import '/modules/screens.dart';
+import '/modules/takeaway/takeaway.dart';
+import '/shared/locale/locale.dart';
+import '/shared/nav.dart';
+import '/shared/utils/format_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 class CurrentOrderCardWidget extends StatelessWidget {
   final Order order;
-  // final GeoUnit unit;
+  // final Unit unit;
 
   const CurrentOrderCardWidget({
     required this.order,
     // required this.unit,
   });
-
-  static const Map<OrderStatus, IconData> _ICONMAP = {
-    OrderStatus.none: Icons.hourglass_bottom_outlined,
-    OrderStatus.placed: Icons.assignment_turned_in,
-    OrderStatus.processing: Icons.history_toggle_off_outlined,
-    OrderStatus.ready: Icons.schedule_outlined,
-    OrderStatus.served: Icons.check,
-    OrderStatus.rejected: Icons.close,
-    OrderStatus.failed: Icons.close,
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -86,9 +76,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
                   ),
                   child: Center(
                     child: Icon(
-                      order.orderPolicy == OrderPolicy.full
-                          ? _ICONMAP[status]
-                          : _ICONMAP[OrderStatus.served],
+                      STATUS_ICON_MAP[status],
                       size: 16.0,
                       color: order.archived ? theme.secondary0 : theme.icon,
                     ),
@@ -169,7 +157,7 @@ class CurrentOrderCardWidget extends StatelessWidget {
   }
 
   String _getCardTitle(BuildContext context) {
-    if (order.orderPolicy == OrderPolicy.full) {
+    if (order.orderPolicy == OrderPolicy.full && order.orderNum != null) {
       return '#${order.orderNum}';
     }
 

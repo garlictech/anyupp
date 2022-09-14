@@ -36,7 +36,7 @@ export class ModifiersAndExtrasFormService {
 
   public createProductComponentFormGroup() {
     return this._formBuilder.group({
-      chainId: ['', [Validators.required]],
+      ownerEntity: ['', [Validators.required]],
       name: this._formBuilder.group(
         {
           hu: ['', [Validators.maxLength(40)]],
@@ -47,14 +47,13 @@ export class ModifiersAndExtrasFormService {
       ),
       description: [''],
       allergens: [[]],
-      soldOut: [false],
     });
   }
 
   public createProductComponentSetFormGroup() {
     return this._formBuilder.group(
       {
-        chainId: ['', [Validators.required]],
+        ownerEntity: ['', [Validators.required]],
         type: ['', [Validators.required]],
         maxSelection: [''],
         name: this._formBuilder.group(

@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/location.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/shared/location.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -24,7 +24,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     on<FilterUnits>(_onFilterUnits);
   }
 
-  List<GeoUnit>? _units;
+  List<Unit>? _units;
   LatLng? _userLocation;
 
   FutureOr<void> _onLoadUnitsNearLocation(
@@ -32,7 +32,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     emit(UnitsLoading());
     try {
       _userLocation = event.location;
-      _units = await _unitRepository.searchUnitsNearLocation(
+      _units = await _unitRepository.searchUnitsNearRadius(
         event.location,
         radiusInMeter,
       );
@@ -62,6 +62,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
       log.d('****** Start getting location');
       // --- Get device current location (ask permissions if not granted)
       _userLocation = await _locationService.getUserCurrentLocation();
+      _userLocation = LatLng(47.003841, 19.053478); // TODO kiszedni!
       log.d('****** Current Location=$_userLocation');
       if (_userLocation == null) {
         emit(UnitsNotLoaded(
@@ -69,11 +70,12 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
           reasonMessage: 'Cannot access location of the user\'s device',
         ));
       } else {
-        _units = await _unitRepository.searchUnitsNearLocation(
+        _units = await _unitRepository.searchUnitsNearRadius(
           _userLocation!,
           radiusInMeter,
         );
         var filteredUnits = _filter(_units ?? [], event.filter);
+        filteredUnits.sort((a, b) => a.distance - b.distance);
         if (filteredUnits.isEmpty) {
           emit(UnitsNoNearUnit());
         } else {
@@ -106,7 +108,7 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     ));
   }
 
-  List<GeoUnit> _filter(List<GeoUnit> units, UnitFilter? filter) {
+  List<Unit> _filter(List<Unit> units, UnitFilter? filter) {
     if (filter == null) {
       return units;
     }

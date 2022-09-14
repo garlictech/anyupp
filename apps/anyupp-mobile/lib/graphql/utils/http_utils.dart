@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> setTokenPreferences(

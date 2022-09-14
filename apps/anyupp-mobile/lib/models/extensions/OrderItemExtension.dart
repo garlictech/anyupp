@@ -1,12 +1,12 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/models.dart';
+import '/shared/utils/unit_utils.dart';
 
 extension OrderItemExtension on OrderItem {
   double getPrice(ServiceFeePolicy? policy) {
     double sum = priceShown.pricePerUnit;
     if (selectedConfigMap != null) {
       selectedConfigMap!.forEach((key, value) {
-        for (GeneratedProductConfigComponent generatedProductConfigComponent
+        for (ProductConfigComponent generatedProductConfigComponent
             in value) {
           sum += generatedProductConfigComponent.price;
         }

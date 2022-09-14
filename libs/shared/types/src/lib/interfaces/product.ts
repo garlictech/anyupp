@@ -1,6 +1,4 @@
 import {
-  ChainProduct,
-  GroupProduct,
   ProductComponent,
   ProductComponentSet,
   ProductVariant,
@@ -17,12 +15,10 @@ export interface ProductOrderChangeEvent {
   productId: string;
 }
 
-export type MergedProduct = ChainProduct & GroupProduct & UnitProduct;
-
 export type ProductVariantWithPrice = Omit<ProductVariant, 'price'> &
   Required<Pick<ProductVariant, 'price'>>;
 
-export type MergedProductWithPrices = Omit<MergedProduct, 'variants'> & {
+export type MergedProductWithPrices = Omit<UnitProduct, 'variants'> & {
   variants: ProductVariantWithPrice[];
 };
 
@@ -34,9 +30,6 @@ export interface ProductComponentMap {
   [key: string]: Required<ProductComponent>;
 }
 
-export interface Product
-  extends Partial<ChainProduct>,
-    Partial<GroupProduct>,
-    Partial<UnitProduct> {
+export interface Product extends Partial<UnitProduct> {
   pending?: boolean;
 }

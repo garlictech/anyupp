@@ -1,5 +1,5 @@
-import 'package:fa_prev/models/Place.dart';
-import 'package:fa_prev/modules/cart/models/cart_constants.dart';
+import '/models/Place.dart';
+import '/modules/cart/models/cart_constants.dart';
 
 extension PlaceExtension on Place {
   bool get isEmpty =>

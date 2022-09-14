@@ -41,7 +41,6 @@ Object {
   "position": 0,
   "price": 0,
   "productComponentId": "",
-  "refGroupPrice": 0,
 }
 `;
 
@@ -57,7 +56,6 @@ Object {
   },
   "position": 0,
   "price": 0,
-  "refGroupPrice": 0,
   "soldOut": false,
   "variantName": Object {
     "de": "",

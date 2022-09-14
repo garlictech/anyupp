@@ -6,24 +6,18 @@ import {
   PaymentMethod,
   PaymentType,
   PosType,
-  ServiceFeeType,
   ServingMode,
-  Unit,
+  UnitMapObjectType,
   WeeklySchedule,
 } from '@bgap/domain';
-import { chainFixture } from './chain';
-import { seededIdPrefix, testIdPrefix } from './common';
-import { groupFixture } from './group';
+import { testIdPrefix } from './common';
 import {
   rkeeperEndpoint,
   yellowRkeeperPassword,
   yellowRkeeperUsername,
 } from './rkeeper';
+import * as R from 'ramda';
 
-const unitId_01 = `${testIdPrefix}unit_1_id`;
-const unitId_seeded_01 = `${seededIdPrefix}unit_c1_g1_1_id`;
-const unitId_seeded_02 = `${seededIdPrefix}unit_c1_g1_2_id`;
-const unitId_seeded_03 = `${seededIdPrefix}unit_c1_g2_1_id`;
 const unitId_NotExisting = `${testIdPrefix}NOT_EXISTING_UNIT`;
 
 const openingHours: WeeklySchedule = {
@@ -74,7 +68,7 @@ const openingHours: WeeklySchedule = {
   ],
 };
 
-const unitBase = {
+export const unitBase = {
   isActive: true,
   isAcceptingOrders: true,
   name: `Késdobáló S`,
@@ -85,18 +79,14 @@ const unitBase = {
     country: 'Magyarország',
     title: 'HQ',
     postalCode: '1021',
-    location: {
-      lat: 47,
-      lng: 19,
-    },
   },
   location: {
     lat: 47,
     lon: 19,
   },
   description: {
-    hu: `Teszt unit #${unitId_01} leírás`,
-    en: `Test unit #${unitId_01} description`,
+    hu: `Teszt unit`,
+    en: `Test unit`,
   },
   orderPaymentPolicy: OrderPaymentPolicy.prepay,
   paymentModes: [
@@ -131,52 +121,29 @@ const unitBase = {
   },
   supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
   supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
-};
-
-const unit_01: Unit = {
-  ...unitBase,
-  id: unitId_01,
-  groupId: groupFixture.group_01.id,
-  chainId: chainFixture.chain_01.id,
-  createdAt: '2021-08-02T01:54:11.843Z',
-  updatedAt: '2021-08-02T01:54:11.843Z',
-};
-
-const unitInputBase: CreateUnitInput = {
-  ...unitBase,
-  id: unitId_01,
-  groupId: groupFixture.group_01.id,
-  chainId: chainFixture.chain_01.id,
-};
-
-const createUnit_01: RequiredId<CreateUnitInput> = {
-  ...unitBase,
-  id: unitId_01,
-  groupId: groupFixture.group_01.id,
-  chainId: chainFixture.chain_01.id,
-  serviceFeePolicy: {
-    type: ServiceFeeType.applicable,
-    percentage: 10,
-  },
-  ratingPolicies: [
-    {
-      key: 'question1',
-      title: {
-        en: 'Question',
-      },
-      description: {
-        en: 'Desc',
-      },
-      ratings: [{ value: 1, text: { en: 'good' } }],
+  currency: 'EUR',
+  style: {
+    colors: {
+      backgroundDark: '#d6dde0',
+      backgroundLight: '#ffffff',
+      borderDark: '#c3cacd',
+      borderLight: '#e7e5d0',
+      disabled: '#303030',
+      indicator: '#30bf60',
+      textDark: '#303030',
+      textLight: '#ffffff',
+      primary: '#30bf60', // indicator
+      secondary: '#303030', // textDark
+      button: '#30bf60',
+      buttonText: '#fffffb',
+      icon: '#30bf60',
+      highlight: '#30bf60',
     },
-  ],
-  tipPolicy: {
-    percents: [2],
   },
 };
 
-const createRkeeperUnit: RequiredId<CreateUnitInput> = {
-  ...createUnit_01,
+export const createRkeeperUnit: RequiredId<CreateUnitInput> = {
+  ...unitBase,
   id: 'rkeeper-unit',
   externalId: 'restaurantid',
   pos: {
@@ -193,7 +160,7 @@ const createRkeeperUnit: RequiredId<CreateUnitInput> = {
 };
 
 const unitInstantTakeaway: RequiredId<CreateUnitInput> = {
-  ...unitInputBase,
+  ...unitBase,
   id: 'unit-it',
   name: `Instant Takeaway Kocsma`,
   supportedOrderModes: [OrderMode.instant],
@@ -201,7 +168,7 @@ const unitInstantTakeaway: RequiredId<CreateUnitInput> = {
 };
 
 const unitPickupTakeaway: RequiredId<CreateUnitInput> = {
-  ...unitInputBase,
+  ...unitBase,
   id: 'unit-pt',
   name: `Pickup Takeaway Kifőzde`,
   supportedOrderModes: [OrderMode.pickup],
@@ -209,7 +176,7 @@ const unitPickupTakeaway: RequiredId<CreateUnitInput> = {
 };
 
 const unitInstantInplace: RequiredId<CreateUnitInput> = {
-  ...unitInputBase,
+  ...unitBase,
   id: 'unit-ii',
   name: `Instant Inplace Csárda`,
   supportedOrderModes: [OrderMode.instant],
@@ -217,26 +184,59 @@ const unitInstantInplace: RequiredId<CreateUnitInput> = {
 };
 
 const unitPickupInplace: RequiredId<CreateUnitInput> = {
-  ...unitInputBase,
+  ...unitBase,
   id: 'unit-pi',
   name: `Pickup Inplace Resztoran`,
   supportedOrderModes: [OrderMode.pickup],
   supportedServingModes: [ServingMode.inplace],
 };
 
+const kesdobalo: RequiredId<CreateUnitInput> = {
+  ...R.omit(['createdAt', 'updatedAt'], unitBase),
+  id: 'a-kesdobalo',
+  name: `Késdobáló`,
+  timeZone: 'Europe/Budapest',
+  supportedServingModes: [ServingMode.inplace],
+  supportedOrderModes: [OrderMode.instant],
+  coverBanners: [
+    {
+      imageUrl:
+        'http://1.bp.blogspot.com/--hTHo2uuDHM/UicXpXI-cNI/AAAAAAAAAzQ/zOrpgDVawJo/s1600/rejt%C5%91.jpg',
+    },
+    {
+      imageUrl:
+        'https://scontent.fbud5-1.fna.fbcdn.net/v/t31.18172-8/178281_453909654650620_1346047036_o.jpg?_nc_cat=102&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=q_z1ac04pLUAX8CeQoA&_nc_ht=scontent.fbud5-1.fna&oh=00_AT-_OH7-46PdxRBSytAmnBWjdX4qO209yY51RjXo1yyEuA&oe=63209762',
+    },
+  ],
+  floorMap: {
+    w: 800,
+    h: 300,
+    objects: [
+      {
+        id: 'hk6xk4xwh9n',
+        t: UnitMapObjectType.table_r,
+        c: '',
+        w: 150,
+        h: 60,
+        r: null,
+        a: 0,
+        x: 10,
+        y: 10,
+        tID: null,
+        sID: null,
+      },
+    ],
+  },
+};
+
 export const unitFixture = {
   openingHours,
   unitBase,
-  unitInputBase,
-  unit_01,
-  createUnit_01,
   createRkeeperUnit,
   unitId_NotExisting,
-  unitId_seeded_01,
-  unitId_seeded_02,
-  unitId_seeded_03,
   unitInstantInplace,
   unitInstantTakeaway,
   unitPickupInplace,
   unitPickupTakeaway,
+  kesdobalo,
 };

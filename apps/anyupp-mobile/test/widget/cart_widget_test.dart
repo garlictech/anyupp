@@ -1,9 +1,9 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/payment/payment.dart';
-import 'package:fa_prev/modules/takeaway/bloc/takeaway_bloc.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
+import 'package:anyupp/modules/payment/payment.dart';
+import 'package:anyupp/modules/takeaway/bloc/takeaway_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,7 +18,7 @@ void main() {
   setUpAll(() async {
     GoogleFonts.config.allowRuntimeFetching = false;
 
-    GeoUnit mockUnit = MockGenerator.generateUnit(
+    Unit mockUnit = MockGenerator.generateUnit(
       name: 'TEST UNIT',
       currency: 'huf',
     );
@@ -26,15 +26,24 @@ void main() {
     Cart mockCart = MockGenerator.generateBasicCart(
       servingMode: ServingMode.takeAway,
     );
-    mockCart = mockCart.copyWith(items: [
-      MockGenerator.generateOrderItem(
-        name: 'Hamburger',
-        variantName: 'Dupla',
-        price: 500.0,
-        packagingFee: 100.0,
-        status: OrderStatus.placed,
-      ),
-    ]);
+    mockCart = mockCart.copyWith(
+      items: [
+        MockGenerator.generateOrderItem(
+          name: 'Hamburger',
+          variantName: 'Dupla',
+          price: 500.0,
+          packagingFee: 100.0,
+          status: OrderStatus.placed,
+        ),
+        MockGenerator.generateOrderItem(
+          name: 'Hamburger',
+          variantName: 'Dupla',
+          price: 500.0,
+          packagingFee: 100.0,
+          status: OrderStatus.placed,
+        ),
+      ],
+    );
 
     getIt.registerSingleton<ThemeBloc>(MockThemeBloc());
     getIt.registerSingleton<TakeAwayBloc>(MockTakeAwayBloc(
@@ -78,9 +87,11 @@ void main() {
       // Wait to complete the animations of the cart items
       await tester.pumpAndSettle(Duration(milliseconds: 1000));
 
+      expect(find.byType(CartListItemWidget), findsNWidgets(2));
+
       // Character \xa0 is a non-breaking-space
-      checkTextValue('cart-packagingfee-text', '105\xa0Ft');
-      checkTextValue('cart-totalprice-text', 'FIZETEK (605\xa0Ft)');
+      checkTextValue('cart-packagingfee-text', '210\xa0Ft'); // 2 x (100 + 5)
+      checkTextValue('cart-totalprice-text', 'FIZETEK (1\xa0210\xa0Ft)');
     });
   });
 }

@@ -1,9 +1,9 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/core/theme/theme.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/shared/locale.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 class PaymentInvoiceFormWidget extends StatelessWidget {

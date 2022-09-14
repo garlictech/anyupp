@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 abstract class IOrdersProvider {
   Future<void> userPaymentIntentionSignal(String unitId);

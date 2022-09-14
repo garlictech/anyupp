@@ -4,38 +4,22 @@ import {
   otherAdminUsernames,
   testAdminUsername,
   testAdminUserPassword,
-  //transactionFixture,
   unitFixture,
 } from '@bgap/shared/fixtures';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
 
-import { combineLatest, concat, defer, from, of } from 'rxjs';
-import {
-  catchError,
-  delay,
-  map,
-  switchMap,
-  tap,
-  toArray,
-} from 'rxjs/operators';
+import { forkJoin, concat, defer, from, of } from 'rxjs';
+import { catchError, map, switchMap, tap, toArray } from 'rxjs/operators';
 import {
   createAdminUser,
   createComponentSets,
-  createConsumerUser,
-  createTestChain,
-  createTestGroup,
   createTestUnit,
-  createTestUnitsForOrderHandling,
   SeederDependencies,
   seedYellowRKeeperUnit,
   seedSportbarRKeeperUnit,
-  createChainProductsFromSnapshot,
-  createGroupProductsFromSnapshot,
-  createTestProductCategoryFromFixtures,
-  createUnitProductsFromSnapshot,
-  //placeOrderToSeat,
-  //seedLotsOfOrders,
+  createTestUnitProduct,
+  createTestProductCategories,
 } from './seed-data-fn';
 
 const ce = (tag: string) =>
@@ -80,7 +64,7 @@ export const seedAdminUser = (deps: SeederDependencies) =>
         tap(() => console.log('USER PASSWORD SET', username)),
       ),
     ),
-    combineLatest,
+    x => forkJoin(x),
   );
 
 export const seedBusinessData = (deps: SeederDependencies) =>
@@ -88,36 +72,15 @@ export const seedBusinessData = (deps: SeederDependencies) =>
     .pipe(
       switchMap(() =>
         concat(
-          createConsumerUser()(deps).pipe(ce('### Consumer user')),
-          createTestChain(1)(deps).pipe(ce('### Chain SEED 01')),
-          createTestGroup(1, 1)(deps).pipe(ce('### Group SEED 01')),
-          createTestGroup(1, 2)(deps).pipe(ce('### Group SEED 02')),
-          createTestGroup(2, 1)(deps).pipe(ce('### Group SEED 03')),
-          createTestUnit(1, 1, 1)(deps).pipe(ce('### Unit SEED 01')),
-          createTestUnit(1, 1, 2)(deps).pipe(ce('### Unit SEED 02')),
-          createTestUnit(1, 2, 1)(deps).pipe(ce('### Unit SEED 03')),
-          createTestUnitsForOrderHandling()(deps).pipe(
-            ce('### Order handling units'),
-          ),
-          createTestProductCategoryFromFixtures()(deps),
-          createComponentSets(deps).pipe(ce('### ComponentSets')),
-          createChainProductsFromSnapshot(deps).pipe(ce('### Chain products')),
-          createGroupProductsFromSnapshot(deps).pipe(ce('### Group products')),
-          createUnitProductsFromSnapshot(deps).pipe(ce('### Unit products')),
+          createTestUnit(deps),
+          createTestProductCategories()(deps),
+          createComponentSets(deps),
+          createTestUnitProduct(unitFixture.kesdobalo.id)(deps),
         ),
       ),
       toArray(),
     )
     .pipe(ce('### seedBusinessData'));
-
-const regenerateUnitDataForTheSeededUnits = (deps: SeederDependencies) =>
-  of('start').pipe(
-    switchMap(() =>
-      deps.crudSdk.RegenerateUnitData({
-        input: { id: unitFixture.unitId_seeded_01 },
-      }),
-    ),
-  );
 
 interface ConsumerUser {
   username: string;
@@ -189,19 +152,7 @@ export const seedAll = (deps: SeederDependencies) =>
         name: 'Gombóc Artúr',
       }),
     ),
-    switchMap(() =>
-      seedConsumerUser(deps, {
-        username: 'test-alice',
-        email: 'testuser+alice@anyupp.com',
-        emailVerified: 'true',
-        name: 'Mekk Elek',
-      }),
-    ),
-    delay(2000),
     switchMap(() => seedBusinessData(deps)),
-    delay(2000),
     switchMap(() => seedYellowRKeeperUnit(deps)),
     switchMap(() => seedSportbarRKeeperUnit(deps)),
-    delay(5000),
-    switchMap(() => regenerateUnitDataForTheSeededUnits(deps)),
   );

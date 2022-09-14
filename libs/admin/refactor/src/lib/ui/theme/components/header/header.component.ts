@@ -9,7 +9,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { AdminUser, Group } from '@bgap/domain';
+import { AdminUser } from '@bgap/domain';
 import {
   NbDialogService,
   NbMenuService,
@@ -40,7 +40,6 @@ interface IMenuItem {
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
-  public groups$?: Observable<Group[]>;
   public loggedUser?: AdminUser;
   public userPictureOnly = false;
   public userMenu: IMenuItem[];

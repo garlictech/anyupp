@@ -1,4 +1,4 @@
-import 'package:fa_prev/modules/favorites/favorites.dart';
+import 'package:anyupp/modules/favorites/favorites.dart';
 import 'package:mockito/mockito.dart';
 
 class MockFavoritesRepository extends Mock implements FavoritesRepository {}

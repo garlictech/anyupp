@@ -1,8 +1,14 @@
+import { CreateUnitProductInput, ProductType } from '@bgap/domain';
 import { handleEmptyPackaginFees } from './index';
 
 test('handleEmptyPackaginFees', () => {
-  const input = {
+  const input: CreateUnitProductInput = {
+    position: 0,
+    productCategoryId: 'PRODUCT CATEGORY ID',
+    productType: ProductType.food,
+    tax: 3,
     isVisible: true,
+    unitId: 'UNIT ID',
     variants: [
       {
         id: 'd22dee40-528b-11ec-afe3-15e1afd659e2',
@@ -28,7 +34,6 @@ test('handleEmptyPackaginFees', () => {
         ],
         position: 0,
         price: 0,
-        refGroupPrice: 1200,
         netPackagingFee: 1200,
       },
       {
@@ -55,7 +60,6 @@ test('handleEmptyPackaginFees', () => {
         ],
         position: 0,
         price: 0,
-        refGroupPrice: 1500,
         netPackagingFee: undefined,
       },
     ],
@@ -66,21 +70,18 @@ test('handleEmptyPackaginFees', () => {
           {
             productComponentId: 'seeded_product_component_31_id',
             position: 1,
-            refGroupPrice: 500,
             price: 500,
             netPackagingFee: 11,
           },
           {
             productComponentId: 'seeded_product_component_32_id',
             position: 2,
-            refGroupPrice: 500,
             price: 500,
             netPackagingFee: undefined,
           },
           {
             productComponentId: 'seeded_product_component_33_id',
             position: 3,
-            refGroupPrice: 500,
             price: 500,
             netPackagingFee: undefined,
           },
@@ -92,6 +93,7 @@ test('handleEmptyPackaginFees', () => {
     supportedServingModes: [],
     id: 'seeded_unit_product_c1_g1_u1_9_id',
     takeaway: true,
+    name: { en: 'PRODUCT NAME' },
   };
 
   expect(handleEmptyPackaginFees(input)).toMatchSnapshot();

@@ -23,19 +23,19 @@ export class ProductCategoryCollectionService extends BaseCollectionService<Prod
 
   public init = (destroyConnection$: Subject<boolean>) => {
     this._store
-      .select(loggedUserSelectors.getSelectedChainId)
+      .select(loggedUserSelectors.getSelectedUnitId)
       .pipe(
-        tap(selectedChainId => {
+        tap(selectedUnitId => {
           // Update filter on settings change
           this.patchFilter({
-            chainId: selectedChainId,
+            ownerEntity: selectedUnitId,
           });
         }),
-        switchMap(selectedChainId =>
+        switchMap(selectedUnitId =>
           // Load all data on settings change
           this.getAllCachedPaginatedData$({
             filter: {
-              chainId: { eq: selectedChainId },
+              ownerEntity: { eq: selectedUnitId },
             },
           }),
         ),

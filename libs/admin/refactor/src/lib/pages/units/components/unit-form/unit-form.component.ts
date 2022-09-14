@@ -1,15 +1,14 @@
 import { cloneDeep, omit, pick } from 'lodash/fp';
 import { Observable } from 'rxjs';
-import { delay, switchMap, take, tap } from 'rxjs/operators';
+import { switchMap, take, tap } from 'rxjs/operators';
 
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   Injector,
   OnInit,
 } from '@angular/core';
-import { UntypedFormArray } from '@angular/forms';
+import { UntypedFormArray, UntypedFormControl } from '@angular/forms';
 import { PaymentMode, PosType, Unit } from '@bgap/domain';
 import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -51,18 +50,18 @@ export class UnitFormComponent
   public paymentModes = PAYMENT_MODES;
   public servingModes = SERVING_MODES;
   public orderModes = ORDER_MODES;
-  public groupOptions$: Observable<KeyValue[]>;
+  public unitOptions$: Observable<KeyValue[]>;
   public timeZoneOptions: KeyValue[] = [];
   public orderPolicyOptions: KeyValue[] = orderPolicyOptions;
   public soldOutPolicyOptions: KeyValue[] = soldOutPolicyOptions;
   public orderPaymentPolicyOptions: KeyValue[] = orderPaymentPolicyOptions;
   public isInitiallyRkeeper = false;
+  public currencyOptions: KeyValue[] = [];
 
   constructor(
     protected override _injector: Injector,
     private _formsService: FormsService,
     private _nbDialogService: NbDialogService,
-    private _changeDetectorRef: ChangeDetectorRef,
     private _unitFormService: UnitFormService,
   ) {
     super(_injector);
@@ -72,11 +71,24 @@ export class UnitFormComponent
       value: n,
     }));
 
-    this.groupOptions$ = this._unitFormService.getGroupOptions$();
+    this.unitOptions$ = this._unitFormService.getUnitOptions$();
+  }
+
+  get logoImage() {
+    return this.unit?.style?.images?.logo;
+  }
+
+  get headerImage() {
+    return this.unit?.style?.images?.header;
   }
 
   ngOnInit() {
     this.dialogForm = this._unitFormService.createUnitFormGroup();
+
+    this.currencyOptions = ['EUR', 'HUF'].map(currency => ({
+      key: currency,
+      value: currency,
+    }));
 
     if (this.unit) {
       this.dialogForm.patchValue(cleanObject(omit(['lanes'], this.unit)));
@@ -100,13 +112,13 @@ export class UnitFormComponent
       if (custom) {
         custom.forEach(day => {
           if (day) {
-            const dayGroup =
+            const dayunit =
               this._formsService.createCustomDailyScheduleFormGroup();
-            dayGroup.patchValue(day);
+            dayunit.patchValue(day);
 
             (<UntypedFormArray>(
               this.dialogForm?.get('openingHours')?.get('custom')
-            )).push(dayGroup);
+            )).push(dayunit);
           }
         });
       }
@@ -114,33 +126,18 @@ export class UnitFormComponent
       // Patch lanes array
       (this.unit.lanes || []).forEach(lane => {
         if (lane) {
-          const laneGroup = this._formsService.createLaneFormGroup();
-          laneGroup.patchValue(lane);
-          (<UntypedFormArray>this.dialogForm?.get('lanes')).push(laneGroup);
+          const laneunit = this._formsService.createLaneFormGroup();
+          laneunit.patchValue(lane);
+          (<UntypedFormArray>this.dialogForm?.get('lanes')).push(laneunit);
         }
       });
     } else {
-      // Patch ChainId
+      // Patch unitId
       this._store
-        .pipe(
-          select(loggedUserSelectors.getSelectedChainId),
-          take(1),
-          delay(200),
-        )
-        .subscribe((selectedChainId: string | undefined | null) => {
-          if (selectedChainId) {
-            this.dialogForm?.patchValue({ chainId: selectedChainId });
-
-            this._changeDetectorRef.detectChanges();
-          }
-        });
-
-      // Patch GroupId
-      this._store
-        .pipe(select(loggedUserSelectors.getSelectedGroupId), take(1))
-        .subscribe((selectedGroupId: string | undefined | null) => {
-          if (selectedGroupId) {
-            this.dialogForm?.patchValue({ groupId: selectedGroupId });
+        .pipe(select(loggedUserSelectors.getSelectedUnitId), take(1))
+        .subscribe((selectedUnitId: string | undefined | null) => {
+          if (selectedUnitId) {
+            this.dialogForm?.patchValue({ unitId: selectedUnitId });
           }
         });
 
@@ -224,4 +221,36 @@ export class UnitFormComponent
       this.dialogForm?.get('pos.rkeeper.anyuppPassword')?.patchValue(makeId(8));
     }
   }
+
+  public logoUploadCallback = (image: string, param: string) => {
+    (<UntypedFormControl>(
+      this.dialogForm?.get('style')?.get('images')?.get(param)
+    )).setValue(image);
+
+    if (this.unit?.id) {
+      this._unitFormService
+        .updateImageStyles$(this.unit?.id, param, image)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageUpload');
+        });
+    } else {
+      this._toasterService.showSimpleSuccess('imageUpload');
+    }
+  };
+
+  public logoRemoveCallback = (param: string) => {
+    (<UntypedFormControl>(
+      this.dialogForm?.get('style')?.get('images')?.get(param)
+    )).setValue('');
+
+    if (this.unit?.id) {
+      this._unitFormService
+        .updateImageStyles$(this.unit?.id, param)
+        .subscribe(() => {
+          this._toasterService.showSimpleSuccess('imageRemove');
+        });
+    } else {
+      this._toasterService.showSimpleSuccess('imageRemove');
+    }
+  };
 }

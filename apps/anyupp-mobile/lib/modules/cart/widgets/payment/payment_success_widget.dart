@@ -1,5 +1,5 @@
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/shared/nav.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 class PaymentSuccessWidget extends StatusWidget {

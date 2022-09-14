@@ -1,4 +1,4 @@
-import 'package:fa_prev/graphql/graphql.dart';
+import 'package:anyupp/graphql/graphql.dart';
 
 import '../test_logger.dart';
 import 'generated/crud-api.dart';
@@ -10,7 +10,6 @@ Future<String?> createDummyOrder(
     var result = await GQL.amplify.execute(CreateOrderMutation(
         variables: CreateOrderArguments(
       input: CreateOrderInput(
-        takeAway: false,
         servingMode: ServingMode.inPlace,
         orderMode: OrderMode.instant,
         unitId: unitId,

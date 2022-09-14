@@ -1,7 +1,7 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
+import '/core/theme/theme.dart';
+import '/graphql/generated/crud-api.dart';
+import '/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 

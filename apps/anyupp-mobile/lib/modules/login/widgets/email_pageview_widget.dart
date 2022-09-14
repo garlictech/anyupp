@@ -1,7 +1,7 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/login/widgets/confirm_signup_widget.dart';
-import 'package:fa_prev/modules/login/widgets/password_reset_widget.dart';
+import '/core/core.dart';
+import '/modules/login/login.dart';
+import '/modules/login/widgets/confirm_signup_widget.dart';
+import '/modules/login/widgets/password_reset_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

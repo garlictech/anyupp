@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/locale/extensions/locale_extension.dart';
-import 'package:fa_prev/shared/notifications/notifications.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/shared/locale/extensions/locale_extension.dart';
+import '/shared/notifications/notifications.dart';
 
 part 'notifications_event.dart';
 part 'notifications_state.dart';

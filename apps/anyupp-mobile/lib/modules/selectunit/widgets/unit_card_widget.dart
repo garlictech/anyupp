@@ -1,15 +1,14 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models/GeoUnit.dart';
-import 'package:fa_prev/models/extensions/OpeningHoursExtension.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/models/Unit.dart';
+import '/modules/menu/menu.dart';
+import '/shared/locale.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 import 'package:flutter_svg/svg.dart';
 
 class UnitCardWidget extends StatelessWidget {
-  final GeoUnit unit;
+  final Unit unit;
   final GestureTapCallback? onTap;
 
   const UnitCardWidget({
@@ -71,20 +70,9 @@ class UnitCardWidget extends StatelessWidget {
                   FittedBox(
                     fit: BoxFit.contain,
                     child: Text(
-                      GeoUnitUtils.isClosed(unit)
-                          ? GeoUnitUtils.getClosedText(
-                              unit,
-                              transEx(context, "selectUnit.closed"),
-                              transEx(context, "selectUnit.opens"),
-                              transEx(context,
-                                  "selectUnit.weekdays.${GeoUnitUtils.getOpenedHour(unit)?.getDayString()}"),
-                            )
-                          : transEx(context, "selectUnit.opened") +
-                              ": " +
-                              transEx(
-                                  context,
-                                  GeoUnitUtils.getOpenedHour(unit)!
-                                      .getOpenRangeString()!),
+                      UnitUtils.isClosed(unit)
+                          ? transEx(context, "selectUnit.closed")
+                          : transEx(context, "selectUnit.opened"),
                       style: Fonts.satoshi(
                         fontSize: 12.0,
                         fontWeight: FontWeight.w400,

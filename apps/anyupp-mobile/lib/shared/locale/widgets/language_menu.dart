@@ -1,9 +1,9 @@
 import 'dart:io';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
@@ -31,6 +31,7 @@ class LanguageMenu extends StatefulWidget {
 
 class _LanguageMenuState extends State<LanguageMenu> {
   Locale? _selectedLocale;
+  final ThemeChainData theme = defaultTheme();
 
   @override
   void initState() {
@@ -130,7 +131,6 @@ class _LanguageMenuState extends State<LanguageMenu> {
                     ),
                   ),
                   child: Text(
-                    //trans(context, "cart.addToCart").toUpperCase(),
                     trans('profile.language.save'),
                     style: Fonts.satoshi(
                       fontSize: 16.0,

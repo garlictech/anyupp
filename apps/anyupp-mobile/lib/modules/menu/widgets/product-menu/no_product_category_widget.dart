@@ -1,4 +1,4 @@
-import 'package:fa_prev/shared/widgets.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 class NoProductCategoriesWidget extends StatelessWidget {

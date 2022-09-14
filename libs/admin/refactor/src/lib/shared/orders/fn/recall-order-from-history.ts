@@ -4,7 +4,7 @@ import { switchMap } from 'rxjs/operators';
 
 import { currentStatus } from '@bgap/crud-gql/api';
 import { Order, OrderStatus, PaymentStatus } from '@bgap/domain';
-import { OrderHandlerDeps } from '@bgap/shared/types';
+import { OrderHandlerDeps } from './utils';
 import { throwIfEmptyValue } from '@bgap/shared/utils';
 
 export const recallOrderFromHistory =

@@ -1,5 +1,4 @@
 {
-  "root": "libs/shared/data-validators",
   "sourceRoot": "libs/shared/data-validators/src",
   "projectType": "library",
   "targets": {

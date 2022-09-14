@@ -1,5 +1,5 @@
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import '/models.dart';
+import '/modules/payment/stripe/stripe.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart' show StripeCard;
 
 class StripePaymentRepository
@@ -36,7 +36,7 @@ class StripePaymentRepository
 
   @override
   Future<void> startExternalPayment(
-      Cart cart, PaymentMode paymentMode, UserInvoiceAddress? invoiceAddress) {
+      Cart? cart, PaymentMode paymentMode, UserInvoiceAddress? invoiceAddress) {
     return _externalPaymentProvider.startExternalPayment(
         cart, paymentMode, invoiceAddress);
   }

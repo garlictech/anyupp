@@ -2,7 +2,6 @@ query SearchOrders($userId: ID!, $limit: Int, $nextToken: String) {
   searchOrders(
     filter: { userId: { eq: $userId }, archived: { eq: false } }
     limit: $limit
-    sort: { direction: desc, field: createdAt }
     nextToken: $nextToken
   ) {
     items {
@@ -92,6 +91,7 @@ query SearchOrders($userId: ID!, $limit: Int, $nextToken: String) {
           updatedAt
         }
         userId
+        paymentMethodId
       }
       items {
         productId
@@ -136,6 +136,8 @@ query SearchOrders($userId: ID!, $limit: Int, $nextToken: String) {
             }
             price
             productComponentId
+            netPackagingFee
+            externalId
           }
           name {
             de
@@ -150,9 +152,15 @@ query SearchOrders($userId: ID!, $limit: Int, $nextToken: String) {
         laneId
         created
         productType
+        externalId
+        netPackagingFee
+        serviceFee {
+          currency
+          netPrice
+          taxPercentage
+        }
       }
       createdAt
-      orderNum
       transactionId
       transactionStatus
       updatedAt
@@ -212,8 +220,25 @@ query SearchOrders($userId: ID!, $limit: Int, $nextToken: String) {
           en
           hu
         }
+        description {
+          de
+          en
+          hu
+        }
       }
       soldOutVisibilityPolicy
+      externalId
+      guestLabel
+      orderNum
+      packagingFeeTaxPercentage
+      statusLog {
+        status
+        ts
+        userId
+      }
+      unpayCategory
+      version
+      visitId
     }
     nextToken
     total

@@ -27,7 +27,7 @@ export class ProductCategoryFormComponent
   public productCategory?: ProductCategory;
   public eImageType = EImageType;
 
-  private _selectedChainId?: string | undefined | null;
+  private _selectedUnitId?: string | undefined | null;
 
   constructor(
     protected override _injector: Injector,
@@ -37,9 +37,9 @@ export class ProductCategoryFormComponent
     super(_injector);
 
     this._store
-      .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
-      .subscribe((selectedChainId: string | undefined | null) => {
-        this._selectedChainId = selectedChainId;
+      .pipe(select(loggedUserSelectors.getSelectedUnitId), take(1))
+      .subscribe((selectedUnitId: string | undefined | null) => {
+        this._selectedUnitId = selectedUnitId;
       });
   }
 
@@ -66,7 +66,6 @@ export class ProductCategoryFormComponent
             this._productCategoryFormService.saveForm$(
               {
                 ...this.dialogForm?.value,
-                chainId: this._selectedChainId,
                 position: this.productCategory?.position || 0,
               },
               this.productCategory?.id,

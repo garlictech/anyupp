@@ -40,16 +40,14 @@ beforeAll(done => {
               country: 'COUNTRY',
               postalCode: 'POSTALCODE',
               title: 'TITLE',
-              location: {
-                lat: 47,
-                lng: 19,
-              },
             },
-            chainId: 'CHAINID',
-            groupId: 'GROUPID',
             isAcceptingOrders: true,
             isActive: true,
             name: 'NAME',
+            currency: 'EUR',
+            style: {
+              colors: {},
+            },
           },
         }),
       ),
@@ -58,7 +56,7 @@ beforeAll(done => {
     .subscribe(() => done());
 }, 60000);
 
-xtest('Search for a unit in radius using resolver', done => {
+test('Search for a unit in radius using resolver', done => {
   searchByRadiusResolver(searchDeps)({
     input: {
       location: { lat: 1, lon: 1 },
@@ -97,7 +95,7 @@ xtest('Search for a unit in radius using resolver', done => {
     .subscribe(() => done());
 }, 60000);
 
-xtest('Search for a unit in radius using API', done => {
+test('Search for a unit in radius using API', done => {
   sdk
     .SearchByRadius({
       input: {

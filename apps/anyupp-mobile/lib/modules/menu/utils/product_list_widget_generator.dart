@@ -1,10 +1,10 @@
 import 'dart:collection';
 
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/adbanner/adbanner.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/adbanner/adbanner.dart';
+import '/modules/menu/menu.dart';
+import '/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 
 class GeneratedMenu {
@@ -58,7 +58,7 @@ class MenuItemHeader extends MenuListItem {
 
 class MenuItemFavorite extends MenuListItem {
   final int position;
-  final GeneratedProduct product;
+  final Product product;
   final ProductItemDisplayState displayState;
 
   const MenuItemFavorite({
@@ -70,7 +70,7 @@ class MenuItemFavorite extends MenuListItem {
 
 class MenuItemProduct extends MenuListItem {
   final int position;
-  final GeneratedProduct product;
+  final Product product;
   final ProductItemDisplayState displayState;
 
   const MenuItemProduct({
@@ -106,9 +106,9 @@ class ProductListWidgetGenerator {
 
   GeneratedSubMenu generateSubMenu({
     required BuildContext context,
-    required GeoUnit unit,
+    required Unit unit,
     required List<ProductCategory> subCategories,
-    required List<GeneratedProduct> products,
+    required List<Product> products,
     required ServingMode servingMode,
   }) {
     var tempProducts = _filterUnavailableProducts(products, unit);
@@ -171,9 +171,9 @@ class ProductListWidgetGenerator {
 
   GeneratedMenu generateMenu({
     required BuildContext context,
-    required GeoUnit unit,
+    required Unit unit,
     required List<ProductCategory> productCategories,
-    required List<GeneratedProduct> products,
+    required List<Product> products,
     List<FavoriteProduct>? favorites,
     required ServingMode servingMode,
   }) {
@@ -274,7 +274,7 @@ class ProductListWidgetGenerator {
 
   MenuListItem? _getBanner(
     List<MenuListItem> listItems,
-    GeoUnit unit,
+    Unit unit,
   ) {
     if (unit.adBannersEnabled == true) {
       var banner = getRandomBanner(banners: unit.adBanners);
@@ -300,13 +300,13 @@ class ProductListWidgetGenerator {
   //   }
   // }
 
-  List<GeneratedProduct> _filterUnavailableProducts(
-    List<GeneratedProduct> products,
-    GeoUnit unit,
+  List<Product> _filterUnavailableProducts(
+    List<Product> products,
+    Unit unit,
   ) {
     if (unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.invisible) {
-      List<GeneratedProduct> availableProducts =
-          products.where((p) => !p.isSoldOut).toList();
+      List<Product> availableProducts =
+          products.where((p) => !p.soldOut).toList();
       return availableProducts;
     } else {
       return products;
@@ -314,13 +314,13 @@ class ProductListWidgetGenerator {
   }
 
   ProductItemDisplayState _getProductState(
-    GeneratedProduct product,
-    GeoUnit unit,
+    Product product,
+    Unit unit,
     ServingMode servingMode,
   ) {
     bool isAvailableInThisServingMode =
         product.isAvailableInServingMode(servingMode);
-    bool isSoldOut = product.isSoldOut;
+    bool isSoldOut = product.soldOut;
     bool isHidden = isSoldOut &&
         unit.soldOutVisibilityPolicy == SoldOutVisibilityPolicy.invisible;
     ProductItemDisplayState displayState = ProductItemDisplayState.NORMAL;
@@ -339,9 +339,9 @@ class ProductListWidgetGenerator {
 
   List<MenuListItem> generateMenuForCategory(
       BuildContext context,
-      GeoUnit unit,
+      Unit unit,
       List<ProductCategory> productCategories,
-      LinkedHashMap<String, List<GeneratedProduct>> productMap,
+      LinkedHashMap<String, List<Product>> productMap,
       ServingMode servingMode,
       List<int> listIndexMap,
       List<int> tabIndexMap) {

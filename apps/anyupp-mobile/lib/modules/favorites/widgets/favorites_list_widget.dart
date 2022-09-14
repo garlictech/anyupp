@@ -1,16 +1,16 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/models.dart';
+import '/modules/favorites/favorites.dart';
+import '/modules/menu/menu.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class FavoritesListWidget extends StatefulWidget {
-  final GeoUnit unit;
+  final Unit unit;
   final ServingMode mode;
 
   FavoritesListWidget({Key? key, required this.unit, required this.mode})
@@ -63,7 +63,7 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
     });
   }
 
-  Widget _buildList(GeoUnit unit, List<FavoriteProduct> list) {
+  Widget _buildList(Unit unit, List<FavoriteProduct> list) {
     return AnimationLimiter(
       child: SmartRefresher(
         enablePullDown: true,

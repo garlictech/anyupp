@@ -1,6 +1,6 @@
 import 'package:artemis/artemis.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/graphql.dart';
+import '/core/core.dart';
+import '/graphql/graphql.dart';
 import 'package:flutter/foundation.dart';
 import 'package:graphql_flutter/graphql_flutter.dart' hide JsonSerializable;
 import 'package:json_annotation/json_annotation.dart';

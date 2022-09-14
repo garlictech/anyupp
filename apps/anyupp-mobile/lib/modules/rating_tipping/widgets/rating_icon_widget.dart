@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/locale.dart';
+import '/core/core.dart';
+import '/shared/locale.dart';
 import 'package:flutter/material.dart';
 
 class RatingIconWidget extends StatelessWidget {

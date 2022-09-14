@@ -66,13 +66,11 @@ export class RKeeperStack extends sst.Stack {
           'dynamodb:UpdateItem',
         ],
         resources: [
-          tableConfig.GeneratedProduct.TableArn,
-          tableConfig.GeneratedProductCategory.TableArn,
+          tableConfig.ProductCategory.TableArn,
           tableConfig.Unit.TableArn,
           tableConfig.AdminUser.TableArn,
           tableConfig.UnitProduct.TableArn,
-          tableConfig.GroupProduct.TableArn,
-          tableConfig.ChainProduct.TableArn,
+          tableConfig.Variant.TableArn,
         ],
       }),
     );
@@ -98,7 +96,10 @@ export class RKeeperStack extends sst.Stack {
 
     // The s3 bucket passing the menu json to fargate
     const menuBucket = new s3.Bucket(this, 'AnyuppRkeeperMenuBucket', {
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      enforceSSL: true,
       removalPolicy: RemovalPolicy.DESTROY,
+      encryption: s3.BucketEncryption.S3_MANAGED,
       autoDeleteObjects: true,
       lifecycleRules: [
         {
@@ -133,7 +134,7 @@ export class RKeeperStack extends sst.Stack {
       {
         ...commonLambdaProps,
         memorySize: 512,
-        timeout: Duration.seconds(20),
+        timeout: Duration.seconds(30),
         handler: 'index.handler',
         code: aws_lambda.Code.fromAsset(
           path.join(__dirname, '../../build/rkeeper-webhook'),
@@ -147,7 +148,6 @@ export class RKeeperStack extends sst.Stack {
           BUCKET_NAME: menuBucket.bucketName,
           FIREBASE_SERVICE_ACCOUNT_CERT: props.firebaseServiceAccountCert,
         },
-        vpc: props.vpc,
       },
     );
 

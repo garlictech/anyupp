@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/core/units/units.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
+import '/core/units/units.dart';
+import '/models.dart';
+import '/modules/menu/menu.dart';
 
 part 'product_categories_event.dart';
 part 'product_categories_state.dart';
@@ -44,7 +44,7 @@ class ProductCategoriesBloc
       LoadProductCategories event, Emitter<ProductCategoriesState> emit) async {
     emit(ProductCategoriesLoading());
     var response =
-        await _productRepository.getProductCategoryList(event.unitId);
+        await _productRepository.getProductCategoryList(event.chainId);
     _categories = response.data;
     emit(ProductCategoriesLoaded(_categories));
   }

@@ -1,5 +1,4 @@
 {
-  "root": "libs/gql-sdk",
   "sourceRoot": "libs/gql-sdk/src",
   "projectType": "library",
   "targets": {

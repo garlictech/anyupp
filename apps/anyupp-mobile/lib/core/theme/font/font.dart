@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:fa_prev/core/theme/theme.dart';
+import '/core/theme/theme.dart';
 import 'package:flutter/material.dart';
 
 abstract class FontHandler {

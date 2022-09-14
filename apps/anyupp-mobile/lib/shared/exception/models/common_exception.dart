@@ -1,4 +1,4 @@
-import 'package:fa_prev/core/core.dart';
+import '/core/core.dart';
 
 class CommonException extends AppException {
   CommonException({

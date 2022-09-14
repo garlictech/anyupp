@@ -1,7 +1,7 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../mock/mock_data_faker.dart';
@@ -10,11 +10,11 @@ import '../widget/mock/mocks.dart';
 void main() {
   setUpAll(() {
     // Setup
-    GeoUnit mockUnit = MockGenerator.generateUnit(
+    Unit mockUnit = MockGenerator.generateUnit(
       name: 'Test Unit',
       currency: 'huf',
     ).copyWith(
-      packagingTax: 10,
+      packagingTaxPercentage: 10,
     );
     getIt.registerSingleton<UnitSelectBloc>(MockUnitSelectBloc(mockUnit));
   });
@@ -127,8 +127,7 @@ void main() {
       expect(cart.totalPrice, equals(0));
       expect(cart.packaginFee, equals(0));
 
-      GeneratedProductConfigSet configSet =
-          MockGenerator.generateEmptyProductConfigSet(
+      ProductConfigSet configSet = MockGenerator.generateEmptyProductConfigSet(
         name: 'Test Modifier Set',
         type: ProductComponentSetType.modifier,
       );

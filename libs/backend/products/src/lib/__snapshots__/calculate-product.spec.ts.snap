@@ -6,7 +6,6 @@ Object {
     "peanut",
     "egg",
   ],
-  "chainId": "CHAIN_ID",
   "configSets": Array [
     Object {
       "items": Array [
@@ -15,14 +14,12 @@ Object {
           "position": 1,
           "price": 1,
           "productComponentId": "PRODUCT_COMPONENT_ID_11",
-          "refGroupPrice": 1,
         },
         Object {
           "netPackagingFee": 40,
           "position": 2,
           "price": 2,
           "productComponentId": "PRODUCT_COMPONENT_ID_21",
-          "refGroupPrice": 2,
         },
       ],
       "position": 1,
@@ -33,14 +30,12 @@ Object {
   "description": Object {
     "en": "DESCRIPTION",
   },
-  "groupId": "GROUP_ID",
   "id": "PRODUCT_ID",
   "image": "IMG",
   "isVisible": true,
   "name": Object {
     "en": "NAME",
   },
-  "parentId": "PARENT_ID",
   "position": 1,
   "productCategoryId": "PROD_CAT_ID",
   "productType": "drink",
@@ -74,7 +69,6 @@ Object {
       },
       "position": 1,
       "price": 1.5,
-      "refGroupPrice": 1,
       "soldOut": false,
       "variantName": Object {
         "en": "VARIANT_NAME_01",
@@ -100,7 +94,6 @@ Object {
       },
       "position": 100,
       "price": 1.5,
-      "refGroupPrice": 1,
       "soldOut": false,
       "variantName": Object {
         "en": "VARIANT_NAME_01",
@@ -110,7 +103,7 @@ Object {
 }
 `;
 
-exports[`calculatePricesAndCheckActivity method should return a minimal representation of the product in the correct format: Result of toCreateGeneratedProductInputType 1`] = `
+exports[`calculatePricesAndCheckActivity method should return a minimal representation of the product in the correct format: Result of toCreateProductInputType 1`] = `
 Object {
   "allergens": Array [
     "peanut",
@@ -120,46 +113,20 @@ Object {
     Object {
       "items": Array [
         Object {
-          "allergens": Array [
-            "egg",
-            "fish",
-          ],
-          "externalId": "EXTERNAL_ID",
-          "name": Object {
-            "en": "PRODUCT_COMP_NAME",
-          },
           "netPackagingFee": 30,
           "position": 1,
           "price": 1,
           "productComponentId": "PRODUCT_COMPONENT_ID_11",
-          "soldOut": true,
         },
         Object {
-          "allergens": Array [
-            "egg",
-            "fish",
-          ],
-          "externalId": "EXTERNAL_ID",
-          "name": Object {
-            "en": "PRODUCT_COMP_NAME",
-          },
           "netPackagingFee": 40,
           "position": 2,
           "price": 2,
           "productComponentId": "PRODUCT_COMPONENT_ID_21",
-          "soldOut": false,
         },
       ],
-      "maxSelection": 1,
-      "name": Object {
-        "en": "PRODUCT_COMP_SET_NAME",
-      },
       "position": 1,
       "productSetId": "PRODUCT_SET_01",
-      "supportedServingModes": Array [
-        "inPlace",
-      ],
-      "type": "extras",
     },
   ],
   "description": Object {
@@ -167,6 +134,7 @@ Object {
   },
   "id": "PRODUCT_ID",
   "image": "IMG",
+  "isVisible": true,
   "name": Object {
     "en": "NAME",
   },
@@ -183,6 +151,7 @@ Object {
   "variants": Array [
     Object {
       "id": "VARIANT_ID_01",
+      "isAvailable": true,
       "netPackagingFee": 30,
       "pack": Object {
         "size": 1,
@@ -197,6 +166,7 @@ Object {
     },
     Object {
       "id": "VARIANT_ID_01",
+      "isAvailable": true,
       "netPackagingFee": 30,
       "pack": Object {
         "size": 1,

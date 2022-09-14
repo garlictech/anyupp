@@ -1,14 +1,14 @@
-import 'package:connectivity/connectivity.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/favorites/favorites.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/shared/connectivity.dart';
-import 'package:fa_prev/shared/locale.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
+import 'package:anyupp/modules/favorites/favorites.dart';
+import 'package:anyupp/modules/menu/menu.dart';
+import 'package:anyupp/modules/takeaway/takeaway.dart';
+import 'package:anyupp/shared/auth.dart';
+import 'package:anyupp/shared/connectivity.dart';
+import 'package:anyupp/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,11 +16,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mocktail/mocktail.dart';
 
-import '../unit/mock/mock_auth_provider.dart';
 import '../mock/mock_data_faker.dart';
+import '../unit/mock/mock_auth_provider.dart';
 import 'mock/mocks.dart';
 
-GeoUnit _unit = MockGenerator.generateUnit(
+Unit _unit = MockGenerator.generateUnit(
   name: 'TEST UNIT',
   currency: 'HUF',
 );
@@ -98,9 +98,7 @@ void main() {
     registerFallbackValue(FakeNetworkStatusEvent());
     registerFallbackValue(FakeConfigsetState());
     registerFallbackValue(FakeConfigsetEvent());
-  });
 
-  setUp(() {
     GoogleFonts.config.allowRuntimeFetching = false;
     MockThemeBloc themeBloc = MockThemeBloc();
 
@@ -153,7 +151,7 @@ void main() {
     tester.binding.window.physicalSizeTestValue = Size(1080, 2000);
 
     await tester.runAsync(() async {
-      GeneratedProduct product = MockGenerator.generateProduct(
+      Product product = MockGenerator.generateProduct(
         name: 'Hamburger',
         variantCount: 1,
         servingModes: [ServingMode.inPlace],
@@ -175,6 +173,39 @@ void main() {
       expect(find.byType(ProductDetailsScreen), findsOneWidget);
       expect(find.byType(ProductDetailsWidget), findsOneWidget);
       expect(find.byType(AddToCartPanelWidget), findsOneWidget);
+    });
+  });
+
+  testWidgets('Test Product Details widget', (WidgetTester tester) async {
+    tester.binding.window.physicalSizeTestValue = Size(1080, 2000);
+
+    await tester.runAsync(() async {
+      Product product = MockGenerator.generateProduct(
+        name: 'Hamburger',
+        variantCount: 1,
+        servingModes: [ServingMode.inPlace],
+      ).copyWith(soldOut: true);
+
+      await tester.pumpWidget(
+        _createBoilerPlateApp(
+          child: ProductDetailsScreen(
+            item: product,
+            unit: _unit,
+            displayState: ProductItemDisplayState.SOLDOUT,
+            servingMode: ServingMode.takeAway,
+          ),
+        ),
+      );
+
+      await tester.pump(Duration(seconds: 5));
+
+      expect(find.byType(ProductDetailsScreen), findsOneWidget);
+      expect(find.byType(ProductDetailsWidget), findsOneWidget);
+      expect(find.byType(AddToCartPanelWidget), findsOneWidget);
+
+      var soldOutText = find.byWidgetPredicate((widget) =>
+          widget is Text && widget.data == 'A termék sajnos elfogyott');
+      expect(soldOutText, findsOneWidget);
     });
   });
 }

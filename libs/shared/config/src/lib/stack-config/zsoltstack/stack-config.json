@@ -8,17 +8,22 @@
     "googleClientIdOutput": "1016713353610-q3nsj1t1flrjuo33sfakis645gl7ijv3.apps.googleusercontent.com",
     "facebookAppIdOutput": "166876958090898",
     "googleApiKeyOutput": "AIzaSyDGNIG1eIqvKsRoBsQ2T7PVff2d1XUhsVg",
-    "securityGroupId": "sg-067322e2345a84f7e",
+    "securityGroupId": "sg-0d8ed08b1456cac31",
     "slackChannelOutput": "net.cyberg.anyupp.cognito",
     "appleTeamIdOutput": "36CW47H75G",
     "appleKeyIdOutput": "8W2A8ZDZH8",
     "vpcIdOutput": "vpc-0880d26d0165c9f7f"
   },
   "anyupp-backend-sites": {
+    "VariantsBucket8636AB76": "zsoltstack-variants-anyupp-backend.anyupp.com",
+    "VariantsDistributionDomainName64CED8FD": "d19l43lc6k016w.cloudfront.net",
     "AdminSiteDomainA75B4E32": "zsoltstack-admin-anyupp-backend.anyupp.com",
+    "VariantsSiteDomain720640AD": "zsoltstack-variants-anyupp-backend.anyupp.com",
     "AdminDistributionDomainNameA4A4FE5B": "d3ooy6w4xhs0hy.cloudfront.net",
     "AdminSiteEAA17C78": "https://zsoltstack-admin-anyupp-backend.anyupp.com",
     "AdminDistributionIdB4DE25AB": "E6K44SMX7URKC",
+    "VariantsSite8C170134": "https://zsoltstack-variants-anyupp-backend.anyupp.com",
+    "VariantsDistributionIdEF1CC563": "E2612Q4E6RH7VJ",
     "AdminBucketCA57896C": "zsoltstack-admin-anyupp-backend.anyupp.com"
   },
   "anyupp-backend-cognito": {
@@ -37,9 +42,9 @@
     "StripeWebhookEndpointE83D65EB": "https://t32kvtns8l.execute-api.eu-west-1.amazonaws.com/zsoltstack/"
   },
   "anyupp-backend-rkeeper": {
-    "RKeeperWebhookEndpointCBC72BD4": "https://4qziguq29c.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
+    "RKeeperWebhookEndpointCBC72BD4": "https://dadq12h6fl.execute-api.eu-west-1.amazonaws.com/zsoltstack/",
     "rkeeperwebhookEndpoint": "https://rkeeper-webhook-zsoltstack.anyupp.com/zsoltstack",
-    "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-kssfpzxf9by1",
-    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-RkeeperECSTaskExecutionR-176F6A259WBXU"
+    "RKeeperTaskBucketName": "zsoltstack-anyupp-backen-anyupprkeepermenubucket4-3c8swgmphrt6",
+    "RKeeperTaskRoleArn": "arn:aws:iam::568276182587:role/zsoltstack-anyupp-backend-RkeeperECSTaskExecutionR-1UAN6OBJT4R8K"
   }
 }

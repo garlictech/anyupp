@@ -1,11 +1,11 @@
-query ListChainProductComponents(
-  $chainId: ID!
+query ListProductComponents(
+  $ownerEntity: ID!
   $nextToken: String
   $limit: Int
 ) {
   searchProductComponents(
     filter: {
-      chainId: { eq: $chainId }
+      ownerEntity: { eq: $ownerEntity }
       dirty: { ne: true }
       and: { deletedAt: { exists: false } }
     }
@@ -18,14 +18,12 @@ query ListChainProductComponents(
         en
         hu
       }
-      soldOut
       updatedAt
       id
-      externalId
       description
       deletedAt
       createdAt
-      chainId
+      ownerEntity
       allergens
     }
     nextToken

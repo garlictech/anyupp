@@ -1,10 +1,10 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/payment/stripe/stripe.dart';
-import 'package:fa_prev/shared/utils/enum.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/payment/stripe/stripe.dart';
+import '/shared/utils/enum.dart';
 
 class ExternalPaymentProvider implements IExternalPaymentProvider {
   final ICartProvider _cartProvider;
@@ -12,11 +12,12 @@ class ExternalPaymentProvider implements IExternalPaymentProvider {
   ExternalPaymentProvider(this._cartProvider);
 
   @override
-  Future<void> startExternalPayment(Cart cart, PaymentMode paymentMode,
+  Future<void> startExternalPayment(Cart? cart, PaymentMode paymentMode,
       UserInvoiceAddress? invoiceAddress) async {
-    log.d(
-        'startExternalPayment().start().orderMethod=$paymentMode, cart=${cart.id}');
-    await _cartProvider.setPaymentMode(cart.unitId, paymentMode);
+    log.d('startExternalPayment().start()=$paymentMode, cart=${cart?.id}');
+    if (cart != null) {
+      await _cartProvider.setPaymentMode(cart.unitId, paymentMode);
+    }
 
     PaymentMethod method = PaymentMethod.values.firstWhere(
         (m) => stringFromEnum(m) == stringFromEnum(paymentMode.method),

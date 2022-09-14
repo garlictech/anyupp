@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 
 part 'order_refresh_event.dart';
 part 'order_refresh_state.dart';

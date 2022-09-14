@@ -1,5 +1,4 @@
 import { CrudSdk } from '@bgap/crud-gql/api';
-import { Observable } from 'rxjs';
 import { DynamoDB } from 'aws-sdk';
 
 export interface UnitsResolverDeps {
@@ -9,5 +8,3 @@ export interface UnitsResolverDeps {
   tableName: string;
   docClient: DynamoDB.DocumentClient;
 }
-
-export type RegenerateUnitDataHandler = (unitId: string) => Observable<boolean>;

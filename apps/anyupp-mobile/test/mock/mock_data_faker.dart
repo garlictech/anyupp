@@ -1,7 +1,7 @@
 import 'dart:math';
 
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
 import 'package:faker/faker.dart' hide Address;
 
 class MockGenerator {
@@ -184,7 +184,7 @@ class MockGenerator {
         netPackagingFee: packagingFee);
   }
 
-  static GeneratedProductConfigSet generateEmptyProductConfigSet({
+  static ProductConfigSet generateEmptyProductConfigSet({
     required String name,
     String? productSetId,
     List<ServingMode> supportedServingModes = const [
@@ -196,7 +196,7 @@ class MockGenerator {
     int maxSelection = 1,
     int position = 0,
   }) {
-    return GeneratedProductConfigSet(
+    return ProductConfigSet(
       name: LocalizedItem(
         hu: name,
         de: name,
@@ -245,27 +245,25 @@ class MockGenerator {
     );
   }
 
-  static GeoUnit generateUnit({
+  static Unit generateUnit({
     String? id,
     required String name,
     required String currency,
     OrderPolicy? orderPolicy = OrderPolicy.full,
   }) {
-    return GeoUnit(
+    return Unit(
       id: id ?? faker.guid.guid(),
-      groupId: faker.guid.guid(),
-      chainId: faker.guid.guid(),
       name: name,
+      location: Location(
+        lat: 0,
+        lng: 0,
+      ),
       address: Address(
         address: 'Test Street',
         city: 'Budapest',
         country: 'Hungary',
         title: 'Test Address',
         postalCode: '1000',
-        location: Location(
-          lat: 0,
-          lng: 0,
-        ),
       ),
       style: ChainStyle(
         colors: ChainStyleColors(
@@ -282,10 +280,8 @@ class MockGenerator {
           secondary: '#ffffff',
         ),
       ),
-      distance: 0,
       currency: currency,
       isAcceptingOrders: true,
-      openingHoursNext7: [],
       supportedServingModes: [
         ServingMode.inPlace,
         ServingMode.takeAway,
@@ -295,11 +291,11 @@ class MockGenerator {
         OrderMode.pickup,
       ],
       orderPolicy: OrderPolicy.full,
-      packagingTax: 5.0,
+      packagingTaxPercentage: 5.0,
     );
   }
 
-  static GeneratedProduct generateProduct({
+  static Product generateProduct({
     required String name,
     List<ServingMode> servingModes = const [
       ServingMode.inPlace,
@@ -320,14 +316,14 @@ class MockGenerator {
       );
     }
 
-    List<GeneratedProductConfigSet> configSets = [];
+    List<ProductConfigSet> configSets = [];
     for (int i = 0; i < configSetCount; i++) {
       configSets.add(generateProductConfigSet(
         name: '${name}_config_$i',
         position: i,
       ));
     }
-    return GeneratedProduct(
+    return Product(
       id: faker.guid.guid(),
       unitId: faker.guid.guid(),
       productCategoryId: faker.guid.guid(),
@@ -359,20 +355,20 @@ class MockGenerator {
     ProductVariantPack? pack,
   }) {
     return ProductVariant(
-      id: faker.guid.guid(),
-      variantName: LocalizedItem(
-        en: name,
-        de: name,
-        hu: name,
-      ),
-      price: price,
-      position: position,
-      pack: pack,
-      soldOut: false,
-    );
+        id: faker.guid.guid(),
+        variantName: LocalizedItem(
+          en: name,
+          de: name,
+          hu: name,
+        ),
+        price: price,
+        position: position,
+        pack: pack,
+        soldOut: false,
+        isAvailable: true);
   }
 
-  static GeneratedProductConfigSet generateProductConfigSet({
+  static ProductConfigSet generateProductConfigSet({
     required String name,
     required int position,
     List<ServingMode> servingModes = const [
@@ -381,7 +377,7 @@ class MockGenerator {
     ],
     int itemCount = 3,
   }) {
-    List<GeneratedProductConfigComponent> items = [];
+    List<ProductConfigComponent> items = [];
     for (int i = 0; i < itemCount; i++) {
       items.add(generateProductConfigComponent(
         position: i,
@@ -389,7 +385,7 @@ class MockGenerator {
         price: (i + 1) * 100,
       ));
     }
-    return GeneratedProductConfigSet(
+    return ProductConfigSet(
       productSetId: faker.guid.guid(),
       name: LocalizedItem(
         de: name,
@@ -405,7 +401,7 @@ class MockGenerator {
     );
   }
 
-  static GeneratedProductConfigComponent generateProductConfigComponent({
+  static ProductConfigComponent generateProductConfigComponent({
     required String name,
     required double price,
     int position = 0,
@@ -413,7 +409,7 @@ class MockGenerator {
     double packagingFee = 0.0,
   }) {
     List<Allergen> allergeens = generateAllergeens(allergensCount);
-    return GeneratedProductConfigComponent(
+    return ProductConfigComponent(
       productComponentId: faker.guid.guid(),
       price: price,
       position: position,
@@ -446,6 +442,14 @@ class MockGenerator {
       items: [],
       servingMode: servingMode,
       orderPolicy: OrderPolicy.full,
+      packagingFeeTaxPercentage: 0.0,
+      orderMode: OrderMode.instant,
     );
   }
+
+  static LocalizedItem getLocalizedItem(String text) => LocalizedItem(
+        hu: text,
+        en: text,
+        de: text,
+      );
 }

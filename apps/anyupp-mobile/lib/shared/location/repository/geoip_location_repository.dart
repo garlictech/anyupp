@@ -1,6 +1,6 @@
 import 'dart:convert';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/shared/location/location.dart';
+import '/core/core.dart';
+import '/shared/location/location.dart';
 import 'package:http/http.dart' as http;
 
 class GeolocationIPLocationRepository {

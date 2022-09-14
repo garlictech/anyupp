@@ -1,6 +1,6 @@
 // ############
 // execute with:
-// yarn ts-node --project ./tools/tsconfig.tools.json -r tsconfig-paths/register ./tools/seed-execute.ts
+// yarn ts-node --project ./tools/tsconfig.json -r tsconfig-paths/register ./tools/seed-execute.ts
 
 import { awsConfig, getCrudSdkForIAM } from '../libs/crud-gql/api/src';
 import { config } from '../libs/shared/config/src';

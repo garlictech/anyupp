@@ -1,11 +1,11 @@
-import 'package:fa_prev/core/theme/theme.dart';
-import 'package:fa_prev/models/GeneratedProduct.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/theme/theme.dart';
+import '/models/Product.dart';
+import '/shared/locale.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ProductImageDetailsScreen extends StatelessWidget {
-  final GeneratedProduct product;
+  final Product product;
 
   const ProductImageDetailsScreen({Key? key, required this.product})
       : super(key: key);

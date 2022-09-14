@@ -1,12 +1,12 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/notifications/utils/notifications_utils.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/utils/place_preferences.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/selectunit/selectunit.dart';
+import '/shared/locale.dart';
+import '/shared/nav.dart';
+import '/shared/notifications/utils/notifications_utils.dart';
+import '/shared/utils/place_preferences.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,7 +45,7 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
   String? _errorDesc;
   late AnimationController _controller;
 
-  GeoUnit? _selectedUnit;
+  Unit? _selectedUnit;
 
   @override
   void initState() {
@@ -240,10 +240,10 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
 
   Future<void> _handleUnitFoundByQRCode(
     BuildContext context,
-    List<GeoUnit> units,
+    List<Unit> units,
   ) async {
-    int index = units.indexWhere((GeoUnit unit) => unit.id == widget.unitId);
-    GeoUnit? unit = index >= 0 ? units[index] : null;
+    int index = units.indexWhere((Unit unit) => unit.id == widget.unitId);
+    Unit? unit = index >= 0 ? units[index] : null;
     if (unit != null) {
       log.d('***************** UNIT FOUND FOR QR=$unit');
       await setPlacePref(unit.id, widget.place);

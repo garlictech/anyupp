@@ -1,4 +1,4 @@
-import 'package:fa_prev/modules/login/login.dart';
+import '/modules/login/login.dart';
 
 abstract class IEmailLoginProvider {
   Future<String> registerUserWithEmailAndPassword(String userEmail, String? userPhone, String email, String password);

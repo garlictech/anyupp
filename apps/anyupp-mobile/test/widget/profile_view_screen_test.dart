@@ -1,7 +1,7 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/profile/profile.dart';
-import 'package:fa_prev/shared/utils/md5_hash.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/profile/profile.dart';
+import 'package:anyupp/shared/utils/md5_hash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,11 +1,11 @@
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart' as api;
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/graphql/graphql.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/payment/stripe/stripe.dart';
+import '/app-config.dart';
+import '/core/core.dart';
+import '/graphql/generated/crud-api.dart' as api;
+import '/graphql/generated/crud-api.dart';
+import '/graphql/graphql.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/payment/stripe/stripe.dart';
 import 'package:stripe_sdk/stripe_sdk.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart' hide PaymentMethod;
 

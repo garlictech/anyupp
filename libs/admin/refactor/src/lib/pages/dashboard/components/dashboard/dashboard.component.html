@@ -103,22 +103,6 @@
           {{ 'dashboard.actions.history' | translate }}
         </div>
       </nb-action>
-      <nb-action
-        [ngClass]="
-          dashboardSettings.listMode === EDashboardListMode.reports
-            ? 'active'
-            : 'inactive'
-        "
-        (click)="selectListMode(EDashboardListMode.reports)"
-        data-testid="reportsAction"
-        role="button"
-        class="label-icon"
-      >
-        <nb-icon icon="pie_chart" pack="material-icons"></nb-icon>
-        <div class="action-label">
-          {{ 'dashboard.actions.reports' | translate }}
-        </div>
-      </nb-action>
     </nb-actions>
   </nb-card-header>
   <nb-card-body id="dashboardMainCardBody" class="p-1">
@@ -135,8 +119,5 @@
     <bgap-floor-map-body
       *ngIf="dashboardSettings.listMode === EDashboardListMode.floormap"
     ></bgap-floor-map-body>
-    <bgap-reports-body
-      *ngIf="dashboardSettings.listMode === EDashboardListMode.reports"
-    ></bgap-reports-body>
   </nb-card-body>
 </nb-card>

@@ -1,17 +1,18 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/auth/providers/auth_provider_interface.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/menu/menu.dart';
+import '/shared/auth/providers/auth_provider_interface.dart';
+import '/shared/locale/locale.dart';
+import '/shared/utils/format_utils.dart';
+import '/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/graphql/generated/crud-api.dart';
 
 class ProductConfiguratorWidget extends StatefulWidget {
-  final GeoUnit unit;
-  final GeneratedProduct product;
+  final Unit unit;
+  final Product product;
   final ServingMode? servingMode;
   final ProductItemDisplayState displayState;
 
@@ -52,51 +53,23 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   }
 
   Future<void> setButton() async {
-    OrderItem? orderItem = await getOrderItem();
-    if (orderItem != null) {
-      BlocProvider.of<ConfigsetBloc>(context).add(ConfigsetUpdatedEvent(
-          orderItem: orderItem,
-          unit: widget.unit,
-          totalPrice: _modifierTotalPrice));
-    }
-  }
-
-  Future<OrderItem?> getOrderItem() async {
     User? user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
-    return OrderItem(
-      productType: widget.product.productType,
-      productId: widget.product.id,
-      variantId: _productVariant.id!,
-      image: widget.product.image,
-      priceShown: PriceShown(
-        currency: widget.unit.currency,
-        pricePerUnit: _productVariant.price,
-        priceSum: _productVariant.price,
-        tax: 0,
-        taxSum: 0,
-      ),
-      sumPriceShown: PriceShown(
-        currency: widget.unit.currency,
-        pricePerUnit: _productVariant.price,
-        priceSum: _productVariant.price,
-        tax: 0,
-        taxSum: 0,
-      ),
-      allergens: widget.product.allergens,
-      productName: widget.product.name,
-      variantName: _productVariant.variantName,
-      // generatedProductConfigSet: widget.product.,
-      statusLog: [
-        StatusLog(
-          userId: user!.id,
-          status: OrderStatus.none,
-          ts: 0,
-        ),
-      ],
-      quantity: 1,
-      netPackagingFee: _productVariant.netPackagingFee,
-      selectedConfigMap: getSelectedComponentMap(),
+    var configSets = getSelectedComponentMap();
+    OrderItem orderItem = getIt<CartRepository>().getOrderItem(
+      user!.id,
+      widget.unit,
+      widget.product,
+      _productVariant,
+      configSets,
     );
+    // .copyWith(
+    //   selectedConfigMap: configSets,
+    // );
+
+    BlocProvider.of<ConfigsetBloc>(context).add(ConfigsetUpdatedEvent(
+        orderItem: orderItem,
+        unit: widget.unit,
+        totalPrice: _modifierTotalPrice));
   }
 
   @override
@@ -111,7 +84,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
       return SizedBox();
     }
 
-    variants = variants.where((variant) => !variant.soldOut).toList();
+    variants =
+        variants.where((variant) => !(variant.soldOut ?? false)).toList();
 
     return Container(
       color: theme.secondary12,
@@ -202,25 +176,25 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     );
   }
 
-  Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+  Map<ProductConfigSet, List<ProductConfigComponent>>
       getSelectedComponentMap() {
-    Map<GeneratedProductConfigSet, List<GeneratedProductConfigComponent>>
+    Map<ProductConfigSet, List<ProductConfigComponent>>
         selectedConfigMap = {};
     _selectedModifiers.forEach((key, value) {
-      GeneratedProductConfigSet? modifier =
+      ProductConfigSet? modifier =
           getModifierConfigSetById(key, widget.product.configSets ?? []);
       if (modifier != null) {
-        GeneratedProductConfigComponent? component =
+        ProductConfigComponent? component =
             getComponentByIdFromSet(value, modifier, widget.servingMode);
         selectedConfigMap[modifier] = component == null ? [] : [component];
       }
     });
     _selectedExtras.forEach((key, value) {
-      GeneratedProductConfigSet? modifier =
+      ProductConfigSet? modifier =
           getExtraConfigSetById(key, widget.product.configSets ?? []);
       value.forEach((extra, isAdded) {
         if (isAdded) {
-          GeneratedProductConfigComponent? component =
+          ProductConfigComponent? component =
               getComponentByIdFromSet(extra, modifier, widget.servingMode);
           if (selectedConfigMap[modifier] == null &&
               modifier != null &&
@@ -256,9 +230,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     }
     //--- calculate modifier price
     _selectedModifiers.forEach((key, value) {
-      GeneratedProductConfigSet? modifier =
+      ProductConfigSet? modifier =
           getModifierConfigSetById(key, widget.product.configSets ?? []);
-      GeneratedProductConfigComponent? component =
+      ProductConfigComponent? component =
           getComponentByIdFromSet(value, modifier, widget.servingMode);
 
       if (component != null) {
@@ -269,7 +243,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     _selectedExtras.forEach((setId, setMap) {
       setMap.forEach((componentId, selected) {
         if (selected == true) {
-          GeneratedProductConfigComponent? component =
+          ProductConfigComponent? component =
               getExtraComponentByIdAndSetId(
             setId,
             componentId,

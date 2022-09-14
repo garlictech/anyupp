@@ -9,8 +9,6 @@ import {
 
 export const mockUnit: Unit = {
   id: 'dummy_unit_id',
-  groupId: 'dummy_group_id',
-  chainId: 'dummy_chain_id',
   createdAt: '2021-08-02T01:54:11.843Z',
   updatedAt: '2021-08-02T01:54:11.843Z',
   isActive: true,
@@ -69,4 +67,8 @@ export const mockUnit: Unit = {
   },
   supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
   supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
+  currency: 'HUF',
+  style: {
+    colors: {},
+  },
 };

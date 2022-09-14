@@ -1,17 +1,17 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/utils/format_utils.dart';
-import 'package:fa_prev/shared/utils/unit_utils.dart';
+import '/models.dart';
+import '/shared/utils/format_utils.dart';
+import '/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/menu/menu.dart';
-import 'package:fa_prev/shared/locale.dart';
-import 'package:fa_prev/shared/widgets.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
+import '/core/core.dart';
+import '/modules/menu/menu.dart';
+import '/shared/locale.dart';
+import '/shared/widgets.dart';
+import '/graphql/generated/crud-api.dart';
 
 class AddToCartPanelWidget extends StatefulWidget {
   final Function(ConfigsetUpdated state, int quantity)? onAddToCartPressed;

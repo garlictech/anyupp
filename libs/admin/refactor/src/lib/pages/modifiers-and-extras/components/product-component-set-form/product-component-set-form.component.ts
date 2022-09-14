@@ -21,7 +21,7 @@ import {
   getProductComponentOptions,
   SERVING_MODES,
 } from '../../../../shared/utils';
-import { chainsSelectors } from '../../../../store/chains';
+import { unitsSelectors } from '../../../../store/units';
 import { loggedUserSelectors } from '../../../../store/logged-user';
 import { ProductComponentCollectionService } from '../../../../store/product-components';
 import { productComponentSetTypeOptions } from '../../const';
@@ -39,7 +39,7 @@ export class ProductComponentSetFormComponent
 {
   public componentForm?: UntypedFormGroup;
   public productComponentSet!: ProductComponentSet;
-  public chainOptions$: Observable<KeyValue[]>;
+  public unitOptions$: Observable<KeyValue[]>;
   public typeOptions: KeyValue[] = [];
   public productComponentOptions: KeyValue[] = [];
   public productComponentObject: KeyValueObject = {};
@@ -58,9 +58,7 @@ export class ProductComponentSetFormComponent
     this.dialogForm =
       this._modifiersAndExtrasFormService.createProductComponentSetFormGroup();
 
-    this.chainOptions$ = this._store.select(
-      chainsSelectors.getAllChainOptions(),
-    );
+    this.unitOptions$ = this._store.select(unitsSelectors.getAllUnitOptions());
 
     this.componentForm = this._formBuilder.group({
       productComponentId: ['', [Validators.required]],
@@ -73,14 +71,10 @@ export class ProductComponentSetFormComponent
     if (this.productComponentSet) {
       this.dialogForm?.patchValue(cleanObject(this.productComponentSet));
     } else {
-      // Patch ChainId
+      // Patch unitId
       this._store
-        .pipe(select(loggedUserSelectors.getSelectedChainId), take(1))
-        .subscribe((selectedChainId: string | undefined | null) => {
-          if (selectedChainId) {
-            this.dialogForm?.controls['chainId'].patchValue(selectedChainId);
-          }
-        });
+        .pipe(select(loggedUserSelectors.getSelectedUnitId), take(1))
+        .subscribe();
     }
 
     combineLatest([

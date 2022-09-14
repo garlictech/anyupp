@@ -1,10 +1,10 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/orders/bloc/order_refresh_bloc.dart';
-import 'package:fa_prev/modules/rating_tipping/rating_tipping.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/locale.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/orders/bloc/order_refresh_bloc.dart';
+import 'package:anyupp/modules/rating_tipping/rating_tipping.dart';
+import 'package:anyupp/modules/screens.dart';
+import 'package:anyupp/shared/locale.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -114,7 +114,7 @@ void main() {
   });
 
   group('Order Screen test with rating button', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(
@@ -166,7 +166,7 @@ void main() {
   });
 
   group('Order Screen test with tip button', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(
@@ -219,7 +219,7 @@ void main() {
   });
 
   group('Order Screen test with rating AND tip button', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(
@@ -275,7 +275,7 @@ void main() {
   });
 
   group('Order Screen test hide tip and rating', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(
@@ -339,7 +339,7 @@ void main() {
   });
 
   group('Order Screen test tip amount info section', () {
-    late GeoUnit _unit;
+    late Unit _unit;
 
     setUp(() {
       _unit = MockGenerator.generateUnit(

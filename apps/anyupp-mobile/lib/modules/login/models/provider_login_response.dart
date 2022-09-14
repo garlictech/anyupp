@@ -1,5 +1,5 @@
 import 'package:amazon_cognito_identity_dart_2/cognito.dart';
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable

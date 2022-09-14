@@ -1,4 +1,4 @@
-import 'package:fa_prev/models.dart';
+import '/models.dart';
 import 'package:stripe_sdk/stripe_sdk_ui.dart';
 
 abstract class IStripePaymentProvider {

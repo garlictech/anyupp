@@ -12,7 +12,7 @@ class UnitsInitial extends UnitsState {}
 class UnitsLoading extends UnitsState {}
 
 class UnitsLoaded extends UnitsState {
-  final List<GeoUnit> units;
+  final List<Unit> units;
   final LatLng? userLocation;
 
   const UnitsLoaded({required this.units, this.userLocation});

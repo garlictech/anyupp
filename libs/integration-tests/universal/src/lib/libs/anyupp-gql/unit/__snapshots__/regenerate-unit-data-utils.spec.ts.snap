@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`RegenerateUnitData Utils tests getTimezoneForUnit function should throw in case there are NO unit in the DB 1`] = `[Error: Unexpected empty value]`;
-
-exports[`RegenerateUnitData Utils tests listUnitProductsForAUnit function should throw in case there are NO unitProducts in the DB 1`] = `"{\\"message\\":\\"There is no product in this unit\\",\\"code\\":\\"ERROR_NO_PRODUCT_IN_UNIT\\"}"`;

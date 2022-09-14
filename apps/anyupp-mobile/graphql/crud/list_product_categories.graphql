@@ -1,0 +1,33 @@
+query ListProductCategories(
+  $ownerEntity: ID!
+  $nextToken: String
+  $limit: Int
+) {
+  searchProductCategories(
+    filter: { ownerEntity: { eq: $ownerEntity } }
+    nextToken: $nextToken
+    limit: $limit
+  ) {
+    items {
+      ownerEntity
+      parentId
+      createdAt
+      id
+      image
+      position
+      updatedAt
+      name {
+        de
+        en
+        hu
+      }
+      description {
+        de
+        en
+        hu
+      }
+    }
+    total
+    nextToken
+  }
+}

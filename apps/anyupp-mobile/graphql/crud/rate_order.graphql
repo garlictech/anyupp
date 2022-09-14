@@ -7,7 +7,6 @@ mutation RateOrder($orderId: ID!, $questionKey: String!, $rating: Int!) {
     }
   ) {
     id
-    orderNum
     unitId
     userId
     paymentIntention

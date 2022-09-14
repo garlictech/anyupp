@@ -27,7 +27,7 @@ import {
   MockNbDialogService,
   MockTranslateService,
 } from '../../shared/service-mocks';
-import { ChainProduct, OrderMode, ServingMode, Unit } from '@bgap/domain';
+import { OrderMode, ServingMode, Unit, UnitProduct } from '@bgap/domain';
 
 describe('UnitFormService', () => {
   const unitId = `${testIdPrefix}ADMIN_UNIT_IT_UNIT_ID_01`;
@@ -83,10 +83,10 @@ describe('UnitFormService', () => {
       .spyOn(service, 'createUnit$')
       .mockImplementationOnce(() => of({ data: 'ok', type: 'insert' }));
 
-    service.saveForm$(unitFixture.unitInputBase, false).subscribe();
+    service.saveForm$(unitFixture.unitBase, false).subscribe();
 
     expect(createSpy).toHaveBeenCalledWith({
-      ...unitFixture.unitInputBase,
+      ...unitFixture.unitBase,
       isAcceptingOrders: false,
     });
 
@@ -98,11 +98,11 @@ describe('UnitFormService', () => {
       .spyOn(service, 'updateUnit$')
       .mockImplementationOnce(() => of({ data: 'ok', type: 'update' }));
 
-    service.saveForm$(unitFixture.unitInputBase, false, unitId).subscribe();
+    service.saveForm$(unitFixture.unitBase, false, unitId).subscribe();
 
     expect(updateSpy).toHaveBeenCalledWith(
       {
-        ...unitFixture.unitInputBase,
+        ...unitFixture.unitBase,
         id: unitId,
       },
       false,
@@ -116,7 +116,7 @@ describe('UnitFormService', () => {
       .pipe(
         switchMap(() =>
           service.createUnit$({
-            ...unitFixture.unitInputBase,
+            ...unitFixture.unitBase,
             id: unitId,
           }),
         ),
@@ -140,18 +140,18 @@ describe('UnitFormService', () => {
       .pipe(
         switchMap(() =>
           service.createUnit$({
-            ...unitFixture.unitInputBase,
+            ...unitFixture.unitBase,
             id: unitId,
           }),
         ),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<ChainProduct>>saveResponse).data.id
+          (<UpsertResponse<UnitProduct>>saveResponse).data.id
             ? service.updateUnit$(
                 {
-                  ...unitFixture.unitInputBase,
+                  ...unitFixture.unitBase,
                   id: unitId,
-                  name: `${unitFixture.unitInputBase} MOD`,
+                  name: `${unitFixture.unitBase} MOD`,
                   supportedOrderModes: [OrderMode.pickup],
                   supportedServingModes: [ServingMode.takeaway],
                 },
@@ -248,7 +248,7 @@ describe('UnitFormService', () => {
         }),
         catchError(() => cleanup()),
         switchMap(saveResponse =>
-          (<UpsertResponse<ChainProduct>>saveResponse).data.id
+          (<UpsertResponse<UnitProduct>>saveResponse).data.id
             ? service.updateRKeeperData$({
                 unitId,
                 anyuppPassword: 'new-anyuppPassword',

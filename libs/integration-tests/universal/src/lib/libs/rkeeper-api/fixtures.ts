@@ -6,17 +6,13 @@ import {
 import { RequiredId } from '@bgap/shared/types';
 import {
   unitFixture,
-  productFixture,
-  chainFixture,
-  groupFixture,
   rkeeperEndpoint,
   yellowRestaurantId,
   yellowRkeeperUsername,
   yellowRkeeperPassword,
+  createProductFixture,
 } from '@bgap/shared/fixtures';
 import {
-  CreateChainInput,
-  CreateGroupInput,
   CreateOrderInput,
   CreateUnitInput,
   CreateUnitProductInput,
@@ -49,27 +45,46 @@ export const rawData = {
 export const rkeeperProductGuid = 'RKEEPERGUID';
 
 const unitId = `${testIdPrefix}-unit`;
-const chainId = `${testIdPrefix}-chain`;
-const groupId = `${testIdPrefix}-group`;
+
+const productFixture = createProductFixture(
+  unitId,
+  'RKEEPER PRODUCT CATEGORY ID',
+);
 
 export const rkeeperUnit: RequiredId<CreateUnitInput> = {
   ...unitFixture.createRkeeperUnit,
   id: unitId,
-  groupId,
-  chainId,
   externalId: 'EXTERNAL-RESTAURANT-ID',
 };
 
 export const rkeeperUnitProduct: RequiredId<CreateUnitProductInput> = {
-  ...productFixture.unitProductInputBase,
+  ...productFixture,
   id: `${testIdPrefix}-unitproduct`,
-  externalId: rkeeperProductGuid,
+  variants: [
+    {
+      id: `${testIdPrefix}UnitProductVariant_id_1`,
+      variantName: { en: `VARIANT_NAME_1` },
+      isAvailable: true,
+      price: 30,
+      externalId: rkeeperProductGuid,
+      position: -1,
+    },
+  ],
 };
 
 export const rkeeperUnitProduct2: RequiredId<CreateUnitProductInput> = {
-  ...productFixture.unitProductInputBase,
+  ...productFixture,
   id: `${testIdPrefix}-unitproduct2`,
-  externalId: rkeeperProductGuid + '2',
+  variants: [
+    {
+      id: `${testIdPrefix}UnitProductVariant_id_2`,
+      variantName: { en: `VARIANT_NAME_2` },
+      isAvailable: true,
+      price: 30,
+      externalId: `${rkeeperProductGuid}-2`,
+      position: -1,
+    },
+  ],
 };
 
 export const processedDish: Dish = {
@@ -81,20 +96,7 @@ export const processedDish: Dish = {
 };
 
 export const businessEntity: RKeeperBusinessEntityInfo = {
-  chainId,
-  groupId,
   unitId,
-};
-
-export const createChain: RequiredId<CreateChainInput> = {
-  ...chainFixture.chainBase,
-  id: chainId,
-};
-
-export const createGroup: RequiredId<CreateGroupInput> = {
-  ...groupFixture.groupBase,
-  id: groupId,
-  chainId,
 };
 
 export const rkeeperOrder = {
@@ -121,6 +123,7 @@ export const rkeeperOrder = {
 
 export const yellowUnit = {
   ...rkeeperUnit,
+  id: 'test-yellowunit-id',
   externalId: yellowRestaurantId,
   pos: {
     ...rkeeperUnit.pos,

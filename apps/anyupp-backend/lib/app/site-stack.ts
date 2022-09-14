@@ -12,6 +12,7 @@ export interface SiteStackProps extends sst.StackProps {
 
 export class SiteStack extends sst.Stack {
   public adminSiteUrl: string;
+  public variantsSiteUrl: string;
 
   constructor(scope: sst.App, id: string, props: SiteStackProps) {
     super(scope, id, props);
@@ -32,6 +33,22 @@ export class SiteStack extends sst.Stack {
       description: 'The URL of the admin site',
       parameterName: getFQParamName(app, 'AdminSiteUrl'),
       stringValue: this.adminSiteUrl,
+    });
+
+    const variantsSite = new WebsiteConstruct(this, 'Variants', {
+      domainName: props.rootDomain,
+      siteSubDomain: `${app.stage}-variants-${app.name}`,
+      distDir: path.join(PROJECT_ROOT, '/dist/apps/variants-manager'),
+      certificate: props.certificate,
+    });
+
+    this.variantsSiteUrl = variantsSite.websiteUrl;
+
+    new ssm.StringParameter(this, 'variantsSiteUrl', {
+      allowedPattern: '.*',
+      description: 'The URL of the variants site',
+      parameterName: getFQParamName(app, 'variantsSiteUrl'),
+      stringValue: this.variantsSiteUrl,
     });
   }
 }

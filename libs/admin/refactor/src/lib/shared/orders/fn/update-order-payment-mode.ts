@@ -1,6 +1,6 @@
 import { from } from 'rxjs';
 
-import { OrderHandlerDeps } from '@bgap/shared/types';
+import { OrderHandlerDeps } from './utils';
 import { PaymentMode } from '@bgap/domain';
 
 export const updateOrderPaymentMode =

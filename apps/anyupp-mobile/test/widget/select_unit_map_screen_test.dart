@@ -1,10 +1,10 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/graphql/generated/crud-api.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/modules/takeaway/takeaway.dart';
-import 'package:fa_prev/shared/auth/auth.dart';
+import 'package:anyupp/core/core.dart';
+import 'package:anyupp/graphql/generated/crud-api.dart';
+import 'package:anyupp/models.dart';
+import 'package:anyupp/modules/cart/cart.dart';
+import 'package:anyupp/modules/selectunit/selectunit.dart';
+import 'package:anyupp/modules/takeaway/takeaway.dart';
+import 'package:anyupp/shared/auth/auth.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -49,7 +49,7 @@ void main() {
     getIt.registerSingleton<CartBloc>(MockCartBloc(
       stateToSend: EmptyCartState(),
     ));
-    List<GeoUnit> units = List.generate(
+    List<Unit> units = List.generate(
         unitCount,
         (index) => MockGenerator.generateUnit(
               name: 'TEST UNIT #$index',

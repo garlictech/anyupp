@@ -241,7 +241,7 @@ describe('Process rkeeper products tests', () => {
       await resolveComponentSets(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         sdk as any,
-        'CHAINID' + label,
+        'UNITID' + label,
         fixtures.rawDataWithModifiers,
       )(dishWithModifier).toPromise(),
     ).toMatchSnapshot(`the sets (${label}) `);

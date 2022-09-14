@@ -11,11 +11,15 @@ import {
   anyuppVpcSecurityGroupParamName,
   anyuppVpcIdParamName,
 } from '@bgap/backend/shared/utils';
+import { AnyuppAccountServicesStack } from './stacks/account-services-stack';
+import { AnyuppCloudTrailStack } from './stacks/cloud-trail-stack';
+import { AnyuppConfigStack } from './stacks/config-stack';
 
 export class AnyuppCommonStack extends Stack {
   constructor(scope: App, id: string) {
     super(scope, id);
 
+    // TODO: This should be at least 2
     const vpc = new ec2.Vpc(this, anyuppVpcName, {
       maxAzs: 1,
     });
@@ -58,4 +62,7 @@ export class AnyuppCommonStack extends Stack {
 
 export default function main(app: App): void {
   new AnyuppCommonStack(app, 'anyupp');
+  new AnyuppAccountServicesStack(app, 'anyupp-services');
+  new AnyuppCloudTrailStack(app, 'anyupp-cloudtrail');
+  new AnyuppConfigStack(app, 'anyupp-config');
 }

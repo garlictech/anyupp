@@ -1,11 +1,11 @@
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/shared/auth.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/shared/exception.dart';
-import 'package:fa_prev/shared/nav.dart';
+import '/app-config.dart';
+import '/core/core.dart';
+import '/modules/login/login.dart';
+import '/modules/screens.dart';
+import '/shared/auth.dart';
+import '/models.dart';
+import '/shared/exception.dart';
+import '/shared/nav.dart';
 import 'package:flutter/material.dart';
 
 class DeeplinkType {
@@ -147,7 +147,7 @@ Widget getNavigationPageByUrlFromQRDeeplink(Uri uri) {
   }
   log.d(
       '***** getNavigationPageByUrlFromQRDeeplink().unitId=$unitId, table=$table, seat=$seat');
-  return SelectUnitChooseMethodScreen(
+  return SelectUnitScreen(
     initialUri: uri,
   );
 }

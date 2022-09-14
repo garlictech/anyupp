@@ -1,0 +1,105 @@
+query GetUnitById($unitId: ID!) {
+  getUnit(id: $unitId) {
+    id
+    currency
+    description {
+      de
+      en
+      hu
+    }
+    address {
+      address
+      city
+      country
+      location {
+        lat
+        lng
+      }
+      postalCode
+      title
+    }
+    email
+    isAcceptingOrders
+    isActive
+    location {
+      lat
+      lon
+    }
+    name
+    orderPaymentPolicy
+    orderPolicy
+    createdAt
+    packagingTaxPercentage
+    paymentModes {
+      caption
+      method
+      type
+    }
+    phone
+    ratingPolicies {
+      description {
+        de
+        en
+        hu
+      }
+      key
+      ratings {
+        icon
+        text {
+          de
+          en
+          hu
+        }
+        value
+      }
+      title {
+        de
+        en
+        hu
+      }
+    }
+    serviceFeePolicy {
+      percentage
+      type
+    }
+    soldOutVisibilityPolicy
+    supportedOrderModes
+    supportedServingModes
+    coverBanners {
+      imageUrl
+    }
+    tipPolicy {
+      description {
+        de
+        en
+        hu
+      }
+      minOtherAmount
+      percents
+      title {
+        de
+        en
+        hu
+      }
+    }
+    updatedAt
+    merchantId
+    open {
+      from
+      to
+    }
+    timeZone
+    style {
+      colors {
+        button
+        buttonText
+        icon
+        highlight
+      }
+      images {
+        header
+        logo
+      }
+    }
+  }
+}

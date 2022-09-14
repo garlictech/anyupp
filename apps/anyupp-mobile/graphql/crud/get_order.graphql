@@ -86,6 +86,7 @@ query GetOrder($orderId: ID!) {
         updatedAt
       }
       userId
+      paymentMethodId
     }
     items {
       productId
@@ -130,6 +131,7 @@ query GetOrder($orderId: ID!) {
           }
           price
           productComponentId
+          netPackagingFee
         }
         name {
           de
@@ -144,9 +146,14 @@ query GetOrder($orderId: ID!) {
       laneId
       productType
       created
+      netPackagingFee
+      serviceFee {
+        currency
+        netPrice
+        taxPercentage
+      }
     }
     createdAt
-    orderNum
     transactionId
     transactionStatus
     updatedAt
@@ -206,7 +213,23 @@ query GetOrder($orderId: ID!) {
         en
         hu
       }
+      description {
+        de
+        en
+        hu
+      }
     }
     soldOutVisibilityPolicy
+    guestLabel
+    orderNum
+    packagingFeeTaxPercentage
+    statusLog {
+      status
+      ts
+      userId
+    }
+    unpayCategory
+    version
+    visitId
   }
 }

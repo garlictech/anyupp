@@ -20,7 +20,7 @@ type Address {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationLatLng!
+  location: LocationLatLng
 }
 
 type PaymentMode {
@@ -84,26 +84,6 @@ type ChainStyleImages {
   logo: String
 }
 
-type ChainProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  chainId: ID!
-  name: LocalizedItem!
-  description: LocalizedItem
-  productCategoryId: ID!
-  productType: ProductType!
-  isVisible: Boolean!
-  image: String
-  variants: [ProductVariant]
-  allergens: [Allergen]
-  configSets: [ProductConfigSet]
-  externalId: String
-  dirty: Boolean
-  deletedAt: AWSDateTime
-}
-
 enum Allergen {
   celery
   crustaceans
@@ -152,56 +132,37 @@ input ServiceFeePolicyInput {
   percentage: Float!
 }
 
-type GroupProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  parentId: ID!
-  chainId: ID!
-  groupId: ID!
-  isVisible: Boolean!
-  tax: Int!
-  takeawayTax: Int
-  variants: [ProductVariant]
-  configSets: [ProductConfigSet]
-  externalId: String
-  dirty: Boolean
-  deletedAt: AWSDateTime
-  # For removing generated product
-  chainProduct: ChainProduct @hasOne(fields: ["parentId"])
-}
-
 type UnitProduct
   @model
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  parentId: ID!
-  chainId: ID!
-  groupId: ID!
   unitId: ID!
   isVisible: Boolean!
   takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
-  variants: [ProductVariant]
+  variants: [ProductVariant] @function(name: "${env}-anyupp-graphql-resolvers")
   configSets: [ProductConfigSet]
   supportedServingModes: [ServingMode!]
-  externalId: String
   dirty: Boolean
   deletedAt: AWSDateTime
-  # For removing generated product
-  groupProduct: GroupProduct @hasOne(fields: ["parentId"])
+  tax: Int!
+  takeawayTax: Int
+  name: LocalizedItem!
+  description: LocalizedItem
+  productCategoryId: ID!
+  productType: ProductType!
+  image: String
+  allergens: [Allergen]
 }
 
 type ProductConfigComponent {
   productComponentId: ID!
-  refGroupPrice: Float!
   price: Float!
   position: Int!
-  externalId: String
   netPackagingFee: Float
+  soldOut: Boolean # (query for UnitProduct.configSets.items.productComponentId).soldOut
 }
 
 type ProductConfigSet {
@@ -210,17 +171,38 @@ type ProductConfigSet {
   position: Int!
 }
 
+# ProductVariant was (is) the old embedded type, Variant is the sema one
+# but it is a model. We need this two types as amplify does not handle
+# field resolvers if they are models as well.
 type ProductVariant {
   id: ID!
   variantName: LocalizedItem!
   pack: ProductVariantPack
-  refGroupPrice: Float
   isAvailable: Boolean!
   price: Float! # Gross
   availabilities: [Availability]
   position: Int!
   netPackagingFee: Float
   soldOut: Boolean
+  ownerProduct: ID
+  externalId: String
+}
+
+type Variant
+  @model
+  @searchable
+  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+  id: ID!
+  variantName: LocalizedItem!
+  pack: ProductVariantPack
+  isAvailable: Boolean!
+  price: Float! # Gross
+  availabilities: [Availability]
+  position: Int!
+  netPackagingFee: Float
+  soldOut: Boolean
+  ownerProduct: String!
+  externalId: String
 }
 
 type ProductVariantPack {
@@ -383,8 +365,6 @@ type AdminUser
 }
 
 type AdminUserSettings {
-  selectedChainId: String
-  selectedGroupId: String
   selectedUnitId: String
   selectedProductCategoryId: String
   selectedLanguage: String
@@ -406,8 +386,6 @@ input UpdateAdminUserInput {
 }
 
 input AdminUserSettingsInput {
-  selectedChainId: String
-  selectedGroupId: String
   selectedUnitId: String
   selectedProductCategoryId: String
   selectedLanguage: String
@@ -421,35 +399,6 @@ input CreateAdminUserInput {
   phone: String!
   profileImage: String
   settings: AdminUserSettingsInput
-}
-
-type Chain
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  name: String!
-  description: LocalizedItem
-  style: ChainStyle!
-  isActive: Boolean
-  address: Address
-  email: String
-  phone: String
-  categoryOrders: [NestedSortItem]
-}
-
-type Group
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
-  id: ID!
-  chainId: ID!
-  name: String!
-  description: LocalizedItem
-  currency: String!
-  address: Address
-  email: String
-  phone: String
 }
 
 type StatusLog {
@@ -718,7 +667,8 @@ type ProductCategory
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  chainId: ID!
+  ownerEntity: ID!
+  parentId: ID # parent category id
   description: LocalizedItem
   image: String
   name: LocalizedItem!
@@ -730,13 +680,12 @@ type ProductComponent
   @searchable
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
-  chainId: ID!
+  ownerEntity: ID!
   name: LocalizedItem!
   description: String
   allergens: [Allergen]
   externalId: String
   dirty: Boolean
-  soldOut: Boolean
   deletedAt: AWSDateTime
 }
 
@@ -746,7 +695,7 @@ type ProductComponentSet
   @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
   id: ID!
   externalId: String
-  chainId: ID!
+  ownerEntity: ID!
   type: ProductComponentSetType!
   name: LocalizedItem!
   description: String!
@@ -778,29 +727,18 @@ type GeneratedProductConfigSet {
   supportedServingModes: [ServingMode!] # (query for UnitProduct.configSets.productSetId).supportedServingModes
 }
 
-type GeneratedProductCategory
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type GeneratedProductCategory {
   id: ID!
-  unitId: ID! @index(name: "productCategoriesByUnit")
+  unitId: ID!
   productNum: Int!
   productCategoryId: ID!
-  productCategory: ProductCategory! @hasOne(fields: ["productCategoryId"])
+  productCategory: ProductCategory!
   position: Int # use this instead of the connected ProductCategory.position
 }
 
-type GeneratedProduct
-  @model
-  @searchable
-  @auth(rules: [{ allow: private }, { allow: public, provider: iam }]) {
+type GeneratedProduct {
   id: ID!
-  unitId: ID!  # From UnitProduct
-    @index(name: "productsByUnit")
-    @index(
-      name: "productsByUnitAndCategory"
-      sortKeyFields: ["productCategoryId"]
-    )
+  unitId: ID! # From UnitProduct
   productCategoryId: ID! # From ChainProduct
   name: LocalizedItem! # From ChainProduct
   description: LocalizedItem # From ChainProduct
@@ -833,7 +771,7 @@ type FavoriteProduct
   id: ID!
   userId: ID! @index(name: "favoritesByUserAndUnit", sortKeyFields: ["unitId"])
   unitId: ID!
-  product: GeneratedProduct! @hasOne
+  product: GeneratedProduct!
 }
 
 type Tip {
@@ -904,9 +842,6 @@ type Unit
   adBanners: [ImageAsset!]
   adBannersEnabled: Boolean
   coverBanners: [ImageAsset!]
-  coverBannersEnabled: Boolean
-  groupId: ID!
-  chainId: ID!
   lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
@@ -933,10 +868,14 @@ type Unit
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   orderPaymentPolicy: OrderPaymentPolicy
-  location: LocationLatLon
+  location: LocationLatLon!
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+
+  currency: String!
+  style: ChainStyle!
+  categoryOrders: [NestedSortItem]
 }
 
 type DateIntervalOpen {
@@ -1041,9 +980,7 @@ type OpeningHoursByDate {
   to: Float @auth(rules: [{ allow: public, provider: iam }, { allow: private }])
 }
 
-type GeoUnit
-  @model(mutations: null, queries: null, subscriptions: null)
-  @auth(rules: [{ allow: public, provider: iam }, { allow: private }]) {
+type GeoUnit {
   id: ID!
   groupId: ID!
   chainId: ID!
@@ -1067,8 +1004,6 @@ type GeoUnit
   tipPolicy: TipPolicy
   soldOutVisibilityPolicy: SoldOutVisibilityPolicy
   unit: Unit
-  chain: Chain
-  group: Group
 }
 
 input GetUnitsNearLocationInput {
@@ -1206,7 +1141,6 @@ input AddressInput {
   country: String!
   title: String!
   postalCode: String!
-  location: LocationLatLngInput!
 }
 
 input LocalizedItemInput {
@@ -1292,8 +1226,6 @@ input CreateUnitInput {
   adBannersEnabled: Boolean
   coverBanners: [ImageAssetInput]
   coverBannersEnabled: Boolean
-  groupId: ID!
-  chainId: ID!
   lastOrderNum: Int
   isActive: Boolean!
   isAcceptingOrders: Boolean!
@@ -1324,6 +1256,41 @@ input CreateUnitInput {
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+  currency: String!
+  style: ChainStyleInput!
+  categoryOrders: [NestedSortItemInput]
+}
+
+input NestedSortItemInput {
+  id: ID
+  parentId: ID
+}
+
+input ChainStyleInput {
+  colors: ChainStyleColorsInput!
+  images: ChainStyleImagesInput
+}
+
+input ChainStyleColorsInput {
+  backgroundLight: String
+  backgroundDark: String
+  borderLight: String
+  borderDark: String
+  disabled: String
+  indicator: String
+  textLight: String
+  textDark: String
+  primary: String
+  secondary: String
+  button: String
+  buttonText: String
+  icon: String
+  highlight: String
+}
+
+input ChainStyleImagesInput {
+  header: String
+  logo: String
 }
 
 input UpdateUnitInput {
@@ -1332,8 +1299,6 @@ input UpdateUnitInput {
   adBannersEnabled: Boolean
   coverBanners: [ImageAssetInput]
   coverBannersEnabled: Boolean
-  groupId: ID
-  chainId: ID
   lastOrderNum: Int
   isActive: Boolean
   isAcceptingOrders: Boolean
@@ -1364,6 +1329,9 @@ input UpdateUnitInput {
   canRequestVatInvoice: Boolean
   canCallWaiter: Boolean
   isVisibleInApp: Boolean
+  currency: String
+  style: ChainStyleInput
+  categoryOrders: [NestedSortItemInput]
 }
 
 type CreateAnonymUserOutput {
@@ -1372,10 +1340,6 @@ type CreateAnonymUserOutput {
 }
 
 input CreateOrderFromCartInput {
-  id: ID!
-}
-
-input RegenerateUnitDataInput {
   id: ID!
 }
 
@@ -1406,14 +1370,20 @@ input SearchByRadiusInput {
   nextToken: String
 }
 
+input CallWaiterInput {
+  unitId: ID!
+  info: String
+}
+
 type GeoSearchConnection {
   items: [String]
-    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+    @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
 
   nextToken: String
-    @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+    @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
 
-  total: Int @auth(rules: [{ allow: public }, { allow: public, provider: iam }])
+  total: Int
+    @auth(rules: [{ allow: private }, { allow: public, provider: iam }])
 }
 
 type Query {
@@ -1477,12 +1447,6 @@ type Mutation {
     @aws_cognito_user_pools
     @function(name: "${env}-anyupp-graphql-resolvers")
 
-  # Unit
-  regenerateUnitData(input: RegenerateUnitDataInput!): Boolean!
-    @function(name: "${env}-anyupp-graphql-resolvers")
-    @aws_iam
-    @aws_cognito_user_pools
-
   # Stripe
   startStripePayment(input: StartStripePaymentInput!): StartStripePaymentOutput
     @aws_cognito_user_pools
@@ -1515,6 +1479,11 @@ type Mutation {
     @aws_cognito_user_pools
     @aws_iam
     @function(name: "${env}-anyupp-graphql-resolvers")
+
+  callWaiter(input: CallWaiterInput): Boolean
+    @aws_cognito_user_pools
+    @aws_iam
+    @function(name: "${env}-anyupp-graphql-resolvers")
 }
 
 type Subscription {
@@ -1524,46 +1493,24 @@ type Subscription {
   onAdminUsersChange: AdminUser
     @aws_subscribe(mutations: ["createAdminUser", "updateAdminUser"])
     @aws_cognito_user_pools
-  onChainsChange: Chain
-    @aws_subscribe(mutations: ["createChain", "updateChain"])
-    @aws_cognito_user_pools
-  onGroupsChange(chainId: ID!): Group
-    @aws_subscribe(mutations: ["createGroup", "updateGroup"])
-    @aws_cognito_user_pools
-  onUnitsChange(groupId: ID!): Unit
-    @aws_subscribe(
-      mutations: ["createUnit", "updateUnit", "updateUnitRKeeperData"]
-    )
-    @aws_cognito_user_pools
   # onUsersChange: User @aws_subscribe(mutations: ["createUser", "updateUser"])
-  onProductCategoriesChange(chainId: ID!): ProductCategory
+  onProductCategoriesChange(unitId: ID!): ProductCategory
     @aws_subscribe(
       mutations: ["createProductCategory", "updateProductCategory"]
     )
     @aws_cognito_user_pools
-  onProductComponentsChange(chainId: ID!): ProductComponent
+  onProductComponentsChange(unitId: ID!): ProductComponent
     @aws_subscribe(
       mutations: ["createProductComponent", "updateProductComponent"]
     )
     @aws_cognito_user_pools
-  onProductComponentSetsChange(chainId: ID!): ProductComponentSet
+  onProductComponentSetsChange(unitId: ID!): ProductComponentSet
     @aws_subscribe(
       mutations: ["createProductComponentSet", "updateProductComponentSet"]
     )
     @aws_cognito_user_pools
-  onChainProductChange(chainId: ID!): ChainProduct
-    @aws_subscribe(mutations: ["createChainProduct", "updateChainProduct"])
-    @aws_cognito_user_pools
-  onGroupProductChange(groupId: ID!): GroupProduct
-    @aws_subscribe(mutations: ["createGroupProduct", "updateGroupProduct"])
-    @aws_cognito_user_pools
   onUnitProductChange(unitId: ID!): UnitProduct
     @aws_subscribe(mutations: ["createUnitProduct", "updateUnitProduct"])
-    @aws_cognito_user_pools
-  onGeneratedProductChange(unitId: ID!): GeneratedProduct
-    @aws_subscribe(
-      mutations: ["createGeneratedProduct", "updateGeneratedProduct"]
-    )
     @aws_cognito_user_pools
   onOrdersChange: Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder"])
@@ -1572,16 +1519,6 @@ type Subscription {
     @aws_subscribe(mutations: ["deleteOrder"])
     @aws_cognito_user_pools
 
-  # Added for the Mobile Application
-  onProductChanged(unitId: String): GeneratedProduct
-    @aws_subscribe(
-      mutations: [
-        "createGeneratedProduct"
-        "updateGeneratedProduct"
-        "deleteGeneratedProduct"
-      ]
-    )
-    @aws_cognito_user_pools
   onOrderChanged(userId: String, unitId: String, archived: Boolean): Order
     @aws_subscribe(mutations: ["createOrder", "updateOrder"])
     @aws_cognito_user_pools

@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fa_prev/modules/main/main.dart';
+import '/modules/main/main.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MainNavigationBloc

@@ -1,7 +1,7 @@
-import 'package:fa_prev/app-config.dart';
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/modules/login/login.dart';
-import 'package:fa_prev/modules/login/utils/browser_ext.dart';
+import '/app-config.dart';
+import '/core/core.dart';
+import '/modules/login/login.dart';
+import '/modules/login/utils/browser_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 

@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models/Order.dart';
-import 'package:fa_prev/modules/orders/orders.dart';
+import '/core/core.dart';
+import '/models/Order.dart';
+import '/modules/orders/orders.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 

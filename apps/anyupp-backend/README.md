@@ -28,6 +28,17 @@ Remove all your stacks and all of their resources from AWS. Or optionally remove
 
 Runs your tests using Jest. Takes all the [Jest CLI options](https://jestjs.io/docs/en/cli).
 
+## Stacks
+
+### Backup stack
+
+It creates a backup plan and plan rules to backup certain resources. DynamoDB tables and S3 buckets are included.
+There is a one-time permission setup required for S3 backups:
+[https://docs.aws.amazon.com/aws-backup/latest/devguide/s3-backups.html](https://docs.aws.amazon.com/aws-backup/latest/devguide/s3-backups.html)
+
+NOTE: CDK does not support copying cross-region backups, it needs to be created using the AWS Console.
+[https://docs.aws.amazon.com/aws-backup/latest/devguide/cross-region-backup.html](https://docs.aws.amazon.com/aws-backup/latest/devguide/cross-region-backup.html)
+
 ## Documentation
 
 Learn more about the Serverless Stack Toolkit.

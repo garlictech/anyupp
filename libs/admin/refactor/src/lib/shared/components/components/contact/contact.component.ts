@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { Chain, Group, Unit } from '@bgap/domain';
+import { Unit } from '@bgap/domain';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -8,5 +8,5 @@ import { Chain, Group, Unit } from '@bgap/domain';
   styleUrls: ['./contact.component.scss'],
 })
 export class ContactComponent {
-  @Input() contact?: Chain | Group | Unit;
+  @Input() contact?: Unit;
 }

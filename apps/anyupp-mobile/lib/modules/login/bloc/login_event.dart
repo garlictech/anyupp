@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:fa_prev/modules/login/login.dart';
+import '/modules/login/login.dart';
 import 'package:flutter/animation.dart';
 
 enum LoginFormUI {

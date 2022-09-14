@@ -1,16 +1,16 @@
-import 'package:fa_prev/core/core.dart';
-import 'package:fa_prev/models.dart';
-import 'package:fa_prev/modules/cart/cart.dart';
-import 'package:fa_prev/modules/screens.dart';
-import 'package:fa_prev/modules/selectunit/selectunit.dart';
-import 'package:fa_prev/shared/locale/locale.dart';
-import 'package:fa_prev/shared/nav.dart';
-import 'package:fa_prev/shared/widgets.dart';
+import '/core/core.dart';
+import '/models.dart';
+import '/modules/cart/cart.dart';
+import '/modules/screens.dart';
+import '/modules/selectunit/selectunit.dart';
+import '/shared/locale/locale.dart';
+import '/shared/nav.dart';
+import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class UnitInfoHeaderWidget extends StatelessWidget {
-  final GeoUnit unit;
+  final Unit unit;
   const UnitInfoHeaderWidget({
     Key? key,
     required this.unit,
