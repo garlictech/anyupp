@@ -1,8 +1,10 @@
 import { PushNotificationTypes } from './PushNotificationTypes';
-import fbAdmin from 'firebase-admin';
-
+import {
+  NotificationMessagePayload,
+  DataMessagePayload,
+} from 'firebase-admin/messaging';
 export interface PushNotificationData {
   type: PushNotificationTypes;
-  notification: fbAdmin.messaging.NotificationMessagePayload;
-  data: fbAdmin.messaging.DataMessagePayload;
+  notification: NotificationMessagePayload;
+  data: DataMessagePayload;
 }

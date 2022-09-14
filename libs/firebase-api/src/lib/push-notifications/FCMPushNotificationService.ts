@@ -1,4 +1,4 @@
-import fbAdmin from 'firebase-admin';
+import { initializeApp, App, cert } from 'firebase-admin/app';
 import { Order } from '@bgap/domain';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import { orderStatusPushNotificationUseCase } from './order-status-change';
@@ -15,14 +15,12 @@ interface ConstructorParams {
 
 export class FCMPushNotificationService implements IFCMPushNotificationService {
   private readonly sdk: CrudSdk;
-  private readonly fbAdminApp: fbAdmin.app.App;
+  private readonly fbAdminApp: App;
 
   constructor({ sdk, serviceAccountCertJSONString }: ConstructorParams) {
     this.sdk = sdk;
-    this.fbAdminApp = fbAdmin.initializeApp({
-      credential: fbAdmin.credential.cert(
-        JSON.parse(serviceAccountCertJSONString),
-      ),
+    this.fbAdminApp = initializeApp({
+      credential: cert(JSON.parse(serviceAccountCertJSONString)),
     });
   }
 

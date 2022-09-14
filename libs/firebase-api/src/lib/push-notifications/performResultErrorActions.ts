@@ -1,7 +1,7 @@
-import fbAdmin from 'firebase-admin';
+import { MessagingDeviceResult } from 'firebase-admin/messaging';
 
 export const performResultErrorActions = (params: {
-  errorResult: fbAdmin.messaging.MessagingDeviceResult;
+  errorResult: MessagingDeviceResult;
   fcmToken: string;
 }) => {
   const { fcmToken, errorResult } = params;

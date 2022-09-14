@@ -5,7 +5,7 @@ import {
 import { CrudSdk, getSdkAmplify } from './sdk';
 
 import awsmobile from './generated/aws-exports';
-import { pipe } from 'fp-ts/function';
+import { pipe } from 'fp-ts/lib/function';
 
 const createSdk = (gqlClient: GraphqlApiClient) =>
   getSdkAmplify(gqlClient._client) as unknown as CrudSdk;

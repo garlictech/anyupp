@@ -2,25 +2,29 @@ import { getPushNotificationData } from './getPushNotificationData';
 import { Order, OrderStatus } from '@bgap/domain';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import { PushNotificationTypes } from '../PushNotificationTypes';
-import fbAdmin from 'firebase-admin';
 import { Observable, of } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 import { IFCMMessageSendResult } from '../IFCMMessageSendResult';
+import { App } from 'firebase-admin/app';
+import {
+  NotificationMessagePayload,
+  DataMessagePayload,
+} from 'firebase-admin/messaging';
 
 interface Deps {
   sdk: CrudSdk;
-  fbAdminApp: fbAdmin.app.App;
+  fbAdminApp: App;
   order: Order;
   getFCMTokenFn: (params: {
     sdk: CrudSdk;
     id: string;
   }) => Observable<string | null>;
   sendPushFn: (params: {
-    fbAdminApp: fbAdmin.app.App;
+    fbAdminApp: App;
     fcmToken: string;
     type: PushNotificationTypes;
-    notification: fbAdmin.messaging.NotificationMessagePayload;
-    data: fbAdmin.messaging.DataMessagePayload;
+    notification: NotificationMessagePayload;
+    data: DataMessagePayload;
   }) => Observable<IFCMMessageSendResult>;
 }
 

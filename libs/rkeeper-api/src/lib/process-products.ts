@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as OO from 'fp-ts-rxjs/ObservableOption';
+import * as OO from 'fp-ts-rxjs/lib/ObservableOption';
 import { flow, pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
 import * as O from 'fp-ts/lib/Option';
