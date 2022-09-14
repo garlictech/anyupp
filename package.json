@@ -181,7 +181,7 @@
     "@storybook/core-server": "6.5.12",
     "@storybook/manager-webpack5": "6.5.12",
     "@testing-library/cypress": "8.0.3",
-    "@types/aws-lambda": "8.10.103",
+    "@types/aws-lambda": "8.10.104",
     "@types/aws-lambda-fastify": "1.4.1",
     "@types/axios": "0.14.0",
     "@types/bcryptjs": "2.4.2",
