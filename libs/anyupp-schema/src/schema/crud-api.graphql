@@ -952,6 +952,7 @@ type RKeeper {
   rkeeperPassword: String!
   anyuppUsername: String!
   anyuppPassword: String!
+  waiterOrderId: String # The "product" id representing the waiter caller in rkeeper
 }
 
 input UpdateRKeeperDataInput {
@@ -961,6 +962,7 @@ input UpdateRKeeperDataInput {
   rkeeperPassword: String
   anyuppUsername: String
   anyuppPassword: String
+  waiterOrderId: String # The "product" id representing the waiter caller in rkeeper
 }
 
 enum PosType {
@@ -1373,6 +1375,8 @@ input SearchByRadiusInput {
 input CallWaiterInput {
   unitId: ID!
   info: String
+  place: PlaceInput!
+  guestLabel: String!
 }
 
 type GeoSearchConnection {
