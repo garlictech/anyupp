@@ -27784,10 +27784,10 @@ svg-pathdata@^6.0.3:
   resolved "https://registry.yarnpkg.com/svg-pathdata/-/svg-pathdata-6.0.3.tgz#80b0e0283b652ccbafb69ad4f8f73e8d3fbf2cac"
   integrity sha512-qsjeeq5YjBZ5eMdFuUa4ZosMLxgr5RZ+F+Y1OrDhuOCEInRMA3x74XdBtggJcj9kOeInz0WE+LgCPDkZFlBYJw==
 
-svg2pdf.js@2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/svg2pdf.js/-/svg2pdf.js-2.2.0.tgz#87895c349e76b745fcf05f54c2c6b0d8c84987e9"
-  integrity sha512-ZmBBTUHe3vIsSEiDyadaZp0q0x+EgE8JNk7AeJsrAGOGbMntBeCcI3G0VqfWk2KtDbRHe/XoQjuudfCxq5Utzw==
+svg2pdf.js@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/svg2pdf.js/-/svg2pdf.js-2.2.1.tgz#fa81849be57c5a405c8394d35e4a4ea8aaaebeb5"
+  integrity sha512-gJsFT42tb+pYTuFudkKgpMws54DvsJW7wmzGRUY1b9CUJpRMoBU5B4HrCMUTlK2lpcdPL5cOyr84hy2BEj1/Ag==
   dependencies:
     cssesc "^3.0.0"
     font-family-papandreou "^0.2.0-patch1"
