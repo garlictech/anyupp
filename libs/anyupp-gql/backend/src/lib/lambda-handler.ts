@@ -28,6 +28,7 @@ import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
 import { searchByRadiusResolver } from '@bgap/backend/search';
 import { productVariantsResolver } from '@bgap/backend/products';
+import { waiterCallerResolver } from '@bgap/backend/gql-resolvers';
 
 export type AnyuppRequest<SOURCE = undefined> = {
   typeName: string;
@@ -125,7 +126,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       createUnit: createUnitResolver(unitsDeps),
       updateUnit: updateUnitResolver(unitsDeps),
       updateUnitRKeeperData: updateUnitRKeeperDataResolver(unitsDeps),
-      //callWaiter: callWaiterResolver,
+      callWaiter: waiterCallerResolver({ sdk: crudSdk }),
     },
     Query: {
       listStripeCards: stripeRequestHandlers.listStripeCards,

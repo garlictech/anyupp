@@ -935,6 +935,7 @@ type RKeeper @aws_iam @aws_cognito_user_pools {
   rkeeperPassword: String!
   anyuppUsername: String!
   anyuppPassword: String!
+  waiterOrderId: String
 }
 
 input UpdateRKeeperDataInput {
@@ -944,6 +945,7 @@ input UpdateRKeeperDataInput {
   rkeeperPassword: String
   anyuppUsername: String
   anyuppPassword: String
+  waiterOrderId: String
 }
 
 enum PosType {
@@ -1338,6 +1340,8 @@ input SearchByRadiusInput {
 input CallWaiterInput {
   unitId: ID!
   info: String
+  place: PlaceInput!
+  guestLabel: String!
 }
 
 type GeoSearchConnection {
