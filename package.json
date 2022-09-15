@@ -130,7 +130,7 @@
     "stream-http": "3.2.0",
     "stripe": "8.220.0",
     "stun": "2.1.0",
-    "svg2pdf.js": "2.2.0",
+    "svg2pdf.js": "2.2.1",
     "szamlazz.js": "git+https://github.com/bgap/szamlazz.js.git#5.1.1",
     "tls": "0.0.1",
     "tslib": "2.4.0",
