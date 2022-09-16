@@ -45,7 +45,8 @@ class Unit extends $Unit {
   final bool? canCallWaiter;
   final bool isVisibleInApp;
 
-  get distance => 0;
+  @JsonKey(ignore: true)
+  double? distanceInKm;
 
   Unit({
     required this.id,
