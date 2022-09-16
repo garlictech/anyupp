@@ -10,7 +10,7 @@ class UnitWidget extends StatefulWidget {
   final String? unitFoodType;
   final String? unitPriceType;
   final String closeTime;
-  final String distance;
+  final double? distanceInKm;
   final bool? isFavorite;
   final Function onTap;
 
@@ -21,7 +21,7 @@ class UnitWidget extends StatefulWidget {
   UnitWidget({
     required this.unitName,
     required this.closeTime,
-    required this.distance,
+    this.distanceInKm,
     required this.onTap,
     this.imageList,
     this.unitFoodType,
@@ -237,7 +237,9 @@ class _UnitWidgetState extends State<UnitWidget> {
     // sb.write(' ');
     sb.write(widget.closeTime);
     sb.write(' • ');
-    sb.write(widget.distance);
+    if (widget.distanceInKm != null) {
+      sb.write('${widget.distanceInKm!.toStringAsFixed(2)} km');
+    }
     sb.write(' ');
     sb.write(trans('selectUnit.distance'));
     return sb.toString();

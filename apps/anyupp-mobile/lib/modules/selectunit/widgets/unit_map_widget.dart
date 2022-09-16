@@ -10,7 +10,7 @@ class UnitMapCardWidget extends StatelessWidget {
   final String? unitFoodType;
   final String? unitPriceType;
   final String closeTime;
-  final String distance;
+  final double? distanceInKm;
   final Function onTap;
 
   final String? image;
@@ -22,7 +22,7 @@ class UnitMapCardWidget extends StatelessWidget {
   UnitMapCardWidget({
     required this.unitName,
     required this.closeTime,
-    required this.distance,
+    this.distanceInKm,
     required this.onTap,
     this.image,
     this.unitFoodType,
@@ -57,30 +57,31 @@ class UnitMapCardWidget extends StatelessWidget {
                         textColor: theme.secondary64,
                         height: height,
                       ),
-                Positioned(
-                  left: 4.0,
-                  bottom: 4.0,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 6.0,
-                      vertical: 3.0,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        32.0,
+                if (distanceInKm != null)
+                  Positioned(
+                    left: 4.0,
+                    bottom: 4.0,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6.0,
+                        vertical: 3.0,
                       ),
-                      border: Border.all(
-                        width: 1,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(
+                          32.0,
+                        ),
+                        border: Border.all(
+                          width: 1,
+                          color: theme.secondary0,
+                        ),
                         color: theme.secondary0,
                       ),
-                      color: theme.secondary0,
+                      child: Text('${distanceInKm!.toStringAsFixed(1)}km',
+                          style: Fonts.pP3Bold(
+                            color: theme.secondary,
+                          )),
                     ),
-                    child: Text(distance,
-                        style: Fonts.pP3Bold(
-                          color: theme.secondary,
-                        )),
                   ),
-                ),
               ],
             ),
             SizedBox(
