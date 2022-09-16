@@ -18,6 +18,10 @@ class UnitInfoHeaderWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final infoText = unit.distanceInKm == null
+        ? '${getOpeningText(context, unit)}}'
+        : '${getOpeningText(context, unit)} • ${unit.distanceInKm!.toStringAsFixed(1)}km ${trans(context, 'selectUnit.distance')}';
+
     return Stack(
       children: [
         Column(
@@ -50,7 +54,7 @@ class UnitInfoHeaderWidget extends StatelessWidget {
                     style: Fonts.hH1(),
                   ),
                   Text(
-                    '${getOpeningText(context, unit)} • ${(unit.distance / 1000).toStringAsFixed(0)}m ${trans(context, 'selectUnit.distance')}',
+                    infoText,
                     style: Fonts.pP1(color: theme.secondary64),
                   ),
                   // Unit details link

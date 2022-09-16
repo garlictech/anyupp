@@ -80,33 +80,34 @@ class UnitCardWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(
-                          top: 4.0,
-                          bottom: 4.0,
-                          left: 8.0,
-                          right: 8.0,
-                        ),
-                        margin: EdgeInsets.only(top: 10.0),
-                        height: 25.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6.0),
-                          color: const Color(0xFF30BF60),
-                        ),
-                        child: Center(
-                            child: Text(
-                          (unit.distance / 1000).toStringAsFixed(3) + ' km',
-                          style: Fonts.satoshi(
-                            fontSize: 12,
-                            color: const Color(0xffffffff),
-                            fontWeight: FontWeight.w500,
+                  if (unit.distanceInKm != null)
+                    Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.only(
+                            top: 4.0,
+                            bottom: 4.0,
+                            left: 8.0,
+                            right: 8.0,
                           ),
-                        )),
-                      ),
-                    ],
-                  ),
+                          margin: EdgeInsets.only(top: 10.0),
+                          height: 25.0,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6.0),
+                            color: const Color(0xFF30BF60),
+                          ),
+                          child: Center(
+                              child: Text(
+                            unit.distanceInKm!.toStringAsFixed(3) + ' km',
+                            style: Fonts.satoshi(
+                              fontSize: 12,
+                              color: const Color(0xffffffff),
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                        ),
+                      ],
+                    ),
                 ],
               ),
             ),
