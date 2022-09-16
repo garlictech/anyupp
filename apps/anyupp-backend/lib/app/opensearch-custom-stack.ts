@@ -1,5 +1,5 @@
-import { aws_iam, aws_logs } from 'aws-cdk-lib';
 import { App, Stack, StackProps } from '@serverless-stack/resources';
+import { aws_iam, aws_logs, RemovalPolicy } from 'aws-cdk-lib';
 
 export interface OpenSearchCustomStackProps extends StackProps {
   openSearchArn: string;
@@ -27,6 +27,11 @@ export class OpenSearchCustomStack extends Stack {
     const indexLogs = new aws_logs.LogGroup(this, 'OsIndexSlowLOgsGroup', {
       logGroupName: `/aws/aes/domains/${openSearchDomainName}/index-slow-logs`,
     });
+
+    if (this.stage !== 'prod') {
+      slowLogs.applyRemovalPolicy(RemovalPolicy.DESTROY);
+      indexLogs.applyRemovalPolicy(RemovalPolicy.DESTROY);
+    }
 
     const policyStatement = new aws_iam.PolicyStatement({
       actions: [
