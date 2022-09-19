@@ -33,7 +33,8 @@ class AppConfig {
 
   static Map<String, dynamic> get config => _config;
 
-  static Duration get ratingNotificationTimer => const Duration(minutes: 10);
+  static Duration get ratingNotificationTimer =>
+      const Duration(milliseconds: 1);
 
   // Private constructor
   AppConfig._();
