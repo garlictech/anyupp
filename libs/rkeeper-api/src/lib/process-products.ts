@@ -514,7 +514,7 @@ export const handleRkeeperProducts =
           count(),
           tap(i => console.log(i + ' Product processed')),
           switchMap(() => handleWaiterCaller(sdk)(rawData, businessEntityInfo)),
-          tap(i => console.log('Waiter caller handled')),
+          tap(() => console.log('Waiter caller handled')),
           mapTo(true),
         ),
       ),
