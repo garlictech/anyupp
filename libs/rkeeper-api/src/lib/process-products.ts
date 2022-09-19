@@ -1,9 +1,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as OO from 'fp-ts-rxjs/ObservableOption';
+import * as OE from 'fp-ts-rxjs/ObservableEither';
 import { flow, pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
 import * as O from 'fp-ts/lib/Option';
 import * as Joi from 'joi';
+
+/*
+   "data": {
+    "dishes": [
+      {
+        "type": "dish",
+        "modiweight": 0,
+        "price": 0,
+        "modischeme": 0,
+        "active": 0,
+        "id": 1040917,
+        "guid": "ab1c4276-2ce6-4a29-bf39-ced30d352666",
+        "code": 2606,
+        "name": "Picér hívás",
+        "variation": 4609
+      }
+    ]
+....
+    "variations": [
+      {
+        "id": 4609,
+        "name": "termék"
+      }
+    ]
+ */
 
 import { validateSchema } from '@bgap/shared/data-validators';
 import {
@@ -30,6 +56,7 @@ import {
 import {
   filterNullishElements,
   filterNullishGraphqlListWithDefault,
+  oeTryCatch,
   throwIfEmptyValue,
 } from '@bgap/shared/utils';
 import {
@@ -82,12 +109,14 @@ export interface Dish {
   guid: string;
   name: string;
   modischeme?: number;
+  variation?: number;
 }
 
 const dishSchema = {
   ...commonSchema,
   guid: Joi.string().required(),
   modischeme: Joi.number().integer(),
+  variation: Joi.number().integer(),
 };
 
 export const { validate: validateDish, isType: isDish } = validateSchema<Dish>(
@@ -100,6 +129,42 @@ export const normalizeDish = (dish: Dish): Dish => ({
   ...normalizeCommon(dish),
   guid: dish.guid,
 });
+
+export interface Variation {
+  id: string;
+  name: string;
+}
+
+const variationSchema = {
+  id: Joi.number().integer().required(),
+  name: Joi.string().required(),
+};
+
+export const { validate: validateVariation, isType: isVariation } =
+  validateSchema<Variation>(variationSchema, 'Variation', true);
+
+// According to rkeeper solution, the waiter caller info is a special "Dish"...
+// not optimal.
+export interface WaiterCallerProduct {
+  active: boolean;
+  id: number;
+  name: string;
+}
+
+const waiterCallerProductSchema = {
+  active: Joi.number(),
+  id: Joi.number().required(),
+  name: Joi.string().required(),
+};
+
+export const {
+  validate: validateWaiterCallerProduct,
+  isType: isWaiterCallerProduct,
+} = validateSchema<WaiterCallerProduct>(
+  waiterCallerProductSchema,
+  'WaiterCallerProduct',
+  true,
+);
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const processDishes = (rawData: any): Observable<Dish[]> =>
@@ -125,10 +190,50 @@ export const processDishes = (rawData: any): Observable<Dish[]> =>
     map(
       flow(
         x => R.filter(R.complement(R.isNil), x) as Dish[],
+        x => R.reject((dish: Dish) => dish.variation != undefined, x),
         R.map(normalizeDish),
       ),
     ),
     tap(() => console.warn('DISHES PROCESSED')),
+  );
+
+export interface WaiterCallerData {
+  externalId: string;
+  active: boolean;
+}
+
+export const getWaiterCallerData = (
+  rawData: any,
+): Observable<WaiterCallerData | undefined> =>
+  pipe(
+    rawData?.data?.variations,
+    OE.fromPredicate(
+      R.complement(R.isNil),
+      () => 'No variations in the rkeeper data',
+    ),
+    OE.chain(
+      OE.fromPredicate(
+        R.find((variation: any) => variation?.name === 'termék'),
+        () => 'Waiter caller product not found',
+      ),
+    ),
+    OE.chain(x => validateVariation(x[0]).pipe(oeTryCatch)),
+    OE.map(variation =>
+      rawData?.data?.dishes?.find(
+        (dish: any) => dish.variation === variation.id,
+      ),
+    ),
+    OE.chain(waiterCallerData =>
+      validateWaiterCallerProduct(waiterCallerData).pipe(oeTryCatch),
+    ),
+    OE.map(dish => ({
+      externalId: dish.id.toString(),
+      active: !!dish.active,
+    })),
+    OE.getOrElse((err: string) => {
+      console.warn('No waiter caller info. Reason: ', err);
+      return of(undefined) as Observable<WaiterCallerData | undefined>;
+    }),
   );
 
 export const externalProductIdMaker = (guid: string) => guid;
@@ -342,6 +447,30 @@ export const resolveComponentSets =
   (dish: Dish): OO.ObservableOption<ProductConfigSet[]> =>
     resolveComponentSetsHelper(sdk, unitId, rawData, dish);
 
+export const handleWaiterCaller =
+  (sdk: CrudSdk) =>
+  (rawData: any, businessEntityInfo: RKeeperBusinessEntityInfo) =>
+    getWaiterCallerData(rawData).pipe(
+      switchMap(waiterCallerData =>
+        waiterCallerData === undefined
+          ? of(true)
+          : forkJoin([
+              sdk.UpdateUnit({
+                input: {
+                  id: businessEntityInfo.unitId,
+                  canCallWaiter: waiterCallerData?.active,
+                },
+              }),
+              sdk.UpdateUnitRKeeperData({
+                input: {
+                  unitId: businessEntityInfo.unitId,
+                  waiterOrderId: waiterCallerData.externalId,
+                },
+              }),
+            ]),
+      ),
+    );
+
 export const handleRkeeperProducts =
   (sdk: CrudSdk) =>
   (externalRestaurantId: string) =>
@@ -384,9 +513,12 @@ export const handleRkeeperProducts =
           tap(() => console.log('... a product processed')),
           count(),
           tap(i => console.log(i + ' Product processed')),
+          switchMap(() => handleWaiterCaller(sdk)(rawData, businessEntityInfo)),
+          tap(i => console.log('Waiter caller handled')),
           mapTo(true),
         ),
       ),
+      // update waiter calling info
     );
 
 export const upsertComponent =

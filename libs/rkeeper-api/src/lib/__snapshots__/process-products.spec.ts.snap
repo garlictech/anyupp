@@ -165,6 +165,15 @@ exports[`Process rkeeper products tests decodeName 1`] = `"Saját pohár"`;
 
 exports[`Process rkeeper products tests externalProductIdMaker test 1`] = `"GUID"`;
 
+exports[`Process rkeeper products tests getWaiterCallerData - data is not present 1`] = `undefined`;
+
+exports[`Process rkeeper products tests getWaiterCallerData - data is present properly 1`] = `
+Object {
+  "active": false,
+  "externalId": "1",
+}
+`;
+
 exports[`Process rkeeper products tests processDishes items with different ids 1`] = `
 Array [
   Object {
@@ -1125,4 +1134,30 @@ Object {
     },
   ],
 }
+`;
+
+exports[`Process rkeeper products tests test waiter caller - data is present properly: UpdateUnit 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "canCallWaiter": false,
+        "id": "UNITID",
+      },
+    },
+  ],
+]
+`;
+
+exports[`Process rkeeper products tests test waiter caller - data is present properly: UpdateUnitRKeeperData 1`] = `
+Array [
+  Array [
+    Object {
+      "input": Object {
+        "unitId": "UNITID",
+        "waiterOrderId": "1",
+      },
+    },
+  ],
+]
 `;

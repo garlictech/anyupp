@@ -544,3 +544,22 @@ export const rawDataWithModifiers = {
     modifiers: [modifier, unusedModifier],
   },
 };
+
+export const rawDataWithWaiterCaller = {
+  data: {
+    dishes: [
+      {
+        name: 'Picér hívás',
+        active: 0,
+        id: 1,
+        variation: 2,
+      },
+    ],
+    variations: [
+      {
+        id: 2,
+        name: 'termék',
+      },
+    ],
+  },
+};
