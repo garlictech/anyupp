@@ -1,3 +1,4 @@
+import 'package:anyupp/models.dart';
 import 'package:functional_data/functional_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -44,6 +45,8 @@ class Unit extends $Unit {
   final List<ImageAsset>? coverBanners;
   final bool? canCallWaiter;
   final bool isVisibleInApp;
+  //final Map<String, OpeningHours>? openingHours; // todo: bug in JsonSerializable? In Unig.g.dat/_$UnitFromJson : openingHours without OpeningHours.fromJson
+  final Map<String, dynamic>? openingHours; // todo: temporary solution
 
   get distance => 0;
 
@@ -75,6 +78,7 @@ class Unit extends $Unit {
     this.coverBanners,
     this.canCallWaiter,
     this.isVisibleInApp = true,
+    this.openingHours,
   });
 
   factory Unit.fromJson(Map<String, dynamic> json) => _$UnitFromJson(json);

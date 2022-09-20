@@ -101,5 +101,35 @@ query GetUnitById($unitId: ID!) {
         logo
       }
     }
+    openingHours {
+      mon {
+        from
+        to
+      }
+      tue {
+        from
+        to
+      }
+      wed {
+        from
+        to
+      }
+      thu {
+        from
+        to
+      }
+      fri {
+        from
+        to
+      }
+      sat {
+        from
+        to
+      }
+      sun {
+        from
+        to
+      }
+    }
   }
 }

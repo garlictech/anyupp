@@ -36,6 +36,7 @@ abstract class $Unit {
   List<ImageAsset>? get coverBanners;
   bool? get canCallWaiter;
   bool get isVisibleInApp;
+  Map<String, dynamic>? get openingHours;
 
   Unit copyWith({
     String? id,
@@ -65,6 +66,7 @@ abstract class $Unit {
     List<ImageAsset>? coverBanners,
     bool? canCallWaiter,
     bool? isVisibleInApp,
+    Map<String, dynamic>? openingHours,
   }) =>
       Unit(
         id: id ?? this.id,
@@ -97,6 +99,7 @@ abstract class $Unit {
         coverBanners: coverBanners ?? this.coverBanners,
         canCallWaiter: canCallWaiter ?? this.canCallWaiter,
         isVisibleInApp: isVisibleInApp ?? this.isVisibleInApp,
+        openingHours: openingHours ?? this.openingHours,
       );
 
   Unit copyUsing(void Function(Unit$Change change) mutator) {
@@ -128,6 +131,7 @@ abstract class $Unit {
       this.coverBanners,
       this.canCallWaiter,
       this.isVisibleInApp,
+      this.openingHours,
     );
     mutator(change);
     return Unit(
@@ -158,12 +162,13 @@ abstract class $Unit {
       coverBanners: change.coverBanners,
       canCallWaiter: change.canCallWaiter,
       isVisibleInApp: change.isVisibleInApp,
+      openingHours: change.openingHours,
     );
   }
 
   @override
   String toString() =>
-      "Unit(id: $id, name: $name, address: $address, style: $style, paymentModes: $paymentModes, currency: $currency, isAcceptingOrders: $isAcceptingOrders, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes, orderPolicy: $orderPolicy, packagingTaxPercentage: $packagingTaxPercentage, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, serviceFeePolicy: $serviceFeePolicy, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, orderPaymentPolicy: $orderPaymentPolicy, location: $location, adBannersEnabled: $adBannersEnabled, adBanners: $adBanners, canRequestVatInvoice: $canRequestVatInvoice, description: $description, email: $email, phone: $phone, coverBannersEnabled: $coverBannersEnabled, coverBanners: $coverBanners, canCallWaiter: $canCallWaiter, isVisibleInApp: $isVisibleInApp)";
+      "Unit(id: $id, name: $name, address: $address, style: $style, paymentModes: $paymentModes, currency: $currency, isAcceptingOrders: $isAcceptingOrders, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes, orderPolicy: $orderPolicy, packagingTaxPercentage: $packagingTaxPercentage, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, serviceFeePolicy: $serviceFeePolicy, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, orderPaymentPolicy: $orderPaymentPolicy, location: $location, adBannersEnabled: $adBannersEnabled, adBanners: $adBanners, canRequestVatInvoice: $canRequestVatInvoice, description: $description, email: $email, phone: $phone, coverBannersEnabled: $coverBannersEnabled, coverBanners: $coverBanners, canCallWaiter: $canCallWaiter, isVisibleInApp: $isVisibleInApp, openingHours: $openingHours)";
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
@@ -196,7 +201,8 @@ abstract class $Unit {
       coverBannersEnabled == other.coverBannersEnabled &&
       coverBanners == other.coverBanners &&
       canCallWaiter == other.canCallWaiter &&
-      isVisibleInApp == other.isVisibleInApp;
+      isVisibleInApp == other.isVisibleInApp &&
+      openingHours == other.openingHours;
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
@@ -229,6 +235,7 @@ abstract class $Unit {
     result = 37 * result + coverBanners.hashCode;
     result = 37 * result + canCallWaiter.hashCode;
     result = 37 * result + isVisibleInApp.hashCode;
+    result = 37 * result + openingHours.hashCode;
     return result;
   }
 }
@@ -262,6 +269,7 @@ class Unit$Change {
     this.coverBanners,
     this.canCallWaiter,
     this.isVisibleInApp,
+    this.openingHours,
   );
 
   String id;
@@ -291,6 +299,7 @@ class Unit$Change {
   List<ImageAsset>? coverBanners;
   bool? canCallWaiter;
   bool isVisibleInApp;
+  Map<String, dynamic>? openingHours;
 }
 
 // ignore: avoid_classes_with_only_static_members
@@ -466,6 +475,12 @@ class Unit$ {
     (isVisibleInAppContainer, isVisibleInApp) =>
         isVisibleInAppContainer.copyWith(isVisibleInApp: isVisibleInApp),
   );
+
+  static final openingHours = Lens<Unit, Map<String, dynamic>?>(
+    (openingHoursContainer) => openingHoursContainer.openingHours,
+    (openingHoursContainer, openingHours) =>
+        openingHoursContainer.copyWith(openingHours: openingHours),
+  );
 }
 
 // **************************************************************************
@@ -526,6 +541,7 @@ Unit _$UnitFromJson(Map<String, dynamic> json) => Unit(
           .toList(),
       canCallWaiter: json['canCallWaiter'] as bool?,
       isVisibleInApp: json['isVisibleInApp'] as bool? ?? true,
+      openingHours: json['openingHours'] as Map<String, dynamic>?,
     );
 
 Map<String, dynamic> _$UnitToJson(Unit instance) {
@@ -574,6 +590,7 @@ Map<String, dynamic> _$UnitToJson(Unit instance) {
       'coverBanners', instance.coverBanners?.map((e) => e.toJson()).toList());
   writeNotNull('canCallWaiter', instance.canCallWaiter);
   val['isVisibleInApp'] = instance.isVisibleInApp;
+  writeNotNull('openingHours', instance.openingHours);
   return val;
 }
 

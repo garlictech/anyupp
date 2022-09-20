@@ -634,7 +634,16 @@
   },
   "unitinfo": {
     "infoButton": "Information",
-    "title": "DETAILS"
+    "title": "DETAILS",
+    "openingHours": "Opening hours",
+    "introduction": "Introduction",
+    "availability": "Availability",
+    "showMap": "Show map",
+    "emailAddress": "Email address",
+    "website": "Website",
+    "appleMaps": "Apple Maps",
+    "googleMaps": "Google Maps",
+    "chooseMaps": "Which app do you want to use?"
   },
   "validators": {
     "required": "Required",

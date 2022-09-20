@@ -9,14 +9,14 @@ part of 'OpeningHours.dart';
 abstract class $OpeningHours {
   const $OpeningHours();
 
-  double? get to;
-  double? get from;
-  String get date;
-  bool get closed;
+  String? get to;
+  String? get from;
+  String? get date;
+  bool? get closed;
 
   OpeningHours copyWith({
-    double? to,
-    double? from,
+    String? to,
+    String? from,
     String? date,
     bool? closed,
   }) =>
@@ -77,30 +77,30 @@ class OpeningHours$Change {
     this.closed,
   );
 
-  double? to;
-  double? from;
-  String date;
-  bool closed;
+  String? to;
+  String? from;
+  String? date;
+  bool? closed;
 }
 
 // ignore: avoid_classes_with_only_static_members
 class OpeningHours$ {
-  static final to = Lens<OpeningHours, double?>(
+  static final to = Lens<OpeningHours, String?>(
     (toContainer) => toContainer.to,
     (toContainer, to) => toContainer.copyWith(to: to),
   );
 
-  static final from = Lens<OpeningHours, double?>(
+  static final from = Lens<OpeningHours, String?>(
     (fromContainer) => fromContainer.from,
     (fromContainer, from) => fromContainer.copyWith(from: from),
   );
 
-  static final date = Lens<OpeningHours, String>(
+  static final date = Lens<OpeningHours, String?>(
     (dateContainer) => dateContainer.date,
     (dateContainer, date) => dateContainer.copyWith(date: date),
   );
 
-  static final closed = Lens<OpeningHours, bool>(
+  static final closed = Lens<OpeningHours, bool?>(
     (closedContainer) => closedContainer.closed,
     (closedContainer, closed) => closedContainer.copyWith(closed: closed),
   );
@@ -111,10 +111,10 @@ class OpeningHours$ {
 // **************************************************************************
 
 OpeningHours _$OpeningHoursFromJson(Map<String, dynamic> json) => OpeningHours(
-      to: (json['to'] as num?)?.toDouble(),
-      from: (json['from'] as num?)?.toDouble(),
-      date: json['date'] as String,
-      closed: json['closed'] as bool,
+      to: json['to'] as String?,
+      from: json['from'] as String?,
+      date: json['date'] as String?,
+      closed: json['closed'] as bool?,
     );
 
 Map<String, dynamic> _$OpeningHoursToJson(OpeningHours instance) {
@@ -128,7 +128,7 @@ Map<String, dynamic> _$OpeningHoursToJson(OpeningHours instance) {
 
   writeNotNull('to', instance.to);
   writeNotNull('from', instance.from);
-  val['date'] = instance.date;
-  val['closed'] = instance.closed;
+  writeNotNull('date', instance.date);
+  writeNotNull('closed', instance.closed);
   return val;
 }
