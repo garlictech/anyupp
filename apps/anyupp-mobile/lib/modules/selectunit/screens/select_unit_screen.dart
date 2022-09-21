@@ -212,7 +212,7 @@ class _StartQRCodeScanButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: () => showQRScannerModal(context, true),
       style: ElevatedButton.styleFrom(
-        primary: theme.button,
+        backgroundColor: theme.button,
         minimumSize: Size(153, 56),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32),

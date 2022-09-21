@@ -205,7 +205,7 @@ class _EmailLoginDialogContentWidgetState
                     height: 52.0,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFF30BF60),
+                        backgroundColor: Color(0xFF30BF60),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12.0),
                         ),

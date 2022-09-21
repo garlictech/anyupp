@@ -14,8 +14,8 @@ import 'TipPolicy.dart';
 
 part 'Unit.g.dart';
 
-@JsonSerializable(explicitToJson: true)
 @FunctionalData()
+@JsonSerializable(explicitToJson: true)
 class Unit extends $Unit {
   final String id;
   final String name;
@@ -46,37 +46,40 @@ class Unit extends $Unit {
   final bool isVisibleInApp;
 
   @JsonKey(ignore: true)
-  double? distanceInKm;
+  double? distanceInKm_;
 
-  Unit({
-    required this.id,
-    required this.name,
-    required this.address,
-    required this.style,
-    required this.currency,
-    required this.isAcceptingOrders,
-    required this.supportedServingModes,
-    required this.supportedOrderModes,
-    this.orderPolicy = OrderPolicy.placeOnly,
-    this.packagingTaxPercentage = 0,
-    this.paymentModes,
-    this.ratingPolicies,
-    this.tipPolicy,
-    this.serviceFeePolicy,
-    this.soldOutVisibilityPolicy,
-    this.orderPaymentPolicy,
-    required this.location,
-    this.adBannersEnabled,
-    this.adBanners,
-    this.canRequestVatInvoice,
-    this.description,
-    this.email,
-    this.phone,
-    this.coverBannersEnabled,
-    this.coverBanners,
-    this.canCallWaiter,
-    this.isVisibleInApp = true,
-  });
+  set distanceInKm(double? distanceInKm) => distanceInKm_ = distanceInKm;
+  double? get distanceInKm => distanceInKm_;
+
+  Unit(
+      {required this.id,
+      required this.name,
+      required this.address,
+      required this.style,
+      required this.currency,
+      required this.isAcceptingOrders,
+      required this.supportedServingModes,
+      required this.supportedOrderModes,
+      this.orderPolicy = OrderPolicy.placeOnly,
+      this.packagingTaxPercentage = 0,
+      this.paymentModes,
+      this.ratingPolicies,
+      this.tipPolicy,
+      this.serviceFeePolicy,
+      this.soldOutVisibilityPolicy,
+      this.orderPaymentPolicy,
+      required this.location,
+      this.adBannersEnabled,
+      this.adBanners,
+      this.canRequestVatInvoice,
+      this.description,
+      this.email,
+      this.phone,
+      this.coverBannersEnabled,
+      this.coverBanners,
+      this.canCallWaiter,
+      this.isVisibleInApp = true,
+      this.distanceInKm_});
 
   factory Unit.fromJson(Map<String, dynamic> json) => _$UnitFromJson(json);
 

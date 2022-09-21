@@ -54,7 +54,7 @@ class SuccessTipWidget extends StatelessWidget {
             margin: EdgeInsets.all(16.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: theme.button,
+                backgroundColor: theme.button,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),

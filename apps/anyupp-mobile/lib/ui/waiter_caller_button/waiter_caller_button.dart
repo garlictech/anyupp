@@ -75,7 +75,7 @@ class WaiterCallerButton extends ConsumerWidget with Translater {
                   child: ElevatedButton(
                       onPressed: () => presenter.callWaiter(context, ""),
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.black,
+                        backgroundColor: Colors.black,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
                         ),

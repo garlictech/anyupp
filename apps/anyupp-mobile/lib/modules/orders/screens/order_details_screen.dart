@@ -408,7 +408,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 }
               },
               style: ElevatedButton.styleFrom(
-                primary: lighten(theme.button, 76),
+                backgroundColor: lighten(theme.button, 76),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),
@@ -447,7 +447,7 @@ class OrderDetailsRatingAndTipWidget extends StatelessWidget {
                 }
               },
               style: ElevatedButton.styleFrom(
-                primary: theme.button,
+                backgroundColor: theme.button,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40),
                 ),
@@ -564,7 +564,7 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
                         .pdfUrl!) // Nav.to(PdfWebView(order.transaction!.invoice!.pdfUrl!))
                     : createAndOpenPdf(order.transaction!.receipt!.pdfData),
                 style: ElevatedButton.styleFrom(
-                  primary: theme.button,
+                  backgroundColor: theme.button,
                   // shadowColor: null,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40),
@@ -858,8 +858,7 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
     List<String> extraNames = [];
     if (item.selectedConfigMap != null) {
       item.selectedConfigMap!.forEach((key, value) {
-        for (ProductConfigComponent generatedProductConfigComponent
-            in value) {
+        for (ProductConfigComponent generatedProductConfigComponent in value) {
           extraNames.add(
               getLocalizedText(context, generatedProductConfigComponent.name));
         }

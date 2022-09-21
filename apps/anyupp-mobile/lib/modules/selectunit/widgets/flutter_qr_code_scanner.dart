@@ -143,7 +143,8 @@ class _QRCodeScannerWidgetState extends State<QRCodeScannerWidget>
                             onPressed: () async {
                               setState(() {
                                 _unitId =
-                                    'a-kesdobalo'; // seeded_unit_c1_g1_1_id -MGMw7p0gQsX31ZLZOkK
+                                    //'frei-rkeeper-unit';
+                                    'a-kesdobalo';
                                 _place = Place(table: '01', seat: '02');
                                 _qr_scan_state = false;
                               });
