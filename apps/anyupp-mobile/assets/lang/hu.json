@@ -13,7 +13,9 @@
     "exit": "Nyomd meg még egyszer a vissza gombot a kilépéshez...",
     "callingWaiter": "Hívunk egy pincért...",
     "waiterCalledTitle": "Sikerült!",
-    "waiterCalledContent": "Nemsokára érkezik egy pincér."
+    "waiterCallerError": "Nem sikerült pincért hívni.",
+    "waiterCalledContent": "Nemsokára érkezik egy pincér.",
+    "error": "Hiba"
   },
   "locale": {
     "EN": "Angol",

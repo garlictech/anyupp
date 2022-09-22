@@ -41,17 +41,17 @@ void main() {
       () {
     test('Test needing of notification sending from Order serving time', () {
       _testDelay(DateTime.parse('2022-01-01 10:00:00'), Duration(minutes: 1),
-          Duration(minutes: 9));
+          Duration(minutes: -1));
     });
 
     test('Test needing of notification sending from Order serving time 2', () {
       _testDelay(DateTime.parse('2022-01-01 10:00:00'), Duration(minutes: 10),
-          Duration(minutes: 0));
+          Duration(minutes: -10));
     });
 
     test('Test needing of notification sending from Order serving time 3', () {
       _testDelay(DateTime.parse('2022-01-01 10:00:00'), Duration(minutes: 15),
-          Duration(minutes: -5));
+          Duration(minutes: -15));
     });
 
     test(
@@ -68,7 +68,7 @@ void main() {
         now,
         _mockPrefs,
       );
-      expect(result, equals(true));
+      expect(result, equals(false));
 
       // set notification to scheduled
       await _mockPrefs.setBool(key, true);

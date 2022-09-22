@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`waiterCallerResolver unit test GetUnit error 1`] = `"UNIT ERROR"`;
+
+exports[`waiterCallerResolver unit test Missing rkeeper external ID 1`] = `"rkeeper_external_id_not_configured"`;
+
+exports[`waiterCallerResolver unit test Missing unit ID 1`] = `"unit_id_required"`;
+
+exports[`waiterCallerResolver unit test Missing waiter caller config  1`] = `"rkeeper_waiter_caller_not_configured"`;
+
+exports[`waiterCallerResolver unit test Not supported POS 1`] = `"not_supported_pos"`;
+
+exports[`waiterCallerResolver unit test Rkeeper server error 1`] = `"SERVER ERROR"`;
+
+exports[`waiterCallerResolver unit test Send successfull waiter call: AXIOS REQUEST CALLS 1`] = `
+Array [
+  Array [
+    Object {
+      "auth": Object {
+        "password": "",
+        "username": "",
+      },
+      "data": Object {
+        "client": Object {
+          "email": undefined,
+          "ln": "Biborka",
+          "phone": undefined,
+        },
+        "delivery_time": "CURRENT TIME",
+        "guest_label": 2,
+        "guest_name": "GUEST LABEL",
+        "objectid": "EXTERNALID",
+        "order": Object {
+          "id": "WAITER ORDER ID",
+          "qnt": 1,
+          "type": "d",
+        },
+        "order_number": 1,
+        "order_type": 1,
+        "pay_online_type": 0,
+        "pay_type": 0,
+        "remoteId": "EXTERNALID",
+        "remoteOrderId": "GENERATED UUID",
+      },
+      "method": "post",
+      "url": "ENDKEEPERURI/postorder/EXTERNALID",
+    },
+  ],
+]
+`;
+
+exports[`waiterCallerResolver unit test Send successfull waiter call: AXIOS REQUEST CALLS 2`] = `
+Array [
+  Array [
+    Object {
+      "auth": Object {
+        "password": "",
+        "username": "",
+      },
+      "data": Object {
+        "client": Object {
+          "email": undefined,
+          "ln": "Biborka",
+          "phone": undefined,
+        },
+        "delivery_time": "CURRENT TIME",
+        "guest_label": 2,
+        "guest_name": "GUEST LABEL",
+        "objectid": "EXTERNALID",
+        "order": Object {
+          "id": "WAITER ORDER ID",
+          "qnt": 1,
+          "type": "d",
+        },
+        "order_number": 1,
+        "order_type": 1,
+        "pay_online_type": 0,
+        "pay_type": 0,
+        "remoteId": "EXTERNALID",
+        "remoteOrderId": "GENERATED UUID",
+      },
+      "method": "post",
+      "url": "ENDKEEPERURI/postorder/EXTERNALID",
+    },
+  ],
+]
+`;
+
+exports[`waiterCallerResolver unit test Unit cannot call waiter 1`] = `"unit_cannot_call_waiter"`;
+
+exports[`waiterCallerResolver unit test Unit not found 1`] = `"unit_not_found"`;

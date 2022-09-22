@@ -116,7 +116,7 @@ class _ProductMenuAppBarState extends State<ProductMenuAppBar> {
     if (unit != null) {
       getIt<CartBloc>().add(ClearPlaceInCart(unit));
     }
-    getIt<UnitSelectBloc>().add(DeSelectUnit());
+//    getIt<UnitSelectBloc>().add(DeSelectUnit());
     Nav.pop();
   }
 

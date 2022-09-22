@@ -137,7 +137,6 @@ class _OrderHistoryListWidgetState extends State<OrderHistoryListWidget> {
                 ),
               ),
               backgroundColor: Colors.transparent,
-              primary: theme.secondary,
             ),
             onPressed: () =>
                 getIt<OrderHistoryBloc>().add(LoadMoreOrderHistory(_nextToken)),

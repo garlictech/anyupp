@@ -125,7 +125,7 @@ class _LanguageMenuState extends State<LanguageMenu> {
                 child: ElevatedButton(
                   onPressed: () => _setSelectedLocale(),
                   style: ElevatedButton.styleFrom(
-                    primary: theme.button,
+                    backgroundColor: theme.button,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40),
                     ),

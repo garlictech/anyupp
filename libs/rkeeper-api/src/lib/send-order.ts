@@ -38,6 +38,30 @@ export interface SendRKeeperOrderResponse {
   visitId: string;
 }
 
+export const sendOrderToRkeeperPOS =
+  (deps: SendRkeeperOrderDeps) =>
+  (order: unknown, unit: Unit, externalId: string) =>
+    pipe(
+      order,
+      R.tap(x => console.debug('ORDER SENT:', JSON.stringify(x, null, 2))),
+      data => ({
+        url: `${unit.pos?.rkeeper?.endpointUri}/postorder/${unit.externalId}`,
+        method: 'post' as Method,
+        data,
+        auth: {
+          username: unit.pos?.rkeeper?.rkeeperUsername || '',
+          password: unit.pos?.rkeeper?.rkeeperPassword || '',
+        },
+      }),
+      data => defer(() => from(deps.axiosInstance.request(data))),
+      tap(data =>
+        console.debug('RKEEPER RESPONSE: ', JSON.stringify(data.data, null, 2)),
+      ),
+      map(rKeeperResponse => ({
+        externalId,
+        visitId: rKeeperResponse.data?.data?.data?.visit_id,
+      })),
+    );
 export const sendRkeeperOrder =
   (deps: SendRkeeperOrderDeps) =>
   (
@@ -79,23 +103,6 @@ export const sendRkeeperOrder =
         remoteOrderId: externalId,
         order,
       }),
-      R.tap(x => console.debug('ORDER SENT:', JSON.stringify(x, null, 2))),
-      data => ({
-        url: `${unit.pos?.rkeeper?.endpointUri}/postorder/${unit.externalId}`,
-        method: 'post' as Method,
-        data,
-        auth: {
-          username: unit.pos?.rkeeper?.rkeeperUsername || '',
-          password: unit.pos?.rkeeper?.rkeeperPassword || '',
-        },
-      }),
-      data => defer(() => from(deps.axiosInstance.request(data))),
-      tap(data =>
-        console.debug('RKEEPER RESPONSE: ', JSON.stringify(data.data, null, 2)),
-      ),
-      map(rKeeperResponse => ({
-        externalId,
-        visitId: rKeeperResponse.data?.data?.data?.visit_id,
-      })),
+      order => sendOrderToRkeeperPOS(deps)(order, unit, externalId),
     );
   };

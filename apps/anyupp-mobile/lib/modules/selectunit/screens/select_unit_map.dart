@@ -472,7 +472,7 @@ class _MapUnitListWidget extends StatelessWidget {
               child: UnitMapCardWidget(
                 closeTime: getOpeningText(context, unit),
                 height: 120.0,
-                distance: '${(unit.distance / 1000).toStringAsFixed(0)}m',
+                distanceInKm: unit.distanceInKm,
                 image:
                     unit.hasBanner ? unit.coverBanners?.first.imageUrl : null,
                 // isFavorite: false,

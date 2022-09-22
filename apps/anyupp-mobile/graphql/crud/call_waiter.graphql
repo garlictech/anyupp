@@ -1,0 +1,3 @@
+mutation CallWaiter($input: CallWaiterInput!) {
+  callWaiter(input: $input)
+}

@@ -399,6 +399,37 @@ describe('Test the rkeeper api basic functionality', () => {
       )
       .subscribe(() => done());
   }, 60000);
+
+  test.only('Test waiter caller', done => {
+    crudSdk
+      .UpdateUnitRKeeperData({
+        input: {
+          unitId: fixtures.rkeeperUnit.id,
+          waiterOrderId: 'WAITER_ORDER_ID',
+        },
+      })
+      .pipe(
+        switchMap(() =>
+          crudSdk.CallWaiter({
+            input: {
+              unitId: fixtures.rkeeperUnit.id,
+              place: {
+                seat: '1',
+                table: '2',
+              },
+              guestLabel: 'GUEST LABEL',
+            },
+          }),
+        ),
+        // As the fixture rkeeper will not accept waiter caller, it will
+        // error, but anyway, it still verifies that the mutation on the server
+        // is present and working
+        catchError(of),
+        tap(x => console.warn('**** CAL', x)),
+        tap(res => expect(res).toMatchSnapshot()),
+      )
+      .subscribe(() => done());
+  });
 });
 
 describe('Test the communication between anyupp/rkeeper', () => {

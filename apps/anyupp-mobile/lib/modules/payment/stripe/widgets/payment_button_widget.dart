@@ -27,7 +27,7 @@ class PaymentButtonWidget extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40.0),
                 ),
-                primary: theme.button,
+                backgroundColor: theme.button,
               ),
               onPressed: isLoading ? null : () => _startStripePayment(),
               child: isLoading

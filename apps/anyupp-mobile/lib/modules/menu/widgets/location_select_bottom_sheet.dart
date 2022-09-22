@@ -90,28 +90,29 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                   SizedBox(
                     height: 19.0,
                   ),
-                  Container(
-                    width: 92.0,
-                    height: 28.0,
-                    padding: EdgeInsets.only(
-                      left: 4.0,
-                      right: 4.0,
-                    ),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(6.0),
-                      color: theme.highlight,
-                    ),
-                    child: Center(
-                      child: Text(
-                        '${(unit.distance / 1000).toStringAsFixed(3)} km',
-                        style: Fonts.satoshi(
-                          fontSize: 14,
-                          color: theme.secondary0,
-                          fontWeight: FontWeight.w500,
+                  if (unit.distanceInKm != null)
+                    Container(
+                      width: 92.0,
+                      height: 28.0,
+                      padding: EdgeInsets.only(
+                        left: 4.0,
+                        right: 4.0,
+                      ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6.0),
+                        color: theme.highlight,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${(unit.distanceInKm)!.toStringAsFixed(3)} km',
+                          style: Fonts.satoshi(
+                            fontSize: 14,
+                            color: theme.secondary0,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),
@@ -151,7 +152,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: theme.button,
+                  backgroundColor: theme.button,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40),
                   ),

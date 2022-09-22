@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:geolocator/geolocator.dart';
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
 import '/models.dart';
@@ -15,7 +16,7 @@ part 'units_state.dart';
 class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
   final UnitRepository _unitRepository;
   final LocationRepository _locationService;
-  static const int radiusInMeter = 10000; // 10 Km
+  static const int radiusInMeter = 100000; // 10 Km
 
   UnitsBloc(this._unitRepository, this._locationService)
       : super(UnitsInitial()) {
@@ -55,6 +56,14 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
     }
   }
 
+  double? _distanceFromPosition(Unit unit, LatLng? position) {
+    return position == null
+        ? null
+        : Geolocator.distanceBetween(position.latitude, position.longitude,
+                unit.location.lat, unit.location.lng) /
+            1000;
+  }
+
   FutureOr<void> _onDetectLocationAndLoadUnits(
       DetectLocationAndLoadUnits event, Emitter<UnitsState> emit) async {
     emit(UnitsLoading());
@@ -62,7 +71,6 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
       log.d('****** Start getting location');
       // --- Get device current location (ask permissions if not granted)
       _userLocation = await _locationService.getUserCurrentLocation();
-      _userLocation = LatLng(47.003841, 19.053478); // TODO kiszedni!
       log.d('****** Current Location=$_userLocation');
       if (_userLocation == null) {
         emit(UnitsNotLoaded(
@@ -75,7 +83,11 @@ class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
           radiusInMeter,
         );
         var filteredUnits = _filter(_units ?? [], event.filter);
-        filteredUnits.sort((a, b) => a.distance - b.distance);
+
+        for (var unit in filteredUnits) {
+          unit.distanceInKm = _distanceFromPosition(unit, _userLocation);
+        }
+
         if (filteredUnits.isEmpty) {
           emit(UnitsNoNearUnit());
         } else {

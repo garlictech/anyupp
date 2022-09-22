@@ -13,8 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '/graphql/generated/crud-api.graphql.dart';
 
-import '../../../graphql/generated/crud-api.graphql.dart';
-
 class OrderStatusListWidget extends StatefulWidget {
   const OrderStatusListWidget();
 
@@ -468,7 +466,7 @@ class NoOrderWidget extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(36.0),
                           ),
-                          primary: theme.secondary0,
+                          backgroundColor: theme.secondary0,
                         ),
                         onPressed: () => getIt<MainNavigationBloc>().add(
                           DoMainNavigation(

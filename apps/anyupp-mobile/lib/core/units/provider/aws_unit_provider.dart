@@ -59,4 +59,18 @@ class AwsUnitProvider implements IUnitProvider {
     final jsonFormat = result.data?.getUnit?.toJson();
     return jsonFormat != null ? Unit.fromJson(jsonFormat) : null;
   }
+
+  callWaiter(CallWaiterInput input) async {
+    var result = await GQL.amplify.execute(
+      CallWaiterMutation(variables: CallWaiterArguments(input: input)),
+    );
+
+    if (result.hasErrors) {
+      log.d('AwsUnitProvider.callWaiter().result.errors=${result.errors}');
+      throw GraphQLException.fromGraphQLError(
+          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+    }
+
+    return result.data?.callWaiter ?? false;
+  }
 }

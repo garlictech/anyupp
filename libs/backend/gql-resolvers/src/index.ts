@@ -1,1 +1,1 @@
-export * from './lib/backend-gql-resolvers';
+export * from './lib/waiter-caller-resolver';

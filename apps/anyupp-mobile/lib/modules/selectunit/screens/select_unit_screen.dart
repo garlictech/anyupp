@@ -212,7 +212,7 @@ class _StartQRCodeScanButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: () => showQRScannerModal(context, true),
       style: ElevatedButton.styleFrom(
-        primary: theme.button,
+        backgroundColor: theme.button,
         minimumSize: Size(153, 56),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32),
@@ -291,8 +291,7 @@ class _UnitListWidgetState extends State<_UnitListWidget> {
                       child: FadeInAnimation(
                         child: UnitWidget(
                           closeTime: getOpeningText(context, unit),
-                          distance:
-                              '${(unit.distance / 1000).toStringAsFixed(0)}m',
+                          distanceInKm: unit.distanceInKm,
                           imageList: unit.coverBanners
                               ?.map((e) => e.imageUrl)
                               .toList(),

@@ -179,7 +179,7 @@ class _RatingAndTippingModalState extends State<RatingAndTippingModal> {
                               child: ElevatedButton(
                                 onPressed: () => _sendRating(),
                                 style: ElevatedButton.styleFrom(
-                                  primary: theme.button,
+                                  backgroundColor: theme.button,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(40),
                                   ),

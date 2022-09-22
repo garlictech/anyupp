@@ -63,7 +63,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 pinned: true,
                 backgroundColor: theme.secondary0,
                 foregroundColor: theme.secondary,
-                primary: true,
                 title: FadeOnScroll(
                   scrollController: _scrollController,
                   zeroOpacityOffset: 0.0,
