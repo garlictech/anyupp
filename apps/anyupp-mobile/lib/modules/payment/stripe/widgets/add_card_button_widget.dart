@@ -18,7 +18,7 @@ class AddCardButtonWidget extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              primary: theme.button,
+              backgroundColor: theme.button,
             ),
             onPressed: () => _startStripePayment(),
             child: Text(

@@ -274,7 +274,7 @@ class _AddPaymentMethodWidgetState extends State<AddPaymentMethodWidget> {
                   child: ElevatedButton(
                     onPressed: () => _validateAndSaveCard(),
                     style: ElevatedButton.styleFrom(
-                      primary: theme.button,
+                      backgroundColor: theme.button,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),

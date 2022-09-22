@@ -305,7 +305,7 @@ class _InvoiceFormBottomSheetWidgetState
         width: double.infinity,
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              primary: theme.button,
+              backgroundColor: theme.button,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
               ),

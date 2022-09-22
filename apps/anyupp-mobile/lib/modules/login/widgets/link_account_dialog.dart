@@ -58,7 +58,7 @@ void showSelectAccountToLinkDialog(
                   itemBuilder: (context, index) {
                     return ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: theme.button,
+                        backgroundColor: theme.button,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -82,7 +82,7 @@ void showSelectAccountToLinkDialog(
                   width: 320.0,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: theme.secondary64,
+                      backgroundColor: theme.secondary64,
                     ),
                     onPressed: () {
                       Navigator.pop(context);
@@ -148,7 +148,7 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: theme.secondary64,
+                        backgroundColor: theme.secondary64,
                       ),
                       onPressed: () {
                         Navigator.pop(context);
@@ -163,7 +163,7 @@ void showUnlinkConfirmDialog(BuildContext context, LoginMethod method) {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: theme.button,
+                        backgroundColor: theme.button,
                       ),
                       onPressed: () {
                         Navigator.pop(context);

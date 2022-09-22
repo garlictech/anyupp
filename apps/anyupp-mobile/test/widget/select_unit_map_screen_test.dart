@@ -114,7 +114,7 @@ void main() {
             child: UnitMapCardWidget(
               closeTime: '12:00',
               height: 120.0,
-              distance: '100m',
+              distanceInKm: 1,
               image: null,
               unitName: 'UNIT CARD TEST',
               onTap: () => {},

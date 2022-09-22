@@ -18,20 +18,6 @@ class OpeningHours extends $OpeningHours {
     required this.closed,
   });
 
-  OpeningHours copyWith({
-    double? to,
-    double? from,
-    String? date,
-    bool? closed,
-  }) {
-    return OpeningHours(
-      to: to ?? this.to,
-      from: from ?? this.from,
-      date: date ?? this.date,
-      closed: closed ?? this.closed,
-    );
-  }
-
   factory OpeningHours.fromJson(Map<String, dynamic> json) =>
       _$OpeningHoursFromJson(json);
 

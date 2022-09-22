@@ -115,7 +115,7 @@ class _CartButtonWidgetState extends State<CartButtonWidget>
             animationType: NavAnim.SLIDEIN_DOWN,
           ),
           style: ElevatedButton.styleFrom(
-            primary: theme.button,
+            backgroundColor: theme.button,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(40),
             ),

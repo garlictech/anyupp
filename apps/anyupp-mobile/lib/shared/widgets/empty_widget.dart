@@ -106,7 +106,7 @@ class EmptyWidget extends StatelessWidget {
       ));
       widgets.add(ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: theme.button,
+          backgroundColor: theme.button,
           padding: EdgeInsets.only(
             top: 16,
             bottom: 16,
