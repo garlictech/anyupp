@@ -269,19 +269,19 @@ export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
     ),
   ]);
 
-export const seedYellowRKeeperUnit = (deps: SeederDependencies) =>
+export const seedFreiRKeeperUnit = (deps: SeederDependencies) =>
   forkJoin([
     deleteCreate(
-      () => deps.crudSdk.DeleteUnit({ input: { id: 'yellow-rkeeper-unit' } }),
+      () => deps.crudSdk.DeleteUnit({ input: { id: 'frei-rkeeper-unit' } }),
       () =>
         deps.crudSdk.CreateUnit({
           input: {
             ...unitFixture.createRkeeperUnit,
-            id: 'yellow-rkeeper-unit',
-            name: `yellow RKEEPER unit`,
+            id: 'frei-rkeeper-unit',
+            name: `frei RKEEPER unit`,
             supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
             supportedServingModes: [ServingMode.takeaway, ServingMode.inplace],
-            externalId: '109150001',
+            externalId: '109150006',
             pos: {
               type: PosType.rkeeper,
               rkeeper: {

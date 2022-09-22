@@ -16,7 +16,7 @@ import {
   createComponentSets,
   createTestUnit,
   SeederDependencies,
-  seedYellowRKeeperUnit,
+  seedFreiRKeeperUnit,
   seedSportbarRKeeperUnit,
   createTestUnitProduct,
   createTestProductCategories,
@@ -153,6 +153,6 @@ export const seedAll = (deps: SeederDependencies) =>
       }),
     ),
     switchMap(() => seedBusinessData(deps)),
-    switchMap(() => seedYellowRKeeperUnit(deps)),
+    switchMap(() => seedFreiRKeeperUnit(deps)),
     switchMap(() => seedSportbarRKeeperUnit(deps)),
   );
