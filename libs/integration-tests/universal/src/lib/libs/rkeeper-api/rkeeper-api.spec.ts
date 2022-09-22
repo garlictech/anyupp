@@ -12,6 +12,7 @@ import {
   switchMapTo,
   takeLast,
   toArray,
+  take,
   map,
   count,
   catchError,
@@ -399,7 +400,7 @@ describe('Test the rkeeper api basic functionality', () => {
       .subscribe(() => done());
   }, 60000);
 
-  test.only('Test waiter caller', done => {
+  test('Test waiter caller', done => {
     crudSdk
       .UpdateUnitRKeeperData({
         input: {
@@ -424,7 +425,7 @@ describe('Test the rkeeper api basic functionality', () => {
         // error, but anyway, it still verifies that the mutation on the server
         // is present and working
         catchError(of),
-        tap(x => console.warn('**** CAL', x)),
+        take(1),
         tap(res => expect(res).toMatchSnapshot()),
       )
       .subscribe(() => done());

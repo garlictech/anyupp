@@ -178,6 +178,7 @@ Array [
           "endpointUri": "https://testendpoint.ucs.hu/wp-json/vendor/v1",
           "rkeeperPassword": "f3e7c8260b2f9b1cc62208a441410a",
           "rkeeperUsername": "590_49_985_540",
+          "waiterOrderId": null,
         },
         "type": "rkeeper",
       },
