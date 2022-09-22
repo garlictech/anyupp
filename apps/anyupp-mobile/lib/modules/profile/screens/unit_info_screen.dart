@@ -7,7 +7,7 @@ import '../profile.dart';
 
 class UnitInfoScreen extends StatelessWidget {
   final Unit unit;
-  Map<String, OpeningHours>? openingHours;
+  late final Map<String, OpeningHours>? openingHours;
 
   UnitInfoScreen({Key? key, required this.unit}) : super(key: key) {
     // this is for the bug mentioned in Unit.dart
