@@ -14282,7 +14282,8 @@ export const OnCreateUnitProductDocument = gql`
         netPackagingFee
         soldOut
       }
-      position
+      createdAt
+      updatedAt
     }
     supportedServingModes
     dirty

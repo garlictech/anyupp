@@ -3764,4 +3764,3 @@ input SearchableReceiptAggregationInput {
   type: SearchableAggregateType!
   field: SearchableReceiptAggregateField!
 }
-
