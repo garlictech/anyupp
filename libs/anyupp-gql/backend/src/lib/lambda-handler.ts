@@ -28,7 +28,10 @@ import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
 import { searchByRadiusResolver } from '@bgap/backend/search';
 import { productVariantsResolver } from '@bgap/backend/products';
-import { waiterCallerResolver } from '@bgap/backend/gql-resolvers';
+import {
+  waiterCallerResolver,
+  WaiterCallerResolverDeps,
+} from '@bgap/backend/gql-resolvers';
 
 export type AnyuppRequest<SOURCE = undefined> = {
   typeName: string;
@@ -93,6 +96,13 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
     userId: event.identity?.username || '',
   });
 
+  const waiterCallerDeps: WaiterCallerResolverDeps = {
+    sdk: crudSdk,
+    currentTimeISOString: () => new Date().toISOString(),
+    axiosInstance: axios,
+    uuidGenerator: () => uuidV1(),
+  };
+
   const unitRequestHandlers = unitRequestHandler(unitsDeps.crudSdk);
 
   const stripeRequestHandlers = stripeRequestHandler({
@@ -126,7 +136,7 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       createUnit: createUnitResolver(unitsDeps),
       updateUnit: updateUnitResolver(unitsDeps),
       updateUnitRKeeperData: updateUnitRKeeperDataResolver(unitsDeps),
-      callWaiter: waiterCallerResolver({ sdk: crudSdk }),
+      callWaiter: waiterCallerResolver(waiterCallerDeps),
     },
     Query: {
       listStripeCards: stripeRequestHandlers.listStripeCards,
