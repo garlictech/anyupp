@@ -247,7 +247,7 @@ class AddToCartPanelButtonWidget extends StatelessWidget {
       height: 56.0,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          primary: theme.button,
+          backgroundColor: theme.button,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               40,

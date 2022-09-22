@@ -333,7 +333,7 @@ class _CartScreenState extends State<CartScreen> {
             onPressed: () =>
                 _handlePaymentButtonPressed(unit, cart, showQrCodeScan),
             style: ElevatedButton.styleFrom(
-              primary: theme.button,
+              backgroundColor: theme.button,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(40),
               ),

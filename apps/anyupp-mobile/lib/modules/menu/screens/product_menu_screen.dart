@@ -150,7 +150,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                           animationType: NavAnim.SLIDEIN_DOWN,
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: theme.button,
+                          backgroundColor: theme.button,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40),
                           ),

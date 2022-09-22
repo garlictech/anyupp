@@ -119,7 +119,7 @@ class _UnitFoundByQRCodeWidgetState extends State<UnitFoundByQRCodeWidget>
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(40.0),
                                 ),
-                                primary: theme.button,
+                                backgroundColor: theme.button,
                               ),
                               onPressed: () => _continueToUnit(),
                               child: Text(

@@ -121,7 +121,7 @@ class StatusWidget extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: onPressed ?? () => Nav.pop(),
                   style: ElevatedButton.styleFrom(
-                    primary: color,
+                    backgroundColor: color,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40),
                     ),
