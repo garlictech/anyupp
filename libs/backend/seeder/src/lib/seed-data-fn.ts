@@ -241,34 +241,6 @@ export const createComponentSets = (deps: SeederDependencies) => {
   );
 };
 
-export const seedSportbarRKeeperUnit = (deps: SeederDependencies) =>
-  forkJoin([
-    deleteCreate(
-      () => deps.crudSdk.DeleteUnit({ input: { id: 'sportbar-rkeeper-unit' } }),
-      () =>
-        deps.crudSdk.CreateUnit({
-          input: {
-            ...unitFixture.createRkeeperUnit,
-            id: 'sportbar-rkeeper-unit',
-            name: `sportbar RKEEPER unit`,
-            supportedOrderModes: [OrderMode.pickup],
-            supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
-            externalId: '170880001',
-            pos: {
-              type: PosType.rkeeper,
-              rkeeper: {
-                endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-                rkeeperUsername: '350_55_64_458',
-                rkeeperPassword: 'd192bf79e9cbeb655a8fc60de86322',
-                anyuppPassword: 'foobar',
-                anyuppUsername: 'foobar',
-              },
-            },
-          },
-        }),
-    ),
-  ]);
-
 export const seedFreiRKeeperUnit = (deps: SeederDependencies) =>
   forkJoin([
     deleteCreate(

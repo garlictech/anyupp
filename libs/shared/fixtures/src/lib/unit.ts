@@ -142,10 +142,31 @@ export const unitBase = {
   },
 };
 
+const floorMap = {
+  w: 800,
+  h: 300,
+  objects: [
+    {
+      id: 'hk6xk4xwh9n',
+      t: UnitMapObjectType.seat_r,
+      c: '',
+      w: 150,
+      h: 60,
+      r: null,
+      a: 0,
+      x: 10,
+      y: 10,
+      tID: '1',
+      sID: '2',
+    },
+  ],
+};
+
 export const createRkeeperUnit: RequiredId<CreateUnitInput> = {
   ...unitBase,
   id: 'rkeeper-unit',
   externalId: 'restaurantid',
+  floorMap,
   pos: {
     type: PosType.rkeeper,
     rkeeper: {
@@ -161,6 +182,7 @@ export const createRkeeperUnit: RequiredId<CreateUnitInput> = {
 
 const unitInstantTakeaway: RequiredId<CreateUnitInput> = {
   ...unitBase,
+  floorMap,
   id: 'unit-it',
   name: `Instant Takeaway Kocsma`,
   supportedOrderModes: [OrderMode.instant],
@@ -169,6 +191,7 @@ const unitInstantTakeaway: RequiredId<CreateUnitInput> = {
 
 const unitPickupTakeaway: RequiredId<CreateUnitInput> = {
   ...unitBase,
+  floorMap,
   id: 'unit-pt',
   name: `Pickup Takeaway Kifőzde`,
   supportedOrderModes: [OrderMode.pickup],
@@ -177,6 +200,7 @@ const unitPickupTakeaway: RequiredId<CreateUnitInput> = {
 
 const unitInstantInplace: RequiredId<CreateUnitInput> = {
   ...unitBase,
+  floorMap,
   id: 'unit-ii',
   name: `Instant Inplace Csárda`,
   supportedOrderModes: [OrderMode.instant],
@@ -185,6 +209,7 @@ const unitInstantInplace: RequiredId<CreateUnitInput> = {
 
 const unitPickupInplace: RequiredId<CreateUnitInput> = {
   ...unitBase,
+  floorMap,
   id: 'unit-pi',
   name: `Pickup Inplace Resztoran`,
   supportedOrderModes: [OrderMode.pickup],
@@ -208,25 +233,7 @@ const kesdobalo: RequiredId<CreateUnitInput> = {
         'https://scontent.fbud5-1.fna.fbcdn.net/v/t31.18172-8/178281_453909654650620_1346047036_o.jpg?_nc_cat=102&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=q_z1ac04pLUAX8CeQoA&_nc_ht=scontent.fbud5-1.fna&oh=00_AT-_OH7-46PdxRBSytAmnBWjdX4qO209yY51RjXo1yyEuA&oe=63209762',
     },
   ],
-  floorMap: {
-    w: 800,
-    h: 300,
-    objects: [
-      {
-        id: 'hk6xk4xwh9n',
-        t: UnitMapObjectType.table_r,
-        c: '',
-        w: 150,
-        h: 60,
-        r: null,
-        a: 0,
-        x: 10,
-        y: 10,
-        tID: null,
-        sID: null,
-      },
-    ],
-  },
+  floorMap,
 };
 
 export const unitFixture = {
