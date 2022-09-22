@@ -6,13 +6,13 @@ import * as fs from 'fs';
 
 import { createIamCrudSdk } from '../../../api-clients';
 import {
-  mergeMap,
   switchMap,
   delay,
   tap,
   switchMapTo,
   takeLast,
   toArray,
+  take,
   map,
   count,
   catchError,
@@ -28,7 +28,7 @@ import {
   handleProducts,
   menusyncHandler,
 } from '@bgap/rkeeper-api';
-import { from, Observable, of, defer, forkJoin } from 'rxjs';
+import { from, of, defer, forkJoin } from 'rxjs';
 import { ES_DELAY, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
@@ -400,7 +400,7 @@ describe('Test the rkeeper api basic functionality', () => {
       .subscribe(() => done());
   }, 60000);
 
-  test.only('Test waiter caller', done => {
+  test('Test waiter caller', done => {
     crudSdk
       .UpdateUnitRKeeperData({
         input: {
@@ -425,7 +425,7 @@ describe('Test the rkeeper api basic functionality', () => {
         // error, but anyway, it still verifies that the mutation on the server
         // is present and working
         catchError(of),
-        tap(x => console.warn('**** CAL', x)),
+        take(1),
         tap(res => expect(res).toMatchSnapshot()),
       )
       .subscribe(() => done());
