@@ -7,12 +7,12 @@ import '/core/theme/theme.dart';
 class UnitInfoScreenOpeningHours extends StatelessWidget {
   final Map<String, OpeningHours>? openingHours;
 
-  List days = [""];
-
   UnitInfoScreenOpeningHours({Key? key, required this.openingHours}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
