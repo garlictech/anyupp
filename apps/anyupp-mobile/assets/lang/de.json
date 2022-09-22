@@ -13,7 +13,9 @@
     "waiter": "Waiter",
     "callingWaiter": "Calling waiter",
     "waiterCalledTitle": "Success!",
-    "waiterCalledContent": "Waiter arrives soon."
+    "waiterCallerError": "Cannot call waiter",
+    "waiterCalledContent": "Waiter arrives soon.",
+    "error": "Hiba"
   },
   "locale": {
     "EN": "English",
