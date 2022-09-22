@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as fixtures from './fixtures';
 import {
   decodeName,
   Dish,
   externalProductIdMaker,
+  getWaiterCallerData,
+  handleWaiterCaller,
   normalizeDish,
   normalizeModifierGroup,
   resolveComponentSets,
@@ -347,4 +350,48 @@ describe('Process rkeeper products tests', () => {
       ).toMatchSnapshot(`the sets `);
     },
   );
+
+  test('getWaiterCallerData - data is present properly', done => {
+    const fixture = fixtures.rawDataWithWaiterCaller;
+    getWaiterCallerData(fixture)
+      .pipe(tap(data => expect(data).toMatchSnapshot()))
+      .subscribe(() => done());
+  });
+
+  test('getWaiterCallerData - data is not present', done => {
+    const fixture = {
+      data: {
+        ...fixtures.rawDataWithWaiterCaller.data,
+        variations: [],
+      },
+    };
+
+    getWaiterCallerData(fixture)
+      .pipe(tap(data => expect(data).toMatchSnapshot()))
+      .subscribe(() => done());
+  });
+
+  test('test waiter caller - data is present properly', done => {
+    const fixture = fixtures.rawDataWithWaiterCaller;
+    const sdk: any = {
+      UpdateUnit: jest.fn().mockReturnValue(of(true)),
+      UpdateUnitRKeeperData: jest.fn().mockReturnValue(of(true)),
+    };
+
+    const businessEntityInfo: any = {
+      unitId: 'UNITID',
+    };
+
+    handleWaiterCaller(sdk)(fixture, businessEntityInfo)
+      .pipe(
+        tap(() => {
+          expect(sdk.UpdateUnit.mock.calls).toMatchSnapshot('UpdateUnit');
+          expect(sdk.UpdateUnitRKeeperData.mock.calls).toMatchSnapshot(
+            'UpdateUnitRKeeperData',
+          );
+        }),
+      )
+      .subscribe(() => done());
+  });
+  // test('Waiter caller is active', done => {});
 });
