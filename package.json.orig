@@ -99,8 +99,14 @@
     "fabric": "5.2.4",
     "fastify": "3.29.2",
     "file-saver": "2.0.5",
-    "fp-ts": "2.12.3",
+<<<<<<< HEAD
     "firebase-admin": "^11.0.1",
+    "fp-ts": "2.12.2",
+||||||| parent of 9cd5fbbeb (fix(deps): update dependency fp-ts to v2.12.3)
+    "fp-ts": "2.12.2",
+=======
+    "fp-ts": "2.12.3",
+>>>>>>> 9cd5fbbeb (fix(deps): update dependency fp-ts to v2.12.3)
     "fp-ts-rxjs": "0.6.15",
     "fs": "0.0.1-security",
     "geolib": "3.3.3",
