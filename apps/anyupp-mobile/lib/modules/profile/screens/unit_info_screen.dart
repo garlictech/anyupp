@@ -6,15 +6,8 @@ import '../profile.dart';
 
 class UnitInfoScreen extends StatelessWidget {
   final Unit unit;
-  late final Map<String, OpeningHours>? openingHours;
 
-  UnitInfoScreen({Key? key, required this.unit}) : super(key: key) {
-    // this is for the bug mentioned in Unit.dart
-    openingHours = this.unit.openingHours?.map(
-          (k, e) =>
-              MapEntry(k, OpeningHours.fromJson(e as Map<String, dynamic>)),
-        );
-  }
+  const UnitInfoScreen({Key? key, required this.unit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +26,7 @@ class UnitInfoScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               UnitInfoScreenHeader(unit: unit),
-              UnitInfoScreenOpeningHours(openingHours: openingHours),
+              UnitInfoScreenOpeningHours(openingHours: unit.openingHours),
               UnitInfoScreenIntroduce(unit: unit),
               UnitInfoScreenAvailability(unit: unit),
             ],

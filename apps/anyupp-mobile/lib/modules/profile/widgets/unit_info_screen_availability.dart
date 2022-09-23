@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class UnitInfoScreenAvailability extends StatelessWidget {
   final Unit unit;
 
-  UnitInfoScreenAvailability({Key? key, required this.unit}) : super(key: key);
+  const UnitInfoScreenAvailability({Key? key, required this.unit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
