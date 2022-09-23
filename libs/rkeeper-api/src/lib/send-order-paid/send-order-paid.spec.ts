@@ -3,12 +3,12 @@ import { sendOrderPaid } from './send-order-paid';
 import { AxiosStatic } from 'axios';
 
 describe('SendOrderPaid', () => {
-  const mockRestaurantId = '109150006';
-  const mockVisitId = '1656509181-606-109150006';
+  const mockRestaurantId = '109150001';
+  const mockVisitId = '1656509181-606-109150001';
   const mockRKeeperPos: RKeeper = {
     endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
     rkeeperUsername: '590_49_985_540',
-    rkeeperPassword: 'f3e7c8260b2f9b1cc62208a441410a',
+    rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
     anyuppUsername: 'user',
     anyuppPassword: 'Ch4nge1t!',
   };
