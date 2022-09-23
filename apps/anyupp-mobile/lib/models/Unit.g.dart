@@ -36,7 +36,7 @@ abstract class $Unit {
   List<ImageAsset>? get coverBanners;
   bool? get canCallWaiter;
   bool get isVisibleInApp;
-  Map<String, dynamic>? get openingHours;
+  Map<String, OpeningHours>? get openingHours;
   double? get distanceInKm_;
 
   Unit copyWith({
@@ -67,7 +67,7 @@ abstract class $Unit {
     List<ImageAsset>? coverBanners,
     bool? canCallWaiter,
     bool? isVisibleInApp,
-    Map<String, dynamic>? openingHours,
+    Map<String, OpeningHours>? openingHours,
     double? distanceInKm_,
   }) =>
       Unit(
@@ -307,7 +307,7 @@ class Unit$Change {
   List<ImageAsset>? coverBanners;
   bool? canCallWaiter;
   bool isVisibleInApp;
-  Map<String, dynamic>? openingHours;
+  Map<String, OpeningHours>? openingHours;
   double? distanceInKm_;
 }
 
@@ -485,7 +485,7 @@ class Unit$ {
         isVisibleInAppContainer.copyWith(isVisibleInApp: isVisibleInApp),
   );
 
-  static final openingHours = Lens<Unit, Map<String, dynamic>?>(
+  static final openingHours = Lens<Unit, Map<String, OpeningHours>?>(
     (openingHoursContainer) => openingHoursContainer.openingHours,
     (openingHoursContainer, openingHours) =>
         openingHoursContainer.copyWith(openingHours: openingHours),
@@ -556,7 +556,9 @@ Unit _$UnitFromJson(Map<String, dynamic> json) => Unit(
           .toList(),
       canCallWaiter: json['canCallWaiter'] as bool?,
       isVisibleInApp: json['isVisibleInApp'] as bool? ?? true,
-      openingHours: json['openingHours'] as Map<String, dynamic>?,
+      openingHours: (json['openingHours'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, OpeningHours.fromJson(e as Map<String, dynamic>)),
+      ),
     )..distanceInKm = (json['distanceInKm'] as num?)?.toDouble();
 
 Map<String, dynamic> _$UnitToJson(Unit instance) {
@@ -605,7 +607,8 @@ Map<String, dynamic> _$UnitToJson(Unit instance) {
       'coverBanners', instance.coverBanners?.map((e) => e.toJson()).toList());
   writeNotNull('canCallWaiter', instance.canCallWaiter);
   val['isVisibleInApp'] = instance.isVisibleInApp;
-  writeNotNull('openingHours', instance.openingHours);
+  writeNotNull('openingHours',
+      instance.openingHours?.map((k, e) => MapEntry(k, e.toJson())));
   writeNotNull('distanceInKm', instance.distanceInKm);
   return val;
 }
