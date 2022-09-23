@@ -1,4 +1,3 @@
-import 'package:anyupp/models.dart';
 import 'package:functional_data/functional_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 
