@@ -92,7 +92,7 @@ class UnitInfoScreenHeader extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(36.0),
                     ),
-                    primary: theme.button.withOpacity(0.12),
+                    backgroundColor: theme.button.withOpacity(0.12),
                     elevation: 0,
                   ),
                   onPressed: () => openMapsDialog(context, unit.location),
