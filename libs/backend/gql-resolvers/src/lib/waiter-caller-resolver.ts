@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 /* eskint-disable @typescript-eslint/no-explicit-any */
+||||||| parent of ad715e939 (chore(test): rkeeper test + parameter upgrades)
+/* eslint-disable @typescript-eslint/no-explicit-any */
+=======
+>>>>>>> ad715e939 (chore(test): rkeeper test + parameter upgrades)
 import { oeTryCatch } from '@bgap/shared/utils';
 import { MutationCallWaiterArgs, CallWaiterInput, Unit } from '@bgap/domain';
 import { CrudSdk } from '@bgap/crud-gql/api';
@@ -67,6 +72,14 @@ export const waiterCallerResolver =
         ),
       ),
       OE.chain(unit => callWaiter(deps)(unit, args.input as CallWaiterInput)),
+<<<<<<< HEAD
       OE.getOrElse<string, any>(throwError),
       mapTo(true),
+||||||| parent of ad715e939 (chore(test): rkeeper test + parameter upgrades)
+      OE.getOrElse<string, any>(throwError),
+      //
+=======
+      OE.getOrElse<string, unknown>(throwError),
+      mapTo(true),
+>>>>>>> ad715e939 (chore(test): rkeeper test + parameter upgrades)
     );
