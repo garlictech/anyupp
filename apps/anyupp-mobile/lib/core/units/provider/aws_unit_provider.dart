@@ -14,6 +14,7 @@ class AwsUnitProvider implements IUnitProvider {
     var units =
         await Future.wait<Unit?>(unit_id_list.map((id) => _getUnit(id)));
     units.removeWhere((unit) => unit == null);
+    units.removeWhere((unit) => !unit!.isVisibleInApp);
     var finalUnits = units.map((u) => u!).toList();
 
     log.d('AwsUnitProvider.searchUnitsNearRadius().units=$finalUnits');
