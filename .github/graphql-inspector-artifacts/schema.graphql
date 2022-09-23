@@ -1188,6 +1188,7 @@ input RKeeperInput {
   rkeeperPassword: String!
   anyuppUsername: String!
   anyuppPassword: String!
+  waiterOrderId: String
 }
 
 input ImageAssetInput {

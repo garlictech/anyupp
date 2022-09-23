@@ -960,8 +960,6 @@ exports[`Test the rkeeper api basic functionality Test the menusync handler 1`] 
 
 exports[`Test the rkeeper api basic functionality Test the product handling logic in fargate in case of non-existing unit 1`] = `"Unit with external ID foobar cannot be found"`;
 
-exports[`Test the rkeeper api basic functionality Test waiter caller 1`] = `[Error: GraphQL error: unit_cannot_call_waiter]`;
-
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category created 1`] = `true`;
 
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category data 1`] = `
