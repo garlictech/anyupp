@@ -6,7 +6,7 @@ import {
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
-import { CrudSdk } from '@bgap/crud-gql/api';
+import { CreateProductCategoryInput, CrudSdk } from '@bgap/crud-gql/api';
 import {
   Allergen,
   CreateAdminUserInput,
@@ -89,6 +89,111 @@ export const createTestUnit = (deps: SeederDependencies) => {
   );
 };
 
+export const seedDebrecenUnit = (deps: SeederDependencies) => {
+  console.debug('createDebrecenUnit');
+  const unit = {
+    ...unitFixture.kesdobalo,
+    id: 'civis-unit',
+    name: 'Cívis Búfelejtő',
+    location: {
+      lat: 47.53,
+      lon: 21.639167,
+    },
+    coverBanners: [
+      {
+        imageUrl:
+          'http://img6.lapunk.hu/tarhely/furediturazok/galeria/787689.jpg',
+      },
+    ],
+  };
+
+  const category: RequiredId<CreateProductCategoryInput> = {
+    id: 'civis-product-category',
+    ownerEntity: unit.id,
+    name: {
+      hu: `Tüskék`,
+      en: `Death shots`,
+    },
+    image: 'https://i.ytimg.com/vi/K4LhyA-xnEs/maxresdefault.jpg',
+    position: 3,
+  };
+
+  const product = {
+    id: 'civis_product_beer',
+    unitId: unit.id,
+    laneId: 'lane_01',
+    isVisible: true,
+    takeaway: false,
+    supportedServingModes: [ServingMode.takeaway, ServingMode.inplace],
+    position: 0,
+    takeawayTax: 20,
+    tax: 27,
+    image: 'https://img-9gag-fun.9cache.com/photo/aV7EwOP_460s.jpg',
+    name: {
+      de: 'Vakcina',
+      en: 'Vakcina',
+      hu: 'Vakcina',
+    },
+    productCategoryId: category.id,
+    productType: ProductType.drink,
+    description: {
+      de: 'Ezt idd',
+      en: 'Ezt idd',
+      hu: 'Ezt idd',
+    },
+    variants: [
+      {
+        id: 'civis_product_beer_variant',
+        isAvailable: true,
+        price: 150,
+        position: 1,
+        pack: {
+          size: 1,
+          unit: 'adag',
+        },
+        variantName: {
+          en: 'piece',
+          hu: 'adag',
+        },
+      },
+    ],
+    configSets: [],
+  };
+
+  return deleteCreate(
+    () => deps.crudSdk.DeleteUnit({ input: { id: unit.id ?? '' } }),
+    () => deps.crudSdk.CreateUnit({ input: unit }),
+  ).pipe(
+    switchMap(() =>
+      deleteCreate(
+        () =>
+          deps.crudSdk.DeleteProductCategory({
+            input: {
+              id: category.id,
+            },
+          }),
+        () =>
+          deps.crudSdk.CreateProductCategory({
+            input: category,
+          }),
+      ),
+    ),
+    switchMap(() =>
+      deleteCreate(
+        () =>
+          deps.crudSdk.DeleteUnitProduct({
+            input: {
+              id: product.id,
+            },
+          }),
+        () =>
+          deps.crudSdk.CreateUnitProduct({
+            input: product,
+          }),
+      ),
+    ),
+  );
+};
 export const createTestProductCategories = () => (deps: SeederDependencies) => {
   console.debug('createTestProductCategories');
 
@@ -246,26 +351,40 @@ export const seedFreiRKeeperUnit = (deps: SeederDependencies) =>
     deleteCreate(
       () => deps.crudSdk.DeleteUnit({ input: { id: 'frei-rkeeper-unit' } }),
       () =>
-        deps.crudSdk.CreateUnit({
-          input: {
-            ...unitFixture.createRkeeperUnit,
-            id: 'frei-rkeeper-unit',
-            name: `frei RKEEPER unit`,
-            supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
-            supportedServingModes: [ServingMode.takeaway, ServingMode.inplace],
-            externalId: '109150006',
-            pos: {
-              type: PosType.rkeeper,
-              rkeeper: {
-                endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-                rkeeperUsername: '795_50_155_539',
-                rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
-                anyuppPassword: 'foobar',
-                anyuppUsername: 'foobar',
+        deps.crudSdk
+          .CreateUnit({
+            input: {
+              ...unitFixture.createRkeeperUnit,
+              id: 'frei-rkeeper-unit',
+              name: `frei RKEEPER unit`,
+              supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
+              supportedServingModes: [
+                ServingMode.takeaway,
+                ServingMode.inplace,
+              ],
+              externalId: '109150006',
+              pos: {
+                type: PosType.rkeeper,
+                rkeeper: {
+                  endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
+                  rkeeperUsername: '795_50_155_539',
+                  rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
+                  anyuppPassword: 'foobar',
+                  anyuppUsername: 'foobar',
+                },
               },
             },
-          },
-        }),
+          })
+          .pipe(
+            switchMap(unit =>
+              deps.crudSdk.UpdateUnitRKeeperData({
+                input: {
+                  unitId: unit?.id || 'wtf',
+                  waiterOrderId: '1040917',
+                },
+              }),
+            ),
+          ),
     ),
   ]);
 
