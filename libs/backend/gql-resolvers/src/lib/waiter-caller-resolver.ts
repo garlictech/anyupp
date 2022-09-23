@@ -6,8 +6,8 @@ import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/function';
 import { throwError } from 'rxjs';
 import * as R from 'ramda';
-import { sendOrderToRkeeperPOS } from '@bgap/rkeeper-api';
 import { AxiosStatic } from 'axios';
+import { callWaiter } from '@bgap/rkeeper-api';
 
 export interface WaiterCallerResolverDeps {
   sdk: CrudSdk;
@@ -28,35 +28,6 @@ export const getUnit =
         ),
       ),
       OE.map(unit => unit as Unit),
-    );
-
-export const callWaiter =
-  (deps: WaiterCallerResolverDeps) => (unit: Unit, input: CallWaiterInput) =>
-    pipe(
-      {
-        objectid: unit.externalId,
-        remoteId: unit.externalId,
-        order_type: 1,
-        pay_type: 0,
-        pay_online_type: 0,
-        delivery_time: deps.currentTimeISOString().split('.')[0],
-        client: {
-          phone: unit.phone,
-          email: unit.email,
-          ln: 'Biborka',
-        },
-        order_number: parseInt(input.place.table) || 0,
-        guest_label: parseInt(input.place?.seat) || 0,
-        guest_name: input.guestLabel,
-        remoteOrderId: deps.uuidGenerator(),
-        order: {
-          id: unit.pos?.rkeeper?.waiterOrderId,
-          type: 'd',
-          qnt: 1,
-        },
-      },
-      order => sendOrderToRkeeperPOS(deps)(order, unit, deps.uuidGenerator()),
-      oeTryCatch,
     );
 
 export const waiterCallerResolver =
@@ -100,9 +71,3 @@ export const waiterCallerResolver =
       OE.getOrElse<string, any>(throwError),
       //
     );
-// bejòn az unit ID
-// hold le az unitot. Ha ninc sunit: "nincs unit"
-// canCallwaiter? ha nem, "cannot call waiter"
-// van rkeeper config? ha nincs, "nit supported POS"
-// dobj be egy "ordert"
-// itt termináld, nem várjuk meg a státuszt

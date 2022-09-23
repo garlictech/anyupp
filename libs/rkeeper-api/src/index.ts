@@ -1,4 +1,5 @@
 export * from './lib/rkeeper-api';
+export * from './lib/call-waiter';
 export * from './lib/process-products';
 import * as RkeeperFixtures from './lib/fixtures';
 export { RkeeperFixtures };

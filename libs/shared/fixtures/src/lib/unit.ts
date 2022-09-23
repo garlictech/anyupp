@@ -13,8 +13,8 @@ import {
 import { testIdPrefix } from './common';
 import {
   rkeeperEndpoint,
-  yellowRkeeperPassword,
-  yellowRkeeperUsername,
+  freiRkeeperPassword,
+  freiRkeeperUsername,
 } from './rkeeper';
 import * as R from 'ramda';
 
@@ -172,8 +172,8 @@ export const createRkeeperUnit: RequiredId<CreateUnitInput> = {
     rkeeper: {
       // let's use the yellow real rkeeper endpoint
       endpointUri: rkeeperEndpoint,
-      rkeeperUsername: yellowRkeeperUsername,
-      rkeeperPassword: yellowRkeeperPassword,
+      rkeeperUsername: freiRkeeperUsername,
+      rkeeperPassword: freiRkeeperPassword,
       anyuppUsername: 'ANYUPP_USERNAME',
       anyuppPassword: 'ANYUPP_PASSWORD',
     },

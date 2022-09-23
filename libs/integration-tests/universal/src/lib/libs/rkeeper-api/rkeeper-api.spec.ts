@@ -1,4 +1,9 @@
-import { searchExternalVariant, sendRkeeperOrder } from '@bgap/rkeeper-api';
+import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
+import {
+  callWaiter,
+  searchExternalVariant,
+  sendRkeeperOrder,
+} from '@bgap/rkeeper-api';
 import axios, { AxiosError } from 'axios';
 import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
@@ -50,6 +55,7 @@ import {
   Variant,
 } from '@bgap/domain';
 import { deleteTestUnitProduct } from '../../seeds/unit-product';
+import { Right } from 'fp-ts/lib/Either';
 
 const commonBackendName = 'common-backend2-anyupp';
 const crudSdk = createIamCrudSdk();
@@ -71,7 +77,7 @@ describe('Test the rkeeper api basic functionality', () => {
       tap(items => console.log(`Deleted ${items} items in unit ${unitId}`)),
     );
 
-  const cleanup$ = from([fixtures.rkeeperUnit.id, fixtures.yellowUnit.id]).pipe(
+  const cleanup$ = from([fixtures.rkeeperUnit.id, fixtures.freiUnit.id]).pipe(
     concatMap(id => deleteTestProducts(id)),
     takeLast(1),
     switchMap(() =>
@@ -93,9 +99,9 @@ describe('Test the rkeeper api basic functionality', () => {
 
   beforeAll(done => {
     crudSdk
-      .DeleteUnit({ input: { id: fixtures.yellowUnit.id } })
+      .DeleteUnit({ input: { id: fixtures.freiUnit.id } })
       .pipe(
-        switchMap(() => crudSdk.CreateUnit({ input: fixtures.yellowUnit })),
+        switchMap(() => crudSdk.CreateUnit({ input: fixtures.freiUnit })),
         delay(ES_DELAY),
       )
       .subscribe(() => done());
@@ -126,7 +132,7 @@ describe('Test the rkeeper api basic functionality', () => {
     cleanup$
       .pipe(
         switchMap(() =>
-          crudSdk.DeleteUnit({ input: { id: fixtures.yellowRestaurantId } }),
+          crudSdk.DeleteUnit({ input: { id: fixtures.freiRestaurantId } }),
         ),
       )
       .subscribe(() => done());
@@ -316,7 +322,7 @@ describe('Test the rkeeper api basic functionality', () => {
       fs.readFileSync(__dirname + '/menu-data.json').toString(),
     );
 
-    handleRkeeperProducts(crudSdk)(fixtures.yellowRestaurantId)(
+    handleRkeeperProducts(crudSdk)(fixtures.freiRestaurantId)(
       rawData,
     ).subscribe({
       next: result => {
@@ -333,7 +339,7 @@ describe('Test the rkeeper api basic functionality', () => {
 
     const res = await menusyncHandler(crudSdk)(
       {
-        params: { externalUnitId: fixtures.yellowRestaurantId },
+        params: { externalUnitId: fixtures.freiRestaurantId },
         body: rawData,
       } as any,
       {
@@ -437,12 +443,12 @@ describe('Test the communication between anyupp/rkeeper', () => {
     defer(() =>
       from(
         axios.request({
-          url: `${fixtures.rkeeperEndpoint}/postorder/${fixtures.yellowRestaurantId}`,
+          url: `${fixtures.rkeeperEndpoint}/postorder/${fixtures.freiRestaurantId}`,
           method: 'post',
           data: fixtures.rkeeperOrder,
           auth: {
-            username: fixtures.yellowRkeeperUsername,
-            password: fixtures.yellowRkeeperPassword,
+            username: fixtures.freiRkeeperUsername,
+            password: fixtures.freiRkeeperPassword,
           },
         }),
       ),
@@ -468,7 +474,7 @@ describe('Test the communication between anyupp/rkeeper', () => {
       axiosInstance: axios,
       currentTimeISOString: () => new Date('2040.01.01').toISOString(),
       uuidGenerator: () => 'UUID',
-    })(fixtures.yellowUnit, fixtures.orderInput)
+    })(fixtures.freiUnit, fixtures.orderInput)
       .pipe(
         tap(result => {
           expect(result.externalId).toEqual('UUID');
@@ -483,21 +489,51 @@ describe('Test the communication between anyupp/rkeeper', () => {
         },
         complete: () => done(),
       });
-  }, 60000);
+  }, 10000);
+
+  test('call waiter by callWaiter', done => {
+    callWaiter({
+      axiosInstance: axios,
+      currentTimeISOString: () => new Date('2040.01.01').toISOString(),
+      uuidGenerator: () => 'UUID',
+    })(fixtures.freiUnit, {
+      guestLabel: 'GUEST_LABEL',
+      info: 'WAITER INFO',
+      place: {
+        seat: 'SEAT',
+        table: 'TABLE',
+      },
+      unitId: 'UNIT_ID',
+    })
+      .pipe(
+        tap(result => {
+          expect(
+            (result as Right<{ externalId: string }>).right.externalId,
+          ).toEqual('UUID');
+        }),
+      )
+      .subscribe({
+        next: () => done(),
+        error: error => {
+          console.error('Error', error);
+          throw error;
+        },
+      });
+  }, 10000);
 
   test('send an unpaid order to rkeeper by HTTP post, then send another request to set it to Paid status', done => {
     defer(() =>
       from(
         axios.request({
-          url: `${fixtures.rkeeperEndpoint}/postorder/${fixtures.yellowRestaurantId}`,
+          url: `${fixtures.rkeeperEndpoint}/postorder/${fixtures.freiRestaurantId}`,
           method: 'post',
           data: {
             ...fixtures.rkeeperOrder,
             pay_online_type: 1,
           },
           auth: {
-            username: fixtures.yellowRkeeperUsername,
-            password: fixtures.yellowRkeeperPassword,
+            username: fixtures.freiRkeeperUsername,
+            password: fixtures.freiRkeeperPassword,
           },
         }),
       ),
@@ -517,11 +553,11 @@ describe('Test the communication between anyupp/rkeeper', () => {
         switchMap(postOrderResponseData =>
           from(
             axios.request({
-              url: `${fixtures.rkeeperEndpoint}/postorder/payed/${fixtures.yellowRestaurantId}/${postOrderResponseData.data.data['visit_id']}`,
+              url: `${fixtures.rkeeperEndpoint}/postorder/payed/${fixtures.freiRestaurantId}/${postOrderResponseData.data.data['visit_id']}`,
               method: 'post',
               auth: {
-                username: fixtures.yellowRkeeperUsername,
-                password: fixtures.yellowRkeeperPassword,
+                username: fixtures.freiRkeeperUsername,
+                password: fixtures.freiRkeeperPassword,
               },
             }),
           ).pipe(
