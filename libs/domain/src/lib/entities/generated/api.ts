@@ -2724,6 +2724,7 @@ export interface RKeeperInput {
   endpointUri: Scalars['String'];
   rkeeperPassword: Scalars['String'];
   rkeeperUsername: Scalars['String'];
+  waiterOrderId?: InputMaybe<Scalars['String']>;
 }
 
 export interface RateAndTipOrderInput {

@@ -11,6 +11,7 @@ import {
   freiRkeeperUsername,
   freiRkeeperPassword,
   createProductFixture,
+  freiRkeeperWaiterProductId,
 } from '@bgap/shared/fixtures';
 import {
   CreateOrderInput,
@@ -126,6 +127,7 @@ export const freiUnit = {
   ...rkeeperUnit,
   id: 'test-freiunit-id',
   externalId: freiRestaurantId,
+  canCallWaiter: true,
   pos: {
     ...rkeeperUnit.pos,
     rkeeper: {
@@ -133,6 +135,7 @@ export const freiUnit = {
       rkeeperUsername: freiRkeeperUsername,
       rkeeperPassword: freiRkeeperPassword,
       endpointUri: rkeeperEndpoint,
+      waiterOrderId: freiRkeeperWaiterProductId,
     } as RKeeper,
   },
 } as Unit;

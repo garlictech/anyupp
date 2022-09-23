@@ -21,16 +21,20 @@ export class QrGeneratorService {
       o.t.includes('seat'),
     );
 
-    from(tableObjects)
-      .pipe(
-        concatMap(item =>
-          from(getQR(unit.id, item.tID)).pipe(
-            tap(qrStr => zip.file(`t${item.tID}.svg`, qrStr)),
-            switchMap(qrStr => from(getPDF(qrStr))),
-            tap(pdf => zip.file(`t${item.tID}.pdf`, pdf.output())),
+    (tableObjects.length === 0
+      ? of({})
+      : from(tableObjects).pipe(
+          concatMap(item =>
+            from(getQR(unit.id, item.tID)).pipe(
+              tap(qrStr => zip.file(`t${item.tID}.svg`, qrStr)),
+              switchMap(qrStr => from(getPDF(qrStr))),
+              tap(pdf => zip.file(`t${item.tID}.pdf`, pdf.output())),
+            ),
           ),
-        ),
-        last(),
+          last(),
+        )
+    )
+      .pipe(
         switchMap(() =>
           seatObjects.length == 0
             ? of({})

@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eskint-disable @typescript-eslint/no-explicit-any */
 import { oeTryCatch } from '@bgap/shared/utils';
 import { MutationCallWaiterArgs, CallWaiterInput, Unit } from '@bgap/domain';
 import { CrudSdk } from '@bgap/crud-gql/api';
 import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 import { pipe } from 'fp-ts/lib/function';
 import { throwError } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
 import * as R from 'ramda';
 import { AxiosStatic } from 'axios';
 import { callWaiter } from '@bgap/rkeeper-api';
@@ -32,9 +33,7 @@ export const getUnit =
 
 export const waiterCallerResolver =
   (deps: WaiterCallerResolverDeps) =>
-  (
-    args: MutationCallWaiterArgs, //: ReturnType<CrudSdk['CallWaiter']> =>
-  ) =>
+  (args: MutationCallWaiterArgs): ReturnType<CrudSdk['CallWaiter']> =>
     pipe(
       args.input,
       OE.fromPredicate(
@@ -69,5 +68,5 @@ export const waiterCallerResolver =
       ),
       OE.chain(unit => callWaiter(deps)(unit, args.input as CallWaiterInput)),
       OE.getOrElse<string, any>(throwError),
-      //
+      mapTo(true),
     );

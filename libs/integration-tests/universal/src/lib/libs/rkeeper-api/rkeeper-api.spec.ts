@@ -1,4 +1,3 @@
-import * as OE from 'fp-ts-rxjs/lib/ObservableEither';
 import {
   callWaiter,
   searchExternalVariant,
@@ -56,6 +55,7 @@ import {
 } from '@bgap/domain';
 import { deleteTestUnitProduct } from '../../seeds/unit-product';
 import { Right } from 'fp-ts/lib/Either';
+import { waiterCallerResolver } from 'libs/backend/gql-resolvers/src';
 
 const commonBackendName = 'common-backend2-anyupp';
 const crudSdk = createIamCrudSdk();
@@ -406,33 +406,52 @@ describe('Test the rkeeper api basic functionality', () => {
       .subscribe(() => done());
   }, 60000);
 
-  test('Test waiter caller', done => {
+  test('call waiter by waiterCallerResolver', done => {
+    waiterCallerResolver({
+      sdk: crudSdk,
+      axiosInstance: axios,
+      currentTimeISOString: () => new Date('2040.01.01').toISOString(),
+      uuidGenerator: () => 'UUID',
+    })({
+      input: {
+        guestLabel: 'GUEST_LABEL',
+        info: 'WAITER INFO',
+        place: {
+          seat: 'SEAT',
+          table: 'TABLE',
+        },
+        unitId: fixtures.freiUnit.id,
+      },
+    })
+      .pipe(
+        tap(result => {
+          expect(result).toEqual(true);
+        }),
+      )
+      .subscribe({
+        next: () => done(),
+        error: error => {
+          console.error('Error', error);
+          throw error;
+        },
+      });
+  }, 10000);
+
+  test('Test waiter caller on backend', done => {
     crudSdk
-      .UpdateUnitRKeeperData({
+      .CallWaiter({
         input: {
-          unitId: fixtures.rkeeperUnit.id,
-          waiterOrderId: 'WAITER_ORDER_ID',
+          unitId: fixtures.freiUnit.id,
+          place: {
+            seat: '1',
+            table: '2',
+          },
+          guestLabel: 'GUEST LABEL',
         },
       })
       .pipe(
-        switchMap(() =>
-          crudSdk.CallWaiter({
-            input: {
-              unitId: fixtures.rkeeperUnit.id,
-              place: {
-                seat: '1',
-                table: '2',
-              },
-              guestLabel: 'GUEST LABEL',
-            },
-          }),
-        ),
-        // As the fixture rkeeper will not accept waiter caller, it will
-        // error, but anyway, it still verifies that the mutation on the server
-        // is present and working
-        catchError(of),
         take(1),
-        tap(res => expect(res).toMatchSnapshot()),
+        tap(res => expect(res).toEqual(true)),
       )
       .subscribe(() => done());
   });
