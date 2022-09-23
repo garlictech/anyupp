@@ -19,6 +19,7 @@ import {
   seedFreiRKeeperUnit,
   createTestUnitProduct,
   createTestProductCategories,
+  seedDebrecenUnit,
 } from './seed-data-fn';
 
 const ce = (tag: string) =>
@@ -153,4 +154,5 @@ export const seedAll = (deps: SeederDependencies) =>
     ),
     switchMap(() => seedBusinessData(deps)),
     switchMap(() => seedFreiRKeeperUnit(deps)),
+    switchMap(() => seedDebrecenUnit(deps)),
   );
