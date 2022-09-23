@@ -17,7 +17,6 @@ class UnitInfoScreenHeader extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-
         // Google map
         SizedBox(
           width: double.infinity,
@@ -72,9 +71,7 @@ class UnitInfoScreenHeader extends StatelessWidget {
               // name
               Text(
                 unit.name,
-                style: Fonts.hH2(
-                    color: theme.secondary
-                ),
+                style: Fonts.hH2(color: theme.secondary),
               ),
               // address
               Padding(
@@ -95,12 +92,13 @@ class UnitInfoScreenHeader extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(36.0),
                     ),
-                    backgroundColor: theme.button.withOpacity(0.12),
+                    primary: theme.button.withOpacity(0.12),
                     elevation: 0,
                   ),
                   onPressed: () => openMapsDialog(context, unit.location),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 32.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 18.0, horizontal: 32.0),
                     child: Text(
                       trans(context, 'unitinfo.showMap').toUpperCase(),
                       style: Fonts.hH4(
@@ -116,6 +114,4 @@ class UnitInfoScreenHeader extends StatelessWidget {
       ],
     );
   }
-
 }
-

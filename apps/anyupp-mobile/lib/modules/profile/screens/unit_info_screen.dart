@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 import '/core/theme/theme.dart';
@@ -13,8 +12,8 @@ class UnitInfoScreen extends StatelessWidget {
     // this is for the bug mentioned in Unit.dart
     openingHours = this.unit.openingHours?.map(
           (k, e) =>
-          MapEntry(k, OpeningHours.fromJson(e as Map<String, dynamic>)),
-    );
+              MapEntry(k, OpeningHours.fromJson(e as Map<String, dynamic>)),
+        );
   }
 
   @override
@@ -25,28 +24,22 @@ class UnitInfoScreen extends StatelessWidget {
         data: ThemeData().copyWith(
           scaffoldBackgroundColor: Colors.white,
           colorScheme: ThemeData().colorScheme.copyWith(
-            primary: theme.secondary,
-          ),
+                primary: theme.secondary,
+              ),
         ),
         child: SingleChildScrollView(
           physics: BouncingScrollPhysics(),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-
               UnitInfoScreenHeader(unit: unit),
-
               UnitInfoScreenOpeningHours(openingHours: openingHours),
-
               UnitInfoScreenIntroduce(unit: unit),
-
               UnitInfoScreenAvailability(unit: unit),
-
             ],
           ),
         ),
       ),
     );
   }
-
 }
