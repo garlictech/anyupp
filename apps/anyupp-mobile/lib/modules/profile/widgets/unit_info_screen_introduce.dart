@@ -7,7 +7,7 @@ import '/core/theme/theme.dart';
 class UnitInfoScreenIntroduce extends StatelessWidget {
   final Unit unit;
 
-  UnitInfoScreenIntroduce({Key? key, required this.unit}) : super(key: key);
+  const UnitInfoScreenIntroduce({Key? key, required this.unit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

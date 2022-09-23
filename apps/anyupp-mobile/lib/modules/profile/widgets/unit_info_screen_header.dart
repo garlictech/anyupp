@@ -10,7 +10,7 @@ import '/core/theme/theme.dart';
 class UnitInfoScreenHeader extends StatelessWidget {
   final Unit unit;
 
-  UnitInfoScreenHeader({Key? key, required this.unit}) : super(key: key);
+  const UnitInfoScreenHeader({Key? key, required this.unit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

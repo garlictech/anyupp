@@ -7,9 +7,7 @@ import '/core/theme/theme.dart';
 class UnitInfoScreenOpeningHours extends StatelessWidget {
   final Map<String, OpeningHours>? openingHours;
 
-  late final List days = [""];
-
-  UnitInfoScreenOpeningHours({Key? key, required this.openingHours})
+  const UnitInfoScreenOpeningHours({Key? key, required this.openingHours})
       : super(key: key);
 
   @override
