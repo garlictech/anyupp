@@ -1,15 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Test the communication between anyupp/rkeeper call waiter by callWaiter 1`] = `
-Object {
-  "_tag": "Right",
-  "right": Object {
-    "externalId": "UUID",
-    "visitId": "1663961562-877-109150001",
-  },
-}
-`;
-
 exports[`Test the communication between anyupp/rkeeper send an unpaid order to rkeeper by HTTP post, then send another request to set it to Paid status: config.auth 1`] = `
 Object {
   "password": "b6302d53085c9486d0f765ec475f18",
