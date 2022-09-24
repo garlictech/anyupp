@@ -10681,10 +10681,10 @@
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
-"@vvo/tzdb@6.52.0":
-  version "6.52.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.52.0.tgz#3cfde296f8a57adf89dbee86997084d70b50da85"
-  integrity sha512-GSTPXBCA66A42VdhTbxzUPdun8P2Rx9OQCQMr8ByuB+P74HJ6zxxrUKW2CzJlhyperjzlijjkMN84fotAYEeLQ==
+"@vvo/tzdb@6.66.0":
+  version "6.66.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.66.0.tgz#43d679b261379155299f189edd55a4edd202adfc"
+  integrity sha512-MuNkpoEdr/qReZkOYFu4wFGDWSAh6nY1bgljaF4lOPB9ENqQ/c+5YRXsA3yf1vkNo9oT/7qVNF1A5eR9PYc4kA==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
