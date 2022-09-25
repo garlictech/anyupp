@@ -20,12 +20,12 @@ String formatCurrencyWithSignal(double price, String currency) {
   return (price >= 0 ? '+' : '-') + formatCurrency(price, currency);
 }
 
-ProductConfigSet? getModifierConfigSetById(
-    String productSetId, List<ProductConfigSet> sets) {
+ProductComponentSet? getModifierComponentSetById(
+    String productSetId, List<ProductComponentSet> sets) {
   // log.d('getModifierConfigSetById()=$productSetId');
   int index = sets.indexWhere((configSet) =>
       configSet.type == ProductComponentSetType.modifier &&
-      configSet.productSetId == productSetId);
+      configSet.id == productSetId);
   // log.d('getModifierConfigSetById().indec=$index');
   if (index != -1) {
     return sets[index];
@@ -33,11 +33,11 @@ ProductConfigSet? getModifierConfigSetById(
   return null;
 }
 
-ProductConfigSet? getExtraConfigSetById(
-    String extraSetId, List<ProductConfigSet> sets) {
+ProductComponentSet? getExtraComponentSetById(
+    String extraSetId, List<ProductComponentSet> sets) {
   int index = sets.indexWhere((configSet) =>
       configSet.type == ProductComponentSetType.extras &&
-      configSet.productSetId == extraSetId);
+      configSet.id == extraSetId);
   if (index != -1) {
     return sets[index];
   }
@@ -47,12 +47,13 @@ ProductConfigSet? getExtraConfigSetById(
 ProductConfigComponent? getComponentByIdFromSet(
   String componentId,
   ProductConfigSet? configSet,
+  ProductComponentSet? componentSet,
   ServingMode? mode,
 ) {
-  if (configSet != null && configSet.items.isNotEmpty) {
+  if (configSet != null && componentSet != null && configSet.items.isNotEmpty) {
     int index = configSet.items
         .indexWhere((item) => item.productComponentId == componentId);
-    if (index != -1 && configSet.supportedServingModes.contains(mode)) {
+    if (index != -1 && (componentSet.supportedServingModes?.contains(mode) ?? false)) {
       return configSet.items[index];
     }
   }
@@ -63,10 +64,15 @@ ProductConfigComponent? getExtraComponentByIdAndSetId(
   String extraSetId,
   String componentId,
   List<ProductConfigSet> configSets,
+  List<ProductComponentSet> componentSets,
   ServingMode? mode,
 ) {
-  ProductConfigSet? configSet =
-      getExtraConfigSetById(extraSetId, configSets);
+  ProductComponentSet? componentSet =
+      getExtraComponentSetById(extraSetId, componentSets);
+
+  ProductConfigSet configComponent = configSets.where(
+      (set) => set.productSetId == componentId);
+
   if (configSet != null && configSet.supportedServingModes.contains(mode)) {
     return getComponentByIdFromSet(componentId, configSet, mode);
   }

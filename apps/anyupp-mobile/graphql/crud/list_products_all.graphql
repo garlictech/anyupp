@@ -47,6 +47,7 @@ query ListAllProducts($unitId: ID!, $nextToken: String, $limit: Int) {
           price
           netPackagingFee
           productComponentId
+          soldOut
         }
       }
       supportedServingModes

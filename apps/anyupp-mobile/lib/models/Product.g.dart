@@ -258,3 +258,97 @@ class Product$ {
     (soldOutContainer, soldOut) => soldOutContainer.copyWith(soldOut: soldOut),
   );
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Product _$ProductFromJson(Map<String, dynamic> json) => Product(
+      id: json['id'] as String,
+      unitId: json['unitId'] as String,
+      productCategoryId: json['productCategoryId'] as String,
+      name: LocalizedItem.fromJson(json['name'] as Map<String, dynamic>),
+      description: json['description'] == null
+          ? null
+          : LocalizedItem.fromJson(json['description'] as Map<String, dynamic>),
+      productType: $enumDecode(_$ProductTypeEnumMap, json['productType']),
+      tax: json['tax'] as int,
+      position: json['position'] as int,
+      image: json['image'] as String?,
+      variants: (json['variants'] as List<dynamic>)
+          .map((e) => ProductVariant.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      allergens: (json['allergens'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$AllergenEnumMap, e))
+          .toList(),
+      configSets: (json['configSets'] as List<dynamic>?)
+          ?.map((e) => ProductConfigSet.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      supportedServingModes: (json['supportedServingModes'] as List<dynamic>)
+          .map((e) => $enumDecode(_$ServingModeEnumMap, e))
+          .toList(),
+      soldOut: json['soldOut'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$ProductToJson(Product instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'unitId': instance.unitId,
+    'productCategoryId': instance.productCategoryId,
+    'name': instance.name.toJson(),
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description?.toJson());
+  val['productType'] = _$ProductTypeEnumMap[instance.productType]!;
+  val['tax'] = instance.tax;
+  val['position'] = instance.position;
+  writeNotNull('image', instance.image);
+  val['variants'] = instance.variants.map((e) => e.toJson()).toList();
+  writeNotNull('allergens',
+      instance.allergens?.map((e) => _$AllergenEnumMap[e]!).toList());
+  writeNotNull(
+      'configSets', instance.configSets?.map((e) => e.toJson()).toList());
+  val['supportedServingModes'] = instance.supportedServingModes
+      .map((e) => _$ServingModeEnumMap[e]!)
+      .toList();
+  val['soldOut'] = instance.soldOut;
+  return val;
+}
+
+const _$ProductTypeEnumMap = {
+  ProductType.drink: 'drink',
+  ProductType.food: 'food',
+  ProductType.dish: 'dish',
+  ProductType.other: 'other',
+  ProductType.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+const _$AllergenEnumMap = {
+  Allergen.celery: 'celery',
+  Allergen.crustaceans: 'crustaceans',
+  Allergen.egg: 'egg',
+  Allergen.fish: 'fish',
+  Allergen.gluten: 'gluten',
+  Allergen.lupin: 'lupin',
+  Allergen.milk: 'milk',
+  Allergen.molluscs: 'molluscs',
+  Allergen.mustard: 'mustard',
+  Allergen.peanut: 'peanut',
+  Allergen.sesame: 'sesame',
+  Allergen.soya: 'soya',
+  Allergen.sulphites: 'sulphites',
+  Allergen.treenuts: 'treenuts',
+  Allergen.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+const _$ServingModeEnumMap = {
+  ServingMode.inPlace: 'inPlace',
+  ServingMode.takeAway: 'takeAway',
+  ServingMode.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};

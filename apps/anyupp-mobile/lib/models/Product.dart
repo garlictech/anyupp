@@ -1,10 +1,15 @@
-import '/models.dart';
 import '/graphql/generated/crud-api.dart';
 import 'package:functional_data/functional_data.dart';
+import 'package:json_annotation/json_annotation.dart';
+
+import 'LocalizedItem.dart';
+import 'ProductConfigSet.dart';
+import 'ProductVariant.dart';
 
 part 'Product.g.dart';
 
 @FunctionalData()
+@JsonSerializable(explicitToJson: true)
 class Product extends $Product {
   @override
   final String id;
@@ -52,65 +57,7 @@ class Product extends $Product {
     this.soldOut = false,
   });
 
-  @override
-  String toString() {
-    return 'Product(id: $id, unitId: $unitId, supportedServingModes: $supportedServingModes, soldOut: $soldOut, productCategoryId: $productCategoryId, name: $name, description: $description, productType: $productType, tax: $tax, position: $position, image: $image, variants: $variants, allergens: $allergens, configSets: $configSets)';
-  }
+  factory Product.fromJson(Map<String, dynamic> json) => _$ProductFromJson(json);
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'unitId': unitId,
-      'productCategoryId': productCategoryId,
-      'name': name.toJson(),
-      'description': description?.toJson(),
-      'productType': enumToString(productType),
-      'tax': tax,
-      'position': position,
-      'image': image,
-      'variants': variants.map((x) => x.toJson()).toList(),
-      'allergens': allergens,
-      'configSets': configSets?.map((x) => x.toJson()).toList(),
-      'supportedServingModes':
-          supportedServingModes.map((x) => enumToString(x)).toList(),
-      'soldOut': soldOut,
-    };
-  }
-
-  factory Product.fromJson(Map<String, dynamic> map) {
-    return Product(
-      id: map['id'],
-      unitId: map['unitId'],
-      productCategoryId: map['productCategoryId'],
-      name: LocalizedItem.fromJson(map['name']),
-      description: map['description'] != null
-          ? LocalizedItem.fromJson(map['description'])
-          : null,
-      productType: enumFromString(map['productType'], ProductType.values),
-      tax: map['tax'],
-      position: map['position'],
-      image: map['image'],
-      variants: List<ProductVariant>.from(
-          map['variants']?.map((x) => ProductVariant.fromJson(x))),
-      allergens: map['allergens'] != null
-          ? List<Allergen>.from(
-              map['allergens']?.map((x) => enumFromString(x, Allergen.values)))
-          : null,
-      configSets: map['configSets'] != null
-          ? List<ProductConfigSet>.from(
-              map['configSets']?.map((x) => ProductConfigSet?.fromJson(x)))
-          : null,
-      supportedServingModes: map['supportedServingModes'] != null
-          ? List<ServingMode>.from(
-              map['supportedServingModes']?.map(
-                (x) => enumFromString(
-                  x,
-                  ServingMode.values,
-                ),
-              ),
-            )
-          : [],
-      soldOut: map['soldOut'] ?? false,
-    );
-  }
+  Map<String, dynamic> toJson() => _$ProductToJson(this);
 }

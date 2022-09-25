@@ -18,12 +18,7 @@ query ListProductComponents(
         en
         hu
       }
-      updatedAt
       id
-      description
-      deletedAt
-      createdAt
-      ownerEntity
       allergens
     }
     nextToken

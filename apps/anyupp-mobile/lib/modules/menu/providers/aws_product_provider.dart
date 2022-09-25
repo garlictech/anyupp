@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
 import '/graphql/graphql.dart';
@@ -94,8 +96,10 @@ class AwsProductProvider implements IProductProvider {
           // Product product =
           //     Product.fromJson(items[i]!.toJson());
           final jsonFormat = items[i]?.toJson();
+      debugPrint("**** $jsonFormat");
           Product? product =
               jsonFormat != null ? Product.fromJson(jsonFormat) : null;
+      debugPrint("****2 $product");
 
           if (product != null) {
             product.variants
