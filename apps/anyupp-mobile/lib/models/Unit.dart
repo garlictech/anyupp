@@ -3,6 +3,16 @@ import 'package:functional_data/functional_data.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../graphql/generated/crud-api.dart';
+import 'Address.dart';
+import 'ChainStyle.dart';
+import 'ImageAsset.dart';
+import 'LocalizedItem.dart';
+import 'Location.dart';
+import 'OpeningHours.dart';
+import 'PaymentMode.dart';
+import 'RatingPolicy.dart';
+import 'ServiceFeePolicy.dart';
+import 'TipPolicy.dart';
 
 part 'Unit.g.dart';
 

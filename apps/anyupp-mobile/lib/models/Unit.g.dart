@@ -36,6 +36,7 @@ abstract class $Unit {
   List<ImageAsset>? get coverBanners;
   bool? get canCallWaiter;
   bool get isVisibleInApp;
+  Map<String, OpeningHours>? get openingHours;
   double? get distanceInKm_;
 
   Unit copyWith({
@@ -66,8 +67,8 @@ abstract class $Unit {
     List<ImageAsset>? coverBanners,
     bool? canCallWaiter,
     bool? isVisibleInApp,
+    Map<String, OpeningHours>? openingHours,
     double? distanceInKm_,
-    Map<String, dynamic>? openingHours,
   }) =>
       Unit(
         id: id ?? this.id,
@@ -100,8 +101,8 @@ abstract class $Unit {
         coverBanners: coverBanners ?? this.coverBanners,
         canCallWaiter: canCallWaiter ?? this.canCallWaiter,
         isVisibleInApp: isVisibleInApp ?? this.isVisibleInApp,
-        distanceInKm_: distanceInKm_ ?? this.distanceInKm_,
         openingHours: openingHours ?? this.openingHours,
+        distanceInKm_: distanceInKm_ ?? this.distanceInKm_,
       );
 
   Unit copyUsing(void Function(Unit$Change change) mutator) {
@@ -133,8 +134,8 @@ abstract class $Unit {
       this.coverBanners,
       this.canCallWaiter,
       this.isVisibleInApp,
-      this.distanceInKm_,
       this.openingHours,
+      this.distanceInKm_,
     );
     mutator(change);
     return Unit(
@@ -165,15 +166,14 @@ abstract class $Unit {
       coverBanners: change.coverBanners,
       canCallWaiter: change.canCallWaiter,
       isVisibleInApp: change.isVisibleInApp,
-      distanceInKm_: change.distanceInKm_,
       openingHours: change.openingHours,
+      distanceInKm_: change.distanceInKm_,
     );
   }
 
   @override
   String toString() =>
-      "Unit(id: $id, name: $name, address: $address, style: $style, paymentModes: $paymentModes, currency: $currency, isAcceptingOrders: $isAcceptingOrders, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes, orderPolicy: $orderPolicy, packagingTaxPercentage: $packagingTaxPercentage, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, serviceFeePolicy: $serviceFeePolicy, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, orderPaymentPolicy: $orderPaymentPolicy, location: $location, adBannersEnabled: $adBannersEnabled, adBanners: $adBanners, canRequestVatInvoice: $canRequestVatInvoice, description: $description, email: $email, phone: $phone, coverBannersEnabled: $coverBannersEnabled, coverBanners: $coverBanners, canCallWaiter: $canCallWaiter, isVisibleInApp: $isVisibleInApp, distanceInKm_: $distanceInKm_)";
-      "Unit(id: $id, name: $name, address: $address, style: $style, paymentModes: $paymentModes, currency: $currency, isAcceptingOrders: $isAcceptingOrders, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes, orderPolicy: $orderPolicy, packagingTaxPercentage: $packagingTaxPercentage, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, serviceFeePolicy: $serviceFeePolicy, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, orderPaymentPolicy: $orderPaymentPolicy, location: $location, adBannersEnabled: $adBannersEnabled, adBanners: $adBanners, canRequestVatInvoice: $canRequestVatInvoice, description: $description, email: $email, phone: $phone, coverBannersEnabled: $coverBannersEnabled, coverBanners: $coverBanners, canCallWaiter: $canCallWaiter, isVisibleInApp: $isVisibleInApp)";
+      "Unit(id: $id, name: $name, address: $address, style: $style, paymentModes: $paymentModes, currency: $currency, isAcceptingOrders: $isAcceptingOrders, supportedServingModes: $supportedServingModes, supportedOrderModes: $supportedOrderModes, orderPolicy: $orderPolicy, packagingTaxPercentage: $packagingTaxPercentage, ratingPolicies: $ratingPolicies, tipPolicy: $tipPolicy, serviceFeePolicy: $serviceFeePolicy, soldOutVisibilityPolicy: $soldOutVisibilityPolicy, orderPaymentPolicy: $orderPaymentPolicy, location: $location, adBannersEnabled: $adBannersEnabled, adBanners: $adBanners, canRequestVatInvoice: $canRequestVatInvoice, description: $description, email: $email, phone: $phone, coverBannersEnabled: $coverBannersEnabled, coverBanners: $coverBanners, canCallWaiter: $canCallWaiter, isVisibleInApp: $isVisibleInApp, openingHours: $openingHours, distanceInKm_: $distanceInKm_)";
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
@@ -207,6 +207,7 @@ abstract class $Unit {
       coverBanners == other.coverBanners &&
       canCallWaiter == other.canCallWaiter &&
       isVisibleInApp == other.isVisibleInApp &&
+      openingHours == other.openingHours &&
       distanceInKm_ == other.distanceInKm_;
 
   @override
@@ -240,12 +241,8 @@ abstract class $Unit {
     result = 37 * result + coverBanners.hashCode;
     result = 37 * result + canCallWaiter.hashCode;
     result = 37 * result + isVisibleInApp.hashCode;
-<<<<<<< HEAD
-    result = 37 * result + distanceInKm_.hashCode;
-||||||| parent of 6e01b7977 (fix(app): unit_info_screen)
-=======
     result = 37 * result + openingHours.hashCode;
->>>>>>> 6e01b7977 (fix(app): unit_info_screen)
+    result = 37 * result + distanceInKm_.hashCode;
     return result;
   }
 }
@@ -279,12 +276,8 @@ class Unit$Change {
     this.coverBanners,
     this.canCallWaiter,
     this.isVisibleInApp,
-<<<<<<< HEAD
-    this.distanceInKm_,
-||||||| parent of 6e01b7977 (fix(app): unit_info_screen)
-=======
     this.openingHours,
->>>>>>> 6e01b7977 (fix(app): unit_info_screen)
+    this.distanceInKm_,
   );
 
   String id;
@@ -314,12 +307,8 @@ class Unit$Change {
   List<ImageAsset>? coverBanners;
   bool? canCallWaiter;
   bool isVisibleInApp;
-<<<<<<< HEAD
+  Map<String, OpeningHours>? openingHours;
   double? distanceInKm_;
-||||||| parent of 6e01b7977 (fix(app): unit_info_screen)
-=======
-  Map<String, dynamic>? openingHours;
->>>>>>> 6e01b7977 (fix(app): unit_info_screen)
 }
 
 // ignore: avoid_classes_with_only_static_members
@@ -495,22 +484,18 @@ class Unit$ {
     (isVisibleInAppContainer, isVisibleInApp) =>
         isVisibleInAppContainer.copyWith(isVisibleInApp: isVisibleInApp),
   );
-<<<<<<< HEAD
+
+  static final openingHours = Lens<Unit, Map<String, OpeningHours>?>(
+    (openingHoursContainer) => openingHoursContainer.openingHours,
+    (openingHoursContainer, openingHours) =>
+        openingHoursContainer.copyWith(openingHours: openingHours),
+  );
 
   static final distanceInKm_ = Lens<Unit, double?>(
     (distanceInKm_Container) => distanceInKm_Container.distanceInKm_,
     (distanceInKm_Container, distanceInKm_) =>
         distanceInKm_Container.copyWith(distanceInKm_: distanceInKm_),
   );
-||||||| parent of 6e01b7977 (fix(app): unit_info_screen)
-=======
-
-  static final openingHours = Lens<Unit, Map<String, dynamic>?>(
-    (openingHoursContainer) => openingHoursContainer.openingHours,
-    (openingHoursContainer, openingHours) =>
-        openingHoursContainer.copyWith(openingHours: openingHours),
-  );
->>>>>>> 6e01b7977 (fix(app): unit_info_screen)
 }
 
 // **************************************************************************
@@ -571,14 +556,10 @@ Unit _$UnitFromJson(Map<String, dynamic> json) => Unit(
           .toList(),
       canCallWaiter: json['canCallWaiter'] as bool?,
       isVisibleInApp: json['isVisibleInApp'] as bool? ?? true,
-<<<<<<< HEAD
+      openingHours: (json['openingHours'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, OpeningHours.fromJson(e as Map<String, dynamic>)),
+      ),
     )..distanceInKm = (json['distanceInKm'] as num?)?.toDouble();
-||||||| parent of 6e01b7977 (fix(app): unit_info_screen)
-    );
-=======
-      openingHours: json['openingHours'] as Map<String, dynamic>?,
-    );
->>>>>>> 6e01b7977 (fix(app): unit_info_screen)
 
 Map<String, dynamic> _$UnitToJson(Unit instance) {
   final val = <String, dynamic>{
@@ -626,12 +607,9 @@ Map<String, dynamic> _$UnitToJson(Unit instance) {
       'coverBanners', instance.coverBanners?.map((e) => e.toJson()).toList());
   writeNotNull('canCallWaiter', instance.canCallWaiter);
   val['isVisibleInApp'] = instance.isVisibleInApp;
-<<<<<<< HEAD
+  writeNotNull('openingHours',
+      instance.openingHours?.map((k, e) => MapEntry(k, e.toJson())));
   writeNotNull('distanceInKm', instance.distanceInKm);
-||||||| parent of 6e01b7977 (fix(app): unit_info_screen)
-=======
-  writeNotNull('openingHours', instance.openingHours);
->>>>>>> 6e01b7977 (fix(app): unit_info_screen)
   return val;
 }
 
