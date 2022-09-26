@@ -3,9 +3,12 @@ import 'package:anyupp/core/units/bloc/unit_select_bloc.dart';
 import 'package:anyupp/domain/usecases/call_waiter_usecase.dart';
 import 'package:anyupp/models/Unit.dart';
 import 'package:anyupp/utils/utils.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../data/repositories/fcm-token-repository.dart';
 
 class WaiterCallerViewModel {}
 
@@ -41,6 +44,19 @@ class WaiterCaller extends ConsumerWidget with Translater {
     final presenter = ref.watch(waiterCallerButtonProvider.notifier);
     final callWaiterUsecaseState = ref.watch(callWaiterUsecaseProvider);
 
+    final xxx = ref.watch(fcmTokenRepositoryProvider.future);
+
+/*    xxx.then((token) {
+      debugPrint("********************** $token");
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        debugPrint("MESSAGE ARRIVED $message");
+      }, onError: (err) {
+        debugPrint("****** ERR $err");
+      });
+    }).catchError((err) {
+      debugPrint("********** ERR $err");
+    });
+*/
     return BlocBuilder<UnitSelectBloc, UnitSelectState>(
         builder: (BuildContext context, UnitSelectState state) {
       return Consumer(builder: (context, ref, child) {

@@ -1014,7 +1014,7 @@ input GetUnitsNearLocationInput {
 
 type FCMToken {
   token: String!
-  lastSeen: AWSDateTime!
+  lastSeen: String!
 }
 
 type User

@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  Runner
+
+  Created by Zsolt Molnar on 2022. 09. 26..
+  
+*/
+
+"order_state_changed" = "Order state of %@ changed";
+"served"= "Served";
+"ready"= "Ready";
+"failed" = "Failed";
+"placed" = "Placed";
+"processing" = "Processing";
+"rejected" = "rejected";

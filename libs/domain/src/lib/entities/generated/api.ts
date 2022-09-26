@@ -584,12 +584,12 @@ export interface DeleteVariantInput {
 }
 
 export interface FcmToken {
-  lastSeen: Scalars['AWSDateTime'];
+  lastSeen: Scalars['String'];
   token: Scalars['String'];
 }
 
 export interface FcmTokenInput {
-  lastSeen: Scalars['AWSDateTime'];
+  lastSeen: Scalars['String'];
   token: Scalars['String'];
 }
 
@@ -14282,8 +14282,7 @@ export const OnCreateUnitProductDocument = gql`
         netPackagingFee
         soldOut
       }
-      createdAt
-      updatedAt
+      position
     }
     supportedServingModes
     dirty

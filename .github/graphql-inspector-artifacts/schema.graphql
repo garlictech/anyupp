@@ -993,7 +993,7 @@ input GetUnitsNearLocationInput {
 
 type FCMToken @aws_iam @aws_cognito_user_pools {
   token: String!
-  lastSeen: AWSDateTime!
+  lastSeen: String!
 }
 
 type User @aws_iam @aws_cognito_user_pools {
@@ -2517,7 +2517,7 @@ input DeleteUnitInput {
 
 input FCMTokenInput {
   token: String!
-  lastSeen: AWSDateTime!
+  lastSeen: String!
 }
 
 type ModelUserConnection @aws_iam @aws_cognito_user_pools {
@@ -3764,3 +3764,4 @@ input SearchableReceiptAggregationInput {
   type: SearchableAggregateType!
   field: SearchableReceiptAggregateField!
 }
+
