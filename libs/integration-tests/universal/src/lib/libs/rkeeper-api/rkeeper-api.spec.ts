@@ -1,12 +1,11 @@
 import { searchExternalVariant, sendRkeeperOrder } from '@bgap/rkeeper-api';
-import axios, { AxiosError } from 'axios';
-import { ECS } from 'aws-sdk';
 import * as R from 'ramda';
 import * as fs from 'fs';
+import axios from 'axios';
+import { ECS } from 'aws-sdk';
 
 import { createIamCrudSdk } from '../../../api-clients';
 import {
-  mergeMap,
   switchMap,
   delay,
   tap,
@@ -28,7 +27,7 @@ import {
   handleProducts,
   menusyncHandler,
 } from '@bgap/rkeeper-api';
-import { from, Observable, of, defer, forkJoin } from 'rxjs';
+import { from, of, defer, forkJoin } from 'rxjs';
 import { ES_DELAY, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
@@ -463,12 +462,15 @@ describe('Test the communication between anyupp/rkeeper', () => {
       });
   }, 60000);
 
-  test('send order to rkeeper by sendRkeeperOrder', done => {
+  test.only('send order to rkeeper by sendRkeeperOrder', done => {
     sendRkeeperOrder({
       axiosInstance: axios,
       currentTimeISOString: () => new Date('2040.01.01').toISOString(),
       uuidGenerator: () => 'UUID',
-    })(fixtures.yellowUnit, fixtures.orderInput)
+    })(fixtures.yellowUnit, {
+      ...fixtures.orderInput,
+      userId: '31ea0871-3dcb-11ed-9ba0-1f6d735e9f41',
+    })
       .pipe(
         tap(result => {
           expect(result.externalId).toEqual('UUID');
@@ -567,7 +569,7 @@ describe('Test the communication between anyupp/rkeeper', () => {
         console.warn(res);
         throw 'MUST BE ERRORED';
       },
-      error: (error: AxiosError) => {
+      error: error => {
         expect(error.response?.data).toMatchSnapshot();
         expect(error.response?.status).toEqual(400);
         done();
@@ -590,7 +592,7 @@ describe('Test the communication between anyupp/rkeeper', () => {
     )
       .pipe(
         catchError(x => of(x)),
-        tap((result: AxiosError) => {
+        tap(result => {
           expect(result.response?.data).toMatchSnapshot();
           expect(result.response?.status).toEqual(400);
         }),
@@ -622,7 +624,7 @@ describe('Test the communication between anyupp/rkeeper', () => {
     )
       .pipe(
         catchError(x => of(x)),
-        tap((result: AxiosError) => {
+        tap(result => {
           expect(result.response?.data).toMatchSnapshot();
           expect(result.response?.status).toEqual(400);
         }),

@@ -17,10 +17,9 @@ export const getPushNotificationData = (
   return {
     type: PushNotificationTypes.orderStatusUpdate,
     notification: {
-      titleLocKey: `NOTIFICATION_TITLE_ORDER_STATUS_UPDATE_${orderStatus.toUpperCase()}`,
+      titleLocKey: `order_state_changed`,
       titleLocArgs: JSON.stringify([orderNum || '']),
-      bodyLocKey: `NOTIFICATION_BODY_ORDER_STATUS_UPDATE_${orderStatus.toUpperCase()}`,
-      bodyLocArgs: JSON.stringify([orderNum || '']),
+      bodyLocKey: orderStatus,
     },
     data: {
       orderId,

@@ -1,6 +1,7 @@
 const nxPreset = require('@nrwl/jest/preset').default;
 module.exports = {
   ...nxPreset,
+  resolver: `${process.cwd()}/jest.resolver.js`,
   testMatch: ['**/+(*.)+(spec|test).+(ts|js)?(x)'],
   transform: {
     '^.+\\.(ts|js|html)$': [

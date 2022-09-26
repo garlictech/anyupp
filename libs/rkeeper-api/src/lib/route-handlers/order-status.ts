@@ -4,6 +4,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as Joi from 'joi';
 import * as R from 'ramda';
 import { of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 import { validateSchema } from '@bgap/shared/data-validators';
 import { oeTryCatch } from '@bgap/shared/utils';
@@ -100,6 +101,9 @@ export const getOrder =
           ],
         },
       }),
+      tap(() =>
+        console.log('*****', state.unit.id, state.request.remoteOrderId),
+      ),
       oeTryCatch,
       OE.map(res =>
         pipe(
