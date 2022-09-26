@@ -72,6 +72,10 @@ class Address {
     return 'Address(id: $id, address: $address, city: $city, country: $country, title: $title, postalCode: $postalCode, location: $location)';
   }
 
+  String asFormattedString() {
+    return '${city}, ${address}, ${postalCode}';
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;

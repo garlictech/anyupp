@@ -635,7 +635,16 @@
   },
   "unitinfo": {
     "infoButton": "További információk",
-    "title": "RÉSZLETEK"
+    "title": "RÉSZLETEK",
+    "openingHours": "Nyitvatartás",
+    "introduction": "Bemutatkozás",
+    "availability": "Elérhetőség",
+    "showMap": "Térkép megtekintése",
+    "emailAddress": "Email cím",
+    "website": "Weboldal",
+    "appleMaps": "Apple Térkép",
+    "googleMaps": "Google Térkép",
+    "chooseMaps": "Melyik alkalmazást szeretnéd használni?"
   },
   "validators": {
     "required": "Ezt a mezőt kötelező kitöltened",

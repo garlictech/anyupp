@@ -6,10 +6,10 @@ part "OpeningHours.g.dart";
 @FunctionalData()
 @JsonSerializable()
 class OpeningHours extends $OpeningHours {
-  final double? to;
-  final double? from;
-  final String date;
-  final bool closed;
+  final String? to;
+  final String? from;
+  final String? date;
+  final bool? closed;
 
   OpeningHours({
     this.to,
@@ -17,6 +17,20 @@ class OpeningHours extends $OpeningHours {
     required this.date,
     required this.closed,
   });
+
+  OpeningHours copyWith({
+    String? to,
+    String? from,
+    String? date,
+    bool? closed,
+  }) {
+    return OpeningHours(
+      to: to ?? this.to,
+      from: from ?? this.from,
+      date: date ?? this.date,
+      closed: closed ?? this.closed,
+    );
+  }
 
   factory OpeningHours.fromJson(Map<String, dynamic> json) =>
       _$OpeningHoursFromJson(json);

@@ -6,3 +6,7 @@ export 'screens/profile_view_screen.dart';
 export 'screens/settings_screen.dart';
 export 'utils/profile_utils.dart';
 export 'widgets/profile_list_item_widget.dart';
+export 'widgets/unit_info_screen_header.dart';
+export 'widgets/unit_info_screen_opening_hours.dart';
+export 'widgets/unit_info_screen_introduce.dart';
+export 'widgets/unit_info_screen_availability.dart';

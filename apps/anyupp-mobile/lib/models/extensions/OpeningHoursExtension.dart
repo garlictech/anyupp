@@ -13,7 +13,19 @@ Map<int, String> ohDays = {
   7: "sunday"
 };
 
+Map<int, String> ohDayCodes = {
+  1: "mon",
+  2: "tue",
+  3: "wed",
+  4: "thu",
+  5: "fri",
+  6: "sat",
+  7: "sun"
+};
+
 extension OpeningHoursExtension on OpeningHours {
+
+  /*
   String getHourFormattedString(int? timeStamp) {
     return timeStamp == null
         ? ""
@@ -24,20 +36,16 @@ extension OpeningHoursExtension on OpeningHours {
 
   String? getDayString() {
     return ohDays[getDate().weekday];
-  }
+  }*/
 
-  String? getOpenRangeString({bool fromTo = true}) {
-    if (!closed && from != null) {
-      String formattedString = getHourFormattedString(from?.toInt()) + "-";
-      if (fromTo) {
-        formattedString += getHourFormattedString(to?.toInt());
-      }
-      return formattedString;
+  String getOpenRangeString() {
+    if (from == null || from!.isEmpty) {
+      return "-";
     }
-    return null;
+    return "$from - $to";
   }
 
   DateTime getDate() {
-    return ohDateFormat.parse(date);
+    return ohDateFormat.parse(date!);
   }
 }

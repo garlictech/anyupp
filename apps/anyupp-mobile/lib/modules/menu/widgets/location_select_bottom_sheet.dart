@@ -81,7 +81,7 @@ Widget _buildBottomSheetContent(BuildContext context, ThemeChainData theme) {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    '${unit.address.city}, ${unit.address.address}, ${unit.address.postalCode}',
+                    unit.address.asFormattedString(),
                     style: Fonts.satoshi(
                       fontSize: 14,
                       color: theme.secondary,
