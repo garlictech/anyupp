@@ -6800,11 +6800,21 @@ export const CreateUnitProductDocument = gql`
     mutation CreateUnitProduct($input: CreateUnitProductInput!, $condition: ModelUnitProductConditionInput) {
   createUnitProduct(input: $input, condition: $condition) {
     id
-    unitId
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
     isVisible
-    takeaway
-    laneId
-    position
+    image
     variants {
       id
       variantName {
@@ -7046,7 +7056,8 @@ export const UpdateVariantDocument = gql`
     mutation UpdateVariant($input: UpdateVariantInput!, $condition: ModelVariantConditionInput) {
   updateVariant(input: $input, condition: $condition) {
     id
-    variantName {
+    chainId
+    name {
       en
       de
       hu
@@ -7336,6 +7347,1359 @@ export const UpdateOrderDocument = gql`
           city
           streetAddress
           postalCode
+          email
+        }
+        fcmTokens {
+          token
+          lastSeen
+        }
+        createdAt
+        updatedAt
+      }
+      orderId
+      type
+      total
+      currency
+      status
+      externalTransactionId
+      invoiceId
+      invoice {
+        id
+        userId
+        orderId
+        transactionId
+        externalInvoiceId
+        customerName
+        taxNumber
+        country
+        city
+        streetAddress
+        postalCode
+        email
+        pdfUrl
+        status
+        createdAt
+        updatedAt
+      }
+      receiptId
+      receipt {
+        id
+        userId
+        orderId
+        transactionId
+        externalReceiptId
+        email
+        pdfData
+        status
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      paymentMethodId
+    }
+    orderPolicy
+    serviceFeePolicy {
+      type
+      percentage
+    }
+    ratingPolicies {
+      key
+      title {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      ratings {
+        value
+        text {
+          en
+          de
+          hu
+        }
+        icon
+      }
+    }
+    tipPolicy {
+      title {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      percents
+      minOtherAmount
+    }
+    soldOutVisibilityPolicy
+    packagingFeeTaxPercentage
+    externalId
+    guestLabel
+    currentStatus
+    createdAt
+    updatedAt
+    visitId
+  }
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+}
+    `;
+export const DeleteOrderDocument = gql`
+    mutation DeleteOrder($input: DeleteOrderInput!, $condition: ModelOrderConditionInput) {
+  deleteOrder(input: $input, condition: $condition) {
+    id
+    version
+    userId
+    unitId
+    orderNum
+    items {
+      productId
+      variantId
+      created
+      productName {
+        en
+        de
+        hu
+      }
+      image
+      quantity
+      statusLog {
+        userId
+        status
+        ts
+      }
+      variantName {
+        en
+        de
+        hu
+      }
+      laneId
+      allergens
+      configSets {
+        productSetId
+        name {
+          en
+          de
+          hu
+        }
+        type
+        items {
+          productComponentId
+          price
+          name {
+            en
+            de
+            hu
+          }
+          allergens
+          netPackagingFee
+          externalId
+        }
+      }
+      productType
+      externalId
+      netPackagingFee
+      serviceFee {
+        currency
+        netPrice
+        taxPercentage
+      }
+      priceShown {
+        currency
+        pricePerUnit
+        priceSum
+        tax
+        taxSum
+      }
+      sumPriceShown {
+        currency
+        pricePerUnit
+        priceSum
+        tax
+        taxSum
+      }
+    }
+    paymentMode {
+      type
+      caption
+      method
+    }
+    statusLog {
+      userId
+      status
+      ts
+    }
+    archived
+    place {
+      seat
+      table
+    }
+    paymentIntention
+    transactionStatus
+    transactionId
+    transaction {
+      id
+      userId
+      user {
+        id
+        name
+        email
+        phone
+        profileImage
+        stripeCustomerId
+        invoiceAddress {
+          customerName
+          taxNumber
+          country
+          city
+          streetAddress
+          postalCode
+          email
+        }
+        fcmTokens {
+          token
+          lastSeen
+        }
+        createdAt
+        updatedAt
+      }
+      orderId
+      type
+      total
+      currency
+      status
+      externalTransactionId
+      invoiceId
+      invoice {
+        id
+        userId
+        orderId
+        transactionId
+        externalInvoiceId
+        customerName
+        taxNumber
+        country
+        city
+        streetAddress
+        postalCode
+        email
+        pdfUrl
+        status
+        createdAt
+        updatedAt
+      }
+      receiptId
+      receipt {
+        id
+        userId
+        orderId
+        transactionId
+        externalReceiptId
+        email
+        pdfData
+        status
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      paymentMethodId
+    }
+    unpayCategory
+    orderMode
+    servingMode
+    serviceFee {
+      currency
+      grossPrice
+      taxContent
+    }
+    packagingSum {
+      currency
+      netPrice
+      taxPercentage
+    }
+    sumPriceShown {
+      currency
+      pricePerUnit
+      priceSum
+      tax
+      taxSum
+    }
+    rating {
+      key
+      value
+    }
+    hasRated
+    tip {
+      type
+      value
+    }
+    tipTransactionStatus
+    tipTransactionId
+    tipTransaction {
+      id
+      userId
+      user {
+        id
+        name
+        email
+        phone
+        profileImage
+        stripeCustomerId
+        invoiceAddress {
+          customerName
+          taxNumber
+          country
+          city
+          streetAddress
+          postalCode
+          email
+        }
+        fcmTokens {
+          token
+          lastSeen
+        }
+        createdAt
+        updatedAt
+      }
+      orderId
+      type
+      total
+      currency
+      status
+      externalTransactionId
+      invoiceId
+      invoice {
+        id
+        userId
+        orderId
+        transactionId
+        externalInvoiceId
+        customerName
+        taxNumber
+        country
+        city
+        streetAddress
+        postalCode
+        email
+        pdfUrl
+        status
+        createdAt
+        updatedAt
+      }
+      receiptId
+      receipt {
+        id
+        userId
+        orderId
+        transactionId
+        externalReceiptId
+        email
+        pdfData
+        status
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      paymentMethodId
+    }
+    orderPolicy
+    serviceFeePolicy {
+      type
+      percentage
+    }
+    ratingPolicies {
+      key
+      title {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+    }
+    tipPolicy {
+      title {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      percents
+      minOtherAmount
+    }
+    soldOutVisibilityPolicy
+    packagingFeeTaxPercentage
+    externalId
+    guestLabel
+    currentStatus
+    createdAt
+    updatedAt
+    visitId
+  }
+}
+    `;
+export const CreateProductCategoryDocument = gql`
+    mutation CreateProductCategory($input: CreateProductCategoryInput!, $condition: ModelProductCategoryConditionInput) {
+  createProductCategory(input: $input, condition: $condition) {
+    id
+    ownerEntity
+    parentId
+    description {
+      en
+      de
+      hu
+    }
+    image
+    name {
+      en
+      de
+      hu
+    }
+    position
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const UpdateProductCategoryDocument = gql`
+    mutation UpdateProductCategory($input: UpdateProductCategoryInput!, $condition: ModelProductCategoryConditionInput) {
+  updateProductCategory(input: $input, condition: $condition) {
+    id
+    ownerEntity
+    parentId
+    description {
+      en
+      de
+      hu
+    }
+    image
+    name {
+      en
+      de
+      hu
+    }
+    position
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const DeleteProductCategoryDocument = gql`
+    mutation DeleteProductCategory($input: DeleteProductCategoryInput!, $condition: ModelProductCategoryConditionInput) {
+  deleteProductCategory(input: $input, condition: $condition) {
+    id
+    ownerEntity
+    parentId
+    description {
+      en
+      de
+      hu
+    }
+    image
+    name {
+      en
+      de
+      hu
+    }
+    position
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const CreateProductComponentDocument = gql`
+    mutation CreateProductComponent($input: CreateProductComponentInput!, $condition: ModelProductComponentConditionInput) {
+  createProductComponent(input: $input, condition: $condition) {
+    id
+    ownerEntity
+    name {
+      en
+      de
+      hu
+    }
+    description
+    allergens
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const UpdateProductComponentDocument = gql`
+    mutation UpdateProductComponent($input: UpdateProductComponentInput!, $condition: ModelProductComponentConditionInput) {
+  updateProductComponent(input: $input, condition: $condition) {
+    id
+    ownerEntity
+    name {
+      en
+      de
+      hu
+    }
+    description
+    allergens
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const DeleteProductComponentDocument = gql`
+    mutation DeleteProductComponent($input: DeleteProductComponentInput!, $condition: ModelProductComponentConditionInput) {
+  deleteProductComponent(input: $input, condition: $condition) {
+    id
+    ownerEntity
+    name {
+      en
+      de
+      hu
+    }
+    description
+    allergens
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const CreateProductComponentSetDocument = gql`
+    mutation CreateProductComponentSet($input: CreateProductComponentSetInput!, $condition: ModelProductComponentSetConditionInput) {
+  createProductComponentSet(input: $input, condition: $condition) {
+    id
+    externalId
+    ownerEntity
+    type
+    name {
+      en
+      de
+      hu
+    }
+    description
+    items
+    maxSelection
+    supportedServingModes
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const UpdateProductComponentSetDocument = gql`
+    mutation UpdateProductComponentSet($input: UpdateProductComponentSetInput!, $condition: ModelProductComponentSetConditionInput) {
+  updateProductComponentSet(input: $input, condition: $condition) {
+    id
+    externalId
+    ownerEntity
+    type
+    name {
+      en
+      de
+      hu
+    }
+    description
+    items
+    maxSelection
+    supportedServingModes
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const DeleteProductComponentSetDocument = gql`
+    mutation DeleteProductComponentSet($input: DeleteProductComponentSetInput!, $condition: ModelProductComponentSetConditionInput) {
+  deleteProductComponentSet(input: $input, condition: $condition) {
+    id
+    externalId
+    ownerEntity
+    type
+    name {
+      en
+      de
+      hu
+    }
+    description
+    items
+    maxSelection
+    supportedServingModes
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const CreateFavoriteProductDocument = gql`
+    mutation CreateFavoriteProduct($input: CreateFavoriteProductInput!, $condition: ModelFavoriteProductConditionInput) {
+  createFavoriteProduct(input: $input, condition: $condition) {
+    id
+    userId
+    unitId
+    product {
+      id
+      unitId
+      productCategoryId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productType
+      tax
+      takeawayTax
+      position
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        price
+        netPackagingFee
+        position
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        name {
+          en
+          de
+          hu
+        }
+        position
+        type
+        maxSelection
+        items {
+          productComponentId
+          price
+          position
+          name {
+            en
+            de
+            hu
+          }
+          allergens
+          netPackagingFee
+          soldOut
+          externalId
+        }
+        supportedServingModes
+      }
+      supportedServingModes
+      soldOut
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const UpdateFavoriteProductDocument = gql`
+    mutation UpdateFavoriteProduct($input: UpdateFavoriteProductInput!, $condition: ModelFavoriteProductConditionInput) {
+  updateFavoriteProduct(input: $input, condition: $condition) {
+    id
+    userId
+    unitId
+    product {
+      id
+      unitId
+      productCategoryId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productType
+      tax
+      takeawayTax
+      position
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        price
+        netPackagingFee
+        position
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        name {
+          en
+          de
+          hu
+        }
+        position
+        type
+        maxSelection
+        items {
+          productComponentId
+          price
+          position
+          name {
+            en
+            de
+            hu
+          }
+          allergens
+          netPackagingFee
+          soldOut
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      supportedServingModes
+      soldOut
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const DeleteFavoriteProductDocument = gql`
+    mutation DeleteFavoriteProduct($input: DeleteFavoriteProductInput!, $condition: ModelFavoriteProductConditionInput) {
+  deleteFavoriteProduct(input: $input, condition: $condition) {
+    id
+    userId
+    unitId
+    isVisible
+    takeaway
+    laneId
+    position
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+      ownerProduct
+      externalId
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        price
+        position
+        netPackagingFee
+        soldOut
+      }
+      position
+    }
+    supportedServingModes
+    dirty
+    deletedAt
+<<<<<<< HEAD
+    tax
+    takeawayTax
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    image
+    allergens
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const CreateVariantDocument = gql`
+    mutation CreateVariant($input: CreateVariantInput!, $condition: ModelVariantConditionInput) {
+  createVariant(input: $input, condition: $condition) {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const UpdateVariantDocument = gql`
+    mutation UpdateVariant($input: UpdateVariantInput!, $condition: ModelVariantConditionInput) {
+  updateVariant(input: $input, condition: $condition) {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const DeleteVariantDocument = gql`
+    mutation DeleteVariant($input: DeleteVariantInput!, $condition: ModelVariantConditionInput) {
+  deleteVariant(input: $input, condition: $condition) {
+    id
+    variantName {
+      en
+      de
+      hu
+    }
+    pack {
+      size
+      unit
+    }
+    isAvailable
+    price
+    availabilities {
+      type
+      dayFrom
+      dayTo
+      timeFrom
+      timeTo
+      price
+    }
+    position
+    netPackagingFee
+    soldOut
+    ownerProduct
+    externalId
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+=======
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        name {
+          en
+          de
+          hu
+        }
+        position
+        type
+        maxSelection
+        items {
+          productComponentId
+          price
+          position
+          name {
+            en
+            de
+            hu
+          }
+          allergens
+          netPackagingFee
+          soldOut
+          externalId
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      supportedServingModes
+      soldOut
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const DeleteUnitDocument = gql`
+    mutation DeleteUnit($input: DeleteUnitInput!, $condition: ModelUnitConditionInput) {
+  deleteUnit(input: $input, condition: $condition) {
+    id
+    adBanners {
+      imageUrl
+    }
+    adBannersEnabled
+    coverBanners {
+      imageUrl
+    }
+    lastOrderNum
+    isActive
+    isAcceptingOrders
+    name
+    description {
+      en
+      de
+      hu
+    }
+    address {
+      address
+      city
+      country
+      title
+      postalCode
+      location {
+        lat
+        lng
+      }
+    }
+    email
+    phone
+    paymentModes {
+      type
+      caption
+      method
+    }
+    floorMap {
+      w
+      h
+      objects {
+        id
+        t
+        c
+        w
+        h
+        r
+        a
+        x
+        y
+        tID
+        sID
+      }
+    }
+    lanes {
+      id
+      name
+      color
+    }
+    open {
+      from
+      to
+    }
+    openingHours {
+      mon {
+        from
+        to
+      }
+      tue {
+        from
+        to
+      }
+      wed {
+        from
+        to
+      }
+      thu {
+        from
+        to
+      }
+      fri {
+        from
+        to
+      }
+      sat {
+        from
+        to
+      }
+      sun {
+        from
+        to
+      }
+      custom {
+        date
+        from
+        to
+      }
+    }
+    merchantId
+    timeZone
+    pos {
+      type
+      rkeeper {
+        endpointUri
+        rkeeperUsername
+        rkeeperPassword
+        anyuppUsername
+        anyuppPassword
+        waiterOrderId
+      }
+    }
+    externalId
+    supportedServingModes
+    supportedOrderModes
+    orderPolicy
+    packagingTaxPercentage
+    serviceFeePolicy {
+      type
+      percentage
+    }
+    ratingPolicies {
+      key
+      title {
+    unitId
+    orderNum
+    items {
+      productId
+      variantId
+      created
+      productName {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      ratings {
+        value
+        text {
+          en
+          de
+          hu
+        }
+        icon
+      }
+    }
+    tipPolicy {
+      title {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      percents
+      minOtherAmount
+    }
+    soldOutVisibilityPolicy
+    orderPaymentPolicy
+    location {
+      lat
+      lon
+    }
+    canRequestVatInvoice
+    canCallWaiter
+    isVisibleInApp
+    currency
+    style {
+      colors {
+        backgroundLight
+        backgroundDark
+        borderLight
+        borderDark
+        disabled
+        indicator
+        textLight
+        textDark
+        primary
+        secondary
+        button
+        buttonText
+        icon
+        highlight
+      }
+      images {
+        header
+        logo
+      }
+    }
+    categoryOrders {
+      id
+      parentId
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const CreateUserDocument = gql`
+    mutation CreateUser($input: CreateUserInput!, $condition: ModelUserConditionInput) {
+  createUser(input: $input, condition: $condition) {
+    id
+    name
+    email
+    phone
+    profileImage
+    stripeCustomerId
+    invoiceAddress {
+      customerName
+      taxNumber
+      country
+      city
+      streetAddress
+      postalCode
+      email
+    }
+    fcmTokens {
+      token
+      lastSeen
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($input: UpdateUserInput!, $condition: ModelUserConditionInput) {
+  updateUser(input: $input, condition: $condition) {
+    id
+    name
+    email
+    phone
+    profileImage
+    stripeCustomerId
+    invoiceAddress {
+      customerName
+      taxNumber
+      country
+      city
+      streetAddress
+      postalCode
+      email
+    }
+    fcmTokens {
+      token
+      lastSeen
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const DeleteUserDocument = gql`
+    mutation DeleteUser($input: DeleteUserInput!, $condition: ModelUserConditionInput) {
+  deleteUser(input: $input, condition: $condition) {
+    id
+    name
+    email
+    phone
+    profileImage
+    stripeCustomerId
+    invoiceAddress {
+      customerName
+      taxNumber
+      country
+      city
+      streetAddress
+      postalCode
+      email
+    }
+    fcmTokens {
+      token
+      lastSeen
+      priceSum
+      tax
+      taxSum
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const CreateCartDocument = gql`
+    mutation CreateCart($input: CreateCartInput!, $condition: ModelCartConditionInput) {
+  createCart(input: $input, condition: $condition) {
+    id
+    version
+    userId
+    unitId
+    takeAway
+    place {
+      seat
+      table
+    }
+    paymentMode {
+      type
+      caption
+      method
+    }
+    items {
+      productId
+      variantId
+      created
+      productName {
+        en
+        de
+        hu
           email
         }
         fcmTokens {
@@ -9408,6 +10772,1040 @@ export const SearchByRadiusDocument = gql`
   }
 }
     `;
+<<<<<<< HEAD
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+export const GetChainProductDocument = gql`
+    query GetChainProduct($id: ID!) {
+  getChainProduct(id: $id) {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const ListChainProductsDocument = gql`
+    query ListChainProducts($filter: ModelChainProductFilterInput, $limit: Int, $nextToken: String) {
+  listChainProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchChainProductsDocument = gql`
+    query SearchChainProducts($filter: SearchableChainProductFilterInput, $sort: [SearchableChainProductSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableChainProductAggregationInput]) {
+  searchChainProducts(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+    aggregates: $aggregates
+  ) {
+    items {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    total
+    aggregateItems {
+      name
+      result {
+        ... on SearchableAggregateScalarResult {
+          value
+        }
+        ... on SearchableAggregateBucketResult {
+          buckets {
+            key
+            doc_count
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetGroupProductDocument = gql`
+    query GetGroupProduct($id: ID!) {
+  getGroupProduct(id: $id) {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const ListGroupProductsDocument = gql`
+    query ListGroupProducts($filter: ModelGroupProductFilterInput, $limit: Int, $nextToken: String) {
+  listGroupProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchGroupProductsDocument = gql`
+    query SearchGroupProducts($filter: SearchableGroupProductFilterInput, $sort: [SearchableGroupProductSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableGroupProductAggregationInput]) {
+  searchGroupProducts(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+    aggregates: $aggregates
+  ) {
+    items {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    total
+    aggregateItems {
+      name
+      result {
+        ... on SearchableAggregateScalarResult {
+          value
+        }
+        ... on SearchableAggregateBucketResult {
+          buckets {
+            key
+            doc_count
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+=======
+export const GetChainProductDocument = gql`
+    query GetChainProduct($id: ID!) {
+  getChainProduct(id: $id) {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const ListChainProductsDocument = gql`
+    query ListChainProducts($filter: ModelChainProductFilterInput, $limit: Int, $nextToken: String) {
+  listChainProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchChainProductsDocument = gql`
+    query SearchChainProducts($filter: SearchableChainProductFilterInput, $sort: [SearchableChainProductSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableChainProductAggregationInput]) {
+  searchChainProducts(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+    aggregates: $aggregates
+  ) {
+    items {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    nextToken
+    total
+    aggregateItems {
+      name
+      result {
+        ... on SearchableAggregateScalarResult {
+          value
+        }
+        ... on SearchableAggregateBucketResult {
+          buckets {
+            key
+            doc_count
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetGroupProductDocument = gql`
+    query GetGroupProduct($id: ID!) {
+  getGroupProduct(id: $id) {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const ListGroupProductsDocument = gql`
+    query ListGroupProducts($filter: ModelGroupProductFilterInput, $limit: Int, $nextToken: String) {
+  listGroupProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}
+    `;
+export const SearchGroupProductsDocument = gql`
+    query SearchGroupProducts($filter: SearchableGroupProductFilterInput, $sort: [SearchableGroupProductSortInput], $limit: Int, $nextToken: String, $from: Int, $aggregates: [SearchableGroupProductAggregationInput]) {
+  searchGroupProducts(
+    filter: $filter
+    sort: $sort
+    limit: $limit
+    nextToken: $nextToken
+    from: $from
+    aggregates: $aggregates
+  ) {
+    items {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    nextToken
+    total
+    aggregateItems {
+      name
+      result {
+        ... on SearchableAggregateScalarResult {
+          value
+        }
+        ... on SearchableAggregateBucketResult {
+          buckets {
+            key
+            doc_count
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
 export const GetUnitProductDocument = gql`
     query GetUnitProduct($id: ID!) {
   getUnitProduct(id: $id) {
@@ -9458,6 +11856,7 @@ export const GetUnitProductDocument = gql`
     supportedServingModes
     dirty
     deletedAt
+<<<<<<< HEAD
     tax
     takeawayTax
     name {
@@ -9474,6 +11873,123 @@ export const GetUnitProductDocument = gql`
     productType
     image
     allergens
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+=======
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
     createdAt
     updatedAt
   }
@@ -9530,6 +12046,7 @@ export const ListUnitProductsDocument = gql`
       supportedServingModes
       dirty
       deletedAt
+<<<<<<< HEAD
       tax
       takeawayTax
       name {
@@ -9546,6 +12063,123 @@ export const ListUnitProductsDocument = gql`
       productType
       image
       allergens
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+=======
+      groupProduct {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        takeawayTax
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        chainProduct {
+          id
+          chainId
+          name {
+            en
+            de
+            hu
+          }
+          description {
+            en
+            de
+            hu
+          }
+          productCategoryId
+          productType
+          isVisible
+          image
+          variants {
+            id
+            variantName {
+              en
+              de
+              hu
+            }
+            pack {
+              size
+              unit
+            }
+            refGroupPrice
+            isAvailable
+            price
+            availabilities {
+              type
+              dayFrom
+              dayTo
+              timeFrom
+              timeTo
+              price
+            }
+            position
+            netPackagingFee
+            soldOut
+          }
+          allergens
+          configSets {
+            productSetId
+            items {
+              productComponentId
+              refGroupPrice
+              price
+              position
+              externalId
+              netPackagingFee
+            }
+            position
+          }
+          externalId
+          dirty
+          deletedAt
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
       createdAt
       updatedAt
     }
@@ -9611,6 +12245,7 @@ export const SearchUnitProductsDocument = gql`
       supportedServingModes
       dirty
       deletedAt
+<<<<<<< HEAD
       tax
       takeawayTax
       name {
@@ -9754,6 +12389,123 @@ export const SearchVariantsDocument = gql`
       soldOut
       ownerProduct
       externalId
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+=======
+      groupProduct {
+        id
+        parentId
+        chainId
+        groupId
+        isVisible
+        tax
+        takeawayTax
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        chainProduct {
+          id
+          chainId
+          name {
+            en
+            de
+            hu
+          }
+          description {
+            en
+            de
+            hu
+          }
+          productCategoryId
+          productType
+          isVisible
+          image
+          variants {
+            id
+            variantName {
+              en
+              de
+              hu
+            }
+            pack {
+              size
+              unit
+            }
+            refGroupPrice
+            isAvailable
+            price
+            availabilities {
+              type
+              dayFrom
+              dayTo
+              timeFrom
+              timeTo
+              price
+            }
+            position
+            netPackagingFee
+            soldOut
+          }
+          allergens
+          configSets {
+            productSetId
+            items {
+              productComponentId
+              refGroupPrice
+              price
+              position
+              externalId
+              netPackagingFee
+            }
+            position
+          }
+          externalId
+          dirty
+          deletedAt
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
       createdAt
       updatedAt
     }
@@ -12919,6 +15671,316 @@ export const OnProductComponentSetsChangeDocument = gql`
   }
 }
     `;
+<<<<<<< HEAD
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+export const OnChainProductChangeDocument = gql`
+    subscription OnChainProductChange($chainId: ID!) {
+  onChainProductChange(chainId: $chainId) {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnGroupProductChangeDocument = gql`
+    subscription OnGroupProductChange($groupId: ID!) {
+  onGroupProductChange(groupId: $groupId) {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+=======
+export const OnChainProductChangeDocument = gql`
+    subscription OnChainProductChange($chainId: ID!) {
+  onChainProductChange(chainId: $chainId) {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnGroupProductChangeDocument = gql`
+    subscription OnGroupProductChange($groupId: ID!) {
+  onGroupProductChange(groupId: $groupId) {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
 export const OnUnitProductChangeDocument = gql`
     subscription OnUnitProductChange($unitId: ID!) {
   onUnitProductChange(unitId: $unitId) {
@@ -12969,8 +16031,148 @@ export const OnUnitProductChangeDocument = gql`
     supportedServingModes
     dirty
     deletedAt
+<<<<<<< HEAD
     tax
     takeawayTax
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnGeneratedProductChangeDocument = gql`
+    subscription OnGeneratedProductChange($unitId: ID!) {
+  onGeneratedProductChange(unitId: $unitId) {
+    id
+    unitId
+    productCategoryId
+=======
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnGeneratedProductChangeDocument = gql`
+    subscription OnGeneratedProductChange($unitId: ID!) {
+  onGeneratedProductChange(unitId: $unitId) {
+    id
+    unitId
+    productCategoryId
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
     name {
       en
       de
@@ -14238,6 +17440,928 @@ export const OnUnitOrdersChangeDocument = gql`
   }
 }
     `;
+<<<<<<< HEAD
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+export const OnCreateChainProductDocument = gql`
+    subscription OnCreateChainProduct {
+  onCreateChainProduct {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnUpdateChainProductDocument = gql`
+    subscription OnUpdateChainProduct {
+  onUpdateChainProduct {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnDeleteChainProductDocument = gql`
+    subscription OnDeleteChainProduct {
+  onDeleteChainProduct {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnCreateGroupProductDocument = gql`
+    subscription OnCreateGroupProduct {
+  onCreateGroupProduct {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnUpdateGroupProductDocument = gql`
+    subscription OnUpdateGroupProduct {
+  onUpdateGroupProduct {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnDeleteGroupProductDocument = gql`
+    subscription OnDeleteGroupProduct {
+  onDeleteGroupProduct {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+=======
+export const OnCreateChainProductDocument = gql`
+    subscription OnCreateChainProduct {
+  onCreateChainProduct {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnUpdateChainProductDocument = gql`
+    subscription OnUpdateChainProduct {
+  onUpdateChainProduct {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnDeleteChainProductDocument = gql`
+    subscription OnDeleteChainProduct {
+  onDeleteChainProduct {
+    id
+    chainId
+    name {
+      en
+      de
+      hu
+    }
+    description {
+      en
+      de
+      hu
+    }
+    productCategoryId
+    productType
+    isVisible
+    image
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    allergens
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnCreateGroupProductDocument = gql`
+    subscription OnCreateGroupProduct {
+  onCreateGroupProduct {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnUpdateGroupProductDocument = gql`
+    subscription OnUpdateGroupProduct {
+  onUpdateGroupProduct {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const OnDeleteGroupProductDocument = gql`
+    subscription OnDeleteGroupProduct {
+  onDeleteGroupProduct {
+    id
+    parentId
+    chainId
+    groupId
+    isVisible
+    tax
+    takeawayTax
+    variants {
+      id
+      variantName {
+        en
+        de
+        hu
+      }
+      pack {
+        size
+        unit
+      }
+      refGroupPrice
+      isAvailable
+      price
+      availabilities {
+        type
+        dayFrom
+        dayTo
+        timeFrom
+        timeTo
+        price
+      }
+      position
+      netPackagingFee
+      soldOut
+    }
+    configSets {
+      productSetId
+      items {
+        productComponentId
+        refGroupPrice
+        price
+        position
+        externalId
+        netPackagingFee
+      }
+      position
+    }
+    externalId
+    dirty
+    deletedAt
+    chainProduct {
+      id
+      chainId
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      isVisible
+      image
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      allergens
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      createdAt
+      updatedAt
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
 export const OnCreateUnitProductDocument = gql`
     subscription OnCreateUnitProduct {
   onCreateUnitProduct {
@@ -14288,6 +18412,7 @@ export const OnCreateUnitProductDocument = gql`
     supportedServingModes
     dirty
     deletedAt
+<<<<<<< HEAD
     tax
     takeawayTax
     name {
@@ -14304,6 +18429,123 @@ export const OnCreateUnitProductDocument = gql`
     productType
     image
     allergens
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+=======
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
     createdAt
     updatedAt
   }
@@ -14359,6 +18601,7 @@ export const OnUpdateUnitProductDocument = gql`
     supportedServingModes
     dirty
     deletedAt
+<<<<<<< HEAD
     tax
     takeawayTax
     name {
@@ -14375,6 +18618,123 @@ export const OnUpdateUnitProductDocument = gql`
     productType
     image
     allergens
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+=======
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
     createdAt
     updatedAt
   }
@@ -14430,6 +18790,7 @@ export const OnDeleteUnitProductDocument = gql`
     supportedServingModes
     dirty
     deletedAt
+<<<<<<< HEAD
     tax
     takeawayTax
     name {
@@ -14545,6 +18906,123 @@ export const OnDeleteVariantDocument = gql`
     soldOut
     ownerProduct
     externalId
+||||||| parent of ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
+=======
+    groupProduct {
+      id
+      parentId
+      chainId
+      groupId
+      isVisible
+      tax
+      takeawayTax
+      variants {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        refGroupPrice
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+      }
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          refGroupPrice
+          price
+          position
+          externalId
+          netPackagingFee
+        }
+        position
+      }
+      externalId
+      dirty
+      deletedAt
+      chainProduct {
+        id
+        chainId
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        isVisible
+        image
+        variants {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          refGroupPrice
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+        }
+        allergens
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            refGroupPrice
+            price
+            position
+            externalId
+            netPackagingFee
+          }
+          position
+        }
+        externalId
+        dirty
+        deletedAt
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+>>>>>>> ecb3d00c2 (feat(backend): #3587 - implementing the FCMPushNotificationService)
     createdAt
     updatedAt
   }
