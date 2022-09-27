@@ -13,8 +13,8 @@ import { sendRkeeperOrder } from './send-order';
 
 /* A reference JSON that the stuff must produce:
 {
-  remoteid: '109150001',
-  objectid: '109150001',
+  remoteid: 'yellow-id',
+  objectid: 'yellow-id',
   delivery_time: '2022-02-02T12:00:39',
   comment: '',
   order_type: 1,
@@ -178,7 +178,7 @@ const mockSuccessResponse = {
     },
     data: {
       seq_number: 771,
-      visit_id: '1656509181-606-109150006',
+      visit_id: '1656509181-606-109150001',
     },
     source: 'endpoint_server',
     status: 'Ok',

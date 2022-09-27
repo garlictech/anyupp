@@ -53,8 +53,7 @@ class Unit extends $Unit {
   set distanceInKm(double? distanceInKm) => distanceInKm_ = distanceInKm;
   double? get distanceInKm => distanceInKm_;
 
-  Unit(
-      {required this.id,
+  Unit({required this.id,
       required this.name,
       required this.address,
       required this.style,

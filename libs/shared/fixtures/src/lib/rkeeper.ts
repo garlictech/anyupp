@@ -1,4 +1,5 @@
-export const yellowRestaurantId = '109150006';
+export const freiRestaurantId = '109150001';
 export const rkeeperEndpoint = `https://testendpoint.ucs.hu/wp-json/vendor/v1`;
-export const yellowRkeeperUsername = '590_49_985_540';
-export const yellowRkeeperPassword = 'f3e7c8260b2f9b1cc62208a441410a';
+export const freiRkeeperUsername = '795_50_155_539';
+export const freiRkeeperPassword = 'b6302d53085c9486d0f765ec475f18';
+export const freiRkeeperWaiterProductId = '1040917';

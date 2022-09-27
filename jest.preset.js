@@ -1,11 +1,17 @@
 const nxPreset = require('@nrwl/jest/preset').default;
 module.exports = {
   ...nxPreset,
+  resolver: `${process.cwd()}/jest.resolver.js`,
   testMatch: ['**/+(*.)+(spec|test).+(ts|js)?(x)'],
   transform: {
-    '^.+\\.(ts|js|html)$': 'ts-jest',
+    '^.+\\.(ts|js|html)$': [
+      'ts-jest',
+      {
+        useESM: true,
+      },
+    ],
   },
-  resolver: '@nrwl/jest/plugins/resolver',
+  transformIgnorePatterns: ['node_modules/(?!.*.mjs$)'],
   moduleFileExtensions: ['ts', 'js', 'html', 'tsx', 'jsx'],
   reporters: ['default'],
   passWithNoTests: true,
@@ -13,4 +19,5 @@ module.exports = {
   forceExit: true,
   coverage: true,
   clearMocks: true,
+  extensionsToTreatAsEsm: ['.ts'],
 };

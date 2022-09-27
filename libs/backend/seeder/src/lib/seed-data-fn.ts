@@ -362,7 +362,8 @@ export const seedFreiRKeeperUnit = (deps: SeederDependencies) =>
                 ServingMode.takeaway,
                 ServingMode.inplace,
               ],
-              externalId: '109150006',
+              externalId: '109150001',
+              canCallWaiter: true,
               pos: {
                 type: PosType.rkeeper,
                 rkeeper: {

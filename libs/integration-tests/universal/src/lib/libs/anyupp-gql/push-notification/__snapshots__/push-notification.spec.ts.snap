@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test push notification Send push notification 1`] = `
+Object {
+  "failureCount": 0,
+  "successCount": 1,
+}
+`;

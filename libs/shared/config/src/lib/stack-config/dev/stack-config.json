@@ -15,16 +15,16 @@
     "vpcIdOutput": "vpc-03b2ca8e29e8d680e"
   },
   "anyupp-backend-sites": {
-    "VariantsBucket8636AB76": "dev-anyupp-backend-sites-variantssitebuckete1725b-1cjpnw1bjjtgp",
-    "VariantsDistributionDomainName64CED8FD": "d2oraz7c27nwpe.cloudfront.net",
+    "VariantsBucket8636AB76": "dev-anyupp-backend-sites-variantssitebuckete1725b-n61ykh4reuz7",
+    "VariantsDistributionDomainName64CED8FD": "d1cojlod05fcf0.cloudfront.net",
     "AdminSiteDomainA75B4E32": "dev-admin-anyupp-backend.anyupp.com",
     "VariantsSiteDomain720640AD": "dev-variants-anyupp-backend.anyupp.com",
-    "AdminDistributionDomainNameA4A4FE5B": "dgswuzp5d7sj5.cloudfront.net",
+    "AdminDistributionDomainNameA4A4FE5B": "d34zw4ekg0doav.cloudfront.net",
     "AdminSiteEAA17C78": "https://dev-admin-anyupp-backend.anyupp.com",
-    "AdminDistributionIdB4DE25AB": "E3C5BV29HVJHIO",
+    "AdminDistributionIdB4DE25AB": "E1FJ06GJ7NQJT1",
     "VariantsSite8C170134": "https://dev-variants-anyupp-backend.anyupp.com",
-    "VariantsDistributionIdEF1CC563": "E3NSUZW9KNW67E",
-    "AdminBucketCA57896C": "dev-anyupp-backend-sites-adminsitebucket4cf3a801-3p3bkie6hkmv"
+    "VariantsDistributionIdEF1CC563": "EF065X8458R5R",
+    "AdminBucketCA57896C": "dev-anyupp-backend-sites-adminsitebucket4cf3a801-1f083loqqk7m2"
   },
   "anyupp-backend-cognito": {
     "ConsumerUserPoolId": "eu-west-1_yIxCwarYh",

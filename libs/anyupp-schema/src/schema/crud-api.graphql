@@ -1012,6 +1012,11 @@ input GetUnitsNearLocationInput {
   location: LocationLatLngInput!
 }
 
+type FCMToken {
+  token: String!
+  lastSeen: String!
+}
+
 type User
   @model
   @searchable
@@ -1023,6 +1028,7 @@ type User
   profileImage: String
   stripeCustomerId: String
   invoiceAddress: UserInvoiceAddress
+  fcmTokens: [FCMToken!]
 }
 
 type Cart
@@ -1210,6 +1216,7 @@ input RKeeperInput {
   rkeeperPassword: String!
   anyuppUsername: String!
   anyuppPassword: String!
+  waiterOrderId: String # The "product" id representing the waiter caller in rkeeper
 }
 
 input ImageAssetInput {

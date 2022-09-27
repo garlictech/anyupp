@@ -7,10 +7,11 @@ import { RequiredId } from '@bgap/shared/types';
 import {
   unitFixture,
   rkeeperEndpoint,
-  yellowRestaurantId,
-  yellowRkeeperUsername,
-  yellowRkeeperPassword,
+  freiRestaurantId,
+  freiRkeeperUsername,
+  freiRkeeperPassword,
   createProductFixture,
+  freiRkeeperWaiterProductId,
 } from '@bgap/shared/fixtures';
 import {
   CreateOrderInput,
@@ -100,9 +101,10 @@ export const businessEntity: RKeeperBusinessEntityInfo = {
 };
 
 export const rkeeperOrder = {
-  objectid: yellowRestaurantId,
-  remoteId: yellowRestaurantId,
+  objectid: freiRestaurantId,
+  remoteId: freiRestaurantId,
   order_type: 1,
+  order_number: 1,
   pay_type: 0,
   pay_online_type: 0,
   delivery_time: '2122-02-03T12:37:32',
@@ -121,24 +123,26 @@ export const rkeeperOrder = {
   ],
 };
 
-export const yellowUnit = {
+export const freiUnit = {
   ...rkeeperUnit,
-  id: 'test-yellowunit-id',
-  externalId: yellowRestaurantId,
+  id: 'test-freiunit-id',
+  externalId: freiRestaurantId,
+  canCallWaiter: true,
   pos: {
     ...rkeeperUnit.pos,
     rkeeper: {
       ...(rkeeperUnit?.pos?.rkeeper || {}),
-      rkeeperUsername: yellowRkeeperUsername,
-      rkeeperPassword: yellowRkeeperPassword,
+      rkeeperUsername: freiRkeeperUsername,
+      rkeeperPassword: freiRkeeperPassword,
       endpointUri: rkeeperEndpoint,
+      waiterOrderId: freiRkeeperWaiterProductId,
     } as RKeeper,
   },
 } as Unit;
 
 export const orderInput: CreateOrderInput = {
   userId: 'USER_ID',
-  unitId: yellowUnit.id,
+  unitId: freiUnit.id,
   items: [
     {
       quantity: 5,
@@ -194,8 +198,8 @@ export const orderInput: CreateOrderInput = {
 };
 
 export {
-  yellowRestaurantId,
-  yellowRkeeperPassword,
-  yellowRkeeperUsername,
+  freiRestaurantId,
+  freiRkeeperPassword,
+  freiRkeeperUsername,
   rkeeperEndpoint,
 };

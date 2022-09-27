@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:catcher/catcher.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '/app-config.dart';
 import '/core/core.dart';
 import '/modules/login/login.dart';
@@ -22,6 +23,7 @@ import 'package:in_app_update/in_app_update.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:upgrader/upgrader.dart';
 
+import 'data/repositories/fcm-token-repository.dart';
 import 'modules/cart/cart.dart';
 import 'modules/favorites/favorites.dart';
 import 'modules/main/main.dart';
@@ -31,12 +33,12 @@ import 'modules/screens.dart';
 import 'modules/transactions/bloc/transactions_bloc.dart';
 import 'shared/utils/deeplink_utils.dart';
 
-class MyApp extends StatefulWidget {
+class MyApp extends ConsumerStatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends ConsumerState<MyApp> {
   late StreamSubscription? _deeplinkSubscription;
   late bool isProd;
 
@@ -48,6 +50,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> init() async {
+    ref.read(fcmTokenRepositoryProvider);
     await _initDeepLinks();
     if (Platform.isAndroid && isProd) {
       await checkForAndroidUpdates();

@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  Runner
+
+  Created by Zsolt Molnar on 2022. 09. 26..
+  
+*/
+
+"order_state_changed"= "A %@ azonosítójú rendelésed állapota:";
+"served"= "Felszolgálva";
+"ready"= "Elkészült";
+"failed" = "Hiba történt";
+"placed" = "Beadva";
+"processing" = "Készül";
+"rejected" = "Törölve";

@@ -3,12 +3,10 @@ import { pipe } from 'fp-ts/lib/function';
 import { DateTime } from 'luxon';
 import { from, Observable, of, throwError } from 'rxjs';
 import { map, mapTo, switchMap } from 'rxjs/operators';
-
 import { incrementOrderNum } from '@bgap/anyupp-backend-lib';
 import {
   CreateOrderInput,
   Order,
-  OrderPaymentPolicy,
   OrderStatus,
   PosType,
   ServingMode,
@@ -17,54 +15,11 @@ import {
 import { sendRkeeperOrder } from '@bgap/rkeeper-api';
 import { oeTryCatch } from '@bgap/shared/utils';
 
-import { OrderResolverDeps } from './utils';
-
-export interface CalculationState_UnitAdded {
-  order: CreateOrderInput;
-  unit: Unit;
-}
-
-export const getUnit =
-  (deps: OrderResolverDeps) =>
-  (
-    order: CreateOrderInput,
-  ): OE.ObservableEither<string, CalculationState_UnitAdded> =>
-    pipe(
-      deps.crudSdk.GetUnit({ id: order.unitId }),
-      oeTryCatch,
-      // Unit exists?
-      OE.chain(
-        OE.fromPredicate(
-          x => !!x,
-          () =>
-            `Unit ${order.unitId} in the cart cannot be fetched from the database.`,
-        ),
-      ),
-      OE.map(x => x as NonNullable<typeof x>),
-      // Does the unit accept order?
-      OE.chain(
-        OE.fromPredicate(
-          unit => unit.isAcceptingOrders,
-          () => `Unit does not accept orders`,
-        ),
-      ),
-      // Payment method is not provided: allowed in afterpay only
-      OE.chain(
-        OE.fromPredicate(
-          unit =>
-            !(
-              !order.paymentMode &&
-              unit.orderPaymentPolicy !== OrderPaymentPolicy.afterpay
-            ),
-          () =>
-            'Payment mode is not provided in the order, and the unit does not accept afterpay.',
-        ),
-      ),
-      OE.map(unit => ({
-        order,
-        unit,
-      })),
-    );
+import {
+  CalculationState_UnitAdded,
+  getUnit,
+  OrderResolverDeps,
+} from './utils';
 
 export const getNextOrderNum =
   (deps: OrderResolverDeps) =>

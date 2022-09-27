@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`firebaseApi integration tests - for manual use only Push Notifications integration tests should send notification successfully 1`] = `
+Object {
+  "failureCount": 1,
+  "successCount": 0,
+}
+`;
+
+exports[`firebaseApi integration tests - for manual use only Push Notifications integration tests should send notification successfully 2`] = `
+Array [
+  Array [
+    Object {
+      "id": "dummy_user_id",
+    },
+  ],
+]
+`;

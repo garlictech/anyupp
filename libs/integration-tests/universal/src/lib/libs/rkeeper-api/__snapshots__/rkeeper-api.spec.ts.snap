@@ -2,22 +2,22 @@
 
 exports[`Test the communication between anyupp/rkeeper send an unpaid order to rkeeper by HTTP post, then send another request to set it to Paid status: config.auth 1`] = `
 Object {
-  "password": "f3e7c8260b2f9b1cc62208a441410a",
-  "username": "590_49_985_540",
+  "password": "b6302d53085c9486d0f765ec475f18",
+  "username": "795_50_155_539",
 }
 `;
 
 exports[`Test the communication between anyupp/rkeeper send an unpaid order to rkeeper by HTTP post, then send another request to set it to Paid status: config.auth 2`] = `
 Object {
-  "password": "f3e7c8260b2f9b1cc62208a441410a",
-  "username": "590_49_985_540",
+  "password": "b6302d53085c9486d0f765ec475f18",
+  "username": "795_50_155_539",
 }
 `;
 
 exports[`Test the communication between anyupp/rkeeper send order to rkeeper by HTTP post: config.auth 1`] = `
 Object {
-  "password": "f3e7c8260b2f9b1cc62208a441410a",
-  "username": "590_49_985_540",
+  "password": "b6302d53085c9486d0f765ec475f18",
+  "username": "795_50_155_539",
 }
 `;
 
@@ -951,6 +951,33 @@ exports[`Test the rkeeper api basic functionality Test the menusync handler 1`] 
 exports[`Test the rkeeper api basic functionality Test the product handling logic in fargate in case of non-existing unit 1`] = `"Unit with external ID foobar cannot be found"`;
 
 exports[`Test the rkeeper api basic functionality Test waiter caller 1`] = `[Error: GraphQL error: unit_cannot_call_waiter]`;
+
+exports[`Test the rkeeper api basic functionality Test waiter caller 2`] = `
+Observable {
+  "_isScalar": false,
+  "operator": CatchOperator {
+    "caught": [Circular],
+    "selector": [Function],
+  },
+  "source": Observable {
+    "_isScalar": false,
+    "operator": SwitchMapOperator {
+      "project": [Function],
+    },
+    "source": Observable {
+      "_isScalar": false,
+      "operator": MapOperator {
+        "project": [Function],
+        "thisArg": undefined,
+      },
+      "source": Observable {
+        "_isScalar": false,
+        "_subscribe": [Function],
+      },
+    },
+  },
+}
+`;
 
 exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category created 1`] = `true`;
 

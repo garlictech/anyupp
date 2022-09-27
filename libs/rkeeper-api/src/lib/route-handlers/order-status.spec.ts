@@ -4,10 +4,12 @@ import { tap } from 'rxjs/operators';
 import {
   getOrder,
   getUnit,
+  OrderStatusHandlerDeps,
   orderStatusHandlerLogic,
   updateOrderStatus,
   validateOrderStatusRequest,
 } from './order-status';
+import { CrudSdk } from '@bgap/data';
 
 const getUnitCases = [
   {
@@ -181,8 +183,13 @@ test.each(orderStatusHandlerCases)(
   'orderStatusHandler case: $label',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ({ result }, done: any) => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const deps: any = {
+    const mockSendOrderStatusChangePushNotification = jest.fn().mockReturnValue(
+      of({
+        successCount: 1,
+        failureCount: 0,
+      }),
+    );
+    const deps: OrderStatusHandlerDeps = {
       anyuppSdk: {
         SearchUnits: jest
           .fn()
@@ -193,8 +200,12 @@ test.each(orderStatusHandlerCases)(
           }),
         ),
         UpdateOrder: jest.fn().mockReturnValue(result),
-      },
+      } as unknown as CrudSdk,
       timestamp: () => 99999,
+      getPushNotificationService: () => ({
+        sendOrderStatusChangePushNotification:
+          mockSendOrderStatusChangePushNotification,
+      }),
     };
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -223,9 +234,18 @@ test.each(orderStatusHandlerCases)(
           expect(reply.status.mock.calls).toMatchSnapshot('reply status calls');
           expect(reply.send.mock.calls).toMatchSnapshot('reply send calls');
           expect(sendSpy.mock.calls).toMatchSnapshot('reply sendSpy calls');
+          expect(
+            mockSendOrderStatusChangePushNotification.mock.calls.length,
+          ).toMatchSnapshot('mockSendOrderStatusChangePushNotification calls');
         }),
       )
-      .subscribe(() => done());
+      .subscribe({
+        complete: () => done(),
+        error: error => {
+          console.error('Error in test', error);
+          done();
+        },
+      });
   },
 );
 

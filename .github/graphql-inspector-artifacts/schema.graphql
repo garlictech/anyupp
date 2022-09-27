@@ -991,6 +991,11 @@ input GetUnitsNearLocationInput {
   location: LocationLatLngInput!
 }
 
+type FCMToken @aws_iam @aws_cognito_user_pools {
+  token: String!
+  lastSeen: String!
+}
+
 type User @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String
@@ -999,6 +1004,7 @@ type User @aws_iam @aws_cognito_user_pools {
   profileImage: String
   stripeCustomerId: String
   invoiceAddress: UserInvoiceAddress
+  fcmTokens: [FCMToken!]
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -1182,6 +1188,7 @@ input RKeeperInput {
   rkeeperPassword: String!
   anyuppUsername: String!
   anyuppPassword: String!
+  waiterOrderId: String
 }
 
 input ImageAssetInput {
@@ -2509,6 +2516,11 @@ input DeleteUnitInput {
   id: ID!
 }
 
+input FCMTokenInput {
+  token: String!
+  lastSeen: String!
+}
+
 type ModelUserConnection @aws_iam @aws_cognito_user_pools {
   items: [User]!
   nextToken: String
@@ -2545,6 +2557,7 @@ input CreateUserInput {
   profileImage: String
   stripeCustomerId: String
   invoiceAddress: UserInvoiceAddressInput
+  fcmTokens: [FCMTokenInput!]
 }
 
 input UpdateUserInput {
@@ -2555,6 +2568,7 @@ input UpdateUserInput {
   profileImage: String
   stripeCustomerId: String
   invoiceAddress: UserInvoiceAddressInput
+  fcmTokens: [FCMTokenInput!]
 }
 
 input DeleteUserInput {

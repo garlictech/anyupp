@@ -26,6 +26,7 @@ import path from 'path';
 export interface RKeeperStackProps extends sst.StackProps {
   apiAccessKeyId: string;
   apiSecretAccessKey: string;
+  firebaseServiceAccountCert: string;
   vpc: ec2.IVpc;
   securityGroupId: string;
   rootDomain: string;
@@ -145,6 +146,7 @@ export class RKeeperStack extends sst.Stack {
           taskDefinitionArn: menusyncTaskDefinition.taskDefinitionArn,
           RKeeperProcessProductSubnet: props.vpc.privateSubnets[0].subnetId,
           BUCKET_NAME: menuBucket.bucketName,
+          FIREBASE_SERVICE_ACCOUNT_CERT: props.firebaseServiceAccountCert,
         },
       },
     );
