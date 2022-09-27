@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 
-import '/core/core.dart';
 import '/graphql/generated/crud-api.dart' as api;
 import '/graphql/graphql.dart';
 import 'package:anyupp/domain/repositories/user-repository.dart';
