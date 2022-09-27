@@ -488,14 +488,14 @@ describe('Test the communication between anyupp/rkeeper', () => {
       });
   }, 60000);
 
-  test.only('send order to rkeeper by sendRkeeperOrder', done => {
+  test('send order to rkeeper by sendRkeeperOrder', done => {
     sendRkeeperOrder({
       axiosInstance: axios,
       currentTimeISOString: () => new Date('2040.01.01').toISOString(),
       uuidGenerator: () => 'UUID',
     })(fixtures.freiUnit, {
       ...fixtures.orderInput,
-      userId: '31ea0871-3dcb-11ed-9ba0-1f6d735e9f41',
+      userId: 'cf4d2382-3dfe-11ed-be1a-09435bd2f6b6',
     })
       .pipe(
         tap(result => {

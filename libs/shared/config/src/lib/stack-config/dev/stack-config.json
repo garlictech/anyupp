@@ -12,7 +12,7 @@
     "slackChannelOutput": "net.cyberg.anyupp.cognito",
     "appleTeamIdOutput": "36CW47H75G",
     "appleKeyIdOutput": "8W2A8ZDZH8",
-    "vpcIdOutput": "vpc-03b2ca8e29e8d680e"
+    "vpcIdOutput": "vpc-0880d26d0165c9f7f"
   },
   "anyupp-backend-sites": {
     "VariantsBucket8636AB76": "dev-anyupp-backend-sites-variantssitebuckete1725b-n61ykh4reuz7",

@@ -28,7 +28,6 @@
     tsconfig-paths "^3.9.0"
     webpack-merge "^5.7.3"
 
-<<<<<<< HEAD
 "@angular-devkit/architect@0.1402.3", "@angular-devkit/architect@>=0.1400.0 < 0.1500.0":
   version "0.1402.3"
   resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.1402.3.tgz#2a0e5eec86167ab768164a5c9211fa3f0c102273"
@@ -37,7 +36,7 @@
     "@angular-devkit/core" "14.2.3"
     rxjs "6.6.7"
 
-"@angular-devkit/build-angular@14.2.3":
+"@angular-devkit/build-angular@14.2.3", "@angular-devkit/build-angular@^14.0.0":
   version "14.2.3"
   resolved "https://registry.yarnpkg.com/@angular-devkit/build-angular/-/build-angular-14.2.3.tgz#b4808226537cad1f430eb70d24782771af5d8014"
   integrity sha512-Gun2WBM9oXqgOmpwan0OC5OEW2RY6Sd6nrOGzdC5HkvvwxLBV5uycrpYVJiQSPLuQjDLp9S2QTjA2yLtVABYCA==
@@ -107,258 +106,6 @@
   optionalDependencies:
     esbuild "0.15.5"
 
-"@angular-devkit/build-angular@^14.0.0":
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-angular/-/build-angular-14.2.2.tgz#debcca9de3910ee7e053113d708a9d3fbc32f096"
-  integrity sha512-rNX4gIoPpv/DvAIn02zk2SBlNbPOn/0TPMHKVYm2KLmKIfjH6H895BoYuRvYcuDJ9kkAFQR73YaJH7feqE8JfA==
-  dependencies:
-    "@ampproject/remapping" "2.2.0"
-    "@angular-devkit/architect" "0.1402.2"
-    "@angular-devkit/build-webpack" "0.1402.2"
-    "@angular-devkit/core" "14.2.2"
-    "@babel/core" "7.18.10"
-    "@babel/generator" "7.18.12"
-    "@babel/helper-annotate-as-pure" "7.18.6"
-    "@babel/plugin-proposal-async-generator-functions" "7.18.10"
-    "@babel/plugin-transform-async-to-generator" "7.18.6"
-    "@babel/plugin-transform-runtime" "7.18.10"
-    "@babel/preset-env" "7.18.10"
-    "@babel/runtime" "7.18.9"
-    "@babel/template" "7.18.10"
-    "@discoveryjs/json-ext" "0.5.7"
-    "@ngtools/webpack" "14.2.2"
-    ansi-colors "4.1.3"
-    babel-loader "8.2.5"
-    babel-plugin-istanbul "6.1.1"
-    browserslist "^4.9.1"
-    cacache "16.1.2"
-    copy-webpack-plugin "11.0.0"
-    critters "0.0.16"
-    css-loader "6.7.1"
-    esbuild-wasm "0.15.5"
-    glob "8.0.3"
-    https-proxy-agent "5.0.1"
-    inquirer "8.2.4"
-    jsonc-parser "3.1.0"
-    karma-source-map-support "1.4.0"
-    less "4.1.3"
-    less-loader "11.0.0"
-    license-webpack-plugin "4.0.2"
-    loader-utils "3.2.0"
-    mini-css-extract-plugin "2.6.1"
-    minimatch "5.1.0"
-    open "8.4.0"
-    ora "5.4.1"
-    parse5-html-rewriting-stream "6.0.1"
-    piscina "3.2.0"
-    postcss "8.4.16"
-    postcss-import "15.0.0"
-    postcss-loader "7.0.1"
-    postcss-preset-env "7.8.0"
-    regenerator-runtime "0.13.9"
-    resolve-url-loader "5.0.0"
-    rxjs "6.6.7"
-    sass "1.54.4"
-    sass-loader "13.0.2"
-    semver "7.3.7"
-    source-map-loader "4.0.0"
-    source-map-support "0.5.21"
-    stylus "0.59.0"
-    stylus-loader "7.0.0"
-    terser "5.14.2"
-    text-table "0.2.0"
-    tree-kill "1.2.2"
-    tslib "2.4.0"
-    webpack "5.74.0"
-    webpack-dev-middleware "5.3.3"
-    webpack-dev-server "4.11.0"
-    webpack-merge "5.8.0"
-    webpack-subresource-integrity "5.1.0"
-  optionalDependencies:
-    esbuild "0.15.5"
-
-"@angular-devkit/build-webpack@0.1402.2":
-  version "0.1402.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-webpack/-/build-webpack-0.1402.2.tgz#c5dad9f25350bda8e27595dbe542e286a4562ec3"
-  integrity sha512-/Jbbq7HfKsucbRFu1vhZ9U/GdWgHrIRMqFQttJJTUzvGgPb+5jvIu+9qEO//ORfdamA+NiMGhlWhOvjeELtwxw==
-  dependencies:
-    "@angular-devkit/architect" "0.1402.2"
-    rxjs "6.6.7"
-
-"@angular-devkit/build-webpack@0.1402.3":
-  version "0.1402.3"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-webpack/-/build-webpack-0.1402.3.tgz#ce5ce062cfbd029374c234a084d5485754bec367"
-  integrity sha512-d7ZG7dZElJgtPbp2x2dzMv6usqqzz9CH+RtaGueuivIa/Cd061c3D0pi3XuUBvfaS0qENrlnysYhLkuTnUQGcQ==
-  dependencies:
-    "@angular-devkit/architect" "0.1402.3"
-    rxjs "6.6.7"
-
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@angular-devkit/build-angular@^14.0.0":
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-angular/-/build-angular-14.2.2.tgz#debcca9de3910ee7e053113d708a9d3fbc32f096"
-  integrity sha512-rNX4gIoPpv/DvAIn02zk2SBlNbPOn/0TPMHKVYm2KLmKIfjH6H895BoYuRvYcuDJ9kkAFQR73YaJH7feqE8JfA==
-  dependencies:
-    "@ampproject/remapping" "2.2.0"
-    "@angular-devkit/architect" "0.1402.2"
-    "@angular-devkit/build-webpack" "0.1402.2"
-    "@angular-devkit/core" "14.2.2"
-    "@babel/core" "7.18.10"
-    "@babel/generator" "7.18.12"
-    "@babel/helper-annotate-as-pure" "7.18.6"
-    "@babel/plugin-proposal-async-generator-functions" "7.18.10"
-    "@babel/plugin-transform-async-to-generator" "7.18.6"
-    "@babel/plugin-transform-runtime" "7.18.10"
-    "@babel/preset-env" "7.18.10"
-    "@babel/runtime" "7.18.9"
-    "@babel/template" "7.18.10"
-    "@discoveryjs/json-ext" "0.5.7"
-    "@ngtools/webpack" "14.2.2"
-    ansi-colors "4.1.3"
-    babel-loader "8.2.5"
-    babel-plugin-istanbul "6.1.1"
-    browserslist "^4.9.1"
-    cacache "16.1.2"
-    copy-webpack-plugin "11.0.0"
-    critters "0.0.16"
-    css-loader "6.7.1"
-    esbuild-wasm "0.15.5"
-    glob "8.0.3"
-    https-proxy-agent "5.0.1"
-    inquirer "8.2.4"
-    jsonc-parser "3.1.0"
-    karma-source-map-support "1.4.0"
-    less "4.1.3"
-    less-loader "11.0.0"
-    license-webpack-plugin "4.0.2"
-    loader-utils "3.2.0"
-    mini-css-extract-plugin "2.6.1"
-    minimatch "5.1.0"
-    open "8.4.0"
-    ora "5.4.1"
-    parse5-html-rewriting-stream "6.0.1"
-    piscina "3.2.0"
-    postcss "8.4.16"
-    postcss-import "15.0.0"
-    postcss-loader "7.0.1"
-    postcss-preset-env "7.8.0"
-    regenerator-runtime "0.13.9"
-    resolve-url-loader "5.0.0"
-    rxjs "6.6.7"
-    sass "1.54.4"
-    sass-loader "13.0.2"
-    semver "7.3.7"
-    source-map-loader "4.0.0"
-    source-map-support "0.5.21"
-    stylus "0.59.0"
-    stylus-loader "7.0.0"
-    terser "5.14.2"
-    text-table "0.2.0"
-    tree-kill "1.2.2"
-    tslib "2.4.0"
-    webpack "5.74.0"
-    webpack-dev-middleware "5.3.3"
-    webpack-dev-server "4.11.0"
-    webpack-merge "5.8.0"
-    webpack-subresource-integrity "5.1.0"
-  optionalDependencies:
-    esbuild "0.15.5"
-
-"@angular-devkit/build-webpack@0.1402.3":
-  version "0.1402.3"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-webpack/-/build-webpack-0.1402.3.tgz#ce5ce062cfbd029374c234a084d5485754bec367"
-  integrity sha512-d7ZG7dZElJgtPbp2x2dzMv6usqqzz9CH+RtaGueuivIa/Cd061c3D0pi3XuUBvfaS0qENrlnysYhLkuTnUQGcQ==
-  dependencies:
-    "@angular-devkit/architect" "0.1402.3"
-    rxjs "6.6.7"
-
-"@angular-devkit/build-webpack@0.1402.2":
-  version "0.1402.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-webpack/-/build-webpack-0.1402.2.tgz#c5dad9f25350bda8e27595dbe542e286a4562ec3"
-  integrity sha512-/Jbbq7HfKsucbRFu1vhZ9U/GdWgHrIRMqFQttJJTUzvGgPb+5jvIu+9qEO//ORfdamA+NiMGhlWhOvjeELtwxw==
-  dependencies:
-    "@angular-devkit/architect" "0.1402.2"
-    rxjs "6.6.7"
-
-=======
-"@angular-devkit/build-angular@^14.0.0":
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-angular/-/build-angular-14.2.2.tgz#debcca9de3910ee7e053113d708a9d3fbc32f096"
-  integrity sha512-rNX4gIoPpv/DvAIn02zk2SBlNbPOn/0TPMHKVYm2KLmKIfjH6H895BoYuRvYcuDJ9kkAFQR73YaJH7feqE8JfA==
-  dependencies:
-    "@ampproject/remapping" "2.2.0"
-    "@angular-devkit/architect" "0.1402.2"
-    "@angular-devkit/build-webpack" "0.1402.2"
-    "@angular-devkit/core" "14.2.2"
-    "@babel/core" "7.18.10"
-    "@babel/generator" "7.18.12"
-    "@babel/helper-annotate-as-pure" "7.18.6"
-    "@babel/plugin-proposal-async-generator-functions" "7.18.10"
-    "@babel/plugin-transform-async-to-generator" "7.18.6"
-    "@babel/plugin-transform-runtime" "7.18.10"
-    "@babel/preset-env" "7.18.10"
-    "@babel/runtime" "7.18.9"
-    "@babel/template" "7.18.10"
-    "@discoveryjs/json-ext" "0.5.7"
-    "@ngtools/webpack" "14.2.2"
-    ansi-colors "4.1.3"
-    babel-loader "8.2.5"
-    babel-plugin-istanbul "6.1.1"
-    browserslist "^4.9.1"
-    cacache "16.1.2"
-    copy-webpack-plugin "11.0.0"
-    critters "0.0.16"
-    css-loader "6.7.1"
-    esbuild-wasm "0.15.5"
-    glob "8.0.3"
-    https-proxy-agent "5.0.1"
-    inquirer "8.2.4"
-    jsonc-parser "3.1.0"
-    karma-source-map-support "1.4.0"
-    less "4.1.3"
-    less-loader "11.0.0"
-    license-webpack-plugin "4.0.2"
-    loader-utils "3.2.0"
-    mini-css-extract-plugin "2.6.1"
-    minimatch "5.1.0"
-    open "8.4.0"
-    ora "5.4.1"
-    parse5-html-rewriting-stream "6.0.1"
-    piscina "3.2.0"
-    postcss "8.4.16"
-    postcss-import "15.0.0"
-    postcss-loader "7.0.1"
-    postcss-preset-env "7.8.0"
-    regenerator-runtime "0.13.9"
-    resolve-url-loader "5.0.0"
-    rxjs "6.6.7"
-    sass "1.54.4"
-    sass-loader "13.0.2"
-    semver "7.3.7"
-    source-map-loader "4.0.0"
-    source-map-support "0.5.21"
-    stylus "0.59.0"
-    stylus-loader "7.0.0"
-    terser "5.14.2"
-    text-table "0.2.0"
-    tree-kill "1.2.2"
-    tslib "2.4.0"
-    webpack "5.74.0"
-    webpack-dev-middleware "5.3.3"
-    webpack-dev-server "4.11.0"
-    webpack-merge "5.8.0"
-    webpack-subresource-integrity "5.1.0"
-  optionalDependencies:
-    esbuild "0.15.5"
-
-"@angular-devkit/build-webpack@0.1402.2":
-  version "0.1402.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/build-webpack/-/build-webpack-0.1402.2.tgz#c5dad9f25350bda8e27595dbe542e286a4562ec3"
-  integrity sha512-/Jbbq7HfKsucbRFu1vhZ9U/GdWgHrIRMqFQttJJTUzvGgPb+5jvIu+9qEO//ORfdamA+NiMGhlWhOvjeELtwxw==
-  dependencies:
-    "@angular-devkit/architect" "0.1402.2"
-    rxjs "6.6.7"
-
 "@angular-devkit/build-webpack@0.1402.3":
   version "0.1402.3"
   resolved "https://registry.yarnpkg.com/@angular-devkit/build-webpack/-/build-webpack-0.1402.3.tgz#ce5ce062cfbd029374c234a084d5485754bec367"
@@ -378,18 +125,7 @@
     rxjs "6.6.7"
     source-map "0.7.3"
 
-"@angular-devkit/core@14.2.2", "@angular-devkit/core@^14.0.0":
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-14.2.2.tgz#d616ada7c9a0610454da47445e64520a0b34e400"
-  integrity sha512-ofDhTmJqoAkmkJP0duwUaCxDBMxPlc+AWYwgs3rKKZeJBb0d+tchEXHXevD5bYbbRfXtnwM+Vye2XYHhA4nWAA==
-  dependencies:
-    ajv "8.11.0"
-    ajv-formats "2.1.1"
-    jsonc-parser "3.1.0"
-    rxjs "6.6.7"
-    source-map "0.7.4"
-
-"@angular-devkit/core@14.2.3":
+"@angular-devkit/core@14.2.3", "@angular-devkit/core@^14.0.0":
   version "14.2.3"
   resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-14.2.3.tgz#0041de646bbd0c6723bb7affc7033880b5f50cd1"
   integrity sha512-E8bnC6F0xNni4IIKAnIDBDkbi6cOePm4Q/Y9IrTk3wquGTfsiMlQpdnRA0nr+FTN/LT3N08O5dEw2Gd4ff4tGA==
@@ -3204,7 +2940,6 @@
     "@aws-sdk/types" "3.6.1"
     tslib "^1.8.0"
 
-<<<<<<< HEAD
 "@aws-sdk/middleware-stack@3.178.0":
   version "3.178.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/middleware-stack/-/middleware-stack-3.178.0.tgz#42e92ef9aaa3c1fdaca159ac6c24c37629dd4aee"
@@ -3212,30 +2947,6 @@
   dependencies:
     tslib "^2.3.1"
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@aws-sdk/middleware-stack@3.170.0":
-  version "3.170.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/middleware-stack/-/middleware-stack-3.170.0.tgz#5f36fd9fe6bc6d40d93b83177227d6b075f32302"
-  integrity sha512-hspZvuXlmJQBepPrvlv3v7/g+BTJR8dmBz53BqS2J0f1f7Josv/jqBb0LYX9wf0HZ7T7LQsj/JvB1drBIlOBbw==
-  dependencies:
-    tslib "^2.3.1"
-
-"@aws-sdk/middleware-stack@3.171.0":
-  version "3.171.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/middleware-stack/-/middleware-stack-3.171.0.tgz#ea5955bc7ce821785b30820411842a6f3037191c"
-  integrity sha512-0EbZin5J6EsHD/agE8s/TJktLh9aRZe80ZrCBv5ces420NaYNjvbvvsnt0tQw0Q8qv+1H6KFOUcZ5iXzadBy2A==
-  dependencies:
-    tslib "^2.3.1"
-
-=======
-"@aws-sdk/middleware-stack@3.170.0":
-  version "3.170.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/middleware-stack/-/middleware-stack-3.170.0.tgz#5f36fd9fe6bc6d40d93b83177227d6b075f32302"
-  integrity sha512-hspZvuXlmJQBepPrvlv3v7/g+BTJR8dmBz53BqS2J0f1f7Josv/jqBb0LYX9wf0HZ7T7LQsj/JvB1drBIlOBbw==
-  dependencies:
-    tslib "^2.3.1"
-
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 "@aws-sdk/middleware-stack@3.29.0":
   version "3.29.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/middleware-stack/-/middleware-stack-3.29.0.tgz#b7a8a1fb76ea4499dd26f5ddb058608b5cd3d55f"
@@ -3643,31 +3354,10 @@
   resolved "https://registry.yarnpkg.com/@aws-sdk/smithy-client/-/smithy-client-3.178.0.tgz#c7529ce092fa31116f86709e1f972392c8deb6d8"
   integrity sha512-y2uAL3VMKIMZ/6kRAeL/vlIN4qrnmsfYhihm0yYhetdHtaXAN3WRsOpxOEjO3T92KmtQxMvtmRoAN05aVwtgoQ==
   dependencies:
-<<<<<<< HEAD
     "@aws-sdk/middleware-stack" "3.178.0"
     "@aws-sdk/types" "3.178.0"
     tslib "^2.3.1"
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-    "@aws-sdk/middleware-stack" "3.170.0"
-    "@aws-sdk/types" "3.170.0"
-    tslib "^2.3.1"
-
-"@aws-sdk/smithy-client@3.171.0":
-  version "3.171.0"
-  resolved "https://registry.yarnpkg.com/@aws-sdk/smithy-client/-/smithy-client-3.171.0.tgz#1844e80f5612f87b3ac814a14e422f8bf8a094c4"
-  integrity sha512-Q4fYE8uWxDh1Pd9Flo7/Cns1eEg0PmPrMsgHv0za1S3TgVHA6jRq3KZaD6Jcm0H12NPbWv67Cu+O0sMei8oaxA==
-  dependencies:
-    "@aws-sdk/middleware-stack" "3.171.0"
-    "@aws-sdk/types" "3.171.0"
-    tslib "^2.3.1"
-
-=======
-    "@aws-sdk/middleware-stack" "3.170.0"
-    "@aws-sdk/types" "3.170.0"
-    tslib "^2.3.1"
-
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 "@aws-sdk/smithy-client@3.31.0":
   version "3.31.0"
   resolved "https://registry.yarnpkg.com/@aws-sdk/smithy-client/-/smithy-client-3.31.0.tgz#bc18cd0c1504f0c9f708b2fe75559994ce959f56"
@@ -4333,24 +4023,7 @@
   dependencies:
     "@babel/highlight" "^7.18.6"
 
-<<<<<<< HEAD
 "@babel/compat-data@^7.17.7", "@babel/compat-data@^7.18.8", "@babel/compat-data@^7.19.1":
-  version "7.19.1"
-  resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.19.1.tgz#72d647b4ff6a4f82878d184613353af1dd0290f9"
-  integrity sha512-72a9ghR0gnESIa7jBN53U32FOVCEoztyIlKaNoU05zRhEecduGK9L9c3ww7Mp06JiR+0ls0GBPFJQwwtjn9ksg==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@babel/compat-data@^7.17.7", "@babel/compat-data@^7.18.6", "@babel/compat-data@^7.18.8", "@babel/compat-data@^7.19.0":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.19.0.tgz#2a592fd89bacb1fcde68de31bee4f2f2dacb0e86"
-  integrity sha512-y5rqgTTPTmaF5e2nVhOxw+Ur9HDJLsWb6U/KpgUzRZEdPfE6VOubXBKLdbcUTijzRptednSBDQbYZBOSqJxpJw==
-=======
-"@babel/compat-data@^7.17.7", "@babel/compat-data@^7.18.8", "@babel/compat-data@^7.19.0":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.19.0.tgz#2a592fd89bacb1fcde68de31bee4f2f2dacb0e86"
-  integrity sha512-y5rqgTTPTmaF5e2nVhOxw+Ur9HDJLsWb6U/KpgUzRZEdPfE6VOubXBKLdbcUTijzRptednSBDQbYZBOSqJxpJw==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
-
-"@babel/compat-data@^7.19.1":
   version "7.19.1"
   resolved "https://registry.yarnpkg.com/@babel/compat-data/-/compat-data-7.19.1.tgz#72d647b4ff6a4f82878d184613353af1dd0290f9"
   integrity sha512-72a9ghR0gnESIa7jBN53U32FOVCEoztyIlKaNoU05zRhEecduGK9L9c3ww7Mp06JiR+0ls0GBPFJQwwtjn9ksg==
@@ -4398,43 +4071,10 @@
     json5 "^2.2.1"
     semver "^6.3.0"
 
-<<<<<<< HEAD
 "@babel/core@7.19.1", "@babel/core@^7.0.1", "@babel/core@^7.1.0", "@babel/core@^7.11.6", "@babel/core@^7.12.10", "@babel/core@^7.12.3", "@babel/core@^7.14.0", "@babel/core@^7.15.0", "@babel/core@^7.16.0", "@babel/core@^7.17.2", "@babel/core@^7.7.2", "@babel/core@^7.8.0":
   version "7.19.1"
   resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.19.1.tgz#c8fa615c5e88e272564ace3d42fbc8b17bfeb22b"
   integrity sha512-1H8VgqXme4UXCRv7/Wa1bq7RVymKOzC7znjyFM8KiEzwFqcKUKYNoQef4GhdklgNvoBXyW4gYhuBNCM5o1zImw==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@babel/core@7.18.6":
-  version "7.18.6"
-  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.18.6.tgz#54a107a3c298aee3fe5e1947a6464b9b6faca03d"
-  integrity sha512-cQbWBpxcbbs/IUredIPkHiAGULLV8iwgNRMFzvbhEXISp4f3rUUXE5+TIw6KwUWUR3DwyI6gmBRnmAtYaWehwQ==
-  dependencies:
-    "@ampproject/remapping" "^2.1.0"
-    "@babel/code-frame" "^7.18.6"
-    "@babel/generator" "^7.18.6"
-    "@babel/helper-compilation-targets" "^7.18.6"
-    "@babel/helper-module-transforms" "^7.18.6"
-    "@babel/helpers" "^7.18.6"
-    "@babel/parser" "^7.18.6"
-    "@babel/template" "^7.18.6"
-    "@babel/traverse" "^7.18.6"
-    "@babel/types" "^7.18.6"
-    convert-source-map "^1.7.0"
-    debug "^4.1.0"
-    gensync "^1.0.0-beta.2"
-    json5 "^2.2.1"
-    semver "^6.3.0"
-
-"@babel/core@7.19.0", "@babel/core@^7.0.1", "@babel/core@^7.1.0", "@babel/core@^7.11.6", "@babel/core@^7.12.10", "@babel/core@^7.12.3", "@babel/core@^7.14.0", "@babel/core@^7.15.0", "@babel/core@^7.16.0", "@babel/core@^7.17.2", "@babel/core@^7.7.2", "@babel/core@^7.8.0":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.19.0.tgz#d2f5f4f2033c00de8096be3c9f45772563e150c3"
-  integrity sha512-reM4+U7B9ss148rh2n1Qs9ASS+w94irYXga7c2jaQv9RVzpS7Mv1a9rnYYwuDa45G+DkORt9g6An2k/V4d9LbQ==
-=======
-"@babel/core@7.19.1":
-  version "7.19.1"
-  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.19.1.tgz#c8fa615c5e88e272564ace3d42fbc8b17bfeb22b"
-  integrity sha512-1H8VgqXme4UXCRv7/Wa1bq7RVymKOzC7znjyFM8KiEzwFqcKUKYNoQef4GhdklgNvoBXyW4gYhuBNCM5o1zImw==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   dependencies:
     "@ampproject/remapping" "^2.1.0"
     "@babel/code-frame" "^7.18.6"
@@ -4445,27 +4085,6 @@
     "@babel/parser" "^7.19.1"
     "@babel/template" "^7.18.10"
     "@babel/traverse" "^7.19.1"
-    "@babel/types" "^7.19.0"
-    convert-source-map "^1.7.0"
-    debug "^4.1.0"
-    gensync "^1.0.0-beta.2"
-    json5 "^2.2.1"
-    semver "^6.3.0"
-
-"@babel/core@^7.0.1", "@babel/core@^7.1.0", "@babel/core@^7.11.6", "@babel/core@^7.12.10", "@babel/core@^7.12.3", "@babel/core@^7.14.0", "@babel/core@^7.15.0", "@babel/core@^7.16.0", "@babel/core@^7.17.2", "@babel/core@^7.7.2", "@babel/core@^7.8.0":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.19.0.tgz#d2f5f4f2033c00de8096be3c9f45772563e150c3"
-  integrity sha512-reM4+U7B9ss148rh2n1Qs9ASS+w94irYXga7c2jaQv9RVzpS7Mv1a9rnYYwuDa45G+DkORt9g6An2k/V4d9LbQ==
-  dependencies:
-    "@ampproject/remapping" "^2.1.0"
-    "@babel/code-frame" "^7.18.6"
-    "@babel/generator" "^7.19.0"
-    "@babel/helper-compilation-targets" "^7.19.0"
-    "@babel/helper-module-transforms" "^7.19.0"
-    "@babel/helpers" "^7.19.0"
-    "@babel/parser" "^7.19.0"
-    "@babel/template" "^7.18.10"
-    "@babel/traverse" "^7.19.0"
     "@babel/types" "^7.19.0"
     convert-source-map "^1.7.0"
     debug "^4.1.0"
@@ -4506,29 +4125,7 @@
     "@babel/helper-explode-assignable-expression" "^7.18.6"
     "@babel/types" "^7.18.9"
 
-<<<<<<< HEAD
 "@babel/helper-compilation-targets@^7.13.0", "@babel/helper-compilation-targets@^7.17.7", "@babel/helper-compilation-targets@^7.18.9", "@babel/helper-compilation-targets@^7.19.0", "@babel/helper-compilation-targets@^7.19.1":
-  version "7.19.1"
-  resolved "https://registry.yarnpkg.com/@babel/helper-compilation-targets/-/helper-compilation-targets-7.19.1.tgz#7f630911d83b408b76fe584831c98e5395d7a17c"
-  integrity sha512-LlLkkqhCMyz2lkQPvJNdIYU7O5YjWRgC2R4omjCTpZd8u8KMQzZvX4qce+/BluN1rcQiV7BoGUpmQ0LeHerbhg==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@babel/helper-compilation-targets@^7.13.0", "@babel/helper-compilation-targets@^7.17.7", "@babel/helper-compilation-targets@^7.18.6", "@babel/helper-compilation-targets@^7.18.9", "@babel/helper-compilation-targets@^7.19.0":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/helper-compilation-targets/-/helper-compilation-targets-7.19.0.tgz#537ec8339d53e806ed422f1e06c8f17d55b96bb0"
-  integrity sha512-Ai5bNWXIvwDvWM7njqsG3feMlL9hCVQsPYXodsZyLwshYkZVJt59Gftau4VrE8S9IT9asd2uSP1hG6wCNw+sXA==
-=======
-"@babel/helper-compilation-targets@^7.13.0", "@babel/helper-compilation-targets@^7.17.7", "@babel/helper-compilation-targets@^7.18.9", "@babel/helper-compilation-targets@^7.19.0":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/helper-compilation-targets/-/helper-compilation-targets-7.19.0.tgz#537ec8339d53e806ed422f1e06c8f17d55b96bb0"
-  integrity sha512-Ai5bNWXIvwDvWM7njqsG3feMlL9hCVQsPYXodsZyLwshYkZVJt59Gftau4VrE8S9IT9asd2uSP1hG6wCNw+sXA==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
-  dependencies:
-    "@babel/compat-data" "^7.19.0"
-    "@babel/helper-validator-option" "^7.18.6"
-    browserslist "^4.20.2"
-    semver "^6.3.0"
-
-"@babel/helper-compilation-targets@^7.19.1":
   version "7.19.1"
   resolved "https://registry.yarnpkg.com/@babel/helper-compilation-targets/-/helper-compilation-targets-7.19.1.tgz#7f630911d83b408b76fe584831c98e5395d7a17c"
   integrity sha512-LlLkkqhCMyz2lkQPvJNdIYU7O5YjWRgC2R4omjCTpZd8u8KMQzZvX4qce+/BluN1rcQiV7BoGUpmQ0LeHerbhg==
@@ -4667,7 +4264,7 @@
     "@babel/helper-wrap-function" "^7.18.9"
     "@babel/types" "^7.18.9"
 
-"@babel/helper-replace-supers@^7.18.6", "@babel/helper-replace-supers@^7.18.9":
+"@babel/helper-replace-supers@^7.18.6", "@babel/helper-replace-supers@^7.18.9", "@babel/helper-replace-supers@^7.19.1":
   version "7.19.1"
   resolved "https://registry.yarnpkg.com/@babel/helper-replace-supers/-/helper-replace-supers-7.19.1.tgz#e1592a9b4b368aa6bdb8784a711e0bcbf0612b78"
   integrity sha512-T7ahH7wV0Hfs46SFh5Jz3s0B6+o8g3c+7TMxu7xKfmHikg7EAZ3I2Qk9LFhjxXq8sL7UkP5JflezNwoZa8WvWw==
@@ -4742,23 +4339,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-<<<<<<< HEAD
 "@babel/parser@^7.1.0", "@babel/parser@^7.12.11", "@babel/parser@^7.12.7", "@babel/parser@^7.14.0", "@babel/parser@^7.14.7", "@babel/parser@^7.16.8", "@babel/parser@^7.18.10", "@babel/parser@^7.19.1":
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@babel/parser@^7.1.0", "@babel/parser@^7.12.11", "@babel/parser@^7.12.7", "@babel/parser@^7.14.0", "@babel/parser@^7.14.7", "@babel/parser@^7.16.8", "@babel/parser@^7.18.10", "@babel/parser@^7.18.6", "@babel/parser@^7.19.0":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.19.0.tgz#497fcafb1d5b61376959c1c338745ef0577aa02c"
-  integrity sha512-74bEXKX2h+8rrfQUfsBfuZZHzsEs6Eql4pqy/T4Nn6Y9wNPggQOqD6z6pn5Bl8ZfysKouFZT/UXEH94ummEeQw==
-
-"@babel/parser@^7.19.1":
-=======
-"@babel/parser@^7.1.0", "@babel/parser@^7.12.11", "@babel/parser@^7.12.7", "@babel/parser@^7.14.0", "@babel/parser@^7.14.7", "@babel/parser@^7.16.8", "@babel/parser@^7.18.10":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.19.0.tgz#497fcafb1d5b61376959c1c338745ef0577aa02c"
-  integrity sha512-74bEXKX2h+8rrfQUfsBfuZZHzsEs6Eql4pqy/T4Nn6Y9wNPggQOqD6z6pn5Bl8ZfysKouFZT/UXEH94ummEeQw==
-
-"@babel/parser@^7.19.1":
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   version "7.19.1"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.19.1.tgz#6f6d6c2e621aad19a92544cc217ed13f1aac5b4c"
   integrity sha512-h7RCSorm1DdTVGJf3P2Mhj3kdnkmF/EiysUkzS2TdgAYqyjFdMQJbVuXOBej2SBJaXan/lIVtT6KkGbyyq753A==
@@ -4789,32 +4370,10 @@
     "@babel/helper-remap-async-to-generator" "^7.18.9"
     "@babel/plugin-syntax-async-generators" "^7.8.4"
 
-<<<<<<< HEAD
 "@babel/plugin-proposal-async-generator-functions@^7.18.10", "@babel/plugin-proposal-async-generator-functions@^7.19.1":
   version "7.19.1"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-async-generator-functions/-/plugin-proposal-async-generator-functions-7.19.1.tgz#34f6f5174b688529342288cd264f80c9ea9fb4a7"
   integrity sha512-0yu8vNATgLy4ivqMNBIwb1HebCelqN7YX8SL3FDXORv/RqT0zEEWUCH4GH44JsSrvCu6GqnAdR5EBFAPeNBB4Q==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@babel/plugin-proposal-async-generator-functions@7.18.6":
-  version "7.18.6"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-async-generator-functions/-/plugin-proposal-async-generator-functions-7.18.6.tgz#aedac81e6fc12bb643374656dd5f2605bf743d17"
-  integrity sha512-WAz4R9bvozx4qwf74M+sfqPMKfSqwM0phxPTR6iJIi8robgzXwkEgmeJG1gEKhm6sDqT/U9aV3lfcqybIpev8w==
-  dependencies:
-    "@babel/helper-environment-visitor" "^7.18.6"
-    "@babel/helper-plugin-utils" "^7.18.6"
-    "@babel/helper-remap-async-to-generator" "^7.18.6"
-    "@babel/plugin-syntax-async-generators" "^7.8.4"
-
-"@babel/plugin-proposal-async-generator-functions@^7.18.10", "@babel/plugin-proposal-async-generator-functions@^7.18.6", "@babel/plugin-proposal-async-generator-functions@^7.19.0":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-async-generator-functions/-/plugin-proposal-async-generator-functions-7.19.0.tgz#cf5740194f170467df20581712400487efc79ff1"
-  integrity sha512-nhEByMUTx3uZueJ/QkJuSlCfN4FGg+xy+vRsfGQGzSauq5ks2Deid2+05Q3KhfaUjvec1IGhw/Zm3cFm8JigTQ==
-=======
-"@babel/plugin-proposal-async-generator-functions@^7.18.10", "@babel/plugin-proposal-async-generator-functions@^7.19.0":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-async-generator-functions/-/plugin-proposal-async-generator-functions-7.19.0.tgz#cf5740194f170467df20581712400487efc79ff1"
-  integrity sha512-nhEByMUTx3uZueJ/QkJuSlCfN4FGg+xy+vRsfGQGzSauq5ks2Deid2+05Q3KhfaUjvec1IGhw/Zm3cFm8JigTQ==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   dependencies:
     "@babel/helper-environment-visitor" "^7.18.9"
     "@babel/helper-plugin-utils" "^7.19.0"
@@ -5384,7 +4943,6 @@
     babel-plugin-polyfill-regenerator "^0.4.0"
     semver "^6.3.0"
 
-<<<<<<< HEAD
 "@babel/plugin-transform-runtime@^7.15.0", "@babel/plugin-transform-runtime@^7.16.0":
   version "7.19.1"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-7.19.1.tgz#a3df2d7312eea624c7889a2dcd37fd1dfd25b2c6"
@@ -5397,21 +4955,6 @@
     babel-plugin-polyfill-regenerator "^0.4.1"
     semver "^6.3.0"
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@babel/plugin-transform-runtime@7.18.6":
-  version "7.18.6"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-runtime/-/plugin-transform-runtime-7.18.6.tgz#77b14416015ea93367ca06979710f5000ff34ccb"
-  integrity sha512-8uRHk9ZmRSnWqUgyae249EJZ94b0yAGLBIqzZzl+0iEdbno55Pmlt/32JZsHwXD9k/uZj18Aqqk35wBX4CBTXA==
-  dependencies:
-    "@babel/helper-module-imports" "^7.18.6"
-    "@babel/helper-plugin-utils" "^7.18.6"
-    babel-plugin-polyfill-corejs2 "^0.3.1"
-    babel-plugin-polyfill-corejs3 "^0.5.2"
-    babel-plugin-polyfill-regenerator "^0.3.1"
-    semver "^6.3.0"
-
-=======
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 "@babel/plugin-transform-shorthand-properties@^7.0.0", "@babel/plugin-transform-shorthand-properties@^7.12.1", "@babel/plugin-transform-shorthand-properties@^7.18.6":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-shorthand-properties/-/plugin-transform-shorthand-properties-7.18.6.tgz#6d6df7983d67b195289be24909e3f12a8f664dc9"
@@ -5700,44 +5243,7 @@
     "@babel/parser" "^7.18.10"
     "@babel/types" "^7.18.10"
 
-<<<<<<< HEAD
 "@babel/traverse@^7.12.11", "@babel/traverse@^7.12.9", "@babel/traverse@^7.13.0", "@babel/traverse@^7.14.0", "@babel/traverse@^7.16.0", "@babel/traverse@^7.16.8", "@babel/traverse@^7.18.10", "@babel/traverse@^7.19.0", "@babel/traverse@^7.19.1", "@babel/traverse@^7.7.2":
-  version "7.19.1"
-  resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.19.1.tgz#0fafe100a8c2a603b4718b1d9bf2568d1d193347"
-  integrity sha512-0j/ZfZMxKukDaag2PtOPDbwuELqIar6lLskVPPJDjXMXjfLb1Obo/1yjxIGqqAJrmfaTIY3z2wFLAQ7qSkLsuA==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@babel/template@7.18.6":
-  version "7.18.6"
-  resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.18.6.tgz#1283f4993e00b929d6e2d3c72fdc9168a2977a31"
-  integrity sha512-JoDWzPe+wgBsTTgdnIma3iHNFC7YVJoPssVBDjiHfNlyt4YcunDtcDOUmfVDfCK5MfdsaIoX9PkijPhjH3nYUw==
-  dependencies:
-    "@babel/code-frame" "^7.18.6"
-    "@babel/parser" "^7.18.6"
-    "@babel/types" "^7.18.6"
-
-"@babel/traverse@^7.12.11", "@babel/traverse@^7.12.9", "@babel/traverse@^7.13.0", "@babel/traverse@^7.14.0", "@babel/traverse@^7.16.0", "@babel/traverse@^7.16.8", "@babel/traverse@^7.18.10", "@babel/traverse@^7.18.6", "@babel/traverse@^7.18.9", "@babel/traverse@^7.19.0", "@babel/traverse@^7.7.2":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.19.0.tgz#eb9c561c7360005c592cc645abafe0c3c4548eed"
-  integrity sha512-4pKpFRDh+utd2mbRC8JLnlsMUii3PMHjpL6a0SZ4NMZy7YFP9aXORxEhdMVOc9CpWtDF09IkciQLEhK7Ml7gRA==
-=======
-"@babel/traverse@^7.12.11", "@babel/traverse@^7.12.9", "@babel/traverse@^7.13.0", "@babel/traverse@^7.14.0", "@babel/traverse@^7.16.0", "@babel/traverse@^7.16.8", "@babel/traverse@^7.18.10", "@babel/traverse@^7.19.0", "@babel/traverse@^7.7.2":
-  version "7.19.0"
-  resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.19.0.tgz#eb9c561c7360005c592cc645abafe0c3c4548eed"
-  integrity sha512-4pKpFRDh+utd2mbRC8JLnlsMUii3PMHjpL6a0SZ4NMZy7YFP9aXORxEhdMVOc9CpWtDF09IkciQLEhK7Ml7gRA==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
-  dependencies:
-    "@babel/code-frame" "^7.18.6"
-    "@babel/generator" "^7.19.0"
-    "@babel/helper-environment-visitor" "^7.18.9"
-    "@babel/helper-function-name" "^7.19.0"
-    "@babel/helper-hoist-variables" "^7.18.6"
-    "@babel/helper-split-export-declaration" "^7.18.6"
-    "@babel/parser" "^7.19.0"
-    "@babel/types" "^7.19.0"
-    debug "^4.1.0"
-    globals "^11.1.0"
-
-"@babel/traverse@^7.19.1":
   version "7.19.1"
   resolved "https://registry.yarnpkg.com/@babel/traverse/-/traverse-7.19.1.tgz#0fafe100a8c2a603b4718b1d9bf2568d1d193347"
   integrity sha512-0j/ZfZMxKukDaag2PtOPDbwuELqIar6lLskVPPJDjXMXjfLb1Obo/1yjxIGqqAJrmfaTIY3z2wFLAQ7qSkLsuA==
@@ -5944,22 +5450,10 @@
   dependencies:
     "@jridgewell/trace-mapping" "0.3.9"
 
-<<<<<<< HEAD
 "@csstools/postcss-cascade-layers@^1.0.5":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@csstools/postcss-cascade-layers/-/postcss-cascade-layers-1.1.1.tgz#8a997edf97d34071dd2e37ea6022447dd9e795ad"
   integrity sha512-+KdYrpKC5TgomQr2DlZF4lDEpHcoxnj5IGddYYfBWJAKfj1JtuHUIqMa+E1pJJ+z3kvDViWMqyqPlG4Ja7amQA==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@csstools/postcss-cascade-layers@^1.0.4", "@csstools/postcss-cascade-layers@^1.0.5":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@csstools/postcss-cascade-layers/-/postcss-cascade-layers-1.0.6.tgz#a52da13b91fc184a52337b4e938c3d3188e537b0"
-  integrity sha512-ei4Vh4AJwTCXTNj7uzwduoZDO7nLPksQ0TI7OzUlyFq4P4Uhu6hU7R4AlLimDP/s6D3PQdHmRL4f7UOy370UHA==
-=======
-"@csstools/postcss-cascade-layers@^1.0.5":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@csstools/postcss-cascade-layers/-/postcss-cascade-layers-1.0.6.tgz#a52da13b91fc184a52337b4e938c3d3188e537b0"
-  integrity sha512-ei4Vh4AJwTCXTNj7uzwduoZDO7nLPksQ0TI7OzUlyFq4P4Uhu6hU7R4AlLimDP/s6D3PQdHmRL4f7UOy370UHA==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   dependencies:
     "@csstools/selector-specificity" "^2.0.2"
     postcss-selector-parser "^6.0.10"
@@ -6338,7 +5832,6 @@
     teeny-request "^8.0.0"
     uuid "^8.0.0"
 
-<<<<<<< HEAD
 "@graphql-codegen/cli@2.12.1":
   version "2.12.1"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.12.1.tgz#0a8533015c16cfe5626611f836321dd281a2b382"
@@ -6381,17 +5874,6 @@
   version "2.12.2"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.12.2.tgz#6122fbaca462b788ad7811135b3fc251b46cf6c4"
   integrity sha512-cM2BS1FDWiZKpCFxdmhKsUzlNFs8X54yJm9djsPdz36yzXV5Sa4t6HQzr0vAX8cpc9RneBBi3rCkozRuRbBtjA==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@graphql-codegen/cli@2.12.0", "@graphql-codegen/cli@^2.6.2":
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.12.0.tgz#ae57ca66fac7b0b5b8cba5b26ca9ccb5885ae2d4"
-  integrity sha512-esaMiiuypAtJNiZUhGdFmG0gTMEF5dYkqP/7I04egxSragwbIETU8gOl6/gHdLSAV5su7dgfIEZNdWmGCOWAbg==
-=======
-"@graphql-codegen/cli@2.12.1":
-  version "2.12.1"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.12.1.tgz#0a8533015c16cfe5626611f836321dd281a2b382"
-  integrity sha512-kBYArVrIceKmNy2qZeiqoAHuNFUVRuVL3f0XX3VproXNmCGjLzcYosPmzV8+2H9mjjDU+vq5mLddAc8oVNGz9g==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   dependencies:
     "@graphql-codegen/core" "2.6.2"
     "@graphql-codegen/plugin-helpers" "^2.7.1"
@@ -6406,44 +5888,6 @@
     "@graphql-tools/url-loader" "^7.13.2"
     "@graphql-tools/utils" "^8.9.0"
     "@whatwg-node/fetch" "^0.4.0"
-    ansi-escapes "^4.3.1"
-    chalk "^4.1.0"
-    chokidar "^3.5.2"
-    cosmiconfig "^7.0.0"
-    cosmiconfig-typescript-loader "^4.0.0"
-    debounce "^1.2.0"
-    detect-indent "^6.0.0"
-    graphql-config "^4.3.5"
-    inquirer "^8.0.0"
-    is-glob "^4.0.1"
-    json-to-pretty-yaml "^1.2.2"
-    listr2 "^4.0.5"
-    log-symbols "^4.0.0"
-    mkdirp "^1.0.4"
-    string-env-interpolation "^1.0.1"
-    ts-log "^2.2.3"
-    tslib "^2.4.0"
-    yaml "^1.10.0"
-    yargs "^17.0.0"
-
-"@graphql-codegen/cli@^2.6.2":
-  version "2.12.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/cli/-/cli-2.12.0.tgz#ae57ca66fac7b0b5b8cba5b26ca9ccb5885ae2d4"
-  integrity sha512-esaMiiuypAtJNiZUhGdFmG0gTMEF5dYkqP/7I04egxSragwbIETU8gOl6/gHdLSAV5su7dgfIEZNdWmGCOWAbg==
-  dependencies:
-    "@graphql-codegen/core" "2.6.2"
-    "@graphql-codegen/plugin-helpers" "^2.7.0"
-    "@graphql-tools/apollo-engine-loader" "^7.3.6"
-    "@graphql-tools/code-file-loader" "^7.3.1"
-    "@graphql-tools/git-loader" "^7.2.1"
-    "@graphql-tools/github-loader" "^7.3.6"
-    "@graphql-tools/graphql-file-loader" "^7.5.0"
-    "@graphql-tools/json-file-loader" "^7.4.1"
-    "@graphql-tools/load" "^7.7.1"
-    "@graphql-tools/prisma-loader" "^7.2.7"
-    "@graphql-tools/url-loader" "^7.13.2"
-    "@graphql-tools/utils" "^8.9.0"
-    "@whatwg-node/fetch" "^0.3.0"
     ansi-escapes "^4.3.1"
     chalk "^4.1.0"
     chokidar "^3.5.2"
@@ -6492,31 +5936,7 @@
     change-case-all "1.0.14"
     tslib "~2.4.0"
 
-<<<<<<< HEAD
 "@graphql-codegen/plugin-helpers@^2.6.2", "@graphql-codegen/plugin-helpers@^2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-2.7.1.tgz#de999bdf8a1485f6f3c4c5f21cfb038e99d67e3e"
-  integrity sha512-wpEShhwbQp8pqXolnSCNaj0pU91LbuBvYHpYqm96TUqyeKQYAYRVmw3JIt0g8UQpKYhg8lYIDwWdcINOYqkGLg==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@graphql-codegen/plugin-helpers@^2.6.2", "@graphql-codegen/plugin-helpers@^2.7.0":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-2.7.0.tgz#54ba1d5fb3ddad8a3634bc2e09b023eb183e574c"
-  integrity sha512-+a2VP/4Ob0fwP8YLrQ/hhYlAA9UZUdDFNqwS543DmyiGFUkNIsa7TnTsE/mBDKJSMsCVWLw78949fCpzjyw/9Q==
-=======
-"@graphql-codegen/plugin-helpers@^2.6.2":
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-2.7.0.tgz#54ba1d5fb3ddad8a3634bc2e09b023eb183e574c"
-  integrity sha512-+a2VP/4Ob0fwP8YLrQ/hhYlAA9UZUdDFNqwS543DmyiGFUkNIsa7TnTsE/mBDKJSMsCVWLw78949fCpzjyw/9Q==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
-  dependencies:
-    "@graphql-tools/utils" "^8.8.0"
-    change-case-all "1.0.14"
-    common-tags "1.8.2"
-    import-from "4.0.0"
-    lodash "~4.17.0"
-    tslib "~2.4.0"
-
-"@graphql-codegen/plugin-helpers@^2.7.1":
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-2.7.1.tgz#de999bdf8a1485f6f3c4c5f21cfb038e99d67e3e"
   integrity sha512-wpEShhwbQp8pqXolnSCNaj0pU91LbuBvYHpYqm96TUqyeKQYAYRVmw3JIt0g8UQpKYhg8lYIDwWdcINOYqkGLg==
@@ -6615,52 +6035,6 @@
     tslib "^2.4.0"
     value-or-promise "1.0.11"
 
-<<<<<<< HEAD
-"@graphql-tools/batch-execute@8.5.6":
-  version "8.5.6"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-execute/-/batch-execute-8.5.6.tgz#476c2f9af1c302567e798d63063f1a2dfaad754a"
-  integrity sha512-33vMvVDLBKsNJVNhcySVXF+zkcRL/GRs1Lt+MxygrYCypcAPpFm+amE2y9vOCFufuaKExIX7Lonnmxu19vPzaQ==
-  dependencies:
-    "@graphql-tools/utils" "8.10.0"
-    dataloader "2.1.0"
-    tslib "^2.4.0"
-    value-or-promise "1.0.11"
-
-"@graphql-tools/code-file-loader@^7.3.0":
-  version "7.3.3"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/code-file-loader/-/code-file-loader-7.3.3.tgz#fdcf3da6532b81b120f94c0e64ea1695cd7e6cc3"
-  integrity sha512-si4JFNLaM2hsTWUBLsLpf6t/dGy5Pen6F8348zc+Iao7Y8hgENBim11NxL61NbeJL5TD4v3E+tvf5CnAONZKaQ==
-  dependencies:
-    "@graphql-tools/graphql-tag-pluck" "7.3.3"
-    "@graphql-tools/utils" "8.10.0"
-    globby "^11.0.3"
-    tslib "^2.4.0"
-    unixify "^1.0.0"
-
-||||||| parent of 270d8a060 (chore(deps): yarn lock fix)
-"@graphql-tools/batch-execute@8.5.3":
-  version "8.5.3"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/batch-execute/-/batch-execute-8.5.3.tgz#a484063a3f6a625e5d20263e06aa965389038efb"
-  integrity sha512-dvP1bM02/NSDuAS5A6sLIUUJgs0fuMSk3Ib2jc3pL7HG7jzm/IXfvPURs48pJlMnxcawjVDC8fLh1oWfjmoAGg==
-  dependencies:
-    "@graphql-tools/utils" "8.10.0"
-    dataloader "2.1.0"
-    tslib "^2.4.0"
-    value-or-promise "1.0.11"
-
-"@graphql-tools/code-file-loader@^7.3.0":
-  version "7.3.3"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/code-file-loader/-/code-file-loader-7.3.3.tgz#fdcf3da6532b81b120f94c0e64ea1695cd7e6cc3"
-  integrity sha512-si4JFNLaM2hsTWUBLsLpf6t/dGy5Pen6F8348zc+Iao7Y8hgENBim11NxL61NbeJL5TD4v3E+tvf5CnAONZKaQ==
-  dependencies:
-    "@graphql-tools/graphql-tag-pluck" "7.3.3"
-    "@graphql-tools/utils" "8.10.0"
-    globby "^11.0.3"
-    tslib "^2.4.0"
-    unixify "^1.0.0"
-
-=======
->>>>>>> 270d8a060 (chore(deps): yarn lock fix)
 "@graphql-tools/code-file-loader@^7.3.1":
   version "7.3.6"
   resolved "https://registry.yarnpkg.com/@graphql-tools/code-file-loader/-/code-file-loader-7.3.6.tgz#3e6bdd4dc93c592be3d6fbcc2c2bad1228ca0f8d"
@@ -6891,72 +6265,6 @@
     "@graphql-tools/utils" "8.12.0"
     "@graphql-tools/wrap" "9.2.1"
     "@types/ws" "^8.0.0"
-<<<<<<< HEAD
-    "@whatwg-node/fetch" "^0.4.0"
-    dset "^3.1.2"
-    extract-files "^11.0.0"
-    graphql-ws "^5.4.1"
-    isomorphic-ws "^5.0.0"
-    meros "^1.1.4"
-    sync-fetch "^0.4.0"
-    tslib "^2.4.0"
-    value-or-promise "^1.0.11"
-    ws "^8.3.0"
-
-||||||| parent of 270d8a060 (chore(deps): yarn lock fix)
-    "@whatwg-node/fetch" "^0.2.4"
-    dset "^3.1.2"
-    extract-files "^11.0.0"
-    graphql-ws "^5.4.1"
-    isomorphic-ws "^5.0.0"
-    meros "^1.1.4"
-    tslib "^2.4.0"
-    value-or-promise "^1.0.11"
-    ws "^8.3.0"
-
-"@graphql-tools/url-loader@7.13.5", "@graphql-tools/url-loader@^7.12.1":
-  version "7.13.5"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/url-loader/-/url-loader-7.13.5.tgz#e2dff16cfed6191b0454ea8388130312e60c34c0"
-  integrity sha512-p0h0foOjikd9q4RvN1ZQxl//UJ1oHJf1cA5qxwqiDKqsbLx27EYNZrRNT52zx8mDR7/vmAYcS1dlmLRKhukEXw==
-  dependencies:
-    "@ardatan/sync-fetch" "0.0.1"
-    "@graphql-tools/delegate" "9.0.1"
-    "@graphql-tools/utils" "8.10.0"
-    "@graphql-tools/wrap" "9.0.1"
-    "@n1ru4l/graphql-live-query" "^0.10.0"
-    "@types/ws" "^8.0.0"
-    "@whatwg-node/fetch" "^0.2.4"
-    dset "^3.1.2"
-    extract-files "^11.0.0"
-    graphql-ws "^5.4.1"
-    isomorphic-ws "^5.0.0"
-    meros "^1.1.4"
-    tslib "^2.4.0"
-    value-or-promise "^1.0.11"
-    ws "^8.3.0"
-
-"@graphql-tools/url-loader@^7.9.7":
-  version "7.13.1"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/url-loader/-/url-loader-7.13.1.tgz#eea5b9db3194611a9305ebe0bbf9f5e74390de74"
-  integrity sha512-98B+HHbp/nhpnzRDS2BZGMAqJLD6aWTyjXyKastcPozdNm3AwAlZmdLt+2ypFeuqbsqUSNaGW5gWyPCQ4PC4MA==
-  dependencies:
-    "@graphql-tools/delegate" "8.8.1"
-    "@graphql-tools/utils" "8.9.0"
-    "@graphql-tools/wrap" "8.5.1"
-    "@n1ru4l/graphql-live-query" "^0.9.0"
-    "@types/ws" "^8.0.0"
-    "@whatwg-node/fetch" "^0.0.2"
-    dset "^3.1.2"
-    extract-files "^11.0.0"
-    graphql-ws "^5.4.1"
-    isomorphic-ws "^5.0.0"
-    meros "^1.1.4"
-    sync-fetch "^0.4.0"
-    tslib "^2.4.0"
-    value-or-promise "^1.0.11"
-    ws "^8.3.0"
-
-=======
     "@whatwg-node/fetch" "^0.4.0"
     dset "^3.1.2"
     extract-files "^11.0.0"
@@ -6967,7 +6275,6 @@
     value-or-promise "^1.0.11"
     ws "^8.3.0"
 
->>>>>>> 270d8a060 (chore(deps): yarn lock fix)
 "@graphql-tools/utils@8.0.2":
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/@graphql-tools/utils/-/utils-8.0.2.tgz#795a8383cdfdc89855707d62491c576f439f3c51"
@@ -8335,28 +7642,6 @@
   integrity sha512-ogxcK7fj4zXCxCVJXzX2+jbVCfvC7ehbvbD5oWXT7GFajUIvA8FSXQzapUPAQEqFbjxgFzhjMFBApMaOcfleIQ==
   dependencies:
     tslib "^2.0.0"
-
-<<<<<<< HEAD
-"@ngtools/webpack@14.2.3":
-  version "14.2.3"
-  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-14.2.3.tgz#ce693ebaff5844f86ef2e93cd84c9710dc886e0a"
-  integrity sha512-/9bOlmpx7a5P8QhjmggxEJ6LX5qvfkBZhxM8Orjr6ZjJcmAfm+3wiUDzU3EM+5M0YV3y3+dvQpn6Jrwy9y4rfQ==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@ngtools/webpack@14.1.3":
-  version "14.1.3"
-  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-14.1.3.tgz#5ab26ce86f3ccc358c1dde4f9186ea058379e4bc"
-  integrity sha512-tP2aiWKezhOVcR/PhVHcxKohO4ShKrhD42wgbJPbcqHeenOv1Hf5nW1nyUviqeF8QbVmPdBPF/ZOB8hIq5o6sw==
-
-"@ngtools/webpack@14.2.2":
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-14.2.2.tgz#f001cc7373e88c3540cfb069713ed48f889d1bc0"
-  integrity sha512-mjHv5DPsK6QP/D4zi6Oc4gMEZGNYv6Hmw/xJ1ZZTjSxgKujmHx2keDLSJHZpoLtbHRr+FHfWNnPfPz9dWYrlYQ==
-=======
-"@ngtools/webpack@14.2.2":
-  version "14.2.2"
-  resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-14.2.2.tgz#f001cc7373e88c3540cfb069713ed48f889d1bc0"
-  integrity sha512-mjHv5DPsK6QP/D4zi6Oc4gMEZGNYv6Hmw/xJ1ZZTjSxgKujmHx2keDLSJHZpoLtbHRr+FHfWNnPfPz9dWYrlYQ==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 
 "@ngtools/webpack@14.2.3":
   version "14.2.3"
@@ -10457,27 +9742,10 @@
     "@types/node" "*"
     fastify "^3.14.2"
 
-<<<<<<< HEAD
 "@types/aws-lambda@*", "@types/aws-lambda@8.10.106":
   version "8.10.106"
   resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.106.tgz#8f64c61c978e46a592044b5a697cb80ea9a542d3"
   integrity sha512-yzgMaql7aW1by1XuhKhovuhLyK/1A60lapFXDXXBeHmoyRGQFO2T8lkL3g8hAhHoW5PEvqPJFWPd8jvXiRnxeQ==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@types/aws-lambda@*":
-  version "8.10.104"
-  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.104.tgz#01ec1d55a08bdf1201150d9ecae39ff7cca9ff4a"
-  integrity sha512-HXZJH8aBa06re9NCtFudOr21izYZycgXIVjd8vFBSNSf6Ca4GYD77TfKqwYgcDqv4olqj5KK+Ks7Xi5IXFbNGA==
-
-"@types/aws-lambda@8.10.104":
-  version "8.10.104"
-  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.104.tgz#01ec1d55a08bdf1201150d9ecae39ff7cca9ff4a"
-  integrity sha512-HXZJH8aBa06re9NCtFudOr21izYZycgXIVjd8vFBSNSf6Ca4GYD77TfKqwYgcDqv4olqj5KK+Ks7Xi5IXFbNGA==
-=======
-"@types/aws-lambda@*", "@types/aws-lambda@8.10.104":
-  version "8.10.104"
-  resolved "https://registry.yarnpkg.com/@types/aws-lambda/-/aws-lambda-8.10.104.tgz#01ec1d55a08bdf1201150d9ecae39ff7cca9ff4a"
-  integrity sha512-HXZJH8aBa06re9NCtFudOr21izYZycgXIVjd8vFBSNSf6Ca4GYD77TfKqwYgcDqv4olqj5KK+Ks7Xi5IXFbNGA==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 
 "@types/aws-serverless-express@3.3.5":
   version "3.3.5"
@@ -11229,7 +10497,6 @@
     "@typescript-eslint/types" "5.37.0"
     "@typescript-eslint/visitor-keys" "5.37.0"
 
-<<<<<<< HEAD
 "@typescript-eslint/scope-manager@5.38.1":
   version "5.38.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-5.38.1.tgz#f87b289ef8819b47189351814ad183e8801d5764"
@@ -11238,17 +10505,6 @@
     "@typescript-eslint/types" "5.38.1"
     "@typescript-eslint/visitor-keys" "5.38.1"
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@typescript-eslint/scope-manager@5.37.0":
-  version "5.37.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/scope-manager/-/scope-manager-5.37.0.tgz#044980e4f1516a774a418dafe701a483a6c9f9ca"
-  integrity sha512-F67MqrmSXGd/eZnujjtkPgBQzgespu/iCZ+54Ok9X5tALb9L2v3G+QBSoWkXG0p3lcTJsL+iXz5eLUEdSiJU9Q==
-  dependencies:
-    "@typescript-eslint/types" "5.37.0"
-    "@typescript-eslint/visitor-keys" "5.37.0"
-
-=======
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 "@typescript-eslint/type-utils@5.31.0":
   version "5.31.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/type-utils/-/type-utils-5.31.0.tgz#70a0b7201360b5adbddb0c36080495aa08f6f3d9"
@@ -11268,7 +10524,6 @@
     debug "^4.3.4"
     tsutils "^3.21.0"
 
-<<<<<<< HEAD
 "@typescript-eslint/type-utils@5.38.1":
   version "5.38.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/type-utils/-/type-utils-5.38.1.tgz#7f038fcfcc4ade4ea76c7c69b2aa25e6b261f4c1"
@@ -11279,19 +10534,6 @@
     debug "^4.3.4"
     tsutils "^3.21.0"
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@typescript-eslint/type-utils@5.37.0":
-  version "5.37.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/type-utils/-/type-utils-5.37.0.tgz#43ed2f567ada49d7e33a6e4b6f9babd060445fe5"
-  integrity sha512-BSx/O0Z0SXOF5tY0bNTBcDEKz2Ec20GVYvq/H/XNKiUorUFilH7NPbFUuiiyzWaSdN3PA8JV0OvYx0gH/5aFAQ==
-  dependencies:
-    "@typescript-eslint/typescript-estree" "5.37.0"
-    "@typescript-eslint/utils" "5.37.0"
-    debug "^4.3.4"
-    tsutils "^3.21.0"
-
-=======
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 "@typescript-eslint/types@5.31.0":
   version "5.31.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-5.31.0.tgz#7aa389122b64b18e473c1672fb3b8310e5f07a9a"
@@ -11302,20 +10544,11 @@
   resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-5.37.0.tgz#09e4870a5f3af7af3f84e08d792644a87d232261"
   integrity sha512-3frIJiTa5+tCb2iqR/bf7XwU20lnU05r/sgPJnRpwvfZaqCJBrl8Q/mw9vr3NrNdB/XtVyMA0eppRMMBqdJ1bA==
 
-<<<<<<< HEAD
 "@typescript-eslint/types@5.38.1":
   version "5.38.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-5.38.1.tgz#74f9d6dcb8dc7c58c51e9fbc6653ded39e2e225c"
   integrity sha512-QTW1iHq1Tffp9lNfbfPm4WJabbvpyaehQ0SrvVK2yfV79SytD9XDVxqiPvdrv2LK7DGSFo91TB2FgWanbJAZXg==
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@typescript-eslint/types@5.37.0":
-  version "5.37.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/types/-/types-5.37.0.tgz#09e4870a5f3af7af3f84e08d792644a87d232261"
-  integrity sha512-3frIJiTa5+tCb2iqR/bf7XwU20lnU05r/sgPJnRpwvfZaqCJBrl8Q/mw9vr3NrNdB/XtVyMA0eppRMMBqdJ1bA==
-
-=======
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 "@typescript-eslint/typescript-estree@5.31.0":
   version "5.31.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-5.31.0.tgz#eb92970c9d6e3946690d50c346fb9b1d745ee882"
@@ -11342,7 +10575,6 @@
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-<<<<<<< HEAD
 "@typescript-eslint/typescript-estree@5.38.1":
   version "5.38.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-5.38.1.tgz#657d858d5d6087f96b638ee383ee1cff52605a1e"
@@ -11356,22 +10588,6 @@
     semver "^7.3.7"
     tsutils "^3.21.0"
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@typescript-eslint/typescript-estree@5.37.0":
-  version "5.37.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/typescript-estree/-/typescript-estree-5.37.0.tgz#956dcf5c98363bcb97bdd5463a0a86072ff79355"
-  integrity sha512-JkFoFIt/cx59iqEDSgIGnQpCTRv96MQnXCYvJi7QhBC24uyuzbD8wVbajMB1b9x4I0octYFJ3OwjAwNqk1AjDA==
-  dependencies:
-    "@typescript-eslint/types" "5.37.0"
-    "@typescript-eslint/visitor-keys" "5.37.0"
-    debug "^4.3.4"
-    globby "^11.1.0"
-    is-glob "^4.0.3"
-    semver "^7.3.7"
-    tsutils "^3.21.0"
-
-=======
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 "@typescript-eslint/utils@5.31.0":
   version "5.31.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-5.31.0.tgz#e146fa00dca948bfe547d665b2138a2dc1b79acd"
@@ -11396,7 +10612,6 @@
     eslint-scope "^5.1.1"
     eslint-utils "^3.0.0"
 
-<<<<<<< HEAD
 "@typescript-eslint/utils@5.38.1":
   version "5.38.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-5.38.1.tgz#e3ac37d7b33d1362bb5adf4acdbe00372fb813ef"
@@ -11409,21 +10624,6 @@
     eslint-scope "^5.1.1"
     eslint-utils "^3.0.0"
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@typescript-eslint/utils@5.37.0":
-  version "5.37.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/utils/-/utils-5.37.0.tgz#7784cb8e91390c4f90ccaffd24a0cf9874df81b2"
-  integrity sha512-jUEJoQrWbZhmikbcWSMDuUSxEE7ID2W/QCV/uz10WtQqfOuKZUqFGjqLJ+qhDd17rjgp+QJPqTdPIBWwoob2NQ==
-  dependencies:
-    "@types/json-schema" "^7.0.9"
-    "@typescript-eslint/scope-manager" "5.37.0"
-    "@typescript-eslint/types" "5.37.0"
-    "@typescript-eslint/typescript-estree" "5.37.0"
-    eslint-scope "^5.1.1"
-    eslint-utils "^3.0.0"
-
-=======
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 "@typescript-eslint/visitor-keys@5.31.0":
   version "5.31.0"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-5.31.0.tgz#b0eca264df01ce85dceb76aebff3784629258f54"
@@ -11440,7 +10640,6 @@
     "@typescript-eslint/types" "5.37.0"
     eslint-visitor-keys "^3.3.0"
 
-<<<<<<< HEAD
 "@typescript-eslint/visitor-keys@5.38.1":
   version "5.38.1"
   resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-5.38.1.tgz#508071bfc6b96d194c0afe6a65ad47029059edbc"
@@ -11449,17 +10648,6 @@
     "@typescript-eslint/types" "5.38.1"
     eslint-visitor-keys "^3.3.0"
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-"@typescript-eslint/visitor-keys@5.37.0":
-  version "5.37.0"
-  resolved "https://registry.yarnpkg.com/@typescript-eslint/visitor-keys/-/visitor-keys-5.37.0.tgz#7b72dd343295ea11e89b624995abc7103c554eee"
-  integrity sha512-Hp7rT4cENBPIzMwrlehLW/28EVCOcE9U1Z1BQTc8EA8v5qpr7GRGuG+U58V5tTY48zvUOA3KHvw3rA8tY9fbdA==
-  dependencies:
-    "@typescript-eslint/types" "5.37.0"
-    eslint-visitor-keys "^3.3.0"
-
-=======
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 "@ungap/promise-all-settled@1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@ungap/promise-all-settled/-/promise-all-settled-1.1.2.tgz#aa58042711d6e3275dd37dc597e5d31e8c290a44"
@@ -11752,7 +10940,6 @@
     "@peculiar/webcrypto" "^1.4.0"
     abort-controller "^3.0.0"
     busboy "^1.6.0"
-    event-target-polyfill "^0.0.3"
     form-data-encoder "^1.7.1"
     formdata-node "^4.3.1"
     node-fetch "^2.6.7"
@@ -12750,37 +11937,7 @@ auto-bind@~4.0.0:
   resolved "https://registry.yarnpkg.com/auto-bind/-/auto-bind-4.0.0.tgz#e3589fc6c2da8f7ca43ba9f84fa52a744fc997fb"
   integrity sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==
 
-<<<<<<< HEAD
 autoprefixer@^10.2.5, autoprefixer@^10.4.8:
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-autoprefixer@^10.2.5, autoprefixer@^10.4.7, autoprefixer@^10.4.8:
-  version "10.4.10"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.10.tgz#a1d8891d1516155eb13a772b1289efdc61de14ef"
-  integrity sha512-nMaiDARyp1e74c8IeAXkr+BmFKa8By4Zak7tyaNPF09Iu39WFpNXOWrVirmXjKr+5cOyERwvtbMOLYz6iBJYgQ==
-  dependencies:
-    browserslist "^4.21.3"
-    caniuse-lite "^1.0.30001399"
-    fraction.js "^4.2.0"
-    normalize-range "^0.1.2"
-    picocolors "^1.0.0"
-    postcss-value-parser "^4.2.0"
-
-autoprefixer@^10.4.8:
-=======
-autoprefixer@^10.2.5:
-  version "10.4.10"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.10.tgz#a1d8891d1516155eb13a772b1289efdc61de14ef"
-  integrity sha512-nMaiDARyp1e74c8IeAXkr+BmFKa8By4Zak7tyaNPF09Iu39WFpNXOWrVirmXjKr+5cOyERwvtbMOLYz6iBJYgQ==
-  dependencies:
-    browserslist "^4.21.3"
-    caniuse-lite "^1.0.30001399"
-    fraction.js "^4.2.0"
-    normalize-range "^0.1.2"
-    picocolors "^1.0.0"
-    postcss-value-parser "^4.2.0"
-
-autoprefixer@^10.4.8:
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   version "10.4.12"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-10.4.12.tgz#183f30bf0b0722af54ee5ef257f7d4320bb33129"
   integrity sha512-WrCGV9/b97Pa+jtwf5UGaRjgQIg7OK3D06GnoYoZNcG1Xb8Gt3EfuKjlhh9i/VtT16g6PYjZ69jdJ2g8FxSC4Q==
@@ -13163,22 +12320,7 @@ babel-plugin-named-exports-order@^0.0.2:
   resolved "https://registry.yarnpkg.com/babel-plugin-named-exports-order/-/babel-plugin-named-exports-order-0.0.2.tgz#ae14909521cf9606094a2048239d69847540cb09"
   integrity sha512-OgOYHOLoRK+/mvXU9imKHlG6GkPLYrUCvFXG/CM93R/aNNO8pOOF4aS+S8CCHMDQoNSeiOYEZb/G6RwL95Jktw==
 
-<<<<<<< HEAD
 babel-plugin-polyfill-corejs2@^0.3.2, babel-plugin-polyfill-corejs2@^0.3.3:
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-babel-plugin-polyfill-corejs2@^0.3.1, babel-plugin-polyfill-corejs2@^0.3.2:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/babel-plugin-polyfill-corejs2/-/babel-plugin-polyfill-corejs2-0.3.3.tgz#5d1bd3836d0a19e1b84bbf2d9640ccb6f951c122"
-  integrity sha512-8hOdmFYFSZhqg2C/JgLUQ+t52o5nirNwaWM2B9LWteozwIvM14VSwdsCAUET10qT+kmySAlseadmfeeSWFCy+Q==
-  dependencies:
-    "@babel/compat-data" "^7.17.7"
-    "@babel/helper-define-polyfill-provider" "^0.3.3"
-    semver "^6.1.1"
-
-babel-plugin-polyfill-corejs2@^0.3.2:
-=======
-babel-plugin-polyfill-corejs2@^0.3.2:
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-polyfill-corejs2/-/babel-plugin-polyfill-corejs2-0.3.3.tgz#5d1bd3836d0a19e1b84bbf2d9640ccb6f951c122"
   integrity sha512-8hOdmFYFSZhqg2C/JgLUQ+t52o5nirNwaWM2B9LWteozwIvM14VSwdsCAUET10qT+kmySAlseadmfeeSWFCy+Q==
@@ -13203,7 +12345,15 @@ babel-plugin-polyfill-corejs3@^0.5.3:
     "@babel/helper-define-polyfill-provider" "^0.3.2"
     core-js-compat "^3.21.0"
 
-babel-plugin-polyfill-regenerator@^0.4.0:
+babel-plugin-polyfill-corejs3@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-polyfill-corejs3/-/babel-plugin-polyfill-corejs3-0.6.0.tgz#56ad88237137eade485a71b52f72dbed57c6230a"
+  integrity sha512-+eHqR6OPcBhJOGgsIar7xoAB1GcSwVUA3XjAd7HJNzOXT4wv6/H7KIdA/Nc60cvUlDbKApmqNvD1B1bzOt4nyA==
+  dependencies:
+    "@babel/helper-define-polyfill-provider" "^0.3.3"
+    core-js-compat "^3.25.1"
+
+babel-plugin-polyfill-regenerator@^0.4.0, babel-plugin-polyfill-regenerator@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-polyfill-regenerator/-/babel-plugin-polyfill-regenerator-0.4.1.tgz#390f91c38d90473592ed43351e801a9d3e0fd747"
   integrity sha512-NtQGmyQDXjQqQ+IzRkBVwEOz9lQ4zxAQZgoAYEtU9dJjnl1Oc98qnN7jcp+bE7O7aYzVpavXE3/VKXNzUbh7aw==
@@ -13788,33 +12938,7 @@ browserify@^17.0.0:
     vm-browserify "^1.0.0"
     xtend "^4.0.0"
 
-<<<<<<< HEAD
 browserslist@^4.0.0, browserslist@^4.12.0, browserslist@^4.14.5, browserslist@^4.16.6, browserslist@^4.18.1, browserslist@^4.20.3, browserslist@^4.21.3, browserslist@^4.21.4, browserslist@^4.9.1:
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-browserslist@^4.0.0, browserslist@^4.12.0, browserslist@^4.14.5, browserslist@^4.16.6, browserslist@^4.18.1, browserslist@^4.20.2, browserslist@^4.20.3, browserslist@^4.21.0, browserslist@^4.21.3, browserslist@^4.9.1:
-  version "4.21.3"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.21.3.tgz#5df277694eb3c48bc5c4b05af3e8b7e09c5a6d1a"
-  integrity sha512-898rgRXLAyRkM1GryrrBHGkqA5hlpkV5MhtZwg9QXeiyLUYs2k00Un05aX5l2/yJIOObYKOpS2JNo8nJDE7fWQ==
-  dependencies:
-    caniuse-lite "^1.0.30001370"
-    electron-to-chromium "^1.4.202"
-    node-releases "^2.0.6"
-    update-browserslist-db "^1.0.5"
-
-browserslist@^4.21.4:
-=======
-browserslist@^4.0.0, browserslist@^4.12.0, browserslist@^4.14.5, browserslist@^4.16.6, browserslist@^4.18.1, browserslist@^4.20.3, browserslist@^4.21.3, browserslist@^4.9.1:
-  version "4.21.3"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.21.3.tgz#5df277694eb3c48bc5c4b05af3e8b7e09c5a6d1a"
-  integrity sha512-898rgRXLAyRkM1GryrrBHGkqA5hlpkV5MhtZwg9QXeiyLUYs2k00Un05aX5l2/yJIOObYKOpS2JNo8nJDE7fWQ==
-  dependencies:
-    caniuse-lite "^1.0.30001370"
-    electron-to-chromium "^1.4.202"
-    node-releases "^2.0.6"
-    update-browserslist-db "^1.0.5"
-
-browserslist@^4.21.4:
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   version "4.21.4"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.21.4.tgz#e7496bbc67b9e39dd0f98565feccdcb0d4ff6987"
   integrity sha512-CBHJJdDmgjl3daYjN5Cp5kbTf1mUhZoS+beLklHIvkOWscs83YAhLlF3Wsh/lciQYAcbBJgTOD44VtG31ZM4Hw==
@@ -14918,9 +14042,9 @@ constants-browserify@^1.0.0, constants-browserify@~1.0.0:
   integrity sha512-xFxOwqIzR/e1k1gLiWEophSCMqXcwVHIH7akf7b/vxcUeGunlj3hvZaaqxwHsTgn+IndtkQJgSztIDWeumWJDQ==
 
 constructs@^10.0.29:
-  version "10.1.113"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-10.1.113.tgz#7acef04470e5e152d627edf3eba929a505ad779d"
-  integrity sha512-BhX7nHQjCWykIONFw6IlvCHizHB+ruz2Jncgmrosv8yGX8U1pF4SJTrSCqBdbA/aaXusNPpgFD2asRu3gOCjgA==
+  version "10.1.114"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-10.1.114.tgz#0bc27afb59e9a394fcd0e7a7c4ccb7efb61ae2db"
+  integrity sha512-yWcs4MkgUoSXdFkcp3u0/HoalghPGwn9PfCwqTwHoB9uOhKg6MsrcuKfr3qicJBLac0ihc1YM6Q1Aml+h4h9/A==
 
 content-disposition@0.5.4:
   version "0.5.4"
@@ -23819,6 +22943,9 @@ nx@14.7.13:
     "@nrwl/cli" "14.7.13"
     "@nrwl/tao" "14.7.13"
     "@parcel/watcher" "2.0.4"
+    "@yarnpkg/lockfile" "^1.1.0"
+    "@yarnpkg/parsers" "^3.0.0-rc.18"
+    "@zkochan/js-yaml" "0.0.6"
     chalk "4.1.0"
     chokidar "^3.5.1"
     cli-cursor "3.1.0"
@@ -23833,12 +22960,13 @@ nx@14.7.13:
     glob "7.1.4"
     ignore "^5.0.4"
     js-yaml "4.1.0"
-    jsonc-parser "3.0.0"
+    jsonc-parser "3.2.0"
     minimatch "3.0.5"
     npm-run-path "^4.0.1"
     open "^8.4.0"
     semver "7.3.4"
     string-width "^4.2.3"
+    strong-log-transformer "^2.1.0"
     tar-stream "~2.2.0"
     tmp "~0.2.1"
     tsconfig-paths "^3.9.0"
@@ -25171,22 +24299,10 @@ postcss-modules@^4.0.0:
     postcss-modules-values "^4.0.0"
     string-hash "^1.1.1"
 
-<<<<<<< HEAD
 postcss-nesting@^10.1.10:
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/postcss-nesting/-/postcss-nesting-10.2.0.tgz#0b12ce0db8edfd2d8ae0aaf86427370b898890be"
   integrity sha512-EwMkYchxiDiKUhlJGzWsD9b2zvq/r2SSubcRrgP+jujMXFzqvANLt16lJANC+5uZ6hjI7lpRmI6O8JIl+8l1KA==
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-postcss-nesting@^10.1.10, postcss-nesting@^10.1.9:
-  version "10.1.10"
-  resolved "https://registry.yarnpkg.com/postcss-nesting/-/postcss-nesting-10.1.10.tgz#9c396df3d8232cbedfa95baaac6b765b8fd2a817"
-  integrity sha512-lqd7LXCq0gWc0wKXtoKDru5wEUNjm3OryLVNRZ8OnW8km6fSNUuFrjEhU3nklxXE2jvd4qrox566acgh+xQt8w==
-=======
-postcss-nesting@^10.1.10:
-  version "10.1.10"
-  resolved "https://registry.yarnpkg.com/postcss-nesting/-/postcss-nesting-10.1.10.tgz#9c396df3d8232cbedfa95baaac6b765b8fd2a817"
-  integrity sha512-lqd7LXCq0gWc0wKXtoKDru5wEUNjm3OryLVNRZ8OnW8km6fSNUuFrjEhU3nklxXE2jvd4qrox566acgh+xQt8w==
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   dependencies:
     "@csstools/selector-specificity" "^2.0.0"
     postcss-selector-parser "^6.0.10"
@@ -29294,21 +28410,7 @@ upath@^2.0.1:
   resolved "https://registry.yarnpkg.com/upath/-/upath-2.0.1.tgz#50c73dea68d6f6b990f51d279ce6081665d61a8b"
   integrity sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==
 
-<<<<<<< HEAD
 update-browserslist-db@^1.0.9:
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-update-browserslist-db@^1.0.5:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/update-browserslist-db/-/update-browserslist-db-1.0.9.tgz#2924d3927367a38d5c555413a7ce138fc95fcb18"
-  integrity sha512-/xsqn21EGVdXI3EXSum1Yckj3ZVZugqyOZQ/CxYPBD/R+ko9NSUScf8tFF4dOKY+2pvSSJA/S+5B8s4Zr4kyvg==
-  dependencies:
-    escalade "^3.1.1"
-    picocolors "^1.0.0"
-
-update-browserslist-db@^1.0.9:
-=======
-update-browserslist-db@^1.0.5, update-browserslist-db@^1.0.9:
->>>>>>> 050927364 (chore(deps): yarn lock fix)
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/update-browserslist-db/-/update-browserslist-db-1.0.9.tgz#2924d3927367a38d5c555413a7ce138fc95fcb18"
   integrity sha512-/xsqn21EGVdXI3EXSum1Yckj3ZVZugqyOZQ/CxYPBD/R+ko9NSUScf8tFF4dOKY+2pvSSJA/S+5B8s4Zr4kyvg==
@@ -29807,7 +28909,6 @@ webpack-dev-server@4.11.0:
     webpack-dev-middleware "^5.3.1"
     ws "^8.4.2"
 
-<<<<<<< HEAD
 webpack-dev-server@^4.3.1:
   version "4.11.1"
   resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-4.11.1.tgz#ae07f0d71ca0438cf88446f09029b92ce81380b5"
@@ -29843,44 +28944,6 @@ webpack-dev-server@^4.3.1:
     webpack-dev-middleware "^5.3.1"
     ws "^8.4.2"
 
-||||||| parent of 050927364 (chore(deps): yarn lock fix)
-webpack-dev-server@4.9.3:
-  version "4.9.3"
-  resolved "https://registry.yarnpkg.com/webpack-dev-server/-/webpack-dev-server-4.9.3.tgz#2360a5d6d532acb5410a668417ad549ee3b8a3c9"
-  integrity sha512-3qp/eoboZG5/6QgiZ3llN8TUzkSpYg1Ko9khWX1h40MIEUNS2mDoIa8aXsPfskER+GbTvs/IJZ1QTBBhhuetSw==
-  dependencies:
-    "@types/bonjour" "^3.5.9"
-    "@types/connect-history-api-fallback" "^1.3.5"
-    "@types/express" "^4.17.13"
-    "@types/serve-index" "^1.9.1"
-    "@types/serve-static" "^1.13.10"
-    "@types/sockjs" "^0.3.33"
-    "@types/ws" "^8.5.1"
-    ansi-html-community "^0.0.8"
-    bonjour-service "^1.0.11"
-    chokidar "^3.5.3"
-    colorette "^2.0.10"
-    compression "^1.7.4"
-    connect-history-api-fallback "^2.0.0"
-    default-gateway "^6.0.3"
-    express "^4.17.3"
-    graceful-fs "^4.2.6"
-    html-entities "^2.3.2"
-    http-proxy-middleware "^2.0.3"
-    ipaddr.js "^2.0.1"
-    open "^8.0.9"
-    p-retry "^4.5.0"
-    rimraf "^3.0.2"
-    schema-utils "^4.0.0"
-    selfsigned "^2.1.1"
-    serve-index "^1.9.1"
-    sockjs "^0.3.24"
-    spdy "^4.0.2"
-    webpack-dev-middleware "^5.3.1"
-    ws "^8.4.2"
-
-=======
->>>>>>> 050927364 (chore(deps): yarn lock fix)
 webpack-filter-warnings-plugin@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/webpack-filter-warnings-plugin/-/webpack-filter-warnings-plugin-1.2.1.tgz#dc61521cf4f9b4a336fbc89108a75ae1da951cdb"

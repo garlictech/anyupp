@@ -82,7 +82,6 @@ class Unit extends $Unit {
       this.isVisibleInApp = true,
       this.openingHours,
       this.distanceInKm_});
-  });
 
   factory Unit.fromJson(Map<String, dynamic> json) => _$UnitFromJson(json);
 

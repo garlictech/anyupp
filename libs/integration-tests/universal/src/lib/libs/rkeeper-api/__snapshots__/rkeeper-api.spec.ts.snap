@@ -388,9 +388,561 @@ Object {
 }
 `;
 
-exports[`Test the communication between anyupp/rkeeper test the order status route - reply with unit not found 1`] = `
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 1`] = `
 Object {
-  "error": "Unit with restaurant ID foobar cannot be found",
+  "allergens": null,
+  "configSets": null,
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": null,
+  "dirty": true,
+  "id": "MASKED ID",
+  "image": null,
+  "isVisible": true,
+  "laneId": null,
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "Próba kaja",
+  },
+  "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": null,
+          "dayTo": null,
+          "price": 600,
+          "timeFrom": null,
+          "timeTo": null,
+          "type": "A",
+        },
+      ],
+      "externalId": "9991000115",
+      "id": "MASKED ID",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
+      "pack": Object {
+        "size": 1,
+        "unit": "zsák",
+      },
+      "position": -1,
+      "price": 600,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "Próba kaja",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 2`] = `
+Object {
+  "allergens": null,
+  "configSets": Array [
+    Object {
+      "items": Array [
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 0,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+      ],
+      "position": -1,
+      "productSetId": "MASKED ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 0,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 50,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+      ],
+      "position": -1,
+      "productSetId": "MASKED ID",
+    },
+  ],
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": null,
+  "dirty": true,
+  "id": "MASKED ID",
+  "image": null,
+  "isVisible": true,
+  "laneId": null,
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "TA KM Kiotói Szilvás Krémkávé",
+  },
+  "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": null,
+          "dayTo": null,
+          "price": 700,
+          "timeFrom": null,
+          "timeTo": null,
+          "type": "A",
+        },
+      ],
+      "externalId": "9991008661",
+      "id": "MASKED ID",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
+      "pack": Object {
+        "size": 1,
+        "unit": "zsák",
+      },
+      "position": -1,
+      "price": 700,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "TA KM Kiotói Szilvás Krémkávé",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 3`] = `
+Object {
+  "allergens": null,
+  "configSets": Array [
+    Object {
+      "items": Array [
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 0,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 100,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+      ],
+      "position": -1,
+      "productSetId": "MASKED ID",
+    },
+    Object {
+      "items": Array [
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 0,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+        Object {
+          "netPackagingFee": null,
+          "position": -1,
+          "price": 50,
+          "productComponentId": "MASKED ID",
+          "soldOut": null,
+        },
+      ],
+      "position": -1,
+      "productSetId": "MASKED ID",
+    },
+  ],
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": null,
+  "dirty": true,
+  "id": "MASKED ID",
+  "image": null,
+  "isVisible": true,
+  "laneId": null,
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "TA Kiotói Szilvás Krémkávé",
+  },
+  "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": null,
+          "dayTo": null,
+          "price": 700,
+          "timeFrom": null,
+          "timeTo": null,
+          "type": "A",
+        },
+      ],
+      "externalId": "9991008660",
+      "id": "MASKED ID",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
+      "pack": Object {
+        "size": 1,
+        "unit": "zsák",
+      },
+      "position": -1,
+      "price": 700,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "TA Kiotói Szilvás Krémkávé",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 4`] = `
+Object {
+  "allergens": null,
+  "configSets": null,
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": null,
+  "dirty": true,
+  "id": "MASKED ID",
+  "image": null,
+  "isVisible": true,
+  "laneId": null,
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "próba ital inactive",
+  },
+  "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": null,
+          "dayTo": null,
+          "price": 500,
+          "timeFrom": null,
+          "timeTo": null,
+          "type": "A",
+        },
+      ],
+      "externalId": "99911000114",
+      "id": "MASKED ID",
+      "isAvailable": false,
+      "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
+      "pack": Object {
+        "size": 1,
+        "unit": "zsák",
+      },
+      "position": -1,
+      "price": 500,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "próba ital inactive",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 5`] = `
+Object {
+  "allergens": null,
+  "configSets": null,
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": null,
+  "dirty": true,
+  "id": "MASKED ID",
+  "image": null,
+  "isVisible": true,
+  "laneId": null,
+  "name": Object {
+    "de": null,
+    "en": null,
+    "hu": "próba ital",
+  },
+  "position": -1,
+  "productCategoryId": "default-product-category-rkeeper-MASKED ID-unit",
+  "productType": "dish",
+  "supportedServingModes": Array [
+    "inPlace",
+  ],
+  "takeaway": null,
+  "takeawayTax": null,
+  "tax": -1,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": Array [
+        Object {
+          "dayFrom": null,
+          "dayTo": null,
+          "price": 500,
+          "timeFrom": null,
+          "timeTo": null,
+          "type": "A",
+        },
+      ],
+      "externalId": "9991000114",
+      "id": "MASKED ID",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "MASKED ID",
+      "pack": Object {
+        "size": 1,
+        "unit": "zsák",
+      },
+      "position": -1,
+      "price": 500,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": null,
+        "hu": "próba ital",
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 6`] = `
+Object {
+  "allergens": Array [
+    "egg",
+    "gluten",
+    "mustard",
+    "milk",
+    "soya",
+    "fish",
+    "sesame",
+  ],
+  "configSets": Array [],
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": Object {
+    "de": "laktató szendvics",
+    "en": "laktató szendvics",
+    "hu": "laktató szendvics",
+  },
+  "dirty": null,
+  "id": "rkeeper-MASKED ID-unitproduct",
+  "image": "https://archive.canadianbusiness.com/wp-content/uploads/2013/04/oldhamburger.jpg",
+  "isVisible": true,
+  "laneId": "lane_01",
+  "name": Object {
+    "de": "Hamburger",
+    "en": "Hamburger",
+    "hu": "Hamburger",
+  },
+  "position": 0,
+  "productCategoryId": "RKEEPER PRODUCT CATEGORY ID",
+  "productType": "food",
+  "supportedServingModes": Array [
+    "takeAway",
+  ],
+  "takeaway": false,
+  "takeawayTax": 20,
+  "tax": 27,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": null,
+      "externalId": "RKEEPERGUID",
+      "id": "rkeeper-MASKED IDUnitProductVariant_id_1",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "rkeeper-MASKED ID-unitproduct",
+      "pack": null,
+      "position": -1,
+      "price": 30,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_1",
+        "hu": null,
+      },
+    },
+  ],
+}
+`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Unit products 7`] = `
+Object {
+  "allergens": Array [
+    "egg",
+    "gluten",
+    "mustard",
+    "milk",
+    "soya",
+    "fish",
+    "sesame",
+  ],
+  "configSets": Array [],
+  "createdAt": "MASKED DATE",
+  "deletedAt": null,
+  "description": Object {
+    "de": "laktató szendvics",
+    "en": "laktató szendvics",
+    "hu": "laktató szendvics",
+  },
+  "dirty": null,
+  "id": "rkeeper-MASKED ID-unitproduct2",
+  "image": "https://archive.canadianbusiness.com/wp-content/uploads/2013/04/oldhamburger.jpg",
+  "isVisible": true,
+  "laneId": "lane_01",
+  "name": Object {
+    "de": "Hamburger",
+    "en": "Hamburger",
+    "hu": "Hamburger",
+  },
+  "position": 0,
+  "productCategoryId": "RKEEPER PRODUCT CATEGORY ID",
+  "productType": "food",
+  "supportedServingModes": Array [
+    "takeAway",
+  ],
+  "takeaway": false,
+  "takeawayTax": 20,
+  "tax": 27,
+  "unitId": "rkeeper-MASKED ID-unit",
+  "updatedAt": "MASKED DATE",
+  "variants": Array [
+    Object {
+      "availabilities": null,
+      "externalId": "RKEEPERGUID-2",
+      "id": "rkeeper-MASKED IDUnitProductVariant_id_2",
+      "isAvailable": true,
+      "netPackagingFee": null,
+      "ownerProduct": "rkeeper-MASKED ID-unitproduct2",
+      "pack": null,
+      "position": -1,
+      "price": 30,
+      "soldOut": null,
+      "variantName": Object {
+        "de": null,
+        "en": "VARIANT_NAME_2",
+        "hu": null,
+      },
+    },
+  ],
 }
 `;
 
@@ -426,6 +978,28 @@ Observable {
   },
 }
 `;
+
+exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category created 1`] = `true`;
+
+exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category data 1`] = `
+Object {
+  "createdAt": Any<String>,
+  "description": null,
+  "id": "default-product-category-rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
+  "image": null,
+  "name": Object {
+    "de": null,
+    "en": "Default category",
+    "hu": "Alap kategória",
+  },
+  "ownerEntity": "rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unit",
+  "parentId": null,
+  "position": -1,
+  "updatedAt": Any<String>,
+}
+`;
+
+exports[`Test the rkeeper api basic functionality createDefaultProductCategory: product category recreated 1`] = `true`;
 
 exports[`Test the rkeeper api basic functionality getBusinessEntityInfo - existing restaurant 1`] = `
 Object {

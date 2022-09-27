@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import {
-  CalculationState_UnitAdded,
-  getUnit,
   getNextOrderNum,
   placeOrder,
   handleRkeeperOrder,
@@ -15,6 +12,7 @@ import {
 import * as anyuppBackendLib from '@bgap/anyupp-backend-lib';
 import * as rkeeperApi from '@bgap/rkeeper-api';
 import { CreateOrderInput, OrderPaymentPolicy, PosType } from '@bgap/domain';
+import { CalculationState_UnitAdded, getUnit } from './utils';
 
 jest.mock('@bgap/rkeeper-api', () => ({
   __esModule: true,

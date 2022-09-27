@@ -12,7 +12,7 @@ xdescribe('Test push notification', () => {
   // Create Order fixture
   const orderFixture: Order = {
     id: 'push-noti-order-4f907792-3d94-11ed-b878-0242ac120002',
-    userId: '31ea0871-3dcb-11ed-9ba0-1f6d735e9f41',
+    userId: 'cf4d2382-3dfe-11ed-be1a-09435bd2f6b6',
     unitId: 'UNTIID',
     createdAt: 'CREATED',
     updatedAt: 'UPDATED',
