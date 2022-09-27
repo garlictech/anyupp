@@ -3,7 +3,6 @@ import {
   searchExternalVariant,
   sendRkeeperOrder,
 } from '@bgap/rkeeper-api';
-import axios, { AxiosError } from 'axios';
 import * as R from 'ramda';
 import * as fs from 'fs';
 import axios from 'axios';

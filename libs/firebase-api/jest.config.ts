@@ -11,9 +11,6 @@ export default {
   transform: {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
-  moduleNameMapper: {
-    'firebase-admin/(.*)': '<rootDir>/mocks/empty-mock.js',
-  },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/firebase-api',
 };
