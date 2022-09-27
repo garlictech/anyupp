@@ -10,9 +10,9 @@ import {
   testIdPrefix,
   maskAll,
   rkeeperEndpoint,
-  yellowRkeeperPassword,
-  yellowRkeeperUsername,
-  yellowRestaurantId,
+  freiRkeeperPassword,
+  freiRkeeperUsername,
+  freiRestaurantId,
 } from '@bgap/shared/fixtures';
 import {
   delay,
@@ -179,14 +179,14 @@ const unitNoRkeeper: CreateUnitInput = {
 const unitWithRkeeper: CreateUnitInput = {
   ...unitNoRkeeper,
   id: `createorder-unitwithrkeeoer-8123c8c8-a09a-11ec-b909-0242ac120002`,
-  externalId: yellowRestaurantId,
+  externalId: freiRestaurantId,
   pos: {
     type: PosType.rkeeper,
     rkeeper: {
       // let's use the yellow real rkeeper endpoint
       endpointUri: rkeeperEndpoint,
-      rkeeperUsername: yellowRkeeperUsername,
-      rkeeperPassword: yellowRkeeperPassword,
+      rkeeperUsername: freiRkeeperUsername,
+      rkeeperPassword: freiRkeeperPassword,
       anyuppUsername: 'ANYUPP_USERNAME',
       anyuppPassword: 'ANYUPP_PASSWORD',
     },
