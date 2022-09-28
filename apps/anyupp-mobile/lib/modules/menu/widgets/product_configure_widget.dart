@@ -1,3 +1,5 @@
+import 'package:anyupp/models/ProductComponent.dart';
+
 import '/core/core.dart';
 import '/models.dart';
 import '/modules/cart/cart.dart';
@@ -15,12 +17,16 @@ class ProductConfiguratorWidget extends StatefulWidget {
   final Product product;
   final ServingMode? servingMode;
   final ProductItemDisplayState displayState;
+  final List<ProductComponent> components;
+  final List<ProductComponentSet> componentSets;
 
   const ProductConfiguratorWidget({
     required this.unit,
     required this.product,
     required this.servingMode,
     required this.displayState,
+    required this.components,
+    required this.componentSets
   });
 
   @override
@@ -116,6 +122,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
                     _calculateTotalPrice();
                     setState(() {});
                   },
+                  components: widget.components,
+                  componentSets: widget.componentSets
                 ),
                 // SizedBox(
                 //   height: 16.0,
@@ -135,6 +143,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
                       _calculateTotalPrice();
                     });
                   },
+                  components: widget.components,
+                  componentSets: widget.componentSets
                 )
                 // _buildExtraSets(context, sets),
               ],

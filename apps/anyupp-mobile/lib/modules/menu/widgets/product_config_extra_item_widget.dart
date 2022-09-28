@@ -1,3 +1,5 @@
+import 'package:anyupp/models/ProductComponent.dart';
+
 import '/core/core.dart';
 import '/models.dart';
 import '/modules/menu/menu.dart';
@@ -7,14 +9,18 @@ import '/shared/utils/unit_utils.dart';
 import 'package:flutter/material.dart';
 
 class ProductConfigExtrasItemWidget extends StatefulWidget {
-  final ProductConfigSet extraSet;
+  final ProductComponentSet extraSet;
+  final ProductConfigSet configSet;
+  final List<ProductComponent> components;
   final Unit unit;
   final OnExtraSetItemSelected onExtraSelected;
 
   const ProductConfigExtrasItemWidget(
       {required this.extraSet,
+      required this.configSet,
       required this.unit,
-      required this.onExtraSelected});
+      required this.onExtraSelected,
+      required this.components});
 
   @override
   _ProductConfigExtrasItemWidgetState createState() =>
@@ -82,8 +88,8 @@ class _ProductConfigExtrasItemWidgetState
             Divider(
               color: theme.secondary16,
             ),
-            ..._buildSingleExtraList(
-                context, widget.extraSet.items, widget.extraSet),
+            ..._buildSingleExtraList(context, widget.configSet.items,
+                widget.configSet, widget.components),
           ],
         ),
       ),
@@ -93,11 +99,15 @@ class _ProductConfigExtrasItemWidgetState
   List<Widget> _buildSingleExtraList(
       BuildContext context,
       List<ProductConfigComponent> components,
-      ProductConfigSet productSet) {
+      ProductConfigSet productSet,
+      List<ProductComponent> allProductComponents) {
     List<Widget> widgets = [];
     components.forEach((extra) {
       bool isSelected = _selectedExtras['${extra.productComponentId}'] != null;
       bool last = false;
+
+      ProductComponent component = allProductComponents
+          .firstWhere((cmp) => cmp.id == extra.productComponentId);
 
       widgets.add(
         InkWell(
@@ -121,7 +131,7 @@ class _ProductConfigExtrasItemWidgetState
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      getLocalizedText(context, extra.name),
+                      getLocalizedText(context, component.name),
                       style: Fonts.satoshi(
                         color: theme.secondary,
                         fontSize: 16.0,
@@ -200,8 +210,7 @@ class _ProductConfigExtrasItemWidgetState
     return widgets;
   }
 
-  Future<void> _updateSelectedCount(
-      ProductConfigSet productSet) async {
+  Future<void> _updateSelectedCount(ProductConfigSet productSet) async {
     int selectedCount = 0;
     _selectedExtras.forEach(
         (key, value) => value != null ? ++selectedCount : selectedCount);
