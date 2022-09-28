@@ -50,7 +50,6 @@ env/**
 
 
 # Google service secret files
-android/app/google-services.json
 android/app/bin
 android/**/.project
 android/key.properties
