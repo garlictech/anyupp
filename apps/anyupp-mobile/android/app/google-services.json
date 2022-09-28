@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "840296193782",
+    "project_id": "anyupp",
+    "storage_bucket": "anyupp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840296193782:android:6010f5dd46a3fc8f81d6d7",
+        "android_client_info": {
+          "package_name": "net.cyberg.anyupp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "840296193782-pl5ocg8gd493i3vve2vssreiq68ab3mj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0y_tGelRF_CyL21CVbYpKA7tSWHyM0hU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "840296193782-pl5ocg8gd493i3vve2vssreiq68ab3mj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "840296193782-cuphcpg4v745d2jmjrntq31ngv0iqii2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "net.cyberg.anyupp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
