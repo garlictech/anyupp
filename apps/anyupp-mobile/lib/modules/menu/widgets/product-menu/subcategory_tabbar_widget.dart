@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 
 @immutable
 class SubCategoryTabBarWidget extends StatelessWidget {
-  final List<ProductCategory> productCategories;
+  final List<ProductCategory> subCategories;
   final TabController? controller;
   final ValueChanged<int> onTap;
+
   const SubCategoryTabBarWidget({
     Key? key,
     this.controller,
-    required this.productCategories,
+    required this.subCategories,
     required this.onTap,
   }) : super(key: key);
 
@@ -35,7 +36,7 @@ class SubCategoryTabBarWidget extends StatelessWidget {
       unselectedLabelStyle: Fonts.hH5(
         color: theme.secondary64,
       ),
-      tabs: productCategories
+      tabs: subCategories
           .map((e) => Tab(
                 text: getLocalizedText(context, e.name),
               ))

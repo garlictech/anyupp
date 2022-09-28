@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 
 class ProductCategoryTabWidget extends StatefulWidget {
   final TabController tabController;
-  final List<ProductCategory> productCategories;
+  final List<ProductCategory> categories;
   final ValueChanged<int> onTap;
   final bool addFavorites;
 
   ProductCategoryTabWidget({
     Key? key,
     required this.tabController,
-    required this.productCategories,
+    required this.categories,
     required this.onTap,
     required this.addFavorites,
   }) : super(key: key);
@@ -31,7 +31,7 @@ class _ProductCategoryTabWidgetState extends State<ProductCategoryTabWidget> {
   @override
   Widget build(BuildContext context) {
     return ColoredTabBar(
-      color: theme.secondary12,
+      color: theme.secondary.withOpacity(0.06),
       width: double.infinity,
       tabBar: TabBar(
         physics: const BouncingScrollPhysics(),
@@ -43,20 +43,21 @@ class _ProductCategoryTabWidgetState extends State<ProductCategoryTabWidget> {
           borderRadius: BorderRadius.circular(
             32.0,
           ),
-          color: theme.secondary,
+          color: theme.secondary0,
         ),
-        labelColor: theme.secondary0,
+        labelColor: theme.secondary,
         // labelStyle: Fonts.hH5(),
         labelPadding: EdgeInsets.only(
           left: 4,
           right: 4,
         ),
+        indicatorPadding: EdgeInsets.only(top: 2.0, bottom: 2.0),
         unselectedLabelColor: theme.secondary,
         unselectedLabelStyle: Fonts.hH5(
           color: theme.secondary,
         ),
         indicatorWeight: 0,
-        tabs: _getTabBarTitles(context, widget.productCategories),
+        tabs: _getTabBarTitles(context, widget.categories),
         onTap: widget.onTap,
       ),
     );
@@ -79,7 +80,7 @@ class _ProductCategoryTabWidgetState extends State<ProductCategoryTabWidget> {
 
   Widget _getTab(String title, int index) {
     return Tab(
-      height: 40,
+      height: 50,
       child: AnimatedBuilder(
         animation: widget.tabController.animation as Listenable,
         builder: (ctx, snapshot) {
@@ -122,6 +123,7 @@ class _ProductCategoryTabWidgetState extends State<ProductCategoryTabWidget> {
                   (widget.tabController.animation!.value - _fromIndex).abs();
             }
           }
+//print("index: $index  _fromIndex: $_fromIndex  _toIndex: $_toIndex  progress: $progress");
           return Container(
             margin: EdgeInsets.zero,
             padding: const EdgeInsets.only(
@@ -132,9 +134,9 @@ class _ProductCategoryTabWidgetState extends State<ProductCategoryTabWidget> {
             ),
             decoration: BoxDecoration(
               color: index == _fromIndex
-                  ? Color.lerp(theme.secondary, theme.secondary12, progress)
+                  ? Color.lerp(theme.secondary0, theme.secondary12, progress)
                   : index == _toIndex
-                      ? Color.lerp(theme.secondary12, theme.secondary, progress)
+                      ? Color.lerp(theme.secondary12, theme.secondary0, progress)
                       : Color.lerp(
                           theme.secondary12, theme.secondary12, progress),
               borderRadius: BorderRadius.circular(32),
