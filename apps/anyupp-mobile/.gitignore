@@ -58,7 +58,6 @@ android/cert/
 # android/.settings/org.eclipse.buildship.core.prefs
 .vscode/settings.json
 # android/app/.classpath
-ios/Runner/GoogleService-Info.plist
 
 # CI
 ios/build
