@@ -67,6 +67,7 @@ export class ProductCategoryFormComponent
               {
                 ...this.dialogForm?.value,
                 position: this.productCategory?.position || 0,
+                ownerEntity: this._selectedUnitId,
               },
               this.productCategory?.id,
             ),
