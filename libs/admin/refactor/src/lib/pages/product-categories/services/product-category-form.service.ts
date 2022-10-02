@@ -2,7 +2,7 @@ import { iif } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import {
   CreateProductCategoryInput,
   UpdateProductCategoryInput,
