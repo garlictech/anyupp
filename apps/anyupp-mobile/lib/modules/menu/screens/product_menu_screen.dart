@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:anyupp/models/ProductComponent.dart';
+
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
 import '/models.dart';
@@ -22,14 +24,18 @@ class _CategoryMenuWidgets {
   final bool hasFavorites;
   final Map<String, List<Widget>> mainCategoryWidgets;
   final Map<String, List<Widget>>? subCategoryWidgets;
+  final List<ProductComponent> components;
+  final List<ProductComponentSet> componentSets;
 
-  _CategoryMenuWidgets({
-    // required this.widgets,
-    required this.productCategories,
-    required this.hasFavorites,
-    required this.mainCategoryWidgets,
-    this.subCategoryWidgets,
-  });
+  _CategoryMenuWidgets(
+      {
+      // required this.widgets,
+      required this.productCategories,
+      required this.hasFavorites,
+      required this.mainCategoryWidgets,
+      this.subCategoryWidgets,
+      required this.components,
+      required this.componentSets});
 }
 
 class MenuScreen extends StatefulWidget {
@@ -234,6 +240,8 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     List<ProductCategory> productCategories,
     List<Product> products,
     List<FavoriteProduct>? favorites,
+   List<ProductComponent> components,
+   List<ProductComponentSet> componentSets
   ) {
     var menu = _buildProductList(
       context: context,
@@ -241,6 +249,8 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       productCategories: productCategories,
       products: products,
       favorites: favorites,
+      components: components,
+      componentSets: componentSets
     );
     // log.e('_listIndexMap=${_listIndexMap}');
     // log.e('_tabIndexMap=${_tabIndexMap}');
@@ -344,13 +354,14 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
         ));
   }
 
-  _CategoryMenuWidgets _buildProductList({
-    required BuildContext context,
-    required Unit unit,
-    required List<ProductCategory> productCategories,
-    required List<Product> products,
-    List<FavoriteProduct>? favorites,
-  }) {
+  _CategoryMenuWidgets _buildProductList(
+      {required BuildContext context,
+      required Unit unit,
+      required List<ProductCategory> productCategories,
+      required List<Product> products,
+      List<FavoriteProduct>? favorites,
+      required components,
+      required componentSets}) {
     _favoritesIndex = favorites?.isNotEmpty == true ? 1 : 0;
 
     _selectedTab = _favoritesIndex;
@@ -417,11 +428,12 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     }
 
     return _CategoryMenuWidgets(
-      productCategories: menu.categories,
-      hasFavorites: _favoritesIndex == 1,
-      mainCategoryWidgets: mainCategoryWidgets,
-      subCategoryWidgets: subCategoryWidgets,
-    );
+        productCategories: menu.categories,
+        hasFavorites: _favoritesIndex == 1,
+        mainCategoryWidgets: mainCategoryWidgets,
+        subCategoryWidgets: subCategoryWidgets,
+        components: components,
+        componentSets: componentSets);
   }
 
   _handleTabTap(BuildContext context, int index) {

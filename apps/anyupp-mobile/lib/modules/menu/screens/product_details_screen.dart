@@ -1,3 +1,5 @@
+import 'package:anyupp/models/ProductComponent.dart';
+
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
 import '/models.dart';
@@ -21,6 +23,8 @@ class ProductDetailsScreen extends StatefulWidget {
   final Product item;
   final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
+  final List<ProductComponent> components;
+  final List<ProductComponentSet> componentSets;
 
   ProductDetailsScreen({
     Key? key,
@@ -28,6 +32,8 @@ class ProductDetailsScreen extends StatefulWidget {
     required this.unit,
     this.displayState = ProductItemDisplayState.NORMAL,
     this.servingMode,
+    required this.components,
+    required this.componentSets
   }) : super(key: key);
 
   @override
@@ -151,6 +157,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 displayState: widget.displayState,
                 servingMode: widget.servingMode,
                 disabled: disabled,
+                components:widget.components,
+                componentSets: widget.componentSets
               ),
             ],
           ),
@@ -174,9 +182,13 @@ class ProductDetailsWidget extends StatelessWidget {
   final ProductItemDisplayState displayState;
   final ServingMode? servingMode;
   final bool disabled;
+  final List<ProductComponent> components;
+  final List<ProductComponentSet> componentSets;
 
   const ProductDetailsWidget({
     Key? key,
+    required this.components,
+    required this.componentSets,
     required this.unit,
     required this.item,
     required this.displayState,
@@ -210,6 +222,8 @@ class ProductDetailsWidget extends StatelessWidget {
                       unit: unit,
                       servingMode: servingMode,
                       displayState: displayState,
+                      components: components,
+                      componentSets: componentSets
                     ),
                     if (disabled && item.allergens != null)
                       Container(

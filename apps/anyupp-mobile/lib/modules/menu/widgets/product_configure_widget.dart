@@ -20,14 +20,13 @@ class ProductConfiguratorWidget extends StatefulWidget {
   final List<ProductComponent> components;
   final List<ProductComponentSet> componentSets;
 
-  const ProductConfiguratorWidget({
-    required this.unit,
-    required this.product,
-    required this.servingMode,
-    required this.displayState,
-    required this.components,
-    required this.componentSets
-  });
+  const ProductConfiguratorWidget(
+      {required this.unit,
+      required this.product,
+      required this.servingMode,
+      required this.displayState,
+      required this.components,
+      required this.componentSets});
 
   @override
   _ProductConfiguratorWidgetState createState() =>
@@ -113,39 +112,38 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
               children: [
                 // _buildAllergensListWidget(context),
                 ProductConfigModifiersWidget(
-                  product: widget.product,
-                  unit: widget.unit,
-                  displayState: widget.displayState,
-                  onModifiersSelected: (modifiers) async {
-                    this._selectedModifiers = modifiers;
-                    await setButton();
-                    _calculateTotalPrice();
-                    setState(() {});
-                  },
-                  components: widget.components,
-                  componentSets: widget.componentSets
-                ),
+                    product: widget.product,
+                    unit: widget.unit,
+                    displayState: widget.displayState,
+                    onModifiersSelected: (modifiers) async {
+                      this._selectedModifiers = modifiers;
+                      await setButton();
+                      _calculateTotalPrice();
+                      setState(() {});
+                    },
+                    components: widget.components,
+                    componentSets: widget.componentSets),
                 // SizedBox(
                 //   height: 16.0,
                 // ),
                 ProductConfigExtrasWidget(
-                  product: widget.product,
-                  unit: widget.unit,
-                  onExtraSelected: (setId, componentId, selected) {
-                    log.d(
-                        'onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
-                    setState(() {
-                      if (_selectedExtras[setId] == null) {
-                        _selectedExtras[setId] = {};
-                      }
-                      _selectedExtras[setId]![componentId] = selected;
-                      log.d('onExtraSelected._selectedExtras=$_selectedExtras');
-                      _calculateTotalPrice();
-                    });
-                  },
-                  components: widget.components,
-                  componentSets: widget.componentSets
-                )
+                    product: widget.product,
+                    unit: widget.unit,
+                    onExtraSelected: (setId, componentId, selected) {
+                      log.d(
+                          'onExtraSelected.setId=$setId, componentId=$componentId, selected=$selected');
+                      setState(() {
+                        if (_selectedExtras[setId] == null) {
+                          _selectedExtras[setId] = {};
+                        }
+                        _selectedExtras[setId]![componentId] = selected;
+                        log.d(
+                            'onExtraSelected._selectedExtras=$_selectedExtras');
+                        _calculateTotalPrice();
+                      });
+                    },
+                    components: widget.components,
+                    componentSets: widget.componentSets)
                 // _buildExtraSets(context, sets),
               ],
             ),
@@ -188,34 +186,41 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
   Map<ProductConfigSet, List<ProductConfigComponent>>
       getSelectedComponentMap() {
-    Map<ProductConfigSet, List<ProductConfigComponent>>
-        selectedConfigMap = {};
+    Map<ProductConfigSet, List<ProductConfigComponent>> selectedConfigMap = {};
     _selectedModifiers.forEach((key, value) {
-      ProductConfigSet? modifier =
-          getModifierConfigSetById(key, widget.product.configSets ?? []);
-      if (modifier != null) {
-        ProductConfigComponent? component =
-            getComponentByIdFromSet(value, modifier, widget.servingMode);
-        selectedConfigMap[modifier] = component == null ? [] : [component];
+      ProductComponentSet? modifier =
+          getModifierComponentSetById(key, widget.componentSets ?? []);
+      ProductConfigSet? configSet = widget.product.configSets
+          ?.firstWhere((set) => set.productSetId == modifier?.id);
+
+      if (modifier != null && configSet != null) {
+        ProductConfigComponent? component = getComponentByIdFromSet(
+            value, configSet, modifier, widget.servingMode);
+        selectedConfigMap[configSet] = component == null ? [] : [component];
       }
     });
     _selectedExtras.forEach((key, value) {
-      ProductConfigSet? modifier =
-          getExtraConfigSetById(key, widget.product.configSets ?? []);
+      ProductComponentSet? modifier =
+          getExtraComponentSetById(key, widget.componentSets ?? []);
+
+      ProductConfigSet? configSet = widget.product.configSets
+          ?.firstWhere((set) => set.productSetId == modifier?.id);
+
       value.forEach((extra, isAdded) {
         if (isAdded) {
-          ProductConfigComponent? component =
-              getComponentByIdFromSet(extra, modifier, widget.servingMode);
+          ProductConfigComponent? component = getComponentByIdFromSet(
+              extra, configSet, modifier, widget.servingMode);
           if (selectedConfigMap[modifier] == null &&
               modifier != null &&
-              component != null) {
-            selectedConfigMap[modifier] = [component];
+              component != null &&
+              configSet != null) {
+            selectedConfigMap[configSet] = [component];
           } else {
-            if (modifier != null) {
+            if (modifier != null && configSet != null) {
               var map = selectedConfigMap[modifier];
               if (map == null) {
                 map = [];
-                selectedConfigMap[modifier] = map;
+                selectedConfigMap[configSet] = map;
               }
               if (component != null) {
                 map.add(component);
@@ -240,10 +245,17 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     }
     //--- calculate modifier price
     _selectedModifiers.forEach((key, value) {
-      ProductConfigSet? modifier =
-          getModifierConfigSetById(key, widget.product.configSets ?? []);
-      ProductConfigComponent? component =
-          getComponentByIdFromSet(value, modifier, widget.servingMode);
+      ProductComponentSet? modifier =
+          getModifierComponentSetById(key, widget.componentSets ?? []);
+
+      ProductConfigSet? configSet = widget.product.configSets
+          ?.firstWhere((set) => set.productSetId == modifier?.id);
+
+      ProductConfigComponent? configComponent = getComponentByIdFromSet(
+          value, configSet, modifier, widget.servingMode);
+
+      ProductComponent component = widget.components.firstWhere(
+          (component) => component.id == configComponent?.productComponentId);
 
       if (component != null) {
         component.allergens?.forEach((allergen) => allergeens.add(allergen));
@@ -253,17 +265,18 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     _selectedExtras.forEach((setId, setMap) {
       setMap.forEach((componentId, selected) {
         if (selected == true) {
-          ProductConfigComponent? component =
-              getExtraComponentByIdAndSetId(
+          ProductConfigComponent? component = getExtraComponentByIdAndSetId(
             setId,
             componentId,
             widget.product.configSets ?? [],
+            widget.componentSets,
             widget.servingMode,
           );
-          if (component != null) {
-            component.allergens
-                ?.forEach((allergen) => allergeens.add(allergen));
-          }
+          ProductComponent productComponent = widget.components
+              .firstWhere((component) => component.id == component.id);
+
+          productComponent.allergens
+              ?.forEach((allergen) => allergeens.add(allergen));
         }
       });
     });
@@ -276,6 +289,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
       _productVariant,
       _selectedExtras,
       _selectedModifiers,
+      widget.componentSets
     );
     setButton();
   }
