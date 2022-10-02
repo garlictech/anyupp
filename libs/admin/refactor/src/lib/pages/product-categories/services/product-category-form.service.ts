@@ -23,7 +23,6 @@ export class ProductCategoryFormService {
 
   public createProductCategoryFormGroup() {
     return this._formBuilder.group({
-      ownerEntity: ['', [Validators.required]],
       name: this._formBuilder.group(
         {
           hu: [''],
