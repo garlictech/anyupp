@@ -1,2 +1,3 @@
-export 'geo-location-repository.dart';
-export 'user-repository.dart';
+export 'geo_location_repository.dart';
+export 'user_repository.dart';
+export 'product_repository.dart';

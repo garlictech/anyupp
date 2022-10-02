@@ -1,3 +1,4 @@
+import 'package:anyupp/domain/repositories/repositories.dart';
 import 'package:flutter/foundation.dart';
 
 import '/core/core.dart';
@@ -6,9 +7,8 @@ import '/graphql/graphql.dart';
 import '/models.dart';
 import '/shared/pagination/pagination.dart';
 
-import 'product_provider_interface.dart';
 
-class AwsProductProvider implements IProductProvider {
+class ProductRepositoryAmplify implements ProductRepository {
   @override
   Future<PageResponse<ProductCategory>> getProductCategoryList(
       String ownerEntity,
