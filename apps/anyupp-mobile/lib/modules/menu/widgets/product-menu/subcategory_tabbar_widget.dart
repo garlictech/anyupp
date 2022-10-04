@@ -41,6 +41,7 @@ class SubCategoryTabBarWidget extends StatelessWidget {
                 text: getLocalizedText(context, e.name),
               ))
           .toList(),
+      onTap: onTap,
     );
   }
 }

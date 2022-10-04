@@ -11,7 +11,6 @@ abstract class $ProductCategory {
 
   String get id;
   String get ownerEntity;
-  String? get parentId;
   LocalizedItem get name;
   LocalizedItem? get description;
   String? get image;
@@ -20,7 +19,6 @@ abstract class $ProductCategory {
   ProductCategory copyWith({
     String? id,
     String? ownerEntity,
-    String? parentId,
     LocalizedItem? name,
     LocalizedItem? description,
     String? image,
@@ -29,7 +27,6 @@ abstract class $ProductCategory {
       ProductCategory(
         id: id ?? this.id,
         ownerEntity: ownerEntity ?? this.ownerEntity,
-        parentId: parentId ?? this.parentId,
         name: name ?? this.name,
         description: description ?? this.description,
         image: image ?? this.image,
@@ -41,7 +38,6 @@ abstract class $ProductCategory {
     final change = ProductCategory$Change._(
       this.id,
       this.ownerEntity,
-      this.parentId,
       this.name,
       this.description,
       this.image,
@@ -51,7 +47,6 @@ abstract class $ProductCategory {
     return ProductCategory(
       id: change.id,
       ownerEntity: change.ownerEntity,
-      parentId: change.parentId,
       name: change.name,
       description: change.description,
       image: change.image,
@@ -61,7 +56,7 @@ abstract class $ProductCategory {
 
   @override
   String toString() =>
-      "ProductCategory(id: $id, ownerEntity: $ownerEntity, parentId: $parentId, name: $name, description: $description, image: $image, position: $position)";
+      "ProductCategory(id: $id, ownerEntity: $ownerEntity, name: $name, description: $description, image: $image, position: $position)";
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
@@ -70,7 +65,6 @@ abstract class $ProductCategory {
       other.runtimeType == runtimeType &&
       id == other.id &&
       ownerEntity == other.ownerEntity &&
-      parentId == other.parentId &&
       name == other.name &&
       description == other.description &&
       image == other.image &&
@@ -82,7 +76,6 @@ abstract class $ProductCategory {
     var result = 17;
     result = 37 * result + id.hashCode;
     result = 37 * result + ownerEntity.hashCode;
-    result = 37 * result + parentId.hashCode;
     result = 37 * result + name.hashCode;
     result = 37 * result + description.hashCode;
     result = 37 * result + image.hashCode;
@@ -95,7 +88,6 @@ class ProductCategory$Change {
   ProductCategory$Change._(
     this.id,
     this.ownerEntity,
-    this.parentId,
     this.name,
     this.description,
     this.image,
@@ -104,7 +96,6 @@ class ProductCategory$Change {
 
   String id;
   String ownerEntity;
-  String? parentId;
   LocalizedItem name;
   LocalizedItem? description;
   String? image;
@@ -122,12 +113,6 @@ class ProductCategory$ {
     (ownerEntityContainer) => ownerEntityContainer.ownerEntity,
     (ownerEntityContainer, ownerEntity) =>
         ownerEntityContainer.copyWith(ownerEntity: ownerEntity),
-  );
-
-  static final parentId = Lens<ProductCategory, String?>(
-    (parentIdContainer) => parentIdContainer.parentId,
-    (parentIdContainer, parentId) =>
-        parentIdContainer.copyWith(parentId: parentId),
   );
 
   static final name = Lens<ProductCategory, LocalizedItem>(
@@ -166,7 +151,6 @@ ProductCategory _$ProductCategoryFromJson(Map<String, dynamic> json) =>
           ? null
           : LocalizedItem.fromJson(json['description'] as Map<String, dynamic>),
       image: json['image'] as String?,
-      parentId: json['parentId'] as String?,
       position: json['position'] as int,
     );
 
@@ -174,6 +158,7 @@ Map<String, dynamic> _$ProductCategoryToJson(ProductCategory instance) {
   final val = <String, dynamic>{
     'id': instance.id,
     'ownerEntity': instance.ownerEntity,
+    'name': instance.name.toJson(),
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -182,8 +167,6 @@ Map<String, dynamic> _$ProductCategoryToJson(ProductCategory instance) {
     }
   }
 
-  writeNotNull('parentId', instance.parentId);
-  val['name'] = instance.name.toJson();
   writeNotNull('description', instance.description?.toJson());
   writeNotNull('image', instance.image);
   val['position'] = instance.position;

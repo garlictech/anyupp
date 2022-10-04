@@ -1,5 +1,10 @@
 import 'dart:io';
 
+import 'package:anyupp/shared/utils/buildcontext_extension.dart';
+import 'package:anyupp/shared/utils/rect_extension.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
 import '/models.dart';
@@ -13,24 +18,18 @@ import '/shared/locale/locale.dart';
 import '/shared/nav.dart';
 import '/shared/utils/format_utils.dart';
 import '/shared/utils/unit_utils.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class _CategoryMenuWidgets {
-  // final List<Widget> widgets;
   final List<ProductCategory> categories;
   final Map<String, List<ProductCategory>>? subCategoriesMap;
   final bool hasFavorites;
   final Map<String, List<Widget>> mainCategoryWidgetsMap;
-//  final Map<String, List<Widget>>? subCategoryWidgetsMap;
 
   _CategoryMenuWidgets({
-    // required this.widgets,
     required this.categories,
     required this.subCategoriesMap,
     required this.hasFavorites,
     required this.mainCategoryWidgetsMap,
-//    this.subCategoryWidgetsMap,
   });
 
   bool hasSubCategories(String categoryId) {
@@ -86,8 +85,10 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   int _selectedTab = 0;
   int _selectedSubTab = 0;
   int _favoritesIndex = 0;
-  // final List<int> _listIndexMap = [];
-  // final List<int> _tabIndexMap = [];
+  late _CategoryMenuWidgets widgetsMenu;
+
+  final GlobalKey _subCatTabKey = GlobalKey(debugLabel: "_subCatTabKey");
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -245,26 +246,18 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     List<Product> products,
     List<FavoriteProduct>? favorites,
   ) {
-    _CategoryMenuWidgets widgetsMenu = _buildProductList(
+    widgetsMenu = _buildProductList(
       context: context,
       unit: unit,
       productCategories: productCategories,
       products: products,
       favorites: favorites,
     );
-    // log.e('_listIndexMap=${_listIndexMap}');
-    // log.e('_tabIndexMap=${_tabIndexMap}');
 
-
-    ProductCategory? category;
-    List<ProductCategory>? subCategories = [];
-    bool hasSubCategories = false;
+    // has any category sub categories?
+    bool hasAnySubCategories = false;
     if (widgetsMenu.categories.isNotEmpty) {
-      category = widgetsMenu.categories[_tabController!.index];
-      hasSubCategories = widgetsMenu.hasSubCategories(category.id);
-      if (widgetsMenu.subCategoriesMap != null) {
-        subCategories = widgetsMenu.subCategoriesMap![category.id!];
-      }
+      hasAnySubCategories = widgetsMenu.subCategoriesMap != null;
     }
 
     return RefreshIndicator(
@@ -291,10 +284,8 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                 pinned: true,
                 floating: true,
                 delegate: SliverAppBarDelegate(
-                  minHeight:
-                      58.0 + (hasSubCategories ? 64.0 : 0.0),
-                  maxHeight:
-                      58.0 + (hasSubCategories ? 64.0 : 0.0),
+                  minHeight: 58.0 + (hasAnySubCategories ? 64.0 : 0.0),
+                  maxHeight: 58.0 + (hasAnySubCategories ? 64.0 : 0.0),
                   child: Material(
                     elevation: 1.0,
                     shadowColor: theme.secondary12,
@@ -307,45 +298,53 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          // Main category tabbar
+                          // Main category tabBar
                           ProductCategoryTabWidget(
                             tabController: _tabController!,
                             addFavorites: widgetsMenu.hasFavorites,
                             categories: widgetsMenu.categories,
                             onTap: (index) => _handleTabTap(context, index),
                           ),
-                          // Subcategory tabbar
-                          if (hasSubCategories)
-                            IndexedStack(
-                              index: 0,
-                              children: [
-                                //for (Widget widget in curSubCategoryWidgets)
-                                  SubCategoryTabBarWidget(
-                                    controller: _subTabController!,
-                                    subCategories: subCategories!,
-                                    onTap: (index) => log.i('onTap $index'),
-                                  ),
-                              ]
-
-                            ),
-                            /*IndexedStack(
-                              index: 0,
-                              children: menu.productCategories
-                                  .map(
-                                    (e) => DefaultTabController(
-                                      length: widgetsMenu.productCategories.length,
-                                      initialIndex: 0,
-                                      child: SubCategoryTabBarWidget(
-                                        // controller: _subTabController!,
-                                        // controller: ,
-                                        productCategories:
-                                            widgetsMenu.productCategories,
-                                        onTap: (index) => log.i('onTap $index'),
-                                      ),
-                                    ),
-                                  )
-                                  .toList(),
-                            ),*/
+                          // builder for setState refresh
+                          if (hasAnySubCategories)
+                            StatefulBuilder(
+                                key: _subCatTabKey,
+                                builder: (BuildContext context,
+                                    StateSetter setState) {
+                                  // calculate cur category
+                                  ProductCategory? category;
+                                  List<ProductCategory>? subCategories = [];
+                                  bool hasSubCategories = false;
+                                  if (widgetsMenu.categories.isNotEmpty) {
+                                    category = widgetsMenu
+                                        .categories[_tabController!.index];
+                                    hasSubCategories = widgetsMenu
+                                        .hasSubCategories(category.id);
+                                    if (widgetsMenu.subCategoriesMap != null) {
+                                      subCategories = widgetsMenu
+                                          .subCategoriesMap![category.id!];
+                                    }
+                                  }
+                                  return Column(
+                                    children: [
+                                      // Subcategory tabBar
+                                      if (hasSubCategories)
+                                        IndexedStack(index: 0, children: [
+                                          //for (Widget widget in curSubCategoryWidgets)
+                                          SubCategoryTabBarWidget(
+                                            controller: _subTabController!,
+                                            subCategories: subCategories!,
+                                            onTap: (index) => _handleSubTabTap(
+                                                context, index),
+                                          ),
+                                        ]),
+                                      if (!hasSubCategories)
+                                        Container(
+                                          height: 50,
+                                        ),
+                                    ],
+                                  );
+                                }),
                         ],
                       ),
                     ),
@@ -363,13 +362,48 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                   .map((entry) => RefreshIndicator(
                       onRefresh: () async => _onRefresh(),
                       color: theme.button,
-                      child: SingleChildScrollView(
-                        // controller: _scrollController,
-                        primary: true,
-                        // physics: BouncingScrollPhysics(),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: widgetsMenu.mainCategoryWidgetsMap[entry.key] ?? [],
+                      child: NotificationListener<ScrollEndNotification>(
+                        onNotification: (scrollEnd) {
+                          // iterate over widgets of current category
+                          ProductCategory category =
+                              widgetsMenu.categories[_tabController!.index];
+                          int count = -1;
+                          for (Widget widget in widgetsMenu
+                              .mainCategoryWidgetsMap[category.id]!) {
+                            if (widget is ProductCategoryHeaderWidget) {
+                              count++;
+                              // get bounds of header widget
+                              GlobalKey key = widget.key as GlobalKey;
+                              Rect headerRect =
+                                  key.currentContext!.getDrawingRect()!;
+                              // get bounds of scrollView
+                              final ScrollableState scrollableState =
+                                  Scrollable.of(key.currentContext!)!;
+                              Rect scrollRect =
+                                  scrollableState.context.getDrawingRect()!;
+                              // is this header widget in visible area of the scrollView
+                              print("rect: $headerRect   rect2: $scrollRect");
+                              if (headerRect.top > 180 &&
+                                  scrollRect.containsRect(headerRect)) {
+                                // change sub category (first 180 point is for headers)
+                                _selectedSubTab = count;
+                                _subTabController!.animateTo(count);
+                                break;
+                              }
+                            }
+                          }
+                          return false;
+                        },
+                        child: SingleChildScrollView(
+                          // controller: _scrollController,
+                          primary: true,
+                          // physics: BouncingScrollPhysics(),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children:
+                                widgetsMenu.mainCategoryWidgetsMap[entry.key] ??
+                                    [],
+                          ),
                         ),
                       )))
                   .toList(),
@@ -413,7 +447,6 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     ServingMode servingMode = currentServingMode;
 
     Map<String, List<Widget>>? mainCategoryWidgetsMap;
-//    Map<String, List<Widget>>? subCategoryWidgetsMap;
     mainCategoryWidgetsMap = {};
 
     // Add favorites tab
@@ -426,36 +459,22 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       mainCategoryWidgetsMap['favorites'] = items;
     }
 
-//    if (!menu.hasSubCategories) {
-      // Build main menu widgets without subcategories
-      for (int i = 0; i < menu.categories.length; i++) {
-        ProductCategory category = menu.categories[i];
-        List<Widget> items = _getWidgetsFromMenuItems(
-          menu.categoryMenuItemsMap![category.id]!,
-          unit,
-          servingMode,
-        );
-        mainCategoryWidgetsMap[category.id] = items;
-      }
-/*    } else {
-      subCategoryWidgetsMap = {};
-      menu.subCategoriesMap!.entries.forEach((element) {
-        var categoryId = element.key;
-        List<Widget> items = _getWidgetsFromMenuItems(
-          element.value.menuItems,
-          unit,
-          servingMode,
-        );
-        subCategoryWidgetsMap?[categoryId] = items;
-      });
-    }*/
+    // Build main menu widgets without subcategories
+    for (int i = 0; i < menu.categories.length; i++) {
+      ProductCategory category = menu.categories[i];
+      List<Widget> items = _getWidgetsFromMenuItems(
+        menu.categoryMenuItemsMap![category.id]!,
+        unit,
+        servingMode,
+      );
+      mainCategoryWidgetsMap[category.id] = items;
+    }
 
     return _CategoryMenuWidgets(
       categories: menu.categories,
       subCategoriesMap: menu.subCategoriesMap,
       hasFavorites: _favoritesIndex == 1,
       mainCategoryWidgetsMap: mainCategoryWidgetsMap,
-//      subCategoryWidgetsMap: subCategoryWidgetsMap,
     );
   }
 
@@ -464,12 +483,38 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     // log.w('_handleTabTap[$index]=itemInMap:$itemIndex map:$_tabIndexMap');
     // _scrollController.scrollToIndex(index: index, scrollSpeed: 2.0);
     // _tabController?.animateTo(index);
-    print("index: $index  _selectedTab: $_selectedTab");
-    _selectedTab = index;
-    // refresh subcategories
-    /*setState(() {
+    //print("_handleTabTap  index: $index  _selectedTab: $_selectedTab");
 
-    });*/
+    _selectedTab = index;
+
+    // refresh only subCategory widget
+    _subCatTabKey.currentState!.setState(() {});
+  }
+
+  _handleSubTabTap(BuildContext context, int index) {
+    //print("_handleSubTabTap  index: $index  _selectedSubTab: $_selectedSubTab");
+
+    _selectedSubTab = index;
+    // search and scroll to that header
+    int count = -1;
+    ProductCategory category = widgetsMenu.categories[_tabController!.index];
+    for (Widget widget in widgetsMenu.mainCategoryWidgetsMap[category.id]!) {
+      if (widget is ProductCategoryHeaderWidget) {
+        //print("widget: ${widget.name} ${widget.key}  ${(widget.key as GlobalKey).currentContext!}");
+        count++;
+        if (count == index) {
+          Scrollable.ensureVisible((widget.key as GlobalKey).currentContext!,
+                  duration: Duration(milliseconds: 200), alignment: 0)
+              .then((value) =>
+                  // bug? scroll again
+                  Scrollable.ensureVisible(
+                      (widget.key as GlobalKey).currentContext!,
+                      duration: Duration(milliseconds: 200),
+                      alignment: 0));
+          break;
+        }
+      }
+    }
   }
 
   List<Widget> _getWidgetsFromMenuItems(
@@ -483,6 +528,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       if (item is MenuItemHeader) {
         results.add(
           ProductCategoryHeaderWidget(
+            key: GlobalKey(),
             name: item.title,
             // key: _tabKeys[cIndex],
           ),
@@ -523,6 +569,10 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       }
       throw Exception('Unknown item type');
     }
+
+    // because of bottom paddings of listview
+    results.add(Container(height: 100));
+
     return results;
   }
 }

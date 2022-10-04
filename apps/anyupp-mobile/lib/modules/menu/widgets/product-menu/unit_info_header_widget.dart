@@ -11,6 +11,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class UnitInfoHeaderWidget extends StatelessWidget {
   final Unit unit;
+
   const UnitInfoHeaderWidget({
     Key? key,
     required this.unit,
@@ -61,26 +62,44 @@ class UnitInfoHeaderWidget extends StatelessWidget {
                   InkWell(
                     onTap: () => Nav.to(UnitInfoScreen(unit: unit)),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 25.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      padding: const EdgeInsets.only(top: 12.0),
+                      child: Column(
                         children: [
-                          Icon(
-                            Icons.description,
-                            color: theme.icon,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 13),
+                            child: Divider(
+                              height: 1,
+                              color: theme.secondary.withOpacity(0.08),
+                            ),
                           ),
-                          SizedBox(
-                            width: 16.0,
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                color: theme.secondary,
+                              ),
+                              SizedBox(
+                                width: 16.0,
+                              ),
+                              Text(
+                                trans(context, 'unitinfo.infoButton'),
+                                style: Fonts.pP1(color: theme.secondary),
+                              ),
+                              Spacer(),
+                              Icon(
+                                Icons.chevron_right,
+                                color: theme.secondary40,
+                              ),
+                            ],
                           ),
-                          Text(
-                            trans(context, 'unitinfo.infoButton'),
-                            style: Fonts.pP1(color: theme.secondary),
-                          ),
-                          Spacer(),
-                          Icon(
-                            Icons.chevron_right,
-                            color: theme.secondary40,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 14),
+                            child: Divider(
+                              height: 1,
+                              color: theme.secondary.withOpacity(0.08),
+                            ),
                           ),
                         ],
                       ),

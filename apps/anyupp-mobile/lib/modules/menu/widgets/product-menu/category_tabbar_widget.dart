@@ -123,7 +123,7 @@ class _ProductCategoryTabWidgetState extends State<ProductCategoryTabWidget> {
                   (widget.tabController.animation!.value - _fromIndex).abs();
             }
           }
-//print("index: $index  _fromIndex: $_fromIndex  _toIndex: $_toIndex  progress: $progress");
+          //print("index: $index  _fromIndex: $_fromIndex  _toIndex: $_toIndex  progress: $progress");
           return Container(
             margin: EdgeInsets.zero,
             padding: const EdgeInsets.only(
@@ -136,7 +136,8 @@ class _ProductCategoryTabWidgetState extends State<ProductCategoryTabWidget> {
               color: index == _fromIndex
                   ? Color.lerp(theme.secondary0, theme.secondary12, progress)
                   : index == _toIndex
-                      ? Color.lerp(theme.secondary12, theme.secondary0, progress)
+                      ? Color.lerp(
+                          theme.secondary12, theme.secondary0, progress)
                       : Color.lerp(
                           theme.secondary12, theme.secondary12, progress),
               borderRadius: BorderRadius.circular(32),
