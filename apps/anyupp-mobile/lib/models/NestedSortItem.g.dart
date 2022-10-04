@@ -10,7 +10,7 @@ abstract class $NestedSortItem {
   const $NestedSortItem();
 
   String get id;
-  String get parentId;
+  String? get parentId;
 
   NestedSortItem copyWith({
     String? id,
@@ -62,7 +62,7 @@ class NestedSortItem$Change {
   );
 
   String id;
-  String parentId;
+  String? parentId;
 }
 
 // ignore: avoid_classes_with_only_static_members
@@ -72,7 +72,7 @@ class NestedSortItem$ {
     (idContainer, id) => idContainer.copyWith(id: id),
   );
 
-  static final parentId = Lens<NestedSortItem, String>(
+  static final parentId = Lens<NestedSortItem, String?>(
     (parentIdContainer) => parentIdContainer.parentId,
     (parentIdContainer, parentId) =>
         parentIdContainer.copyWith(parentId: parentId),
@@ -86,11 +86,20 @@ class NestedSortItem$ {
 NestedSortItem _$NestedSortItemFromJson(Map<String, dynamic> json) =>
     NestedSortItem(
       id: json['id'] as String,
-      parentId: json['parentId'] as String,
+      parentId: json['parentId'] as String?,
     );
 
-Map<String, dynamic> _$NestedSortItemToJson(NestedSortItem instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'parentId': instance.parentId,
-    };
+Map<String, dynamic> _$NestedSortItemToJson(NestedSortItem instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('parentId', instance.parentId);
+  return val;
+}

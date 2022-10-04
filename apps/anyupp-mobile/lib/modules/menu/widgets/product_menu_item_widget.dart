@@ -18,11 +18,12 @@ class ProductMenuItemWidget extends StatelessWidget {
   final double _disabled_opacity = 0.5;
 
   const ProductMenuItemWidget({
+    Key? key,
     required this.item,
     required this.unit,
     required this.displayState,
     required this.servingMode,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -207,5 +208,6 @@ class ProductMenuItemWidget extends StatelessWidget {
   bool get isDisabled =>
       displayState == ProductItemDisplayState.DISABLED ||
       displayState == ProductItemDisplayState.SOLDOUT;
+
   bool get isSoldOut => displayState == ProductItemDisplayState.SOLDOUT;
 }

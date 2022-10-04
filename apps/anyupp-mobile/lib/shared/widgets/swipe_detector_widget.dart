@@ -49,13 +49,13 @@ class SwipeDetector extends StatelessWidget {
 
     return GestureDetector(
       child: child,
-      onVerticalDragStart: (dragDetails) {
+      onVerticalDragStart: onSwipeUp == null ? null : (dragDetails) {
         startVerticalDragDetails = dragDetails;
       },
-      onVerticalDragUpdate: (dragDetails) {
+      onVerticalDragUpdate: onSwipeUp == null ? null : (dragDetails) {
         updateVerticalDragDetails = dragDetails;
       },
-      onVerticalDragEnd: (endDetails) {
+      onVerticalDragEnd: onSwipeUp == null ? null : (endDetails) {
         double dx = updateVerticalDragDetails.globalPosition.dx -
             startVerticalDragDetails.globalPosition.dx;
         double dy = updateVerticalDragDetails.globalPosition.dy -
@@ -85,13 +85,13 @@ class SwipeDetector extends StatelessWidget {
           }
         }
       },
-      onHorizontalDragStart: (dragDetails) {
+      onHorizontalDragStart: onSwipeLeft == null ? null : (dragDetails) {
         startHorizontalDragDetails = dragDetails;
       },
-      onHorizontalDragUpdate: (dragDetails) {
+      onHorizontalDragUpdate: onSwipeLeft == null ? null : (dragDetails) {
         updateHorizontalDragDetails = dragDetails;
       },
-      onHorizontalDragEnd: (endDetails) {
+      onHorizontalDragEnd: onSwipeLeft == null ? null : (endDetails) {
         double dx = updateHorizontalDragDetails.globalPosition.dx -
             startHorizontalDragDetails.globalPosition.dx;
         double dy = updateHorizontalDragDetails.globalPosition.dy -

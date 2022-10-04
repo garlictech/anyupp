@@ -4,15 +4,8 @@ import 'package:anyupp/models/Unit.dart';
 import '../ProductCategory.dart';
 
 extension ProductCategoryExtension on ProductCategory {
+  /// returns parent category based on unit.categoryOrders
   String? getParentId(Unit unit) {
-    // temp todo
-/*    if ("seeded_product_category_c1_2_id" == id) {
-      return "seeded_product_category_c1_4_id";
-    }
-    if ("seeded_product_category_c1_3_id" == id) {
-      return "seeded_product_category_c1_4_id";
-    }*/
-
     if (unit.categoryOrders != null) {
       for (NestedSortItem nestedSortItem in unit.categoryOrders!) {
         if (nestedSortItem.id == this.id) {
