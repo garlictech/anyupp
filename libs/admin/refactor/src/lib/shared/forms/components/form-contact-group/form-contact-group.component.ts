@@ -5,7 +5,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { LocationLatLon } from '@bgap/domain';
 import { config } from '@bgap/shared/config';
 
@@ -15,7 +15,7 @@ import { config } from '@bgap/shared/config';
   templateUrl: './form-contact-group.component.html',
 })
 export class FormContactGroupComponent {
-  @Input() contactFormGroup?: UntypedFormGroup;
+  @Input() contactFormGroup?: FormGroup;
   @Input() showAddressForm?: boolean = true;
   @Input() showLocationForm?: boolean = true;
 

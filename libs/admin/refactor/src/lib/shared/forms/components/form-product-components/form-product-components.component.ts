@@ -10,9 +10,9 @@ import {
 } from '@angular/core';
 import {
   AbstractControl,
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormGroup,
+  FormArray,
+  FormBuilder,
+  FormGroup,
   Validators,
 } from '@angular/forms';
 import {
@@ -37,17 +37,17 @@ import { FormsService } from '../../services/forms/forms.service';
   styleUrls: ['./form-product-components.component.scss'],
 })
 export class FormProductComponentsComponent implements OnInit {
-  @Input() componentFormArray?: UntypedFormArray;
+  @Input() componentFormArray?: FormArray;
   @Input() currency?: string;
   public eServingMode = ServingMode;
 
-  public componentSetForm?: UntypedFormGroup;
+  public componentSetForm?: FormGroup;
   public productComponentSetOptions: KeyValue[] = [];
 
   private _productComponentSets: ProductComponentSet[] = [];
 
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _formsService: FormsService,
     private _localizePipe: LocalizePipe,
     private _changeDetectorRef: ChangeDetectorRef,
@@ -108,12 +108,10 @@ export class FormProductComponentsComponent implements OnInit {
           productComponentId: componentId,
           position: i + 1,
         });
-        (componentSetGroup.controls['items'] as UntypedFormArray).push(
-          itemGroup,
-        );
+        (componentSetGroup.controls['items'] as FormArray).push(itemGroup);
       });
 
-      (<UntypedFormArray>this.componentFormArray)?.push(componentSetGroup);
+      (<FormArray>this.componentFormArray)?.push(componentSetGroup);
 
       this.componentSetForm?.patchValue({ productComponentSetId: '' });
     }
@@ -122,9 +120,9 @@ export class FormProductComponentsComponent implements OnInit {
   }
 
   public removeComponentSetFromList(idx: number) {
-    (<UntypedFormArray>this.componentFormArray)?.removeAt(idx);
+    (<FormArray>this.componentFormArray)?.removeAt(idx);
 
-    (<UntypedFormArray>this.componentFormArray)?.controls.forEach(
+    (<FormArray>this.componentFormArray)?.controls.forEach(
       (g: AbstractControl, i: number) => {
         g.patchValue({ position: i + 1 });
       },
@@ -149,17 +147,17 @@ export class FormProductComponentsComponent implements OnInit {
 
       arr.sort(customNumberCompare('position'));
 
-      (<UntypedFormArray>this.componentFormArray)?.controls.forEach(
+      (<FormArray>this.componentFormArray)?.controls.forEach(
         (g: AbstractControl, i: number) => {
           g.patchValue(arr[i]);
-          (g.get('items') as UntypedFormArray).clear();
+          (g.get('items') as FormArray).clear();
 
           (arr[i]?.items || []).forEach((item: ProductConfigComponent) => {
             const itemGroup =
               this._formsService.createProductConfigSetItemFormGroup();
             itemGroup.patchValue(item);
 
-            (g.get('items') as UntypedFormArray).push(itemGroup);
+            (g.get('items') as FormArray).push(itemGroup);
           });
         },
       );

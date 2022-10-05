@@ -4,11 +4,7 @@ import { EMPTY, iif } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Maybe } from '@bgap/crud-gql/api';
 import {
   ChainStyleImages,
@@ -51,7 +47,7 @@ import { UnitCollectionService } from '../../../store/units';
 @Injectable({ providedIn: 'root' })
 export class UnitFormService {
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _formsService: FormsService,
     private _store: Store,
     private _crudSdk: CrudSdkService,
@@ -198,7 +194,7 @@ export class UnitFormService {
 
   public patchRatingPolicies(
     ratingPolicyValues: Maybe<RatingPolicy>[],
-    ratingPoliciesArray: UntypedFormArray,
+    ratingPoliciesArray: FormArray,
   ) {
     (ratingPolicyValues || []).forEach(ratingPolicyValue => {
       const ratingPolicyGroup =

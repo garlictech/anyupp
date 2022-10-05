@@ -8,7 +8,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { UntypedFormArray, UntypedFormControl } from '@angular/forms';
+import { FormArray, FormControl } from '@angular/forms';
 import { PaymentMode, PosType, Unit } from '@bgap/domain';
 import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -103,7 +103,7 @@ export class UnitFormComponent
 
       this._unitFormService.patchRatingPolicies(
         this.unit.ratingPolicies || [],
-        this.dialogForm?.controls['ratingPolicies'] as UntypedFormArray,
+        this.dialogForm?.controls['ratingPolicies'] as FormArray,
       );
 
       // Parse openingHours object to temp array
@@ -116,7 +116,7 @@ export class UnitFormComponent
               this._formsService.createCustomDailyScheduleFormGroup();
             dayunit.patchValue(day);
 
-            (<UntypedFormArray>(
+            (<FormArray>(
               this.dialogForm?.get('openingHours')?.get('custom')
             )).push(dayunit);
           }
@@ -128,7 +128,7 @@ export class UnitFormComponent
         if (lane) {
           const laneunit = this._formsService.createLaneFormGroup();
           laneunit.patchValue(lane);
-          (<UntypedFormArray>this.dialogForm?.get('lanes')).push(laneunit);
+          (<FormArray>this.dialogForm?.get('lanes')).push(laneunit);
         }
       });
     } else {
@@ -223,7 +223,7 @@ export class UnitFormComponent
   }
 
   public logoUploadCallback = (image: string, param: string) => {
-    (<UntypedFormControl>(
+    (<FormControl>(
       this.dialogForm?.get('style')?.get('images')?.get(param)
     )).setValue(image);
 
@@ -239,7 +239,7 @@ export class UnitFormComponent
   };
 
   public logoRemoveCallback = (param: string) => {
-    (<UntypedFormControl>(
+    (<FormControl>(
       this.dialogForm?.get('style')?.get('images')?.get(param)
     )).setValue('');
 

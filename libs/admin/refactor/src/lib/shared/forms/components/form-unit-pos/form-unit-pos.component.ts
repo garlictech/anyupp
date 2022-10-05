@@ -7,7 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { PosType } from '@bgap/domain';
 import { KeyValue } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -20,8 +20,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   templateUrl: './form-unit-pos.component.html',
 })
 export class FormUnitPosComponent implements OnInit {
-  @Input() posFormGroup?: UntypedFormGroup;
-  @Input() externalIdControl?: UntypedFormControl;
+  @Input() posFormGroup?: FormGroup;
+  @Input() externalIdControl?: FormControl;
   @Input() rkeeperEdit = false;
   @Output() changePasswordEmitter = new EventEmitter();
 
@@ -49,7 +49,7 @@ export class FormUnitPosComponent implements OnInit {
           if (!this.posFormGroup?.value.rkeeper?.anyuppPassword) {
             this.generateNewPassword();
 
-            (<UntypedFormGroup>this.posFormGroup?.controls['rkeeper']).controls[
+            (<FormGroup>this.posFormGroup?.controls['rkeeper']).controls[
               'anyuppUsername'
             ].patchValue('user');
           }

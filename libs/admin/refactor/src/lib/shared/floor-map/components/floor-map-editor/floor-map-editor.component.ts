@@ -1,7 +1,7 @@
 import { debounceTime } from 'rxjs/operators';
 
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   FloorMapData,
   FloorMapDataObject,
@@ -45,14 +45,11 @@ import {
 export class FloorMapEditorComponent implements OnInit, AfterViewInit {
   @Input() editMode?: boolean;
   @Input() floorMap?: Maybe<FloorMapData>;
-  public dimensionForm?: UntypedFormGroup;
-  public objectForm?: UntypedFormGroup;
+  public dimensionForm?: FormGroup;
+  public objectForm?: FormGroup;
   public EUnitMapObjectType = UnitMapObjectType;
 
-  constructor(
-    private _store: Store,
-    private _formBuilder: UntypedFormBuilder,
-  ) {}
+  constructor(private _store: Store, private _formBuilder: FormBuilder) {}
 
   ngOnInit() {
     const w = this.floorMap?.w || 800;

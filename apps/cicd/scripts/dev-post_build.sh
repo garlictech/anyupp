@@ -5,6 +5,8 @@ ENVNAME=$1
 BUCKET_NAME=$2
 ADMIN_SITE_URL=$3
 
+trap yarn deleteAllTableData && yarn seed
+
 ./apps/cicd/scripts/common-post_build.sh $ENVNAME $BUCKET_NAME
 
 npx cowsay "TESTING $ENVNAME..."

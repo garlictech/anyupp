@@ -5,7 +5,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { NbComponentSize } from '@nebular/theme';
 
 @Component({
@@ -18,7 +18,7 @@ export class FormTextInputComponent {
   @Input() staticCaption?: string; // Language key!!!
   @Input() prefix?: string;
   @Input() suffix?: string;
-  @Input() control?: UntypedFormControl | null;
+  @Input() control?: FormControl | null;
   @Input() type!: string;
   @Input() fieldSize: NbComponentSize = 'small';
   @Input() inputId = '';

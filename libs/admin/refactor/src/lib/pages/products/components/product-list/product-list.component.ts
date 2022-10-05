@@ -14,7 +14,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { AdminUser, UnitProduct } from '@bgap/domain';
 import { ProductOrderChangeEvent } from '@bgap/shared/types';
 import { NbDialogService, NbTabsetComponent } from '@nebular/theme';
@@ -47,7 +47,7 @@ export class ProductListComponent implements OnInit {
   public unitProducts: UnitProducts[] = [];
   public groupCurrency = '';
   public loggedUser$: Observable<AdminUser | undefined>;
-  public searchControl: UntypedFormControl;
+  public searchControl: FormControl;
 
   private _sortedUnitProductIds: string[] = [];
 
@@ -57,7 +57,7 @@ export class ProductListComponent implements OnInit {
     private _productListService: ProductListService,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
-    this.searchControl = new UntypedFormControl('');
+    this.searchControl = new FormControl('');
 
     this.loggedUser$ = this._store
       .select(loggedUserSelectors.getLoggedUser)

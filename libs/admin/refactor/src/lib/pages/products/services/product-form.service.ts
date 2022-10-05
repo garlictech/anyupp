@@ -4,11 +4,7 @@ import { iif, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import {
-  UntypedFormArray,
-  UntypedFormBuilder,
-  Validators,
-} from '@angular/forms';
+import { FormArray, FormBuilder, Validators } from '@angular/forms';
 import {
   CreateUnitProductInput,
   Maybe,
@@ -34,7 +30,7 @@ import { UnitProductCollectionService } from '../../../store/products';
 @Injectable({ providedIn: 'root' })
 export class ProductFormService {
   constructor(
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _formsService: FormsService,
     private _store: Store,
     private _unitProductCollectionService: UnitProductCollectionService,
@@ -100,7 +96,7 @@ export class ProductFormService {
 
   public patchProductVariants(
     productVariants: Maybe<ProductVariant>[],
-    variantsArray: UntypedFormArray,
+    variantsArray: FormArray,
   ) {
     (productVariants || []).forEach(variant => {
       const variantGroup = this._formsService.createProductVariantFormGroup();
@@ -116,7 +112,7 @@ export class ProductFormService {
 
   public patchExtendedProductVariants(
     productVariants: Maybe<ProductVariant>[],
-    variantsArray: UntypedFormArray,
+    variantsArray: FormArray,
   ) {
     pipe(
       [...(productVariants || [])],
@@ -131,7 +127,7 @@ export class ProductFormService {
             const availabilityGroup =
               this._formsService.createProductAvailabilityFormGroup();
             availabilityGroup.patchValue(cleanObject(availability));
-            (variantGroup.controls['availabilities'] as UntypedFormArray).push(
+            (variantGroup.controls['availabilities'] as FormArray).push(
               availabilityGroup,
             );
           }
@@ -144,7 +140,7 @@ export class ProductFormService {
 
   public patchConfigSet(
     configSetValues: Maybe<ProductConfigSet>[],
-    configSetsArray: UntypedFormArray,
+    configSetsArray: FormArray,
   ) {
     (configSetValues || []).forEach(configSet => {
       const configSetGroup =
@@ -157,7 +153,7 @@ export class ProductFormService {
             this._formsService.createProductConfigSetItemFormGroup();
           configSetItemGroup.patchValue(cleanObject(item));
 
-          (configSetGroup.controls['items'] as UntypedFormArray).push(
+          (configSetGroup.controls['items'] as FormArray).push(
             configSetItemGroup,
           );
         }

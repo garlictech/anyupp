@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { UntypedFormArray } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { UntilDestroy } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -9,6 +9,6 @@ import { UntilDestroy } from '@ngneat/until-destroy';
   templateUrl: './form-product-component-item.component.html',
 })
 export class FormProductComponentItemComponent {
-  @Input() itemFormArray?: UntypedFormArray;
+  @Input() itemFormArray?: FormArray;
   @Input() currency?: string;
 }

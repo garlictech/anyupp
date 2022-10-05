@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Unit } from '@bgap/domain';
 
 import { floorMapActions, mapRawData } from '../../../../shared/floor-map';
@@ -25,7 +25,7 @@ export class UnitFloorMapComponent
 {
   @ViewChild('container') container!: ElementRef;
   public unit!: Unit;
-  public rawForm?: UntypedFormGroup;
+  public rawForm?: FormGroup;
 
   constructor(
     protected override _injector: Injector,

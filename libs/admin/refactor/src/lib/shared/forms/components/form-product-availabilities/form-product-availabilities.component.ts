@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { UntypedFormArray, UntypedFormControl } from '@angular/forms';
+import { FormArray, FormControl } from '@angular/forms';
 import {
   baseFromTaxedPrice,
   taxedFromBasePrice,
@@ -17,7 +17,7 @@ import { ServiceFeePolicy, ServiceFeeType } from '@bgap/domain';
   styleUrls: ['./form-product-availabilities.component.scss'],
 })
 export class FormProductAvailabilitiesComponent implements OnInit {
-  @Input() availabilityFormArray?: UntypedFormArray | null;
+  @Input() availabilityFormArray?: FormArray | null;
   @Input() currency?: string;
   @Input() unitServiceFeePolicy?: ServiceFeePolicy | null;
   @Input() productTax?: number;
@@ -25,8 +25,8 @@ export class FormProductAvailabilitiesComponent implements OnInit {
   public iterativeAvailabilities: KeyValue[];
   public availabilityTypes;
 
-  public netPriceFormArray: UntypedFormArray = new UntypedFormArray([]);
-  public menuPriceFormArray: UntypedFormArray = new UntypedFormArray([]);
+  public netPriceFormArray: FormArray = new FormArray([]);
+  public menuPriceFormArray: FormArray = new FormArray([]);
 
   constructor(
     private _formsService: FormsService,
@@ -64,14 +64,14 @@ export class FormProductAvailabilitiesComponent implements OnInit {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     this.availabilityFormArray?.controls.forEach((availability, i) => {
-      this.menuPriceFormArray.push(new UntypedFormControl(''));
-      this.netPriceFormArray.push(new UntypedFormControl(''));
+      this.menuPriceFormArray.push(new FormControl(''));
+      this.netPriceFormArray.push(new FormControl(''));
       this.grossPriceChanged(availability.value.price, i);
     });
   }
 
   public addAvailability() {
-    (<UntypedFormArray>this.availabilityFormArray)?.push(
+    (<FormArray>this.availabilityFormArray)?.push(
       this._formsService.createProductAvailabilityFormGroup(),
     );
 
@@ -81,39 +81,39 @@ export class FormProductAvailabilitiesComponent implements OnInit {
     if (this.menuPriceFormArray.controls[newAvailabilityIdx]) {
       this.menuPriceFormArray.controls[newAvailabilityIdx].patchValue('');
     } else {
-      this.menuPriceFormArray.controls[newAvailabilityIdx] =
-        new UntypedFormControl('');
+      this.menuPriceFormArray.controls[newAvailabilityIdx] = new FormControl(
+        '',
+      );
     }
 
     if (this.netPriceFormArray.controls[newAvailabilityIdx]) {
       this.netPriceFormArray.controls[newAvailabilityIdx].patchValue('');
     } else {
-      this.netPriceFormArray.controls[newAvailabilityIdx] =
-        new UntypedFormControl('');
+      this.netPriceFormArray.controls[newAvailabilityIdx] = new FormControl('');
     }
 
     this._changeDetectorRef.detectChanges();
   }
 
   public removeAvailability(idx: number) {
-    (<UntypedFormArray>this.availabilityFormArray)?.removeAt(idx);
+    (<FormArray>this.availabilityFormArray)?.removeAt(idx);
 
     // Remove calculation fields
-    (<UntypedFormArray>this.menuPriceFormArray)?.removeAt(idx);
-    (<UntypedFormArray>this.netPriceFormArray)?.removeAt(idx);
+    (<FormArray>this.menuPriceFormArray)?.removeAt(idx);
+    (<FormArray>this.netPriceFormArray)?.removeAt(idx);
 
     this._changeDetectorRef.detectChanges();
   }
 
   public onTypeChange(value: EVariantAvailabilityType, idx: number) {
     // Clear days
-    (<UntypedFormArray>this.availabilityFormArray)?.controls[idx].patchValue({
+    (<FormArray>this.availabilityFormArray)?.controls[idx].patchValue({
       dayFrom: '',
       dayTo: '',
     });
 
     if (value === EVariantAvailabilityType.ALWAYS) {
-      (<UntypedFormArray>this.availabilityFormArray)?.controls[idx].patchValue({
+      (<FormArray>this.availabilityFormArray)?.controls[idx].patchValue({
         timeFrom: '',
         timeTo: '',
       });
@@ -145,7 +145,7 @@ export class FormProductAvailabilitiesComponent implements OnInit {
         : 0,
     );
 
-    (this.availabilityFormArray as UntypedFormArray).controls[idx].patchValue({
+    (this.availabilityFormArray as FormArray).controls[idx].patchValue({
       price: grossPrice,
     });
 
@@ -157,7 +157,7 @@ export class FormProductAvailabilitiesComponent implements OnInit {
   public netPriceChanged(value: number, idx: number) {
     const grossPrice = taxedFromBasePrice(+value, this.productTax || 0);
 
-    (this.availabilityFormArray as UntypedFormArray).controls[idx].patchValue({
+    (this.availabilityFormArray as FormArray).controls[idx].patchValue({
       price: grossPrice,
     });
     this.menuPriceFormArray.controls[idx].patchValue(

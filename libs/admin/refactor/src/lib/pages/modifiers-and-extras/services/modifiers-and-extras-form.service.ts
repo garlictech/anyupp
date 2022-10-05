@@ -2,11 +2,7 @@ import { iif } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import {
-  UntypedFormBuilder,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   CreateProductComponentInput,
   CreateProductComponentSetInput,
@@ -29,7 +25,7 @@ import { ProductComponentCollectionService } from '../../../store/product-compon
 export class ModifiersAndExtrasFormService {
   constructor(
     private _store: Store,
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _productComponentCollectionService: ProductComponentCollectionService,
     private _productComponentSetCollectionService: ProductComponentSetCollectionService,
   ) {}
@@ -72,10 +68,7 @@ export class ModifiersAndExtrasFormService {
     );
   }
 
-  public addComponentToList(
-    dialogForm: UntypedFormGroup,
-    componentForm: UntypedFormGroup,
-  ) {
+  public addComponentToList(dialogForm: FormGroup, componentForm: FormGroup) {
     const componentIdsArr: string[] = dialogForm.controls['items'].value;
     componentIdsArr.push(componentForm.value.productComponentId);
 
@@ -84,7 +77,7 @@ export class ModifiersAndExtrasFormService {
   }
 
   public removeComponentFromList(
-    dialogForm: UntypedFormGroup,
+    dialogForm: FormGroup,
     productComponentId: string,
   ) {
     const componentsArr: string[] = (
