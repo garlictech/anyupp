@@ -8,7 +8,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { UntypedFormGroup, Validators } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { ProductComponentSet, ProductComponentSetType } from '@bgap/domain';
 import { KeyValue, KeyValueObject, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject } from '@bgap/shared/utils';
@@ -37,7 +37,7 @@ export class ProductComponentSetFormComponent
   extends AbstractFormDialogComponent
   implements OnInit
 {
-  public componentForm?: UntypedFormGroup;
+  public componentForm?: FormGroup;
   public productComponentSet!: ProductComponentSet;
   public unitOptions$: Observable<KeyValue[]>;
   public typeOptions: KeyValue[] = [];

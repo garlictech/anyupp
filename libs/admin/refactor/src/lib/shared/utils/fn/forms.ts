@@ -2,7 +2,7 @@ import { isNumber, omit } from 'lodash/fp';
 
 import {
   AbstractControl,
-  UntypedFormBuilder,
+  FormBuilder,
   ValidatorFn,
   Validators,
 } from '@angular/forms';
@@ -19,7 +19,7 @@ export const contactFormGroup = (requiredEmail = false) => ({
 });
 
 export const addressFormGroup = (
-  formBuilder: UntypedFormBuilder,
+  formBuilder: FormBuilder,
   required = false,
 ) => ({
   address: formBuilder.group(
@@ -35,7 +35,7 @@ export const addressFormGroup = (
 });
 
 export const locationFormGroup = (
-  formBuilder: UntypedFormBuilder,
+  formBuilder: FormBuilder,
   required = false,
 ) => ({
   location: formBuilder.group(

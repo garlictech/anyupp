@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { ServingMode } from '@bgap/domain';
 
 @Component({
@@ -8,7 +8,7 @@ import { ServingMode } from '@bgap/domain';
   templateUrl: './form-serving-mode.component.html',
 })
 export class FormServingModeComponent {
-  @Input() control?: UntypedFormControl | null;
+  @Input() control?: FormControl | null;
   @Input() servingModes: ServingMode[] = [];
 
   public servingModeIsChecked(servingMode: ServingMode): boolean {

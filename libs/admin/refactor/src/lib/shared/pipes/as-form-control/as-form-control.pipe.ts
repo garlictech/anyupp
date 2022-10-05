@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AbstractControl, UntypedFormControl } from '@angular/forms';
+import { AbstractControl, FormControl } from '@angular/forms';
 
 @Pipe({
   name: 'asFormControl',
@@ -7,7 +7,7 @@ import { AbstractControl, UntypedFormControl } from '@angular/forms';
 export class AsFormControlPipe implements PipeTransform {
   transform(
     control: AbstractControl | null | undefined,
-  ): UntypedFormControl | undefined {
-    return control ? (control as UntypedFormControl) : undefined;
+  ): FormControl | undefined {
+    return control ? (control as FormControl) : undefined;
   }
 }

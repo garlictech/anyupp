@@ -7,7 +7,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { Unit } from '@bgap/domain';
 import {
   EDashboardListMode,
@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
   public resized: boolean;
   public buttonSize: ENebularButtonSize = ENebularButtonSize.SMALL;
   public selectedUnit?: Unit;
-  public toggleFormControl: UntypedFormControl;
+  public toggleFormControl: FormControl;
   public time?: string;
 
   constructor(
@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit {
     private _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.resized = false;
-    this.toggleFormControl = new UntypedFormControl(false);
+    this.toggleFormControl = new FormControl(false);
   }
 
   ngOnInit() {

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { ALLERGENS } from '../../../../shared/utils';
 import { Allergen } from '@bgap/shared/types';
 
@@ -10,7 +10,7 @@ import { Allergen } from '@bgap/shared/types';
   styleUrls: ['./form-allergens.component.scss'],
 })
 export class FormAllergensComponent {
-  @Input() control?: UntypedFormControl | null;
+  @Input() control?: FormControl | null;
 
   public allergens = ALLERGENS;
 
