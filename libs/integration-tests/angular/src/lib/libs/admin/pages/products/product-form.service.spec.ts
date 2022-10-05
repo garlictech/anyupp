@@ -2,7 +2,7 @@ import { combineLatest, EMPTY } from 'rxjs';
 import { catchError, switchMap, tap, delay } from 'rxjs/operators';
 
 import { TestBed } from '@angular/core/testing';
-import { UntypedFormArray, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, ReactiveFormsModule } from '@angular/forms';
 import { ProductFormService } from '@bgap/admin/refactor';
 import { CrudSdkService } from '@bgap/admin/refactor';
 
@@ -75,7 +75,7 @@ describe('ProductFormService', () => {
   });
 
   it('patchConfigSet should add configsets to form array', () => {
-    const configSetsArray = new UntypedFormArray([]);
+    const configSetsArray = new FormArray([]);
 
     service.patchConfigSet([], configSetsArray);
 

@@ -9,7 +9,7 @@ import {
   Injector,
   OnInit,
 } from '@angular/core';
-import { UntypedFormArray } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { AdminUserSettings, Unit } from '@bgap/domain';
 import {
   EImageType,
@@ -96,12 +96,12 @@ export class ProductFormComponent
 
       this._productFormService.patchProductVariants(
         this.product.variants || [],
-        this.dialogForm?.controls['variants'] as UntypedFormArray,
+        this.dialogForm?.controls['variants'] as FormArray,
       );
 
       this._productFormService.patchConfigSet(
         this.product.configSets || [],
-        this.dialogForm?.controls['configSets'] as UntypedFormArray,
+        this.dialogForm?.controls['configSets'] as FormArray,
       );
     } else {
       if (this._userSettings?.selectedProductCategoryId) {

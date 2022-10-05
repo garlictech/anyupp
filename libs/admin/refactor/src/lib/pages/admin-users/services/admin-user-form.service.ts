@@ -2,7 +2,7 @@ import { iif } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { CreateAdminUserInput, UpdateAdminUserInput } from '@bgap/domain';
 import { Store } from '@ngrx/store';
 
@@ -14,7 +14,7 @@ import { catchGqlError } from '../../../store/app-core';
 export class AdminUserFormService {
   constructor(
     private _store: Store,
-    private _formBuilder: UntypedFormBuilder,
+    private _formBuilder: FormBuilder,
     private _adminUserCollectionService: AdminUserCollectionService,
   ) {}
 

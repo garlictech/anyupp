@@ -6,7 +6,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { currentStatus } from '@bgap/crud-gql/api';
 import { Order } from '@bgap/domain';
 import { customDateCompare, filterNullish } from '@bgap/shared/utils';
@@ -28,7 +28,7 @@ import { OrderHistoryCollectionService } from '../../../../store/orders';
 export class OrderTicketHistoryListComponent implements OnInit {
   public selectedOrder?: Order;
   public dailyOrders: Order[] = [];
-  public dateFormControl: UntypedFormControl = new UntypedFormControl();
+  public dateFormControl: FormControl = new FormControl();
   public currentStatus = currentStatus;
 
   constructor(
@@ -42,7 +42,7 @@ export class OrderTicketHistoryListComponent implements OnInit {
       .select(dashboardSelectors.getSelectedHistoryDate)
       .pipe(filterNullish(), take(1), untilDestroyed(this))
       .subscribe(historyDate => {
-        this.dateFormControl = new UntypedFormControl(
+        this.dateFormControl = new FormControl(
           new Date(historyDate).toISOString().slice(0, 10),
         );
 

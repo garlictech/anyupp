@@ -6,7 +6,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { KeyValue } from '@bgap/shared/types';
 import { NbComponentSize } from '@nebular/theme';
 
@@ -19,7 +19,7 @@ import { NbComponentSize } from '@nebular/theme';
 export class FormSelectComponent {
   @Input() caption = ''; // Language key!!!
   @Input() options: KeyValue[] = [];
-  @Input() control?: UntypedFormControl | null;
+  @Input() control?: FormControl | null;
   @Input() forceShowEmptyOption?: boolean = false;
   @Input() emptyOptionLabel?: string = '-';
   @Input() localize?: boolean;

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { OrderMode } from '@bgap/domain';
 
 @Component({
@@ -8,7 +8,7 @@ import { OrderMode } from '@bgap/domain';
   templateUrl: './form-order-mode.component.html',
 })
 export class FormOrderModeComponent {
-  @Input() control?: UntypedFormControl | null;
+  @Input() control?: FormControl | null;
   @Input() orderModes: OrderMode[] = [];
 
   public orderModeIsChecked(orderMode: OrderMode): boolean {

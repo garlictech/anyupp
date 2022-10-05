@@ -5,7 +5,7 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { UntypedFormArray } from '@angular/forms';
+import { FormArray } from '@angular/forms';
 import { productsSelectors } from '../../../../store/products';
 import { FormsService } from '../../services/forms/forms.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -18,7 +18,7 @@ import { select, Store } from '@ngrx/store';
   templateUrl: './form-unit-lanes.component.html',
 })
 export class FormUnitLanesComponent implements OnInit {
-  @Input() lanesFormArray?: UntypedFormArray;
+  @Input() lanesFormArray?: FormArray;
   public usedLaneIds: string[];
 
   constructor(
@@ -43,7 +43,7 @@ export class FormUnitLanesComponent implements OnInit {
   }
 
   public addLane() {
-    (<UntypedFormArray>this.lanesFormArray).push(
+    (<FormArray>this.lanesFormArray).push(
       this._formsService.createLaneFormGroup(),
     );
 
@@ -51,7 +51,7 @@ export class FormUnitLanesComponent implements OnInit {
   }
 
   public removeLane(idx: number) {
-    (<UntypedFormArray>this.lanesFormArray).removeAt(idx);
+    (<FormArray>this.lanesFormArray).removeAt(idx);
 
     this._changeDetectorRef.detectChanges();
   }

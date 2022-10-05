@@ -85,6 +85,19 @@
           "authRoleName": "dev-anyupp-backend-cognit-CognitoDefaultAuthentica-VVOU323KB59G",
           "unauthRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8YENT1C0J4YX",
           "unauthRoleName": "dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8YENT1C0J4YX"
+        },
+        "anyuppbackend05472e92": {
+          "userPoolId": "eu-west-1_bzhrpkyNW",
+          "userPoolName": "dev-anyupp-backend-admin-user-pool",
+          "webClientId": "3j5a6v7anv2hb6895ejr4otlds",
+          "nativeClientId": "5qcdrs7tvacja2q3ena030e51e",
+          "identityPoolId": "eu-west-1:440b911a-4e98-499f-b535-002f9ca33c8d",
+          "identityPoolName": "IdentityPool_QGcZ4LENF77H",
+          "allowUnauthenticatedIdentities": true,
+          "authRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultAuthentica-VVOU323KB59G",
+          "authRoleName": "dev-anyupp-backend-cognit-CognitoDefaultAuthentica-VVOU323KB59G",
+          "unauthRoleArn": "arn:aws:iam::568276182587:role/dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8YENT1C0J4YX",
+          "unauthRoleName": "dev-anyupp-backend-cognit-CognitoDefaultUnauthenti-8YENT1C0J4YX"
         }
       }
     }

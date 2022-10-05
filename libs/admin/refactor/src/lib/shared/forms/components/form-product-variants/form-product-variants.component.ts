@@ -4,7 +4,7 @@ import {
   Component,
   Input,
 } from '@angular/core';
-import { AbstractControl, UntypedFormArray } from '@angular/forms';
+import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { Availability, ProductVariant, ServiceFeePolicy } from '@bgap/domain';
@@ -15,7 +15,7 @@ import { Availability, ProductVariant, ServiceFeePolicy } from '@bgap/domain';
   templateUrl: './form-product-variants.component.html',
 })
 export class FormProductVariantsComponent {
-  @Input() variantFormArray?: UntypedFormArray;
+  @Input() variantFormArray?: FormArray;
   @Input() allowAddVariant: boolean;
   @Input() currency?: string;
   @Input() unitServiceFeePolicy?: ServiceFeePolicy | null;
@@ -29,7 +29,7 @@ export class FormProductVariantsComponent {
   }
 
   public addVariant() {
-    (<UntypedFormArray>this.variantFormArray)?.push(
+    (<FormArray>this.variantFormArray)?.push(
       this._formsService.createProductVariantFormGroup(),
     );
 
@@ -52,10 +52,10 @@ export class FormProductVariantsComponent {
 
       arr.sort(customNumberCompare('position'));
 
-      (<UntypedFormArray>this.variantFormArray)?.controls.forEach(
+      (<FormArray>this.variantFormArray)?.controls.forEach(
         (g: AbstractControl, i: number) => {
           g.patchValue(arr[i]);
-          (g.get('availabilities') as UntypedFormArray).clear();
+          (g.get('availabilities') as FormArray).clear();
 
           (arr[i]?.availabilities || []).forEach(
             (availability: Availability) => {
@@ -63,9 +63,7 @@ export class FormProductVariantsComponent {
                 this._formsService.createProductAvailabilityFormGroup();
               availabilityGroup.patchValue(availability);
 
-              (g.get('availabilities') as UntypedFormArray).push(
-                availabilityGroup,
-              );
+              (g.get('availabilities') as FormArray).push(availabilityGroup);
             },
           );
         },

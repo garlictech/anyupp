@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { NbComponentSize } from '@nebular/theme';
 
 @Component({
@@ -10,7 +10,7 @@ import { NbComponentSize } from '@nebular/theme';
 export class FormTextAreaComponent {
   @Input() caption = ''; // Language key!!!
   @Input() staticCaption?: string; // Language key!!!
-  @Input() control?: UntypedFormControl | null;
+  @Input() control?: FormControl | null;
   @Input() type!: string;
   @Input() fieldSize: NbComponentSize = 'small';
   @Input() inputId = '';
