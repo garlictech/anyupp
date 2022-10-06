@@ -13,7 +13,7 @@ import {} from '@bgap/domain';
 import { pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
 import { maskDate, maskAll, sanitizeField } from '@bgap/shared/fixtures';
-import { deleteTestUnitProduct } from '../../seeds/unit-product';
+import { deleteUnitProductWithVariants } from '../../seeds/unit-product';
 import { of } from 'rxjs';
 
 describe('Product variants resolver tests', () => {
@@ -44,7 +44,7 @@ describe('Product variants resolver tests', () => {
   ])(unitProductFixture);
 
   const cleanup = (product?: UnitProduct | null) =>
-    product ? deleteTestUnitProduct(product, sdk) : of({});
+    product ? deleteUnitProductWithVariants(product, sdk) : of({});
 
   beforeAll(async () => {
     const accessKeyId = process.env.AWS_ACCESS_KEY_ID || '';

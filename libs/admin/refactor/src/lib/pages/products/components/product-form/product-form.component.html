@@ -116,10 +116,6 @@
         </div>
       </div>
 
-      <bgap-form-product-variants
-        [variantFormArray]="dialogForm?.get('variants') | asFormArray"
-      ></bgap-form-product-variants>
-
       <bgap-form-allergens
         [control]="dialogForm?.get('allergens') | asFormControl"
       ></bgap-form-allergens>
@@ -175,7 +171,7 @@
 
       <bgap-form-product-variants
         [variantFormArray]="dialogForm?.get('variants') | asFormArray"
-        [allowAddVariant]="false"
+        [allowAddVariant]="true"
         [currency]="currency"
         [unitServiceFeePolicy]="selectedUnit?.serviceFeePolicy"
         [productTax]="product?.tax"

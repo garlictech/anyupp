@@ -1,128 +1,132 @@
-<bgap-user-block
-  class="float-start d-block"
-  [name]="product?.name | localize"
-  [id]="product?.id"
-  [title]="product?.description | localize"
-  [picture]="(product?.image || '' | awsStoragePath) || ''"
-  (onNameClick)="editProduct()"
-></bgap-user-block>
+<div [nbSpinner]="busy" nbSpinnerStatus="danger">
+  <bgap-user-block
+    class="float-start d-block"
+    [name]="product?.name | localize"
+    [id]="product?.id"
+    [title]="product?.description | localize"
+    [picture]="(product?.image || '' | awsStoragePath) || ''"
+    (onNameClick)="editProduct()"
+  ></bgap-user-block>
 
-<bgap-status-led class="ms-1" [status]="product?.isVisible"></bgap-status-led>
+  <bgap-status-led class="ms-1" [status]="product?.isVisible"></bgap-status-led>
 
-<bgap-colorized-lane-icon [laneId]="product?.laneId"></bgap-colorized-lane-icon>
+  <bgap-colorized-lane-icon
+    [laneId]="product?.laneId"
+  ></bgap-colorized-lane-icon>
 
-<ng-container>
-  <div *ngIf="!product?.pending">
-    <button
-      nbButton
-      shape="round"
-      size="tiny"
-      class="float-right ms-2"
-      (click)="duplicateProduct(product?.id || '')"
-      [title]="'products.duplicateProduct' | translate"
-    >
-      <nb-icon icon="content_copy" pack="material-icons"></nb-icon>
-      {{ 'products.duplicateProduct' | translate }}
-    </button>
-
-    <button
-      nbButton
-      status="danger"
-      shape="round"
-      size="tiny"
-      class="float-right ms-2"
-      (click)="deleteProduct(product?.id || '')"
-      [title]="'products.extendProduct' | translate"
-    >
-      <nb-icon icon="delete" pack="material-icons"></nb-icon>
-      {{ 'common.delete' | translate }}
-    </button>
-
-    <button
-      nbButton
-      shape="round"
-      size="tiny"
-      class="float-right ms-2"
-      [title]="'common.edit' | translate"
-      (click)="editProduct()"
-    >
-      <nb-icon icon="edit" pack="material-icons"></nb-icon>
-      {{ 'common.edit' | translate }}
-    </button>
-
-    <ng-container *ngIf="!product?.pending && !product?.dirty">
+  <ng-container>
+    <div *ngIf="!product?.pending">
       <button
-        [hidden]="isLast"
         nbButton
         shape="round"
         size="tiny"
-        [title]="'common.moveDown' | translate"
         class="float-right ms-2"
-        (click)="moveDown()"
+        (click)="duplicateProduct(product?.id || '')"
+        [title]="'products.duplicateProduct' | translate"
       >
-        <nb-icon icon="expand_more" pack="material-icons"></nb-icon>
+        <nb-icon icon="content_copy" pack="material-icons"></nb-icon>
+        {{ 'products.duplicateProduct' | translate }}
       </button>
+
       <button
-        [hidden]="isFirst"
+        nbButton
+        status="danger"
+        shape="round"
+        size="tiny"
+        class="float-right ms-2"
+        (click)="deleteProduct(product?.id || '')"
+        [title]="'products.extendProduct' | translate"
+      >
+        <nb-icon icon="delete" pack="material-icons"></nb-icon>
+        {{ 'common.delete' | translate }}
+      </button>
+
+      <button
         nbButton
         shape="round"
         size="tiny"
-        [title]="'common.moveUp' | translate"
-        class="float-right"
-        (click)="moveUp()"
+        class="float-right ms-2"
+        [title]="'common.edit' | translate"
+        (click)="editProduct()"
       >
-        <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
+        <nb-icon icon="edit" pack="material-icons"></nb-icon>
+        {{ 'common.edit' | translate }}
       </button>
-    </ng-container>
-  </div>
 
-  <div class="dirty-block float-right" *ngIf="product?.dirty">
-    <nb-badge text="DIRTY" status="danger" position="top right"></nb-badge>
-  </div>
-</ng-container>
+      <ng-container *ngIf="!product?.pending && !product?.dirty">
+        <button
+          [hidden]="isLast"
+          nbButton
+          shape="round"
+          size="tiny"
+          [title]="'common.moveDown' | translate"
+          class="float-right ms-2"
+          (click)="moveDown()"
+        >
+          <nb-icon icon="expand_more" pack="material-icons"></nb-icon>
+        </button>
+        <button
+          [hidden]="isFirst"
+          nbButton
+          shape="round"
+          size="tiny"
+          [title]="'common.moveUp' | translate"
+          class="float-right"
+          (click)="moveUp()"
+        >
+          <nb-icon icon="expand_less" pack="material-icons"></nb-icon>
+        </button>
+      </ng-container>
+    </div>
 
-<div class="clearfix"></div>
-
-<bgap-allergens
-  class="ms-5 d-inline-block"
-  [allergens]="product?.allergens || []"
-  *ngIf="(product?.allergens || []).length > 0"
-></bgap-allergens>
-
-<div class="clearfix"></div>
-
-<div class="caption ms-5">
-  <div
-    class="caption d-inline-block availability-badge"
-    [ngStyle]="{ opacity: variant?.isAvailable ? '' : '0.7' }"
-    *ngFor="let variant of variantsArray"
-  >
-    <strong>{{ variant?.variantName | localize }}</strong> ({{
-      variant?.pack?.size
-    }}
-    {{ variant?.pack?.unit }}) -
-
-    <ng-container
-      *ngFor="let availability of variant?.availabilities; last as isLast"
-    >
-      <bgap-variant-availability-badge
-        [availability]="availability"
-        [currency]="currency"
-      ></bgap-variant-availability-badge>
-
-      <span *ngIf="!isLast"> &bull; </span>
-    </ng-container>
-
-    <bgap-status-led
-      class="ms-1"
-      [status]="variant?.isAvailable"
-    ></bgap-status-led>
-
-    <bgap-status-led
-      class="ms-1"
-      [status]="!variant?.soldOut"
-    ></bgap-status-led>
-  </div>
+    <div class="dirty-block float-right" *ngIf="product?.dirty">
+      <nb-badge text="DIRTY" status="danger" position="top right"></nb-badge>
+    </div>
+  </ng-container>
 
   <div class="clearfix"></div>
+
+  <bgap-allergens
+    class="ms-5 d-inline-block"
+    [allergens]="product?.allergens || []"
+    *ngIf="(product?.allergens || []).length > 0"
+  ></bgap-allergens>
+
+  <div class="clearfix"></div>
+
+  <div class="caption ms-5">
+    <div
+      class="caption d-inline-block availability-badge"
+      [ngStyle]="{ opacity: variant?.isAvailable ? '' : '0.7' }"
+      *ngFor="let variant of variantsArray"
+    >
+      <strong>{{ variant?.variantName | localize }}</strong> ({{
+        variant?.pack?.size
+      }}
+      {{ variant?.pack?.unit }}) -
+
+      <ng-container
+        *ngFor="let availability of variant?.availabilities; last as isLast"
+      >
+        <bgap-variant-availability-badge
+          [availability]="availability"
+          [currency]="currency"
+        ></bgap-variant-availability-badge>
+
+        <span *ngIf="!isLast"> &bull; </span>
+      </ng-container>
+
+      <bgap-status-led
+        class="ms-1"
+        [status]="variant?.isAvailable"
+      ></bgap-status-led>
+
+      <bgap-status-led
+        class="ms-1"
+        [status]="!variant?.soldOut"
+      ></bgap-status-led>
+    </div>
+
+    <div class="clearfix"></div>
+  </div>
 </div>
