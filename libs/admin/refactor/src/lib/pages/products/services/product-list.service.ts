@@ -1,7 +1,17 @@
 import * as R from 'ramda';
+import { pipe } from 'fp-ts/lib/function';
 import { partition } from 'lodash/fp';
-import { combineLatest, defer, EMPTY, iif, Observable, of } from 'rxjs';
 import {
+  combineLatest,
+  defer,
+  EMPTY,
+  iif,
+  Observable,
+  of,
+  throwError,
+} from 'rxjs';
+import {
+  delay,
   debounceTime,
   filter,
   map,
@@ -9,6 +19,7 @@ import {
   switchMap,
   take,
   tap,
+  catchError,
 } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
@@ -27,6 +38,7 @@ import {
   UnitProductCollectionService,
 } from '../../../store/products';
 import { foundIn } from '../fn';
+import { ToasterService } from '../../../shared/utils';
 
 interface CGU<T> {
   unit?: T;
@@ -48,6 +60,7 @@ export class ProductListService {
     private _unitProductCollectionService: UnitProductCollectionService,
     private _crudSdk: CrudSdkService,
     private _nbDialogService: NbDialogService,
+    private _toasterService: ToasterService,
   ) {
     combineLatest([
       this._store.select(loggedUserSelectors.getSelectedProductCategoryId),
@@ -186,25 +199,63 @@ export class ProductListService {
   }
 
   public duplicateUnitProduct(id: string) {
-    this._crudSdk.sdk
-      .GetUnitProduct({ id })
-      .pipe(
-        switchMap(product =>
-          product?.id
-            ? this._crudSdk.sdk.CreateUnitProduct({
+    return this._crudSdk.sdk.GetUnitProduct({ id }).pipe(
+      switchMap(product =>
+        product?.id
+          ? this._crudSdk.sdk
+              .CreateUnitProduct({
                 input: {
-                  ...R.omit(['createdAt', 'deletedAt', 'updatedAt', 'id'])(
-                    product,
-                  ),
+                  ...R.omit([
+                    'createdAt',
+                    'deletedAt',
+                    'updatedAt',
+                    'id',
+                    'variants',
+                  ])(product),
                   name: R.map(text => `${text} COPY`, product.name),
                   dirty: true,
                 },
               })
-            : of(undefined),
-        ),
-        take(1),
-      )
-      .subscribe();
+              .pipe(
+                switchMap(newProduct =>
+                  newProduct
+                    ? this._crudSdk.sdk.UpdateUnitProduct({
+                        input: {
+                          id: newProduct.id,
+                          variants: pipe(
+                            product.variants ?? [],
+                            R.filter(variant => !!variant),
+                            R.map(variant => ({
+                              ...variant,
+                              id: undefined,
+                              ownerProduct: newProduct.id,
+                              isAvailable: variant?.isAvailable || false,
+                              position: variant?.position || 0,
+                              variantName: variant?.variantName || {
+                                en: 'VARIANT NAME',
+                              },
+                              price: variant?.price || 0,
+                            })),
+                          ),
+                        },
+                      })
+                    : throwError('Cannot duplicte product'),
+                ),
+              )
+          : of(undefined),
+      ),
+      delay(3000),
+      tap(() => {
+        this._toasterService.showSimpleSuccess('simply');
+        this.resetNextTokens();
+        this.loadNextUnitProductPaginatedData();
+      }),
+      catchError(() => {
+        this._toasterService.showSimpleDanger('simplyError');
+        return of({});
+      }),
+      take(1),
+    );
   }
 
   private _acceptDeletion$(

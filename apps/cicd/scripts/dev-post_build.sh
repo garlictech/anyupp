@@ -5,8 +5,7 @@ ENVNAME=$1
 BUCKET_NAME=$2
 ADMIN_SITE_URL=$3
 
-trap yarn deleteAllTableData && yarn seed
-
+{
 ./apps/cicd/scripts/common-post_build.sh $ENVNAME $BUCKET_NAME
 
 npx cowsay "TESTING $ENVNAME..."
@@ -22,6 +21,11 @@ yarn seed
 # Reports are not generated. The next three lines are depending on the e2e test execution
 #yarn seed
 #yarn cucumber:report
-#yarn cypress:generate:html:report
-
+#yarn cypress:generate:html:Reports
 npx cowsay "$ENVNAME TESTING OK!!!"
+
+} || {
+yarn deleteAllTableData
+yarn seed
+npx cowsay "$ENVNAME TESTING FAILED!!!"
+}

@@ -134,27 +134,23 @@ export const configurePipelineNotifications = (
   stage: string,
 ): void => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const notification = new codestarnotifications.CfnNotificationRule(
-    stack,
-    'BuildNotification',
-    {
-      detailType: 'FULL',
-      eventTypeIds: [
-        'codepipeline-pipeline-action-execution-failed',
-        'codepipeline-pipeline-action-execution-succeeded',
-        'codepipeline-pipeline-action-execution-started',
-        'codepipeline-pipeline-action-execution-canceled',
-      ],
-      name: `AnyUppBuildNotification${stage}`,
-      resource: resourceArn,
-      targets: [
-        {
-          targetAddress: chatbot.slackChannelConfigurationArn,
-          targetType: 'AWSChatbotSlack',
-        },
-      ],
-    },
-  );
+  new codestarnotifications.CfnNotificationRule(stack, 'BuildNotification', {
+    detailType: 'FULL',
+    eventTypeIds: [
+      'codepipeline-pipeline-action-execution-failed',
+      'codepipeline-pipeline-action-execution-succeeded',
+      'codepipeline-pipeline-action-execution-started',
+      'codepipeline-pipeline-action-execution-canceled',
+    ],
+    name: `AnyUppBuildNotification${stage}`,
+    resource: resourceArn,
+    targets: [
+      {
+        targetAddress: chatbot.slackChannelConfigurationArn,
+        targetType: 'AWSChatbotSlack',
+      },
+    ],
+  });
 };
 
 export const configurePRNotifications = (
@@ -202,8 +198,7 @@ export const copyParameter = (
     },
   ).stringValue;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const parameter = new ssm.StringParameter(stack, paramNameParam, {
+  new ssm.StringParameter(stack, paramNameParam, {
     allowedPattern: '.*',
     description: 'A project parameter',
     parameterName: `${projectPrefix(toStage)}-${paramName}`,

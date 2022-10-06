@@ -6,6 +6,7 @@ import {
   EventEmitter,
   Input,
   Output,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { EVariantAvailabilityType, Product } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
@@ -29,10 +30,12 @@ export class ProductListItemComponent {
   @Output() positionChange = new EventEmitter();
 
   public EVariantAvailabilityType = EVariantAvailabilityType;
+  public busy = false;
 
   constructor(
     private _nbDialogService: NbDialogService,
     private _productListService: ProductListService,
+    private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   get variantsArray() {
@@ -45,8 +48,17 @@ export class ProductListItemComponent {
     dialog.componentRef.instance.product = fp.cloneDeep(this.product);
   }
 
-  public duplicateProduct(id: string) {
-    this._productListService.duplicateUnitProduct(id);
+  public async duplicateProduct(id: string) {
+    this.busy = true;
+
+    try {
+      await this._productListService.duplicateUnitProduct(id).toPromise();
+    } catch (err) {
+      console.error(err);
+    }
+
+    this.busy = false;
+    this._changeDetectorRef.detectChanges();
   }
 
   public moveUp() {
