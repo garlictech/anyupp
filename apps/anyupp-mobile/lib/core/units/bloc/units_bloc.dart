@@ -16,7 +16,7 @@ part 'units_state.dart';
 class UnitsBloc extends Bloc<UnitsEvent, UnitsState> {
   final UnitRepository _unitRepository;
   final LocationRepository _locationService;
-  static const int radiusInMeter = 100000; // 10 Km
+  static const int radiusInMeter = 33100000; // 10 Km
 
   UnitsBloc(this._unitRepository, this._locationService)
       : super(UnitsInitial()) {

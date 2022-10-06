@@ -7,6 +7,7 @@ import 'ChainStyle.dart';
 import 'ImageAsset.dart';
 import 'LocalizedItem.dart';
 import 'Location.dart';
+import 'NestedSortItem.dart';
 import 'OpeningHours.dart';
 import 'PaymentMode.dart';
 import 'RatingPolicy.dart';
@@ -46,6 +47,7 @@ class Unit extends $Unit {
   final bool? canCallWaiter;
   final bool isVisibleInApp;
   final Map<String, OpeningHours>? openingHours;
+  final List<NestedSortItem>? categoryOrders;
 
   @JsonKey(ignore: true)
   double? distanceInKm_;
@@ -81,6 +83,7 @@ class Unit extends $Unit {
       this.canCallWaiter,
       this.isVisibleInApp = true,
       this.openingHours,
+      this.categoryOrders,
       this.distanceInKm_});
 
   factory Unit.fromJson(Map<String, dynamic> json) => _$UnitFromJson(json);

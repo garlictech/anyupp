@@ -132,5 +132,9 @@ query GetUnitById($unitId: ID!) {
         to
       }
     }
+    categoryOrders {
+      id
+      parentId
+    }
   }
 }

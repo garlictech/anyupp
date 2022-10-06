@@ -21,28 +21,17 @@ class ColoredTabBar extends Container implements PreferredSizeWidget {
       borderRadius: BorderRadius.only(
         topLeft: Radius.circular(32.0),
         bottomLeft: Radius.circular(32.0),
-        //bottomRight: Radius.circular(32.0),
-        //topRight: Radius.circular(32.0),
       ),
       child: Container(
-          // height: 50,
+        // height: 50,
         padding: EdgeInsets.only(
-            left: 2.0,
-            right: 8.0,
-          ),
-          width: width,
-          color: color,
-          child: tabBar,
-          // decoration: BoxDecoration(
-          //   borderRadius: BorderRadius.only(
-          //     topLeft: Radius.circular(56.0),
-          //     bottomLeft: Radius.circular(56.0),
-          //     // topRight: Radius.circular(56.0),
-          //     // bottomRight: Radius.circular(56.0),
-          //   ),
-          //   color: color,
-          // ),
+          left: 2.0,
+          right: 8.0,
         ),
+        width: width,
+        color: color,
+        child: tabBar,
+      ),
     );
   }
 }
