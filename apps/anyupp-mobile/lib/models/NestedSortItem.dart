@@ -7,11 +7,11 @@ part 'NestedSortItem.g.dart';
 @JsonSerializable(explicitToJson: true)
 class NestedSortItem extends $NestedSortItem {
   final String id;
-  final String parentId;
+  final String? parentId;
 
   NestedSortItem({
     required this.id,
-    required this.parentId,
+    this.parentId,
   });
 
   factory NestedSortItem.fromJson(Map<String, dynamic> json) =>

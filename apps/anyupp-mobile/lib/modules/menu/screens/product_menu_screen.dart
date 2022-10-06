@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:anyupp/shared/utils/buildcontext_extension.dart';
 import 'package:anyupp/shared/utils/rect_extension.dart';
+import 'package:anyupp/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,37 +19,6 @@ import '/shared/locale/locale.dart';
 import '/shared/nav.dart';
 import '/shared/utils/format_utils.dart';
 import '/shared/utils/unit_utils.dart';
-
-class _CategoryMenuWidgets {
-  final List<ProductCategory> categories;
-  final Map<String, List<ProductCategory>>? subCategoriesMap;
-  final bool hasFavorites;
-  final Map<String, List<Widget>> mainCategoryWidgets;
-  final Map<String, List<Widget>>? subCategoryWidgets;
-  final List<ProductComponent> components;
-  final List<ProductComponentSet> componentSets;
-  final Map<String, List<Widget>> mainCategoryWidgetsMap;
-
-  _CategoryMenuWidgets(
-      {
-      // required this.widgets,
-      required this.productCategories,
-      required this.hasFavorites,
-      required this.mainCategoryWidgets,
-      this.subCategoryWidgets,
-      required this.components,
-      required this.componentSets,
-//    this.subCategoryWidgetsMap,
-  });
-
-  bool hasSubCategories(String categoryId) {
-    if (subCategoriesMap == null) {
-      return false;
-    } else {
-      return subCategoriesMap![categoryId] != null;
-    }
-  }
-}
 
 class MenuScreen extends StatefulWidget {
   @override
@@ -88,8 +58,6 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   TabController? _subTabController;
   final ProductListWidgetGenerator _generator = ProductListWidgetGenerator();
   bool _adBannerHidden = false;
-
-  // Cart? _cart;
 
   int _selectedTab = 0;
   int _selectedSubTab = 0;
@@ -137,66 +105,89 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
         stream: getIt<CartRepository>().getCurrentCartStream(unit!.id),
         builder: (context, AsyncSnapshot<Cart?> snapshot) {
           Cart? cart = snapshot.data;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisSize: MainAxisSize.min,
+          return Stack(
             children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 16.0,
-                  bottom: Platform.isIOS ? 32.0 : 16.0,
-                ),
-                child: FloatingActionButton(
-                  backgroundColor: theme.button,
-                  child: Icon(
-                    Icons.qr_code_scanner,
-                    color: theme.secondary0,
-                  ),
-                  onPressed: () => showQRScannerModal(context, false),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                height: 134,
+                child: Container(
+                  width: double.infinity,
+                  height: 134,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0x00FFFFFF),
+                      Color(0xE0FFFFFF),
+                    ],
+                  )),
                 ),
               ),
-              cart != null
-                  ? Container(
-                      height: 56.0,
-                      // width: double.infinity,
-                      margin: EdgeInsets.only(
-                        bottom: 16.0,
-                        left: 16.0,
-                        right: 16.0,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      right: 16.0,
+                      bottom: Platform.isIOS ? 32.0 : 16.0,
+                    ),
+                    child: FloatingActionButton(
+                      backgroundColor: theme.button,
+                      child: Icon(
+                        Icons.qr_code_scanner,
+                        color: theme.secondary0,
                       ),
-                      child: ElevatedButton(
-                        onPressed: () => Nav.to(
-                          CartScreen(),
-                          animationType: NavAnim.SLIDEIN_DOWN,
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: theme.button,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(40),
+                      onPressed: () => showQRScannerModal(context, false),
+                    ),
+                  ),
+                  cart != null
+                      ? Container(
+                          height: 56.0,
+                          // width: double.infinity,
+                          margin: EdgeInsets.only(
+                            bottom: 16.0,
+                            left: 16.0,
+                            right: 16.0,
                           ),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Spacer(),
-                            Text(
-                              // trans("cart.addToCart").toUpperCase(),
-                              '${trans("cart.myCart")} (${formatCurrency(cart.totalPrice, cart.items[0].sumPriceShown.currency)})',
-                              style: Fonts.satoshi(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w700,
-                                color: theme.buttonText,
+                          child: ElevatedButton(
+                            onPressed: () => Nav.to(
+                              CartScreen(),
+                              animationType: NavAnim.SLIDEIN_DOWN,
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: theme.button,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40),
                               ),
                             ),
-                            Spacer(),
-                            Icon(
-                              Icons.arrow_forward,
-                              color: theme.buttonText,
-                            )
-                          ],
-                        ),
-                      ))
-                  : Container(),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Spacer(),
+                                Text(
+                                  // trans("cart.addToCart").toUpperCase(),
+                                  '${trans("cart.myCart")} (${formatCurrency(cart.totalPrice, cart.items[0].sumPriceShown.currency)})',
+                                  style: Fonts.satoshi(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w700,
+                                    color: theme.buttonText,
+                                  ),
+                                ),
+                                Spacer(),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: theme.buttonText,
+                                )
+                              ],
+                            ),
+                          ))
+                      : Container(),
+                ],
+              ),
             ],
           );
         },
@@ -254,8 +245,6 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     List<ProductCategory> productCategories,
     List<Product> products,
     List<FavoriteProduct>? favorites,
-   List<ProductComponent> components,
-   List<ProductComponentSet> componentSets
   ) {
     widgetsMenu = _buildProductList(
       context: context,
@@ -263,8 +252,6 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       productCategories: productCategories,
       products: products,
       favorites: favorites,
-      components: components,
-      componentSets: componentSets
     );
 
     // has any category sub categories?
@@ -343,7 +330,6 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                                       // Subcategory tabBar
                                       if (hasSubCategories)
                                         IndexedStack(index: 0, children: [
-                                          //for (Widget widget in curSubCategoryWidgets)
                                           SubCategoryTabBarWidget(
                                             controller: _subTabController!,
                                             subCategories: subCategories!,
@@ -375,47 +361,63 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                   .map((entry) => RefreshIndicator(
                       onRefresh: () async => _onRefresh(),
                       color: theme.button,
-                      child: NotificationListener<ScrollEndNotification>(
-                        onNotification: (scrollEnd) {
-                          // iterate over widgets of current category
-                          ProductCategory category =
-                              widgetsMenu.categories[_tabController!.index];
-                          int count = -1;
-                          for (Widget widget in widgetsMenu
-                              .mainCategoryWidgetsMap[category.id]!) {
-                            if (widget is ProductCategoryHeaderWidget) {
-                              count++;
-                              // get bounds of header widget
-                              GlobalKey key = widget.key as GlobalKey;
-                              Rect headerRect =
-                                  key.currentContext!.getDrawingRect()!;
-                              // get bounds of scrollView
-                              final ScrollableState scrollableState =
-                                  Scrollable.of(key.currentContext!)!;
-                              Rect scrollRect =
-                                  scrollableState.context.getDrawingRect()!;
-                              // is this header widget in visible area of the scrollView
-                              print("rect: $headerRect   rect2: $scrollRect");
-                              if (headerRect.top > 180 &&
-                                  scrollRect.containsRect(headerRect)) {
-                                // change sub category (first 180 point is for headers)
-                                _selectedSubTab = count;
-                                _subTabController!.animateTo(count);
-                                break;
+                      child: SwipeDetector(
+                        onSwipeLeft: () {
+                          if (_tabController!.length >
+                              _tabController!.index + 1) {
+                            int index = _tabController!.index++;
+                            _handleTabTap(context, index);
+                          }
+                        },
+                        onSwipeRight: () {
+                          if (_tabController!.length > 0 &&
+                              _tabController!.index > 0) {
+                            int index = _tabController!.index--;
+                            _handleTabTap(context, index);
+                          }
+                        },
+                        child: NotificationListener<ScrollEndNotification>(
+                          onNotification: (scrollEnd) {
+                            // iterate over widgets of current category
+                            ProductCategory category =
+                                widgetsMenu.categories[_tabController!.index];
+                            int count = -1;
+                            for (Widget widget in widgetsMenu
+                                .mainCategoryWidgetsMap[category.id]!) {
+                              if (widget is ProductCategoryHeaderWidget) {
+                                count++;
+                                // get bounds of header widget
+                                GlobalKey key = widget.key as GlobalKey;
+                                Rect headerRect =
+                                    key.currentContext!.getDrawingRect()!;
+                                // get bounds of scrollView
+                                final ScrollableState scrollableState =
+                                    Scrollable.of(key.currentContext!)!;
+                                Rect scrollRect =
+                                    scrollableState.context.getDrawingRect()!;
+                                // is this header widget in the visible area of the scrollView
+                                print("rect: $headerRect   rect2: $scrollRect");
+                                if (headerRect.top > 180 &&
+                                    scrollRect.containsRect(headerRect)) {
+                                  // change sub category (first 180 point is for headers)
+                                  _selectedSubTab = count;
+                                  _subTabController!.animateTo(count);
+                                  break;
+                                }
                               }
                             }
-                          }
-                          return false;
-                        },
-                        child: SingleChildScrollView(
-                          // controller: _scrollController,
-                          primary: true,
-                          // physics: BouncingScrollPhysics(),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children:
-                                widgetsMenu.mainCategoryWidgetsMap[entry.key] ??
-                                    [],
+                            return false;
+                          },
+                          child: SingleChildScrollView(
+                            // controller: _scrollController,
+                            primary: true,
+                            // physics: BouncingScrollPhysics(),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: widgetsMenu
+                                      .mainCategoryWidgetsMap[entry.key] ??
+                                  [],
+                            ),
                           ),
                         ),
                       )))
@@ -425,14 +427,13 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
         ));
   }
 
-  _CategoryMenuWidgets _buildProductList(
-      {required BuildContext context,
-      required Unit unit,
-      required List<ProductCategory> productCategories,
-      required List<Product> products,
-      List<FavoriteProduct>? favorites,
-      required components,
-      required componentSets}) {
+  _CategoryMenuWidgets _buildProductList({
+    required BuildContext context,
+    required Unit unit,
+    required List<ProductCategory> productCategories,
+    required List<Product> products,
+    List<FavoriteProduct>? favorites,
+  }) {
     _favoritesIndex = favorites?.isNotEmpty == true ? 1 : 0;
 
     _selectedTab = _favoritesIndex;
@@ -473,7 +474,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       mainCategoryWidgetsMap['favorites'] = items;
     }
 
-    // Build main menu widgets without subcategories
+    // Build main menu widgets (without subcategories)
     for (int i = 0; i < menu.categories.length; i++) {
       ProductCategory category = menu.categories[i];
       List<Widget> items = _getWidgetsFromMenuItems(
@@ -485,14 +486,10 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     }
 
     return _CategoryMenuWidgets(
-        productCategories: menu.categories,
-        hasFavorites: _favoritesIndex == 1,
-        mainCategoryWidgets: mainCategoryWidgets,
-        subCategoryWidgets: subCategoryWidgets,
-        components: components,
-        componentSets: componentSets
+      categories: menu.categories,
       subCategoriesMap: menu.subCategoriesMap,
-//      subCategoryWidgetsMap: subCategoryWidgetsMap,
+      hasFavorites: _favoritesIndex == 1,
+      mainCategoryWidgetsMap: mainCategoryWidgetsMap,
     );
   }
 
@@ -505,30 +502,56 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
 
     _selectedTab = index;
 
+    // init sub tab bar index
+    if (_subTabController!.length > 0) {
+      _subTabController!.animateTo(0);
+    }
+
     // refresh only subCategory widget
-    _subCatTabKey.currentState!.setState(() {});
+    _subCatTabKey.currentState!.setState(() {
+      // scroll to top (without tab controller)
+      Future.delayed(Duration(milliseconds: 100), () {
+        ProductCategory category =
+            widgetsMenu.categories[_tabController!.index];
+        for (Widget widget
+            in widgetsMenu.mainCategoryWidgetsMap[category.id]!) {
+          GlobalKey? key = widget.key as GlobalKey?;
+          //print("_handleTabTap  widget: $widget   key.currentContext: ${key?.currentContext}");
+          if (key != null && key.currentContext != null) {
+            Scrollable.ensureVisible(key.currentContext!,
+                duration: Duration(milliseconds: 50), alignment: 0);
+            break;
+          }
+        }
+      });
+    });
   }
 
   _handleSubTabTap(BuildContext context, int index) {
     //print("_handleSubTabTap  index: $index  _selectedSubTab: $_selectedSubTab");
 
     _selectedSubTab = index;
-    // search and scroll to that header
+
+    // search the header and scroll to it  (without tab controller)
     int count = -1;
     ProductCategory category = widgetsMenu.categories[_tabController!.index];
     for (Widget widget in widgetsMenu.mainCategoryWidgetsMap[category.id]!) {
+      //print("***_handleSubTabTap  widget: $widget   key.currentContext: ${(widget.key as GlobalKey).currentContext}");
       if (widget is ProductCategoryHeaderWidget) {
         //print("widget: ${widget.name} ${widget.key}  ${(widget.key as GlobalKey).currentContext!}");
         count++;
         if (count == index) {
-          Scrollable.ensureVisible((widget.key as GlobalKey).currentContext!,
-                  duration: Duration(milliseconds: 200), alignment: 0)
-              .then((value) =>
-                  // bug? scroll again
-                  Scrollable.ensureVisible(
-                      (widget.key as GlobalKey).currentContext!,
-                      duration: Duration(milliseconds: 200),
-                      alignment: 0));
+          GlobalKey? key = widget.key as GlobalKey?;
+          if (key != null && key.currentContext != null) {
+            Scrollable.ensureVisible(key.currentContext!,
+                    duration: Duration(milliseconds: 200), alignment: 0)
+                .then((value) =>
+                    // bug? scroll again
+                    Scrollable.ensureVisible(
+                        (widget.key as GlobalKey).currentContext!,
+                        duration: Duration(milliseconds: 200),
+                        alignment: 0));
+          }
           break;
         }
       }
@@ -548,12 +571,12 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
           ProductCategoryHeaderWidget(
             key: GlobalKey(),
             name: item.title,
-            // key: _tabKeys[cIndex],
           ),
         );
         continue;
       } else if (item is MenuItemFavorite) {
         results.add(ProductMenuItemWidget(
+          key: GlobalKey(),
           displayState: item.displayState,
           unit: unit,
           item: item.product,
@@ -563,6 +586,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       } else if (item is MenuItemProduct) {
         //
         results.add(ProductMenuItemWidget(
+          key: GlobalKey(),
           displayState: item.displayState,
           unit: unit,
           item: item.product,
@@ -592,5 +616,27 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     results.add(Container(height: 100));
 
     return results;
+  }
+}
+
+class _CategoryMenuWidgets {
+  final List<ProductCategory> categories;
+  final Map<String, List<ProductCategory>>? subCategoriesMap;
+  final bool hasFavorites;
+  final Map<String, List<Widget>> mainCategoryWidgetsMap;
+
+  _CategoryMenuWidgets({
+    required this.categories,
+    required this.subCategoriesMap,
+    required this.hasFavorites,
+    required this.mainCategoryWidgetsMap,
+  });
+
+  bool hasSubCategories(String categoryId) {
+    if (subCategoriesMap == null) {
+      return false;
+    } else {
+      return subCategoriesMap![categoryId] != null;
+    }
   }
 }

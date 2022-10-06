@@ -1,5 +1,3 @@
-import 'package:anyupp/models/ProductComponent.dart';
-
 import '/core/core.dart';
 import '/core/theme/theme.dart';
 import '/models.dart';
@@ -16,19 +14,16 @@ class ProductMenuItemWidget extends StatelessWidget {
   final Product item;
   final ProductItemDisplayState displayState;
   final ServingMode servingMode;
-  final List<ProductComponent> components;
-  final List<ProductComponentSet> componentSets;
 
   final double _disabled_opacity = 0.5;
 
   const ProductMenuItemWidget({
+    Key? key,
     required this.item,
     required this.unit,
     required this.displayState,
     required this.servingMode,
-    required this.components,
-    required this.componentSets,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +42,11 @@ class ProductMenuItemWidget extends StatelessWidget {
           onTap: () {
             Nav.to(
               ProductDetailsScreen(
-                  unit: unit,
-                  item: item,
-                  displayState: displayState,
-                  servingMode: servingMode,
-                  components: components,
-                  componentSets: componentSets),
+                unit: unit,
+                item: item,
+                displayState: displayState,
+                servingMode: servingMode,
+              ),
               duration: Duration(milliseconds: 400),
               animationType: NavAnim.SLIDEIN_DOWN,
             );
@@ -214,5 +208,6 @@ class ProductMenuItemWidget extends StatelessWidget {
   bool get isDisabled =>
       displayState == ProductItemDisplayState.DISABLED ||
       displayState == ProductItemDisplayState.SOLDOUT;
+
   bool get isSoldOut => displayState == ProductItemDisplayState.SOLDOUT;
 }
