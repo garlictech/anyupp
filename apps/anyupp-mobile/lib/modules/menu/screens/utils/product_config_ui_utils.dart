@@ -59,6 +59,19 @@ ProductConfigComponent? getComponentByIdFromSet(
   return null;
 }
 
+ProductConfigSet? getConfigSetById(
+  String componentId,
+  List<ProductConfigSet>? sets,
+) {
+  if (sets != null) {
+    int index = sets.indexWhere((item) => item.productSetId == componentId);
+    if (index != -1) {
+      return sets[index];
+    }
+  }
+  return null;
+}
+
 ProductConfigComponent? getExtraComponentByIdAndSetId(
   String extraSetId,
   String componentId,
@@ -110,13 +123,17 @@ double calculateTotalPrice(
   selectedModifiers.forEach((key, value) {
     ProductComponentSet? modifier =
         getModifierComponentSetById(key, componentSets);
+
+    ProductConfigSet? configSet = getConfigSetById(key, product.configSets);
+
     ProductConfigComponent? component = getComponentByIdFromSet(
       value,
+      configSet,
       modifier,
       servingMode,
     );
     bool isSupported =
-        modifier?.supportedServingModes.contains(servingMode) ?? false;
+        modifier?.supportedServingModes?.contains(servingMode) ?? false;
 
     if (isSupported) {
       price += component?.price ?? 0;
@@ -130,6 +147,7 @@ double calculateTotalPrice(
           setId,
           componentId,
           product.configSets ?? [],
+          componentSets,
           servingMode,
         );
         if (component != null) {

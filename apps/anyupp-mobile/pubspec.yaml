@@ -44,7 +44,6 @@ dependencies:
   flutter_local_notifications: ^11.0.1
   flutter_bloc: ^8.1.1
   flutter_inappwebview: ^5.4.4+2
-  flutter_local_notifications: ^11.0.1
   flutter_slidable: ^0.6.0
   flutter_staggered_animations: ^1.1.1
   flutter_svg: ^1.1.5
