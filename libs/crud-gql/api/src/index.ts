@@ -7,6 +7,7 @@ export { CrudSdk } from './lib/sdk';
 export * from './lib/clients';
 export * from './lib/order/order.utils';
 export * from './lib/admin-user/admin-user.utils';
+export * from './lib/product/product-utlis';
 
 import awsmobile from './lib/generated/aws-exports';
 

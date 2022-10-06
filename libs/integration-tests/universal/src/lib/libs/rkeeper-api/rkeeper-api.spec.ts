@@ -53,9 +53,9 @@ import {
   UnitProduct,
   Variant,
 } from '@bgap/domain';
-import { deleteTestUnitProduct } from '../../seeds/unit-product';
 import { Right } from 'fp-ts/lib/Either';
 import { waiterCallerResolver } from 'libs/backend/gql-resolvers/src';
+import { deleteUnitProductWithVariants } from '@bgap/crud-gql/api';
 
 const commonBackendName = 'common-backend2-anyupp';
 const crudSdk = createIamCrudSdk();
@@ -72,7 +72,9 @@ describe('Test the rkeeper api basic functionality', () => {
         ),
       ),
       switchMap(from),
-      concatMap((item: UnitProduct) => deleteTestUnitProduct(item, crudSdk)),
+      concatMap((item: UnitProduct) =>
+        deleteUnitProductWithVariants(item, crudSdk),
+      ),
       count(),
       tap(items => console.log(`Deleted ${items} items in unit ${unitId}`)),
     );
