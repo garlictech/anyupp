@@ -8,102 +8,112 @@ import '/shared/locale/locale.dart';
 import 'package:flutter/material.dart';
 
 class GeneratedMenu {
+  // categories to display in tabs
   final List<ProductCategory> categories;
   // Key: Main category id, if null no subcategories present
-  final Map<String, GeneratedSubMenu>? subMenu;
-
-  // Main
-  final Map<String, List<MenuListItem>>? mainCategoryMenuItems;
+//  final Map<String, GeneratedSubMenu>? subCategoriesSubMenuMap;
+  final Map<String, List<ProductCategory>>? subCategoriesMap;
+  // a widget map will be generated based on this map
+  final Map<String, List<MenuListItem>>? categoryMenuItemsMap;
 
   const GeneratedMenu({
     required this.categories,
-    this.subMenu,
-    this.mainCategoryMenuItems,
+    this.subCategoriesMap,
+    this.categoryMenuItemsMap,
   });
 
-  bool get hasSubCategories => subMenu?.isNotEmpty == true;
+  /*
+  bool hasSubCategories() {
+    return subCategoriesMap?.isNotEmpty == true;
+  }
+
+  bool hasSubCategoriesForCategoryId(String categoryId) {
+    return subCategoriesMap?.isNotEmpty == true;
+  }*/
+
 }
 
 class GeneratedSubMenu {
   // Sub categories of main category
-  final List<ProductCategory> productCategories;
+  final List<ProductCategory> subCategories;
   // The full list of the menu of all the subcategories
-  final List<MenuListItem> menuItems;
+//  final List<MenuListItem> menuItems;    // todo: ez sztem nem kell, mert csak a fő kategóriának vannak elemei
 
-  final List<int> listIndexMap;
-  final List<int> tabIndexMap;
+//  final List<int> listIndexes;
+//  final List<int> tabIndexes;
 
   GeneratedSubMenu({
-    required this.menuItems,
-    required this.productCategories,
-    required this.listIndexMap,
-    required this.tabIndexMap,
+//    required this.menuItems,
+    required this.subCategories,
+//    required this.listIndexes, // todo ez mi?
+//    required this.tabIndexes, // todo ez mi?
   });
 }
 
 abstract class MenuListItem {
-  final int position;
-  const MenuListItem({required this.position});
+//  final int position; // todo ez mi?
+//  const MenuListItem({required this.position});
 }
 
 class MenuItemHeader extends MenuListItem {
   final String title;
-  final int position;
+//final int position;
 
-  const MenuItemHeader({
-    required this.position,
+  MenuItemHeader({
+//    required int position,
     required this.title,
-  }) : super(position: position);
+  }); //: super(position: position);
 }
 
 class MenuItemFavorite extends MenuListItem {
-  final int position;
+//final int position;
   final Product product;
   final ProductItemDisplayState displayState;
 
-  const MenuItemFavorite({
-    required this.position,
+  MenuItemFavorite({
+//    required int position,
     required this.product,
     required this.displayState,
-  }) : super(position: position);
+  }); // : super(position: position);
 }
 
 class MenuItemProduct extends MenuListItem {
-  final int position;
+//final int position;
   final Product product;
   final ProductItemDisplayState displayState;
 
-  const MenuItemProduct({
-    required this.position,
+  MenuItemProduct({
+//    required int position,
     required this.product,
     required this.displayState,
-  }) : super(position: position);
+  }); // : super(position: position);
 }
 
 class MenuItemAdBanner extends MenuListItem {
-  final int position;
+//final int position;
   final ImageAsset adBanner;
 
-  const MenuItemAdBanner({
-    required this.position,
+  MenuItemAdBanner({
+//    required int position,
     required this.adBanner,
-  }) : super(position: position);
+  }); // : super(position: position);
 }
 
 class ProductListWidgetGenerator {
   // final _RND = Random();
-  int _tabPos = 0;
-  int _itemPos = 0;
+//  int _tabPos = 0;
+//  int _itemPos = 0;
   // bool _bannerAdded = true;
   // int _bannerPosition = 0;
-
+/*
   void _reset() {
-    _tabPos = 0;
+//    _tabPos = 0;
     _itemPos = 0;
     // _bannerAdded = true;
     // _bannerPosition = 0;
   }
-
+*/
+  /*
   GeneratedSubMenu generateSubMenu({
     required BuildContext context,
     required Unit unit,
@@ -111,28 +121,29 @@ class ProductListWidgetGenerator {
     required List<Product> products,
     required ServingMode servingMode,
   }) {
-    var tempProducts = _filterUnavailableProducts(products, unit);
-    var productMap = tempProducts.groupBy((p) => p.productCategoryId);
-    int _tabPos = 0;
-    int _itemPos = 0;
-    List<int> listIndexMap = [];
-    List<int> tabIndexMap = [];
+    List<Product> tempProducts = _filterUnavailableProducts(products, unit);
+    Map<String, List<Product>> productsMap = tempProducts.groupBy((p) => p.productCategoryId);
+//    int _tabPos = 0;
+//    int _itemPos = 0;
+//    List<int> listIndexes = [];
+//    List<int> tabIndexes = [];
 
-    List<MenuListItem> listItems = [];
-    List<ProductCategory> filteredProductCategories = [];
+    //List<MenuListItem> listItems = [];
+    List<ProductCategory> filteredSubCategories = [];
 
     for (int i = 0; i < subCategories.length; i++) {
-      var category = subCategories[i];
+      ProductCategory category = subCategories[i];
       // Skip empty categories
       if (category.parentId == null ||
-          productMap[category.id]?.isNotEmpty != true) {
+          productsMap[category.id]?.isNotEmpty != true) {
         continue;
       }
-      filteredProductCategories.add(category);
-      var entries = productMap[category.id] ?? [];
-      listIndexMap.add(_tabPos);
-      tabIndexMap.add(_itemPos);
+      filteredSubCategories.add(category);
+//      var entries = productMap[category.id] ?? [];
+//      listIndexes.add(_tabPos);
+//      tabIndexes.add(_itemPos);
 
+      /*
       listItems.add(MenuItemHeader(
         position: _itemPos++,
         title: getLocalizedText(context, category.name),
@@ -140,7 +151,7 @@ class ProductListWidgetGenerator {
       listItems.addAll(
         entries.map(
           (product) {
-            listIndexMap.add(_tabPos);
+            listIndexes.add(_tabPos);
             return MenuItemProduct(
               position: _itemPos++,
               product: product,
@@ -159,35 +170,36 @@ class ProductListWidgetGenerator {
         listItems.add(banner);
       }
       _tabPos++;
+      */
     }
 
     return GeneratedSubMenu(
-      productCategories: filteredProductCategories,
-      menuItems: listItems,
-      listIndexMap: listIndexMap,
-      tabIndexMap: tabIndexMap,
+      subCategories: filteredSubCategories,
+//      menuItems: listItems,
+//      listIndexes: listIndexes,
+//      tabIndexes: tabIndexes,
     );
-  }
+  }*/
 
   GeneratedMenu generateMenu({
     required BuildContext context,
     required Unit unit,
-    required List<ProductCategory> productCategories,
+    required List<ProductCategory> categories,
     required List<Product> products,
     List<FavoriteProduct>? favorites,
     required ServingMode servingMode,
   }) {
-    List<MenuListItem> listItems = [];
-    List<ProductCategory> filteredProductCategories = [];
-    Map<String, GeneratedSubMenu> subProductCategories = {};
-    _reset();
+//    List<MenuListItem> listItems = [];
+    List<ProductCategory> filteredCategories = [];
+    Map<String, List<ProductCategory>> subCategoriesMap = {};
+//    _reset();
     // Grouping products by product category
-    var tempProducts = _filterUnavailableProducts(products, unit);
-    var productMap = tempProducts.groupBy((p) => p.productCategoryId);
-    productMap.removeWhere((key, value) => value.isEmpty);
-    Map<String, List<MenuListItem>> mainCategoryMenuItems = {};
+    List<Product> tempProducts = _filterUnavailableProducts(products, unit);
+    Map<String, List<Product>> productsMap = tempProducts.groupBy((p) => p.productCategoryId);
+    productsMap.removeWhere((key, value) => value.isEmpty);
+    Map<String, List<MenuListItem>> categoryMenuItemsMap = {};
 
-    // Add favorties section if any
+    // Add favorites section if any
     if (favorites?.isNotEmpty == true) {
       // log.e('_tabPositionMap[${_tabIndexMap.length - 1}]=$_itemPos');
       // listItems.add(MenuItemHeader(
@@ -197,7 +209,7 @@ class ProductListWidgetGenerator {
       List<MenuListItem> favoriteItems = List<MenuListItem>.from(favorites!.map(
         (favorite) {
           return MenuItemFavorite(
-              position: _itemPos++,
+//              position: _itemPos++,
               product: favorite.product,
               displayState: _getProductState(
                 favorite.product,
@@ -209,40 +221,57 @@ class ProductListWidgetGenerator {
 
       // _checkAndAddBanner(listItems, unit.adBanners);
       // _addBanner(listItems, unit);
-      MenuListItem? banner = _getBanner(listItems, unit);
+//      MenuListItem? banner = _getBanner(listItems, unit);
+      MenuListItem? banner = _getBanner(unit);
       if (banner != null) {
         favoriteItems.add(banner);
       }
-      listItems.addAll(favoriteItems);
-      mainCategoryMenuItems['favorites'] = favoriteItems;
+//      listItems.addAll(favoriteItems);
+      categoryMenuItemsMap['favorites'] = favoriteItems;
     }
 
-    // Build productCategory map
-    for (int i = 0; i < productCategories.length; i++) {
-      var category = productCategories[i];
+    // Build productCategory map, handle only main categories
+//    for (int i = 0; i < categories.length; i++) {
+    for (int i = categories.length - 1; i >= 0; i--) {
+      ProductCategory category = categories[i];
       if (category.parentId == null) {
-        var subCategories = productCategories
+        /*
+        // collect subcategories below this category
+        List<ProductCategory> subCategories = categories
             .where((element) =>
-                (element.parentId != null && element.parentId != category.id))
+                (element.parentId != null && element.parentId == category.id))
             .toList();
         if (subCategories.isNotEmpty) {
-          subProductCategories[category.id] = generateSubMenu(
+          // if there are subcategories then handle them separately
+          subCategoriesSubMenuMap[category.id] = generateSubMenu(
             context: context,
             unit: unit,
             subCategories: subCategories,
             products: products,
             servingMode: servingMode,
           );
+          // todo
+//filteredProductCategories.add(category);
           continue;
         }
-        if (productMap[category.id] == null) {
+        // from here there is no subcategory, handle one category with its products:
+        */
+
+        // do not ignore categories which not contain products but contain subcategories
+        /*
+        if (productsMap[category.id] == null) {
+          // if there is no product for this category: ignore
           continue;
-        }
-        var entries = productMap[category.id] ?? [];
-        List<MenuListItem> productItems = List<MenuListItem>.from(entries.map(
+        }*/
+
+        // products of this category
+        List<Product> entries = productsMap[category.id] ?? [];
+        // add menuitems to menuitems of this category
+        // add products too
+        List<MenuListItem> productMenuItems = List<MenuListItem>.from(entries.map(
           (product) {
             return MenuItemProduct(
-              position: _itemPos++,
+//              position: _itemPos++,
               product: product,
               displayState: _getProductState(
                 product,
@@ -252,34 +281,93 @@ class ProductListWidgetGenerator {
             );
           },
         ));
-        if (productItems.isNotEmpty) {
-          MenuListItem? banner = _getBanner(productItems, unit);
+//        if (productMenuItems.isNotEmpty) {
+//          MenuListItem? banner = _getBanner(productMenuItems, unit);
+          // add a banner if possible
+          MenuListItem? banner = _getBanner(unit);
           if (banner != null) {
-            productItems.add(banner);
+            productMenuItems.add(banner);
           }
-          filteredProductCategories.add(category);
-          listItems.addAll(productItems);
-          mainCategoryMenuItems[category.id] = productItems;
-        }
+
+        // collect main categories
+          filteredCategories.add(category);
+//          listItems.addAll(productMenuItems);
+          // collect menuitems for category ids
+          categoryMenuItemsMap[category.id] = productMenuItems;
+//        }
       }
     }
 
+
+    // again, but handle only subcategories
+    for (int i = 0; i < categories.length; i++) {
+      ProductCategory category = categories[i];
+      if (category.parentId != null) {
+        if (productsMap[category.id] == null) {
+          // if there is no product for this category: ignore
+          continue;
+        }
+
+        // products of this category
+        List<Product> entries = productsMap[category.id] ?? [];
+
+        // add menuitems to menuitems of parent category
+        List<MenuListItem> productMenuItems = categoryMenuItemsMap[category.parentId] ?? [];
+        // add a header too
+        productMenuItems.add(MenuItemHeader(
+//          position: _itemPos++,
+          title: getLocalizedText(context, category.name),
+        ));
+        // add products too
+        productMenuItems.addAll(
+            List<MenuListItem>.from(entries.map(
+                  (product) {
+                return MenuItemProduct(
+//                  position: _itemPos++,
+                  product: product,
+                  displayState: _getProductState(
+                    product,
+                    unit,
+                    servingMode,
+                  ),
+                );
+              },
+            ))
+        );
+        // add a banner if possible
+        MenuListItem? banner = _getBanner(unit);
+        if (banner != null) {
+          productMenuItems.add(banner);
+        }
+
+        // collect subcategories for category ids
+        List<ProductCategory> subCategories = subCategoriesMap[category.parentId] ?? [];
+        subCategories.add(category);
+        subCategoriesMap[category.parentId!] = subCategories;
+
+        // collect menuitems for category ids
+        categoryMenuItemsMap[category.parentId!] = productMenuItems;
+
+      }
+    }
+
+
     return GeneratedMenu(
-      categories: filteredProductCategories,
-      subMenu: subProductCategories.isEmpty ? null : subProductCategories,
-      mainCategoryMenuItems:
-          mainCategoryMenuItems.isEmpty ? null : mainCategoryMenuItems,
+      categories: filteredCategories,
+      subCategoriesMap: subCategoriesMap.isEmpty ? null : subCategoriesMap,
+      categoryMenuItemsMap:
+          categoryMenuItemsMap.isEmpty ? null : categoryMenuItemsMap,
     );
   }
 
   MenuListItem? _getBanner(
-    List<MenuListItem> listItems,
+    //List<MenuListItem> listItems,
     Unit unit,
   ) {
     if (unit.adBannersEnabled == true) {
-      var banner = getRandomBanner(banners: unit.adBanners);
+      ImageAsset? banner = getRandomBanner(banners: unit.adBanners);
       return MenuItemAdBanner(
-        position: _itemPos++,
+//        position: _itemPos++,
         adBanner: banner ?? ImageAsset(imageUrl: 'assets/images/test_1.png'),
       );
     }
@@ -337,6 +425,7 @@ class ProductListWidgetGenerator {
     return displayState;
   }
 
+  /*
   List<MenuListItem> generateMenuForCategory(
       BuildContext context,
       Unit unit,
@@ -347,7 +436,7 @@ class ProductListWidgetGenerator {
       List<int> tabIndexMap) {
     List<MenuListItem> listItems = [];
     for (int i = 0; i < productCategories.length; i++) {
-      var category = productCategories[i];
+      ProductCategory category = productCategories[i];
       if (category.parentId != null) {
         continue;
       }
@@ -383,5 +472,6 @@ class ProductListWidgetGenerator {
       _tabPos++;
     }
     return [];
-  }
+  }*/
+
 }
