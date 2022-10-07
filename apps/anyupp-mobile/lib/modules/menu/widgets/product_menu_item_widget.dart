@@ -39,18 +39,20 @@ class ProductMenuItemWidget extends StatelessWidget {
         InkWell(
           focusColor: theme.highlight,
           highlightColor: theme.secondary40,
-          onTap: () {
-            Nav.to(
-              ProductDetailsScreen(
-                unit: unit,
-                item: item,
-                displayState: displayState,
-                servingMode: servingMode,
-              ),
-              duration: Duration(milliseconds: 400),
-              animationType: NavAnim.SLIDEIN_DOWN,
-            );
-          },
+          onTap: UnitUtils.isClosed(unit)
+              ? null
+              : () {
+                  Nav.to(
+                    ProductDetailsScreen(
+                      unit: unit,
+                      item: item,
+                      displayState: displayState,
+                      servingMode: servingMode,
+                    ),
+                    duration: Duration(milliseconds: 400),
+                    animationType: NavAnim.SLIDEIN_DOWN,
+                  );
+                },
           child: Container(
             margin: const EdgeInsets.only(
               top: 8.0,

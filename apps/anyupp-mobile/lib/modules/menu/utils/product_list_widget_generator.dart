@@ -202,6 +202,9 @@ class ProductListWidgetGenerator {
       }
     }
 
+    // delete categories without products
+    filteredCategories.removeWhere((category) => categoryMenuItemsMap[category.id] == null || categoryMenuItemsMap[category.id]!.isEmpty);
+
     return GeneratedMenu(
       categories: filteredCategories,
       subCategoriesMap: subCategoriesMap.isEmpty ? null : subCategoriesMap,

@@ -2,7 +2,7 @@ import '/models.dart';
 
 class UnitUtils {
   static bool isClosed(Unit unit) {
-    return unit.isAcceptingOrders;
+    return !unit.isAcceptingOrders;
   }
 
   static String getClosedText(

@@ -136,12 +136,17 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                       bottom: Platform.isIOS ? 32.0 : 16.0,
                     ),
                     child: FloatingActionButton(
-                      backgroundColor: theme.button,
+                      backgroundColor: UnitUtils.isClosed(unit)
+                          ? theme.button.withOpacity(0.5)
+                          : theme.button,
+                      //tooltip: trans('selectUnit.scanQR'), todo: do it later?
                       child: Icon(
                         Icons.qr_code_scanner,
                         color: theme.secondary0,
                       ),
-                      onPressed: () => showQRScannerModal(context, false),
+                      onPressed: UnitUtils.isClosed(unit)
+                          ? null
+                          : () => showQRScannerModal(context, false),
                     ),
                   ),
                   cart != null
@@ -154,12 +159,16 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                             right: 16.0,
                           ),
                           child: ElevatedButton(
-                            onPressed: () => Nav.to(
+                            onPressed: () => UnitUtils.isClosed(unit)
+                                ? null
+                                : Nav.to(
                               CartScreen(),
                               animationType: NavAnim.SLIDEIN_DOWN,
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: theme.button,
+                              backgroundColor: UnitUtils.isClosed(unit)
+                                  ? theme.button.withOpacity(0.5)
+                                  : theme.button,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40),
                               ),
@@ -613,7 +622,9 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     }
 
     // because of bottom paddings of listview
-    results.add(Container(height: 100));
+    if (results.length > 1) {
+      results.add(Container(height: 100));
+    }
 
     return results;
   }
