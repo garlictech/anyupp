@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ProductListService } from '@bgap/admin/refactor';
+import { ProductListService, ToasterService } from '@bgap/admin/refactor';
 import { entityConfig } from '@bgap/admin/refactor';
 import { CrudSdkService } from '@bgap/admin/refactor';
 import { NbDialogService } from '@nebular/theme';
@@ -15,6 +15,7 @@ import {
 } from '@ngrx/data';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { MockToasterService } from '@bgap/apps/admin';
 
 describe('ProductListService', () => {
   let service: ProductListService;
@@ -40,6 +41,7 @@ describe('ProductListService', () => {
             open: jest.fn(),
           },
         },
+        { provide: ToasterService, useValue: MockToasterService },
       ],
     });
 

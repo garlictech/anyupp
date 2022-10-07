@@ -6,6 +6,7 @@ import {
   ProductVariantInput,
   UnitProduct,
   ProductType,
+  deleteUnitProductWithVariants,
 } from '@bgap/crud-gql/api';
 import { productVariantsResolver } from '@bgap/backend/products';
 import { tap, map, switchMap, delay } from 'rxjs/operators';
@@ -13,7 +14,6 @@ import {} from '@bgap/domain';
 import { pipe } from 'fp-ts/lib/function';
 import * as R from 'ramda';
 import { maskDate, maskAll, sanitizeField } from '@bgap/shared/fixtures';
-import { deleteUnitProductWithVariants } from '../../seeds/unit-product';
 import { of } from 'rxjs';
 
 describe('Product variants resolver tests', () => {

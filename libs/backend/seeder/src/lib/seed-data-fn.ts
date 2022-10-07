@@ -3,6 +3,8 @@ import {
   unitFixture,
   getProductComponent,
   getComponentSet,
+  freiRkeeperUsername,
+  freiRkeeperPassword,
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
@@ -368,8 +370,8 @@ export const seedFreiRKeeperUnit = (deps: SeederDependencies) =>
                 type: PosType.rkeeper,
                 rkeeper: {
                   endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-                  rkeeperUsername: '795_50_155_539',
-                  rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
+                  rkeeperUsername: freiRkeeperUsername,
+                  rkeeperPassword: freiRkeeperPassword,
                   anyuppPassword: 'foobar',
                   anyuppUsername: 'foobar',
                 },

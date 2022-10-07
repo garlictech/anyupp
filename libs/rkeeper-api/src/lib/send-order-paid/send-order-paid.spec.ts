@@ -6,9 +6,9 @@ describe('SendOrderPaid', () => {
   const mockRestaurantId = '109150001';
   const mockVisitId = '1656509181-606-109150001';
   const mockRKeeperPos: RKeeper = {
-    endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-    rkeeperUsername: '795_50_155_539',
-    rkeeperPassword: 'b6302d53085c9486d0f765ec475f18',
+    endpointUri: 'RKEEPER_ENDPOINT',
+    rkeeperUsername: 'RKEEPER_USERNAME',
+    rkeeperPassword: 'RKEEPER_PASSWORD',
     anyuppUsername: 'user',
     anyuppPassword: 'Ch4nge1t!',
   };
