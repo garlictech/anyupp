@@ -62,10 +62,42 @@ void main() {
     getIt.registerSingleton<FavoritesBloc>(MockFavoritesBloc());
     getIt.registerSingleton<ExceptionBloc>(MockExceptionBloc());
 
+    ProductCategory mockCategory1 = MockGenerator.generateProductCategory(
+      ownerEntity: mockUnit.id,
+      name: "Ételek",
+      position: 0,
+    );
+    ProductCategory mockCategory2 = MockGenerator.generateProductCategory(
+      ownerEntity: mockUnit.id,
+      name: "Italok",
+      position: 0,
+    );
+    List<Product> mockProductList = [];
+    mockProductList.addAll(
+        ["Hamburger", "Pörkölt", "Palacsinta"].map((name) => MockGenerator.generateProduct(
+          productCategoryId: mockCategory1.id,
+          name: name,
+          variantCount: 1,
+          servingModes: [ServingMode.inPlace],
+        )).toList()
+    );
+    mockProductList.addAll(
+        ["Sör", "Bor", "Pálinka", "Víz"].map((name) => MockGenerator.generateProduct(
+          productCategoryId: mockCategory2.id,
+          name: name,
+          variantCount: 1,
+          servingModes: [ServingMode.inPlace],
+        )).toList()
+    );
+
+
     getIt.registerSingleton<ProductListBloc>(
         MockProductListBloc(ProductListLoaded(
-      products: [],
-    )));
+          products: mockProductList,
+          productCategories: [mockCategory1, mockCategory2],
+        ))
+    );
+
   });
 
   Widget _createBoilerPlateApp({required Widget child}) {
@@ -95,10 +127,25 @@ void main() {
           _createBoilerPlateApp(child: MenuScreen()),
         );
 
-        await tester.pump();
+        await tester.pumpAndSettle();
 
         expect(find.byType(MenuScreen), findsOneWidget);
         expect(find.byType(ProductMenuAppBar), findsOneWidget);
+        expect(find.byType(TabBarView), findsOneWidget);
+
+        expect(find.byType(ProductMenuItemWidget), findsNWidgets(3));
+
+        expect(find.text("Ételek_name"), findsOneWidget);
+        expect(find.text("Italok_name"), findsOneWidget);
+        expect(find.widgetWithText(Tab, 'Italok_name'), findsOneWidget);
+
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.widgetWithText(Tab, 'Italok_name'));
+
+        await tester.pumpAndSettle();
+
+        expect(find.byType(ProductMenuItemWidget), findsNWidgets(4));
 
         // Wait to complete the animations
         await tester.pumpAndSettle(Duration(milliseconds: 1000));

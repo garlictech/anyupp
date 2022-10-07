@@ -508,7 +508,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     }
 
     // refresh only subCategory widget
-    _subCatTabKey.currentState!.setState(() {
+    _subCatTabKey.currentState?.setState(() {
       // scroll to top (without tab controller)
       Future.delayed(Duration(milliseconds: 100), () {
         ProductCategory category =

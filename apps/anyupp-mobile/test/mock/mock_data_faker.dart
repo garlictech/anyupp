@@ -295,7 +295,28 @@ class MockGenerator {
     );
   }
 
+  static ProductCategory generateProductCategory({
+    required String ownerEntity, // unitId
+    required String name,
+    required int position,
+    String? image,
+  }) {
+    return ProductCategory(
+      id: faker.guid.guid(),
+      ownerEntity: ownerEntity,
+      name: LocalizedItem(
+        en: '${name}_name',
+        de: '${name}_name',
+        hu: '${name}_name',
+      ),
+      position: position,
+      image: image,
+    );
+  }
+
   static Product generateProduct({
+    String? unitId,
+    String? productCategoryId,
     required String name,
     List<ServingMode> servingModes = const [
       ServingMode.inPlace,
@@ -325,8 +346,8 @@ class MockGenerator {
     }
     return Product(
       id: faker.guid.guid(),
-      unitId: faker.guid.guid(),
-      productCategoryId: faker.guid.guid(),
+      unitId: unitId ?? faker.guid.guid(),
+      productCategoryId: productCategoryId ?? faker.guid.guid(),
       allergens: generateAllergeens(3),
       image: 'https://via.placeholder.com/150',
       description: LocalizedItem(
