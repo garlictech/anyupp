@@ -42,6 +42,7 @@
       "@bgap/anyupp-schema": ["libs/anyupp-schema/src/index.ts"],
       "@bgap/api/data-access": ["libs/api/data-access/src/index.ts"],
       "@bgap/apps/admin": ["libs/apps/admin/src/index.ts"],
+      "@bgap/apps/admin-test": ["libs/apps/admin-test/src/index.ts"],
       "@bgap/apps/backend-anyupp": ["libs/apps/backend-anyupp/src/index.ts"],
       "@bgap/apps/shared": ["libs/apps/shared/src/index.ts"],
       "@bgap/backend/gql-resolvers": [

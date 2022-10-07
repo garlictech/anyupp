@@ -11,6 +11,7 @@
     "anyupp-mobile": "apps/anyupp-mobile",
     "anyupp-schema": "libs/anyupp-schema",
     "apps-admin": "libs/apps/admin",
+    "apps-admin-test": "libs/apps/admin-test",
     "apps-backend-anyupp": "libs/apps/backend-anyupp",
     "apps-shared": "libs/apps/shared",
     "backend-gql-resolvers": "libs/backend/gql-resolvers",

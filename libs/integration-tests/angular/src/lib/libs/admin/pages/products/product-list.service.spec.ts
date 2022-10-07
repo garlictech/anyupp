@@ -15,7 +15,7 @@ import {
 } from '@ngrx/data';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { MockToasterService } from '@bgap/apps/admin';
+import { MockToasterService } from '@bgap/apps/admin-test';
 
 describe('ProductListService', () => {
   let service: ProductListService;
