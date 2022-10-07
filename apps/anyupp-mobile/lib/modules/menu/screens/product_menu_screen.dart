@@ -561,7 +561,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   List<Widget> _getWidgetsFromMenuItems(
     List<MenuListItem> menuItems,
     Unit unit,
-    ServingMode servingMode,
+    ServingMode servingMode
   ) {
     List<Widget> results = [];
     for (int i = 0; i < menuItems.length; i++) {
@@ -581,6 +581,8 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
           unit: unit,
           item: item.product,
           servingMode: servingMode,
+          components: item.productComponents,
+          componentSets: item.componentSets
         ));
         continue;
       } else if (item is MenuItemProduct) {
@@ -591,6 +593,8 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
           unit: unit,
           item: item.product,
           servingMode: servingMode,
+          components: item.productComponents,
+          componentSets: item.componentSets
         ));
         continue;
       } else if (item is MenuItemAdBanner) {

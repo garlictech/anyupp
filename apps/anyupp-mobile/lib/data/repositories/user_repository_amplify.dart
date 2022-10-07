@@ -1,8 +1,8 @@
+import 'package:anyupp/domain/repositories/repositories.dart';
 import 'package:flutter/foundation.dart';
 
 import '/graphql/generated/crud-api.dart' as api;
 import '/graphql/graphql.dart';
-import 'package:anyupp/domain/repositories/user-repository.dart';
 
 class UserRepositoryAmplify extends UserRepository {
   @override

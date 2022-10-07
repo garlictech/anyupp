@@ -1,3 +1,4 @@
+import 'package:anyupp/models/ProductComponent.dart';
 import 'package:anyupp/models/extensions/ProductCategoryExtension.dart';
 import 'package:flutter/material.dart';
 
@@ -43,24 +44,41 @@ class MenuItemHeader extends MenuListItem {
   });
 }
 
-class MenuItemFavorite extends MenuListItem {
+class MenuItemProduct extends MenuListItem {
   final Product product;
+  final List<ProductComponent> productComponents;
+  final List<ProductComponentSet> componentSets;
   final ProductItemDisplayState displayState;
 
   MenuItemFavorite({
     required this.product,
     required this.displayState,
   });
+||||||| parent of 92da7d6b1 (fix(app): category handling foxes)
+  }) : super(position: position);
 }
 
-class MenuItemProduct extends MenuListItem {
+class MenuItemFavorite extends MenuListItem {
+  final int position;
   final Product product;
   final ProductItemDisplayState displayState;
 
-  MenuItemProduct({
+  const MenuItemFavorite({
+    required this.position,
     required this.product,
     required this.displayState,
+  }) : super(position: position);
+=======
   });
+>>>>>>> 92da7d6b1 (fix(app): category handling foxes)
+}
+
+class MenuItemFavorite extends MenuItemProduct {
+  MenuItemFavorite(
+      {required super.product,
+      required super.displayState,
+      super.productComponents,
+      super.componentSets});
 }
 
 class MenuItemAdBanner extends MenuListItem {
@@ -192,8 +210,7 @@ class ProductListWidgetGenerator {
         }
 
         // collect subcategories for category ids
-        List<ProductCategory> subCategories =
-            subCategoriesMap[parentId] ?? [];
+        List<ProductCategory> subCategories = subCategoriesMap[parentId] ?? [];
         subCategories.add(category);
         subCategoriesMap[parentId!] = subCategories;
 

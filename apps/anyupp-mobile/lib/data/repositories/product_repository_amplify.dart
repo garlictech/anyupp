@@ -7,8 +7,16 @@ import '/graphql/graphql.dart';
 import '/models.dart';
 import '/shared/pagination/pagination.dart';
 
+<<<<<<<< HEAD:apps/anyupp-mobile/lib/data/repositories/product_provider_amplify.dart
 
 class ProductRepositoryAmplify implements ProductRepository {
+|||||||| parent of 92da7d6b1 (fix(app): category handling foxes):apps/anyupp-mobile/lib/modules/menu/providers/aws_product_provider.dart
+import 'product_provider_interface.dart';
+
+class AwsProductProvider implements IProductProvider {
+========
+class ProductRepositoryAmplify implements ProductRepository {
+>>>>>>>> 92da7d6b1 (fix(app): category handling foxes):apps/anyupp-mobile/lib/data/repositories/product_repository_amplify.dart
   @override
   Future<PageResponse<ProductCategory>> getProductCategoryList(
       String ownerEntity,
@@ -54,7 +62,7 @@ class ProductRepositoryAmplify implements ProductRepository {
         totalCount: count,
         nextToken: token,
       );
-    } on Exception catch (e) {
+    } catch (e) {
       log.e('***** getProductCategoryList().error=$e');
       rethrow;
       // return PageResponse(data: null);
@@ -96,19 +104,29 @@ class ProductRepositoryAmplify implements ProductRepository {
           // Product product =
           //     Product.fromJson(items[i]!.toJson());
           final jsonFormat = items[i]?.toJson();
+<<<<<<<< HEAD:apps/anyupp-mobile/lib/data/repositories/product_provider_amplify.dart
       debugPrint("**** $jsonFormat");
+|||||||| parent of 92da7d6b1 (fix(app): category handling foxes):apps/anyupp-mobile/lib/modules/menu/providers/aws_product_provider.dart
+========
+          debugPrint("**** $jsonFormat");
+>>>>>>>> 92da7d6b1 (fix(app): category handling foxes):apps/anyupp-mobile/lib/data/repositories/product_repository_amplify.dart
           Product? product =
               jsonFormat != null ? Product.fromJson(jsonFormat) : null;
+<<<<<<<< HEAD:apps/anyupp-mobile/lib/data/repositories/product_provider_amplify.dart
       debugPrint("****2 $product");
+|||||||| parent of 92da7d6b1 (fix(app): category handling foxes):apps/anyupp-mobile/lib/modules/menu/providers/aws_product_provider.dart
+========
+          debugPrint("****2 $product");
+>>>>>>>> 92da7d6b1 (fix(app): category handling foxes):apps/anyupp-mobile/lib/data/repositories/product_repository_amplify.dart
 
           if (product != null) {
             product.variants
                 .sort((v1, v2) => v1.position.compareTo(v2.position));
-            product.configSets?.sort(
-                (c1, c2) => c1.position?.compareTo(c2.position ?? 0) ?? 0);
+            product.configSets
+                ?.sort((c1, c2) => c1.position.compareTo(c2.position));
             product.configSets?.forEach(
-              (configSet) => configSet.items.sort(
-                  (i1, i2) => i1.position?.compareTo(i2.position ?? 0) ?? 0),
+              (configSet) => configSet.items
+                  .sort((i1, i2) => i1.position.compareTo(i2.position)),
             );
             results.add(product);
           }
@@ -123,9 +141,27 @@ class ProductRepositoryAmplify implements ProductRepository {
         totalCount: count,
         nextToken: token,
       );
-    } on Exception catch (e) {
+    } catch (e) {
       log.e('***** getAllProductList().error=$e');
       rethrow;
     }
+  }
+
+  getProduct(String productId) async {
+    final result = await GQL.amplify.execute(GetProductQuery(
+      variables: GetProductArguments(productId: productId),
+    ));
+
+    if (result.hasErrors) {
+      log.d('***** ProductRepositoryAmplify.getProduct error=${result.errors}');
+      throw GraphQLException.fromGraphQLError(
+          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+    }
+
+    if (result.data?.getUnitProduct == null) {
+      throw "Product $productId is not in the database";
+    }
+
+    return Product.fromJson(result.data!.getUnitProduct!.toJson());
   }
 }

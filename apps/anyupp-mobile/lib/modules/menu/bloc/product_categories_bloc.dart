@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:anyupp/domain/repositories/repositories.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import '/core/units/units.dart';
 import '/models.dart';
-import '/modules/menu/menu.dart';
 
 part 'product_categories_event.dart';
 part 'product_categories_state.dart';

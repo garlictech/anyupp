@@ -1,9 +1,9 @@
 import 'package:anyupp/domain/services/services.dart';
-import 'package:anyupp/providers/repository-providers.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
+import '/providers/providers.dart';
 
 Future<String?> getFcmToken() async {
   await FirebaseMessaging.instance.requestPermission(
