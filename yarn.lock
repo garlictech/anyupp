@@ -9420,10 +9420,10 @@
     binary-case "^1.0.0"
     type-is "^1.6.16"
 
-"@vvo/tzdb@6.66.0":
-  version "6.66.0"
-  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.66.0.tgz#43d679b261379155299f189edd55a4edd202adfc"
-  integrity sha512-MuNkpoEdr/qReZkOYFu4wFGDWSAh6nY1bgljaF4lOPB9ENqQ/c+5YRXsA3yf1vkNo9oT/7qVNF1A5eR9PYc4kA==
+"@vvo/tzdb@6.71.0":
+  version "6.71.0"
+  resolved "https://registry.yarnpkg.com/@vvo/tzdb/-/tzdb-6.71.0.tgz#ebd0f7a65122e29400d9b6f02e64cd90c9b70343"
+  integrity sha512-x4t9XgMyjG3G1NhhIJQgzQgqM5ggmScM2YEFznQD+i/GA2qZEJ6lQTbEOhPg1NasEmoA3W4uwGz5m0ef72E1DA==
 
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
