@@ -65,7 +65,9 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   late _CategoryMenuWidgets widgetsMenu;
 
   final GlobalKey _subCatTabKey = GlobalKey(debugLabel: "_subCatTabKey");
-  final ScrollController scrollController = ScrollController();
+
+  //final ScrollController _scrollController = ScrollController();
+  bool _isScrollNotificationEnabled = true;
 
   @override
   void initState() {
@@ -162,9 +164,9 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                             onPressed: () => UnitUtils.isClosed(unit)
                                 ? null
                                 : Nav.to(
-                              CartScreen(),
-                              animationType: NavAnim.SLIDEIN_DOWN,
-                            ),
+                                    CartScreen(),
+                                    animationType: NavAnim.SLIDEIN_DOWN,
+                                  ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: UnitUtils.isClosed(unit)
                                   ? theme.button.withOpacity(0.5)
@@ -387,31 +389,35 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                         },
                         child: NotificationListener<ScrollEndNotification>(
                           onNotification: (scrollEnd) {
-                            // iterate over widgets of current category
-                            ProductCategory category =
-                                widgetsMenu.categories[_tabController!.index];
-                            int count = -1;
-                            for (Widget widget in widgetsMenu
-                                .mainCategoryWidgetsMap[category.id]!) {
-                              if (widget is ProductCategoryHeaderWidget) {
-                                count++;
-                                // get bounds of header widget
-                                GlobalKey key = widget.key as GlobalKey;
-                                Rect headerRect =
-                                    key.currentContext!.getDrawingRect()!;
-                                // get bounds of scrollView
-                                final ScrollableState scrollableState =
-                                    Scrollable.of(key.currentContext!)!;
-                                Rect scrollRect =
-                                    scrollableState.context.getDrawingRect()!;
-                                // is this header widget in the visible area of the scrollView
-                                print("rect: $headerRect   rect2: $scrollRect");
-                                if (headerRect.top > 180 &&
-                                    scrollRect.containsRect(headerRect)) {
-                                  // change sub category (first 180 point is for headers)
-                                  _selectedSubTab = count;
-                                  _subTabController!.animateTo(count);
-                                  break;
+                            if (_isScrollNotificationEnabled) {
+                              // iterate over widgets of current category
+                              ProductCategory category =
+                                  widgetsMenu.categories[_tabController!.index];
+                              int count = -1;
+                              for (Widget widget in widgetsMenu
+                                  .mainCategoryWidgetsMap[category.id]!) {
+                                if (widget is ProductCategoryHeaderWidget) {
+                                  count++;
+                                  // get bounds of header widget
+                                  GlobalKey key = widget.key as GlobalKey;
+                                  Rect? headerRect =
+                                      key.currentContext?.getDrawingRect()!;
+                                  if (headerRect != null) {
+                                    // get bounds of scrollView
+                                    final ScrollableState scrollableState =
+                                        Scrollable.of(key.currentContext!)!;
+                                    Rect scrollRect = scrollableState.context
+                                        .getDrawingRect()!;
+                                    // is this header widget in the visible area of the scrollView
+                                    //print("rect: $headerRect   rect2: $scrollRect");
+                                    if (headerRect.top > 180 &&
+                                        scrollRect.containsRect(headerRect)) {
+                                      // change sub category (first 180 point is for headers)
+                                      _selectedSubTab = count;
+                                      _subTabController!.animateTo(count);
+                                      break;
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -505,7 +511,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   _handleTabTap(BuildContext context, int index) {
     // int itemIndex = _tabIndexMap[index];
     // log.w('_handleTabTap[$index]=itemInMap:$itemIndex map:$_tabIndexMap');
-    // _scrollController.scrollToIndex(index: index, scrollSpeed: 2.0);
+    //_scrollController.scrollToIndex(index: index, scrollSpeed: 2.0);
     // _tabController?.animateTo(index);
     //print("_handleTabTap  index: $index  _selectedTab: $_selectedTab");
 
@@ -516,7 +522,15 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
       _subTabController!.animateTo(0);
     }
 
-    // refresh only subCategory widget
+    /* this would be good, but controller does not work with primary: true
+    // scroll to top (without tab controller)
+    // refresh only the subCategory tab widget
+    _subCatTabKey.currentState?.setState(() {
+      _scrollController.jumpTo(0);
+    });
+    */
+
+    // refresh only the subCategory tab widget
     _subCatTabKey.currentState?.setState(() {
       // scroll to top (without tab controller)
       Future.delayed(Duration(milliseconds: 100), () {
@@ -527,8 +541,10 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
           GlobalKey? key = widget.key as GlobalKey?;
           //print("_handleTabTap  widget: $widget   key.currentContext: ${key?.currentContext}");
           if (key != null && key.currentContext != null) {
+            _isScrollNotificationEnabled = false;
             Scrollable.ensureVisible(key.currentContext!,
-                duration: Duration(milliseconds: 50), alignment: 0);
+                    duration: Duration(milliseconds: 50), alignment: 0)
+                .then((value) => _isScrollNotificationEnabled = true);
             break;
           }
         }
@@ -537,34 +553,77 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   }
 
   _handleSubTabTap(BuildContext context, int index) {
-    //print("_handleSubTabTap  index: $index  _selectedSubTab: $_selectedSubTab");
+    //print("** _handleSubTabTap  index: $index  _selectedSubTab: $_selectedSubTab");
 
     _selectedSubTab = index;
 
-    // search the header and scroll to it  (without tab controller)
+    // search the header
     int count = -1;
     ProductCategory category = widgetsMenu.categories[_tabController!.index];
     for (Widget widget in widgetsMenu.mainCategoryWidgetsMap[category.id]!) {
-      //print("***_handleSubTabTap  widget: $widget   key.currentContext: ${(widget.key as GlobalKey).currentContext}");
+      /* you should measure the size of widgets, but after scroll there is no currentContext for every widget
+      // get bounds of scrollView
+      // menuItem: 113   header: 56
+      Rect? scrollRect = (widget.key as GlobalKey).currentContext?.getDrawingRect()!;
+      print("  scrollRect: $scrollRect} ${scrollRect!.bottom - scrollRect!.top} ${widget.runtimeType}");
+      */
       if (widget is ProductCategoryHeaderWidget) {
-        //print("widget: ${widget.name} ${widget.key}  ${(widget.key as GlobalKey).currentContext!}");
         count++;
         if (count == index) {
+          // work with this header
+          //print("****** count: $count  index: $index  widget: ${widget.name} ${widget.key}  ${(widget.key as GlobalKey).currentContext}");
           GlobalKey? key = widget.key as GlobalKey?;
           if (key != null && key.currentContext != null) {
+            /*
+            // get bounds of scrollView
+            Rect scrollRect = (widget.key as GlobalKey).currentContext!.getDrawingRect()!;
+            print("       scrollRect: $scrollRect}");
+            _scrollController.animateTo(scrollRect.top, duration: Duration(milliseconds: 500), curve: Curves.easeOut);
+            */
+            _isScrollNotificationEnabled = false;
             Scrollable.ensureVisible(key.currentContext!,
-                    duration: Duration(milliseconds: 200), alignment: 0)
-                .then((value) =>
+                    duration: Duration(milliseconds: 200))
+                /*.then((value) =>
                     // bug? scroll again
                     Scrollable.ensureVisible(
                         (widget.key as GlobalKey).currentContext!,
                         duration: Duration(milliseconds: 200),
-                        alignment: 0));
+                        alignment: 0))*/
+                .then(
+              (value) => _isScrollNotificationEnabled = true,
+            );
+            return;
           }
-          break;
+          return;
         }
       }
     }
+
+    /* this would be good, but controller does not work with primary: true
+    // calculate scroll position manually. Problem: Scrollable.ensureVisible is unusable in nested scrolls, because the result scroll position is not accurate
+    double pos = 0;
+    // search the header
+    int count = -1;
+    ProductCategory category = widgetsMenu.categories[_tabController!.index];
+    for (Widget widget in widgetsMenu.mainCategoryWidgetsMap[category.id]!) {
+      if (widget is ProductMenuItemWidget) {
+        pos += 113;
+      } else if (widget is ProductCategoryHeaderWidget) {
+        count++;
+        if (count == index) {
+          break;
+        } else {
+          pos += 56;
+        }
+      }
+    }
+    // scroll to position
+    _isScrollNotificationEnabled = false;
+    _scrollController
+        .animateTo(pos,
+            duration: Duration(milliseconds: 500), curve: Curves.ease)
+        .then((value) => _isScrollNotificationEnabled = true);
+    */
   }
 
   List<Widget> _getWidgetsFromMenuItems(
