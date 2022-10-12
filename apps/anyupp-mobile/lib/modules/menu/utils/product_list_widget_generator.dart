@@ -89,6 +89,18 @@ class ProductListWidgetGenerator {
     productsMap.removeWhere((key, value) => value.isEmpty);
     Map<String, List<MenuListItem>> categoryMenuItemsMap = {};
 
+    // sort input categories by index number of unit.categoryOrders
+    if (unit.categoryOrders != null) {
+      categories.sort((ProductCategory a, ProductCategory b) {
+        int aIndex = unit.categoryOrders!
+            .indexWhere((nestedSortItem) => nestedSortItem.id == a.id);
+        int bIndex = unit.categoryOrders!
+            .indexWhere((nestedSortItem) => nestedSortItem.id == b.id);
+        return aIndex.compareTo(bIndex);
+      });
+    }
+    // sort products by positions
+
     // Add favorites section if any
     if (favorites?.isNotEmpty == true) {
       List<MenuListItem> favoriteItems = List<MenuListItem>.from(favorites!.map(
@@ -125,6 +137,13 @@ class ProductListWidgetGenerator {
 
         // products of this category
         List<Product> entries = productsMap[category.id] ?? [];
+        entries.sort((a, b) {
+          if (a.position == -1) {
+            return getLocalizedText(context, a.name)
+                .compareTo(getLocalizedText(context, b.name));
+          }
+          return a.position.compareTo(b.position);
+        });
         // add menuItems to menuItems of this category
         // add products too
         List<MenuListItem> productMenuItems =
@@ -160,6 +179,13 @@ class ProductListWidgetGenerator {
 
         // products of this category
         List<Product> entries = productsMap[category.id] ?? [];
+        entries.sort((a, b) {
+          if (a.position == -1) {
+            return getLocalizedText(context, a.name)
+                .compareTo(getLocalizedText(context, b.name));
+          }
+          return a.position.compareTo(b.position);
+        });
 
         // add menuItems to menuItems of parent category
         List<MenuListItem> productMenuItems =
