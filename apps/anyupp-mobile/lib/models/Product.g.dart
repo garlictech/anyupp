@@ -271,22 +271,18 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       description: json['description'] == null
           ? null
           : LocalizedItem.fromJson(json['description'] as Map<String, dynamic>),
-      productType: $enumDecode(_$ProductTypeEnumMap, json['productType']),
+      productType: json['productType'],
       tax: json['tax'] as int,
       position: json['position'] as int,
       image: json['image'] as String?,
       variants: (json['variants'] as List<dynamic>)
           .map((e) => ProductVariant.fromJson(e as Map<String, dynamic>))
           .toList(),
-      allergens: (json['allergens'] as List<dynamic>?)
-          ?.map((e) => $enumDecode(_$AllergenEnumMap, e))
-          .toList(),
+      allergens: json['allergens'] as List<dynamic>?,
       configSets: (json['configSets'] as List<dynamic>?)
           ?.map((e) => ProductConfigSet.fromJson(e as Map<String, dynamic>))
           .toList(),
-      supportedServingModes: (json['supportedServingModes'] as List<dynamic>)
-          .map((e) => $enumDecode(_$ServingModeEnumMap, e))
-          .toList(),
+      supportedServingModes: json['supportedServingModes'] as List<dynamic>,
       soldOut: json['soldOut'] as bool? ?? false,
     );
 
@@ -305,50 +301,15 @@ Map<String, dynamic> _$ProductToJson(Product instance) {
   }
 
   writeNotNull('description', instance.description?.toJson());
-  val['productType'] = _$ProductTypeEnumMap[instance.productType]!;
+  writeNotNull('productType', instance.productType);
   val['tax'] = instance.tax;
   val['position'] = instance.position;
   writeNotNull('image', instance.image);
   val['variants'] = instance.variants.map((e) => e.toJson()).toList();
-  writeNotNull('allergens',
-      instance.allergens?.map((e) => _$AllergenEnumMap[e]!).toList());
+  writeNotNull('allergens', instance.allergens);
   writeNotNull(
       'configSets', instance.configSets?.map((e) => e.toJson()).toList());
-  val['supportedServingModes'] = instance.supportedServingModes
-      .map((e) => _$ServingModeEnumMap[e]!)
-      .toList();
+  val['supportedServingModes'] = instance.supportedServingModes;
   val['soldOut'] = instance.soldOut;
   return val;
 }
-
-const _$ProductTypeEnumMap = {
-  ProductType.drink: 'drink',
-  ProductType.food: 'food',
-  ProductType.dish: 'dish',
-  ProductType.other: 'other',
-  ProductType.artemisUnknown: 'ARTEMIS_UNKNOWN',
-};
-
-const _$AllergenEnumMap = {
-  Allergen.celery: 'celery',
-  Allergen.crustaceans: 'crustaceans',
-  Allergen.egg: 'egg',
-  Allergen.fish: 'fish',
-  Allergen.gluten: 'gluten',
-  Allergen.lupin: 'lupin',
-  Allergen.milk: 'milk',
-  Allergen.molluscs: 'molluscs',
-  Allergen.mustard: 'mustard',
-  Allergen.peanut: 'peanut',
-  Allergen.sesame: 'sesame',
-  Allergen.soya: 'soya',
-  Allergen.sulphites: 'sulphites',
-  Allergen.treenuts: 'treenuts',
-  Allergen.artemisUnknown: 'ARTEMIS_UNKNOWN',
-};
-
-const _$ServingModeEnumMap = {
-  ServingMode.inPlace: 'inPlace',
-  ServingMode.takeAway: 'takeAway',
-  ServingMode.artemisUnknown: 'ARTEMIS_UNKNOWN',
-};

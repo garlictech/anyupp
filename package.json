@@ -237,7 +237,9 @@
       "@commitlint/config-conventional"
     ]
   },
-  "resolutions": {},
+  "resolutions": {
+    "fsevents": "1.2.13"
+  },
   "browser": {
     "fs": false,
     "path": false,
