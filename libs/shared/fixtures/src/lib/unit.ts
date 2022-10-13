@@ -5,17 +5,11 @@ import {
   OrderPaymentPolicy,
   PaymentMethod,
   PaymentType,
-  PosType,
   ServingMode,
   UnitMapObjectType,
   WeeklySchedule,
 } from '@bgap/domain';
 import { testIdPrefix } from './common';
-import {
-  rkeeperEndpoint,
-  freiRkeeperPassword,
-  freiRkeeperUsername,
-} from './rkeeper';
 import * as R from 'ramda';
 
 const unitId_NotExisting = `${testIdPrefix}NOT_EXISTING_UNIT`;
@@ -142,7 +136,7 @@ export const unitBase = {
   },
 };
 
-const floorMap = {
+export const floorMap = {
   w: 800,
   h: 300,
   objects: [
@@ -160,24 +154,6 @@ const floorMap = {
       sID: '2',
     },
   ],
-};
-
-export const createRkeeperUnit: RequiredId<CreateUnitInput> = {
-  ...unitBase,
-  id: 'rkeeper-unit',
-  externalId: 'restaurantid',
-  floorMap,
-  pos: {
-    type: PosType.rkeeper,
-    rkeeper: {
-      // let's use the yellow real rkeeper endpoint
-      endpointUri: rkeeperEndpoint,
-      rkeeperUsername: freiRkeeperUsername,
-      rkeeperPassword: freiRkeeperPassword,
-      anyuppUsername: 'ANYUPP_USERNAME',
-      anyuppPassword: 'ANYUPP_PASSWORD',
-    },
-  },
 };
 
 const unitInstantTakeaway: RequiredId<CreateUnitInput> = {
@@ -239,7 +215,6 @@ const kesdobalo: RequiredId<CreateUnitInput> = {
 export const unitFixture = {
   openingHours,
   unitBase,
-  createRkeeperUnit,
   unitId_NotExisting,
   unitInstantInplace,
   unitInstantTakeaway,

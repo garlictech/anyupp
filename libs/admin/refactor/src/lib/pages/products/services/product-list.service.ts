@@ -228,7 +228,7 @@ export class ProductListService {
                             R.map(variant => ({
                               ...variant,
                               id: undefined,
-                              ownerProduct: newProduct.id,
+                              unitProductVariantsId: newProduct.id,
                               isAvailable: variant?.isAvailable || false,
                               position: variant?.position || 0,
                               variantName: variant?.variantName || {

@@ -3,19 +3,20 @@ source './tools/utils.sh'
 
 ENVNAME=$1
 APPNAME=anyupp-backend
+REFERENCE_ENV=qa
 
 tput bold
 tput setaf 2
 echo
 echo "************************************************************************"
 echo "* When creating a private stack, we always start from the current"
-echo "* official dev stack. So, we build that stack, then we transform"
+echo "* official reference environment stack. So, we build that stack, then we transform"
 echo "* that one into a private one."
 echo "************************************************************************"
 echo
 tput sgr 0
 
-./tools/build-workspace.sh dev 
+# ./tools/build-workspace.sh $REFERENCE_ENV
 
 tput bold
 tput setaf 2
@@ -34,7 +35,7 @@ tput sgr 0
 function copyParameterFromUpstream() {
   PARAM_NAME_TO_COPY=$1
 
-  PARAM_VALUE_TO_COPY=$(aws ssm get-parameter --name "/dev-${APPNAME}/${PARAM_NAME_TO_COPY}" | \
+  PARAM_VALUE_TO_COPY=$(aws ssm get-parameter --name "/${REFERENCE_ENV}-${APPNAME}/${PARAM_NAME_TO_COPY}" | \
   jq -r '.Parameter.Value')
 
   X=$(aws ssm put-parameter \
@@ -84,7 +85,7 @@ tput setaf 2
 echo
 echo "************************************************************************"
 echo "* It's time to create the CRUD api stack, that is an Amplify app."
-echo "* We fork it from dev, then configure it with the parameters of your"
+echo "* We fork it from the reference environment, then configure it with the parameters of your"
 echo "* private stack."
 echo "************************************************************************"
 echo

@@ -141,7 +141,6 @@ type UnitProduct @aws_iam @aws_cognito_user_pools {
   takeaway: Boolean @deprecated(reason: "Use `supportedServingModes`.")
   laneId: ID
   position: Int!
-  variants: [ProductVariant]
   configSets: [ProductConfigSet]
   supportedServingModes: [ServingMode!]
   dirty: Boolean
@@ -154,6 +153,7 @@ type UnitProduct @aws_iam @aws_cognito_user_pools {
   productType: ProductType!
   image: String
   allergens: [Allergen]
+  variants(filter: ModelVariantFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelVariantConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -172,20 +172,6 @@ type ProductConfigSet @aws_iam @aws_cognito_user_pools {
   position: Int!
 }
 
-type ProductVariant @aws_iam @aws_cognito_user_pools {
-  id: ID!
-  variantName: LocalizedItem!
-  pack: ProductVariantPack
-  isAvailable: Boolean!
-  price: Float!
-  availabilities: [Availability]
-  position: Int!
-  netPackagingFee: Float
-  soldOut: Boolean
-  ownerProduct: ID
-  externalId: String
-}
-
 type Variant @aws_iam @aws_cognito_user_pools {
   id: ID!
   variantName: LocalizedItem!
@@ -196,10 +182,10 @@ type Variant @aws_iam @aws_cognito_user_pools {
   position: Int!
   netPackagingFee: Float
   soldOut: Boolean
-  ownerProduct: String!
   externalId: String
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
+  unitProductVariantsId: ID
 }
 
 type ProductVariantPack @aws_iam @aws_cognito_user_pools @aws_api_key {
@@ -212,7 +198,7 @@ input ProductVariantPackInput {
   unit: String!
 }
 
-type Availability @aws_iam @aws_cognito_user_pools @aws_api_key {
+type Availability @aws_iam @aws_cognito_user_pools {
   type: String!
   dayFrom: String
   dayTo: String
@@ -1778,20 +1764,6 @@ enum ModelSortDirection {
   DESC
 }
 
-input ProductVariantInput {
-  id: ID
-  variantName: LocalizedItemInput!
-  pack: ProductVariantPackInput
-  isAvailable: Boolean!
-  price: Float!
-  availabilities: [AvailabilityInput]
-  position: Int!
-  netPackagingFee: Float
-  soldOut: Boolean
-  ownerProduct: ID
-  externalId: String
-}
-
 input ProductConfigSetInput {
   productSetId: ID!
   items: [ProductConfigComponentInput!]!
@@ -1878,7 +1850,6 @@ input CreateUnitProductInput {
   takeaway: Boolean
   laneId: ID
   position: Int!
-  variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
   supportedServingModes: [ServingMode!]
   dirty: Boolean
@@ -1900,7 +1871,6 @@ input UpdateUnitProductInput {
   takeaway: Boolean
   laneId: ID
   position: Int
-  variants: [ProductVariantInput]
   configSets: [ProductConfigSetInput]
   supportedServingModes: [ServingMode!]
   dirty: Boolean
@@ -1927,11 +1897,11 @@ input ModelVariantFilterInput {
   position: ModelIntInput
   netPackagingFee: ModelFloatInput
   soldOut: ModelBooleanInput
-  ownerProduct: ModelStringInput
   externalId: ModelStringInput
   and: [ModelVariantFilterInput]
   or: [ModelVariantFilterInput]
   not: ModelVariantFilterInput
+  unitProductVariantsId: ModelIDInput
 }
 
 input ModelVariantConditionInput {
@@ -1940,11 +1910,11 @@ input ModelVariantConditionInput {
   position: ModelIntInput
   netPackagingFee: ModelFloatInput
   soldOut: ModelBooleanInput
-  ownerProduct: ModelStringInput
   externalId: ModelStringInput
   and: [ModelVariantConditionInput]
   or: [ModelVariantConditionInput]
   not: ModelVariantConditionInput
+  unitProductVariantsId: ModelIDInput
 }
 
 input CreateVariantInput {
@@ -1957,8 +1927,8 @@ input CreateVariantInput {
   position: Int!
   netPackagingFee: Float
   soldOut: Boolean
-  ownerProduct: String!
   externalId: String
+  unitProductVariantsId: ID
 }
 
 input UpdateVariantInput {
@@ -1971,8 +1941,8 @@ input UpdateVariantInput {
   position: Int
   netPackagingFee: Float
   soldOut: Boolean
-  ownerProduct: String
   externalId: String
+  unitProductVariantsId: ID
 }
 
 input DeleteVariantInput {
@@ -3031,10 +3001,10 @@ input SearchableVariantFilterInput {
   position: SearchableIntFilterInput
   netPackagingFee: SearchableFloatFilterInput
   soldOut: SearchableBooleanFilterInput
-  ownerProduct: SearchableStringFilterInput
   externalId: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
+  unitProductVariantsId: SearchableIDFilterInput
   and: [SearchableVariantFilterInput]
   or: [SearchableVariantFilterInput]
   not: SearchableVariantFilterInput
@@ -3047,10 +3017,10 @@ enum SearchableVariantSortableFields {
   position
   netPackagingFee
   soldOut
-  ownerProduct
   externalId
   createdAt
   updatedAt
+  unitProductVariantsId
 }
 
 input SearchableVariantSortInput {
@@ -3065,10 +3035,10 @@ enum SearchableVariantAggregateField {
   position
   netPackagingFee
   soldOut
-  ownerProduct
   externalId
   createdAt
   updatedAt
+  unitProductVariantsId
 }
 
 input SearchableVariantAggregationInput {

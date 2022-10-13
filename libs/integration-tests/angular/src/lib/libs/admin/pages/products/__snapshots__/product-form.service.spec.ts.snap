@@ -74,7 +74,7 @@ Object {
         "id": "MASKED ID",
         "isAvailable": true,
         "netPackagingFee": null,
-        "ownerProduct": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
+        "unitProductVariantsId": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
         "pack": Object {
           "size": 1,
           "unit": "db",
@@ -144,7 +144,7 @@ Object {
         "id": "MASKED ID",
         "isAvailable": true,
         "netPackagingFee": null,
-        "ownerProduct": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
+        "unitProductVariantsId": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
         "pack": Object {
           "size": 1,
           "unit": "db",

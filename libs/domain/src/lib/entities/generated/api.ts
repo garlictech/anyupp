@@ -455,7 +455,6 @@ export interface CreateUnitProductInput {
   takeawayTax?: InputMaybe<Scalars['Int']>;
   tax: Scalars['Int'];
   unitId: Scalars['ID'];
-  variants?: InputMaybe<Array<InputMaybe<ProductVariantInput>>>;
 }
 
 export interface CreateUserInput {
@@ -475,11 +474,11 @@ export interface CreateVariantInput {
   id?: InputMaybe<Scalars['ID']>;
   isAvailable: Scalars['Boolean'];
   netPackagingFee?: InputMaybe<Scalars['Float']>;
-  ownerProduct: Scalars['String'];
   pack?: InputMaybe<ProductVariantPackInput>;
   position: Scalars['Int'];
   price: Scalars['Float'];
   soldOut?: InputMaybe<Scalars['Boolean']>;
+  unitProductVariantsId?: InputMaybe<Scalars['ID']>;
   variantName: LocalizedItemInput;
 }
 
@@ -1604,10 +1603,10 @@ export interface ModelVariantConditionInput {
   netPackagingFee?: InputMaybe<ModelFloatInput>;
   not?: InputMaybe<ModelVariantConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelVariantConditionInput>>>;
-  ownerProduct?: InputMaybe<ModelStringInput>;
   position?: InputMaybe<ModelIntInput>;
   price?: InputMaybe<ModelFloatInput>;
   soldOut?: InputMaybe<ModelBooleanInput>;
+  unitProductVariantsId?: InputMaybe<ModelIdInput>;
 }
 
 export interface ModelVariantConnection {
@@ -1623,10 +1622,10 @@ export interface ModelVariantFilterInput {
   netPackagingFee?: InputMaybe<ModelFloatInput>;
   not?: InputMaybe<ModelVariantFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelVariantFilterInput>>>;
-  ownerProduct?: InputMaybe<ModelStringInput>;
   position?: InputMaybe<ModelIntInput>;
   price?: InputMaybe<ModelFloatInput>;
   soldOut?: InputMaybe<ModelBooleanInput>;
+  unitProductVariantsId?: InputMaybe<ModelIdInput>;
 }
 
 export interface Mutation {
@@ -2314,34 +2313,6 @@ export enum ProductType {
   drink = 'drink',
   food = 'food',
   other = 'other'
-}
-
-export interface ProductVariant {
-  availabilities?: Maybe<Array<Maybe<Availability>>>;
-  externalId?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  isAvailable: Scalars['Boolean'];
-  netPackagingFee?: Maybe<Scalars['Float']>;
-  ownerProduct?: Maybe<Scalars['ID']>;
-  pack?: Maybe<ProductVariantPack>;
-  position: Scalars['Int'];
-  price: Scalars['Float'];
-  soldOut?: Maybe<Scalars['Boolean']>;
-  variantName: LocalizedItem;
-}
-
-export interface ProductVariantInput {
-  availabilities?: InputMaybe<Array<InputMaybe<AvailabilityInput>>>;
-  externalId?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['ID']>;
-  isAvailable: Scalars['Boolean'];
-  netPackagingFee?: InputMaybe<Scalars['Float']>;
-  ownerProduct?: InputMaybe<Scalars['ID']>;
-  pack?: InputMaybe<ProductVariantPackInput>;
-  position: Scalars['Int'];
-  price: Scalars['Float'];
-  soldOut?: InputMaybe<Scalars['Boolean']>;
-  variantName: LocalizedItemInput;
 }
 
 export interface ProductVariantPack {
@@ -3755,10 +3726,10 @@ export enum SearchableVariantAggregateField {
   id = 'id',
   isavailable = 'isAvailable',
   netpackagingfee = 'netPackagingFee',
-  ownerproduct = 'ownerProduct',
   position = 'position',
   price = 'price',
   soldout = 'soldOut',
+  unitproductvariantsid = 'unitProductVariantsId',
   updatedat = 'updatedAt'
 }
 
@@ -3784,10 +3755,10 @@ export interface SearchableVariantFilterInput {
   netPackagingFee?: InputMaybe<SearchableFloatFilterInput>;
   not?: InputMaybe<SearchableVariantFilterInput>;
   or?: InputMaybe<Array<InputMaybe<SearchableVariantFilterInput>>>;
-  ownerProduct?: InputMaybe<SearchableStringFilterInput>;
   position?: InputMaybe<SearchableIntFilterInput>;
   price?: InputMaybe<SearchableFloatFilterInput>;
   soldOut?: InputMaybe<SearchableBooleanFilterInput>;
+  unitProductVariantsId?: InputMaybe<SearchableIdFilterInput>;
   updatedAt?: InputMaybe<SearchableStringFilterInput>;
 }
 
@@ -3802,10 +3773,10 @@ export enum SearchableVariantSortableFields {
   id = 'id',
   isavailable = 'isAvailable',
   netpackagingfee = 'netPackagingFee',
-  ownerproduct = 'ownerProduct',
   position = 'position',
   price = 'price',
   soldout = 'soldOut',
+  unitproductvariantsid = 'unitProductVariantsId',
   updatedat = 'updatedAt'
 }
 
@@ -4109,7 +4080,15 @@ export interface UnitProduct {
   tax: Scalars['Int'];
   unitId: Scalars['ID'];
   updatedAt: Scalars['AWSDateTime'];
-  variants?: Maybe<Array<Maybe<ProductVariant>>>;
+  variants?: Maybe<ModelVariantConnection>;
+}
+
+
+export interface UnitProductVariantsArgs {
+  filter?: InputMaybe<ModelVariantFilterInput>;
+  limit?: InputMaybe<Scalars['Int']>;
+  nextToken?: InputMaybe<Scalars['String']>;
+  sortDirection?: InputMaybe<ModelSortDirection>;
 }
 
 export enum UnpayCategory {
@@ -4344,7 +4323,6 @@ export interface UpdateUnitProductInput {
   takeawayTax?: InputMaybe<Scalars['Int']>;
   tax?: InputMaybe<Scalars['Int']>;
   unitId?: InputMaybe<Scalars['ID']>;
-  variants?: InputMaybe<Array<InputMaybe<ProductVariantInput>>>;
 }
 
 export interface UpdateUserInput {
@@ -4364,11 +4342,11 @@ export interface UpdateVariantInput {
   id: Scalars['ID'];
   isAvailable?: InputMaybe<Scalars['Boolean']>;
   netPackagingFee?: InputMaybe<Scalars['Float']>;
-  ownerProduct?: InputMaybe<Scalars['String']>;
   pack?: InputMaybe<ProductVariantPackInput>;
   position?: InputMaybe<Scalars['Int']>;
   price?: InputMaybe<Scalars['Float']>;
   soldOut?: InputMaybe<Scalars['Boolean']>;
+  unitProductVariantsId?: InputMaybe<Scalars['ID']>;
   variantName?: InputMaybe<LocalizedItemInput>;
 }
 
@@ -4412,11 +4390,11 @@ export interface Variant {
   id: Scalars['ID'];
   isAvailable: Scalars['Boolean'];
   netPackagingFee?: Maybe<Scalars['Float']>;
-  ownerProduct: Scalars['String'];
   pack?: Maybe<ProductVariantPack>;
   position: Scalars['Int'];
   price: Scalars['Float'];
   soldOut?: Maybe<Scalars['Boolean']>;
+  unitProductVariantsId?: Maybe<Scalars['ID']>;
   updatedAt: Scalars['AWSDateTime'];
   variantName: LocalizedItem;
 }
@@ -4640,7 +4618,7 @@ export type CreateUnitProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateUnitProductMutation = { createUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null };
+export type CreateUnitProductMutation = { createUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null };
 
 export type UpdateUnitProductMutationVariables = Exact<{
   input: UpdateUnitProductInput;
@@ -4648,7 +4626,7 @@ export type UpdateUnitProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUnitProductMutation = { updateUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null };
+export type UpdateUnitProductMutation = { updateUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null };
 
 export type DeleteUnitProductMutationVariables = Exact<{
   input: DeleteUnitProductInput;
@@ -4656,7 +4634,7 @@ export type DeleteUnitProductMutationVariables = Exact<{
 }>;
 
 
-export type DeleteUnitProductMutation = { deleteUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null };
+export type DeleteUnitProductMutation = { deleteUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null };
 
 export type CreateVariantMutationVariables = Exact<{
   input: CreateVariantInput;
@@ -4664,7 +4642,7 @@ export type CreateVariantMutationVariables = Exact<{
 }>;
 
 
-export type CreateVariantMutation = { createVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+export type CreateVariantMutation = { createVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
 
 export type UpdateVariantMutationVariables = Exact<{
   input: UpdateVariantInput;
@@ -4672,7 +4650,7 @@ export type UpdateVariantMutationVariables = Exact<{
 }>;
 
 
-export type UpdateVariantMutation = { updateVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+export type UpdateVariantMutation = { updateVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
 
 export type DeleteVariantMutationVariables = Exact<{
   input: DeleteVariantInput;
@@ -4680,7 +4658,7 @@ export type DeleteVariantMutationVariables = Exact<{
 }>;
 
 
-export type DeleteVariantMutation = { deleteVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+export type DeleteVariantMutation = { deleteVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
 
 export type UpdateAdminUserMutationVariables = Exact<{
   input: UpdateAdminUserInput;
@@ -4954,7 +4932,7 @@ export type GetUnitProductQueryVariables = Exact<{
 }>;
 
 
-export type GetUnitProductQuery = { getUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null };
+export type GetUnitProductQuery = { getUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null };
 
 export type ListUnitProductsQueryVariables = Exact<{
   filter?: InputMaybe<ModelUnitProductFilterInput>;
@@ -4963,7 +4941,7 @@ export type ListUnitProductsQueryVariables = Exact<{
 }>;
 
 
-export type ListUnitProductsQuery = { listUnitProducts?: { nextToken?: string | null, items: Array<{ id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null> } | null };
+export type ListUnitProductsQuery = { listUnitProducts?: { nextToken?: string | null, items: Array<{ id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null> } | null };
 
 export type SearchUnitProductsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableUnitProductFilterInput>;
@@ -4975,14 +4953,14 @@ export type SearchUnitProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchUnitProductsQuery = { searchUnitProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchUnitProductsQuery = { searchUnitProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetVariantQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type GetVariantQuery = { getVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+export type GetVariantQuery = { getVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
 
 export type ListVariantsQueryVariables = Exact<{
   filter?: InputMaybe<ModelVariantFilterInput>;
@@ -4991,7 +4969,7 @@ export type ListVariantsQueryVariables = Exact<{
 }>;
 
 
-export type ListVariantsQuery = { listVariants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null };
+export type ListVariantsQuery = { listVariants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null };
 
 export type SearchVariantsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableVariantFilterInput>;
@@ -5003,7 +4981,7 @@ export type SearchVariantsQueryVariables = Exact<{
 }>;
 
 
-export type SearchVariantsQuery = { searchVariants?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchVariantsQuery = { searchVariants?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetAdminUserQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -5379,7 +5357,7 @@ export type OnUnitProductChangeSubscriptionVariables = Exact<{
 }>;
 
 
-export type OnUnitProductChangeSubscription = { onUnitProductChange?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null };
+export type OnUnitProductChangeSubscription = { onUnitProductChange?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null };
 
 export type OnOrdersChangeSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -5411,32 +5389,32 @@ export type OnUnitOrdersChangeSubscription = { onUnitOrdersChange?: { id: string
 export type OnCreateUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateUnitProductSubscription = { onCreateUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null };
+export type OnCreateUnitProductSubscription = { onCreateUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null };
 
 export type OnUpdateUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateUnitProductSubscription = { onUpdateUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null };
+export type OnUpdateUnitProductSubscription = { onUpdateUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null };
 
 export type OnDeleteUnitProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteUnitProductSubscription = { onDeleteUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, variants?: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct?: string | null, externalId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> | null, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null } | null };
+export type OnDeleteUnitProductSubscription = { onDeleteUnitProduct?: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } | null };
 
 export type OnCreateVariantSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateVariantSubscription = { onCreateVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+export type OnCreateVariantSubscription = { onCreateVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
 
 export type OnUpdateVariantSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateVariantSubscription = { onUpdateVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+export type OnUpdateVariantSubscription = { onUpdateVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
 
 export type OnDeleteVariantSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteVariantSubscription = { onDeleteVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, ownerProduct: string, externalId?: string | null, createdAt: string, updatedAt: string, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
+export type OnDeleteVariantSubscription = { onDeleteVariant?: { id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null };
 
 export type OnUpdateAdminUserSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -6805,33 +6783,6 @@ export const CreateUnitProductDocument = gql`
     takeaway
     laneId
     position
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
     configSets {
       productSetId
       items {
@@ -6862,6 +6813,38 @@ export const CreateUnitProductDocument = gql`
     productType
     image
     allergens
+    variants {
+      items {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        externalId
+        createdAt
+        updatedAt
+        unitProductVariantsId
+      }
+      nextToken
+    }
     createdAt
     updatedAt
   }
@@ -6876,33 +6859,6 @@ export const UpdateUnitProductDocument = gql`
     takeaway
     laneId
     position
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
     configSets {
       productSetId
       items {
@@ -6933,6 +6889,38 @@ export const UpdateUnitProductDocument = gql`
     productType
     image
     allergens
+    variants {
+      items {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        externalId
+        createdAt
+        updatedAt
+        unitProductVariantsId
+      }
+      nextToken
+    }
     createdAt
     updatedAt
   }
@@ -6947,33 +6935,6 @@ export const DeleteUnitProductDocument = gql`
     takeaway
     laneId
     position
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
     configSets {
       productSetId
       items {
@@ -7004,6 +6965,38 @@ export const DeleteUnitProductDocument = gql`
     productType
     image
     allergens
+    variants {
+      items {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        externalId
+        createdAt
+        updatedAt
+        unitProductVariantsId
+      }
+      nextToken
+    }
     createdAt
     updatedAt
   }
@@ -7035,10 +7028,10 @@ export const CreateVariantDocument = gql`
     position
     netPackagingFee
     soldOut
-    ownerProduct
     externalId
     createdAt
     updatedAt
+    unitProductVariantsId
   }
 }
     `;
@@ -7068,10 +7061,10 @@ export const UpdateVariantDocument = gql`
     position
     netPackagingFee
     soldOut
-    ownerProduct
     externalId
     createdAt
     updatedAt
+    unitProductVariantsId
   }
 }
     `;
@@ -7101,10 +7094,10 @@ export const DeleteVariantDocument = gql`
     position
     netPackagingFee
     soldOut
-    ownerProduct
     externalId
     createdAt
     updatedAt
+    unitProductVariantsId
   }
 }
     `;
@@ -9417,33 +9410,6 @@ export const GetUnitProductDocument = gql`
     takeaway
     laneId
     position
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
     configSets {
       productSetId
       items {
@@ -9474,22 +9440,8 @@ export const GetUnitProductDocument = gql`
     productType
     image
     allergens
-    createdAt
-    updatedAt
-  }
-}
-    `;
-export const ListUnitProductsDocument = gql`
-    query ListUnitProducts($filter: ModelUnitProductFilterInput, $limit: Int, $nextToken: String) {
-  listUnitProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      unitId
-      isVisible
-      takeaway
-      laneId
-      position
-      variants {
+    variants {
+      items {
         id
         variantName {
           en
@@ -9513,9 +9465,28 @@ export const ListUnitProductsDocument = gql`
         position
         netPackagingFee
         soldOut
-        ownerProduct
         externalId
+        createdAt
+        updatedAt
+        unitProductVariantsId
       }
+      nextToken
+    }
+    createdAt
+    updatedAt
+  }
+}
+    `;
+export const ListUnitProductsDocument = gql`
+    query ListUnitProducts($filter: ModelUnitProductFilterInput, $limit: Int, $nextToken: String) {
+  listUnitProducts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
       configSets {
         productSetId
         items {
@@ -9546,6 +9517,38 @@ export const ListUnitProductsDocument = gql`
       productType
       image
       allergens
+      variants {
+        items {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          externalId
+          createdAt
+          updatedAt
+          unitProductVariantsId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -9570,33 +9573,6 @@ export const SearchUnitProductsDocument = gql`
       takeaway
       laneId
       position
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        isAvailable
-        price
-        availabilities {
-          type
-          dayFrom
-          dayTo
-          timeFrom
-          timeTo
-          price
-        }
-        position
-        netPackagingFee
-        soldOut
-        ownerProduct
-        externalId
-      }
       configSets {
         productSetId
         items {
@@ -9627,6 +9603,38 @@ export const SearchUnitProductsDocument = gql`
       productType
       image
       allergens
+      variants {
+        items {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          externalId
+          createdAt
+          updatedAt
+          unitProductVariantsId
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -9675,10 +9683,10 @@ export const GetVariantDocument = gql`
     position
     netPackagingFee
     soldOut
-    ownerProduct
     externalId
     createdAt
     updatedAt
+    unitProductVariantsId
   }
 }
     `;
@@ -9709,10 +9717,10 @@ export const ListVariantsDocument = gql`
       position
       netPackagingFee
       soldOut
-      ownerProduct
       externalId
       createdAt
       updatedAt
+      unitProductVariantsId
     }
     nextToken
   }
@@ -9752,10 +9760,10 @@ export const SearchVariantsDocument = gql`
       position
       netPackagingFee
       soldOut
-      ownerProduct
       externalId
       createdAt
       updatedAt
+      unitProductVariantsId
     }
     nextToken
     total
@@ -12928,33 +12936,6 @@ export const OnUnitProductChangeDocument = gql`
     takeaway
     laneId
     position
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
     configSets {
       productSetId
       items {
@@ -12985,6 +12966,38 @@ export const OnUnitProductChangeDocument = gql`
     productType
     image
     allergens
+    variants {
+      items {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        externalId
+        createdAt
+        updatedAt
+        unitProductVariantsId
+      }
+      nextToken
+    }
     createdAt
     updatedAt
   }
@@ -14247,33 +14260,6 @@ export const OnCreateUnitProductDocument = gql`
     takeaway
     laneId
     position
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
     configSets {
       productSetId
       items {
@@ -14304,6 +14290,38 @@ export const OnCreateUnitProductDocument = gql`
     productType
     image
     allergens
+    variants {
+      items {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        externalId
+        createdAt
+        updatedAt
+        unitProductVariantsId
+      }
+      nextToken
+    }
     createdAt
     updatedAt
   }
@@ -14318,33 +14336,6 @@ export const OnUpdateUnitProductDocument = gql`
     takeaway
     laneId
     position
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
     configSets {
       productSetId
       items {
@@ -14375,6 +14366,38 @@ export const OnUpdateUnitProductDocument = gql`
     productType
     image
     allergens
+    variants {
+      items {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        externalId
+        createdAt
+        updatedAt
+        unitProductVariantsId
+      }
+      nextToken
+    }
     createdAt
     updatedAt
   }
@@ -14389,33 +14412,6 @@ export const OnDeleteUnitProductDocument = gql`
     takeaway
     laneId
     position
-    variants {
-      id
-      variantName {
-        en
-        de
-        hu
-      }
-      pack {
-        size
-        unit
-      }
-      isAvailable
-      price
-      availabilities {
-        type
-        dayFrom
-        dayTo
-        timeFrom
-        timeTo
-        price
-      }
-      position
-      netPackagingFee
-      soldOut
-      ownerProduct
-      externalId
-    }
     configSets {
       productSetId
       items {
@@ -14446,6 +14442,38 @@ export const OnDeleteUnitProductDocument = gql`
     productType
     image
     allergens
+    variants {
+      items {
+        id
+        variantName {
+          en
+          de
+          hu
+        }
+        pack {
+          size
+          unit
+        }
+        isAvailable
+        price
+        availabilities {
+          type
+          dayFrom
+          dayTo
+          timeFrom
+          timeTo
+          price
+        }
+        position
+        netPackagingFee
+        soldOut
+        externalId
+        createdAt
+        updatedAt
+        unitProductVariantsId
+      }
+      nextToken
+    }
     createdAt
     updatedAt
   }
@@ -14477,10 +14505,10 @@ export const OnCreateVariantDocument = gql`
     position
     netPackagingFee
     soldOut
-    ownerProduct
     externalId
     createdAt
     updatedAt
+    unitProductVariantsId
   }
 }
     `;
@@ -14510,10 +14538,10 @@ export const OnUpdateVariantDocument = gql`
     position
     netPackagingFee
     soldOut
-    ownerProduct
     externalId
     createdAt
     updatedAt
+    unitProductVariantsId
   }
 }
     `;
@@ -14543,10 +14571,10 @@ export const OnDeleteVariantDocument = gql`
     position
     netPackagingFee
     soldOut
-    ownerProduct
     externalId
     createdAt
     updatedAt
+    unitProductVariantsId
   }
 }
     `;

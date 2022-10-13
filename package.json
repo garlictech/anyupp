@@ -92,6 +92,7 @@
     "browserify-zlib": "0.2.0",
     "chart.js": "3.7.1",
     "chartjs-plugin-datalabels": "2.0.0",
+    "dynogels": "^9.1.0",
     "enum-values": "1.2.1",
     "es6-promise": "4.2.8",
     "eva-icons": "1.1.3",

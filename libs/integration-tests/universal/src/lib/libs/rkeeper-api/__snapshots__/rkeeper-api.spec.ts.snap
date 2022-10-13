@@ -84,7 +84,7 @@ Array [
         "id": "MASKED ID",
         "isAvailable": true,
         "netPackagingFee": null,
-        "ownerProduct": "MASKED ID",
+        "unitProductVariantsId": "MASKED ID",
         "pack": Object {
           "size": 1,
           "unit": "zsák",
@@ -148,7 +148,7 @@ Array [
         "id": "MASKED ID",
         "isAvailable": true,
         "netPackagingFee": null,
-        "ownerProduct": "MASKED ID",
+        "unitProductVariantsId": "MASKED ID",
         "pack": Object {
           "size": 1,
           "unit": "zsák",
@@ -180,7 +180,7 @@ Array [
     "id": "MASKED ID",
     "isAvailable": true,
     "netPackagingFee": null,
-    "ownerProduct": "MASKED ID",
+    "unitProductVariantsId": "MASKED ID",
     "pack": Object {
       "size": 1,
       "unit": "zsák",
@@ -201,6 +201,8 @@ Array [
 exports[`Test the rkeeper api basic functionality It shouls be able to search for external variant: NOT existing external product 1`] = `null`;
 
 exports[`Test the rkeeper api basic functionality It shouls be able to search for external variant: existing external product 1`] = `"rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad-unitproduct"`;
+
+exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case with lots of records 1`] = `true`;
 
 exports[`Test the rkeeper api basic functionality Test full rkeeper product handling - the use case: Product component sets 1`] = `
 Object {
@@ -432,7 +434,7 @@ Object {
       "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "MASKED ID",
+      "unitProductVariantsId": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
@@ -556,7 +558,7 @@ Object {
       "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "MASKED ID",
+      "unitProductVariantsId": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
@@ -680,7 +682,7 @@ Object {
       "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "MASKED ID",
+      "unitProductVariantsId": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
@@ -742,7 +744,7 @@ Object {
       "id": "MASKED ID",
       "isAvailable": false,
       "netPackagingFee": null,
-      "ownerProduct": "MASKED ID",
+      "unitProductVariantsId": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
@@ -804,7 +806,7 @@ Object {
       "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "MASKED ID",
+      "unitProductVariantsId": "MASKED ID",
       "pack": Object {
         "size": 1,
         "unit": "zsák",
@@ -869,7 +871,7 @@ Object {
       "id": "rkeeper-MASKED IDUnitProductVariant_id_1",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "rkeeper-MASKED ID-unitproduct",
+      "unitProductVariantsId": "rkeeper-MASKED ID-unitproduct",
       "pack": null,
       "position": -1,
       "price": 30,
@@ -931,7 +933,7 @@ Object {
       "id": "rkeeper-MASKED IDUnitProductVariant_id_2",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "rkeeper-MASKED ID-unitproduct2",
+      "unitProductVariantsId": "rkeeper-MASKED ID-unitproduct2",
       "pack": null,
       "position": -1,
       "price": 30,

@@ -25,7 +25,7 @@ export const updateVariantsHandler =
 export const upsertVariantsHandler =
   (deps: ProductVariantsResolverDeps) =>
   (
-    ownerProduct: string,
+    unitProductVariantsId: string,
     variants?: Array<Record<string, unknown> | undefined | null> | null,
   ) =>
     pipe(
@@ -33,7 +33,7 @@ export const upsertVariantsHandler =
       variants => R.reject(R.isNil)(variants),
       R.map(variant => ({
         ...variant,
-        ownerProduct,
+        unitProductVariantsId,
       })),
       R.map((variant: Record<string, unknown>) =>
         iif(
@@ -60,12 +60,12 @@ export const upsertVariantsHandler =
     );
 
 export const getVariantsHandler =
-  (deps: ProductVariantsResolverDeps) => (ownerProduct: string) =>
+  (deps: ProductVariantsResolverDeps) => (unitProductVariantsId: string) =>
     getAllPaginatedData(deps.crudSdk.SearchVariants, {
       query: {
         filter: {
-          ownerProduct: {
-            eq: ownerProduct,
+          unitProductVariantsId: {
+            eq: unitProductVariantsId,
           },
         },
       },
@@ -81,6 +81,8 @@ export const productVariantsResolver =
     _requestArguments: unknown,
     source: Record<string, unknown> & { __operation?: string; id: string },
   ) => {
+    console.warn('***1', _requestArguments);
+    console.warn('***2', source);
     // In field resolvers, in case of mutation, the system adds an
     // __operation: 'Mutation' field to the parent. We decide if the
     // mutation is crete or ubdate by checking the parent (source) id.

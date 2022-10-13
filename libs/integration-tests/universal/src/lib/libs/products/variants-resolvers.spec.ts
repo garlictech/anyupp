@@ -2,13 +2,10 @@ import {
   CrudSdk,
   getCrudSdkForIAM,
   Variant,
-  CreateUnitProductInput,
-  ProductVariantInput,
   UnitProduct,
   ProductType,
   deleteUnitProductWithVariants,
 } from '@bgap/crud-gql/api';
-import { productVariantsResolver } from '@bgap/backend/products';
 import { tap, map, switchMap, delay } from 'rxjs/operators';
 import {} from '@bgap/domain';
 import { pipe } from 'fp-ts/lib/function';
@@ -56,78 +53,62 @@ describe('Product variants resolver tests', () => {
     await of(1).pipe(delay(3000)).toPromise();
   });
 
-  test('CreateUnitProduct with direct resolver', async () => {
-    await productVariantsResolver({ crudSdk: sdk })({}, unitProductFixture)
-      .pipe(
-        tap(result =>
-          expect(
-            pipe(result, maskDate, sanitizeField([0, 'id'])),
-          ).toMatchSnapshot('CREATE PRODUCT'),
-        ),
-        delay(3000),
-        switchMap(() =>
-          productVariantsResolver({ crudSdk: sdk })(
-            {},
-            {
-              id: unitProductFixture.id,
-            },
-          ),
-        ),
-        tap(result =>
-          expect(
-            pipe(result, maskDate, sanitizeField([0, 'id'])),
-          ).toMatchSnapshot('GET PRODUCT'),
-        ),
-        switchMap(cleanup),
-      )
-      .toPromise();
-  }, 10000);
-
   test('CreateUnitProduct with API call', async () => {
     await sdk
       .CreateUnitProduct({ input: createUnitProductFixture })
       .pipe(
         tap(result => expect(maskAll(result)).toMatchSnapshot()),
+        delay(3000),
+        tap(console.warn),
         switchMap(cleanup),
       )
-
       .toPromise();
   }, 10000);
 
   test('UpdateUnitProduct with API call', async () => {
     let testedVariantId: string | undefined = 'foobar';
+    let productId: string | null | undefined;
 
     await sdk
       .CreateUnitProduct({ input: createUnitProductFixture })
       .pipe(
-        tap(result => expect(result).toBeDefined()),
-        tap(result => expect(result?.variants?.[0]).toBeDefined()),
-        tap(result => (testedVariantId = result?.variants?.[0]?.id)),
+        tap(result => {
+          expect(result).toBeDefined();
+          expect(result?.variants?.items?.[0]).toBeDefined();
+          expect(result?.variants?.items?.length).toEqual(1);
+          testedVariantId = result?.variants?.items?.[0]?.id;
+          productId = result?.id;
+        }),
         map(result => result as UnitProduct),
         delay(3000),
         switchMap(result =>
-          sdk.UpdateUnitProduct({
+          sdk.UpdateVariant({
             input: {
-              id: result.id,
-              variants: [
-                {
-                  ...(result?.variants?.[0] as Variant),
-                  variantName: { en: 'NEW VARIANT NAME' },
-                },
-              ],
+              id: result?.variants?.items?.[0]?.id ?? 'wtf',
+              variantName: { en: 'NEW VARIANT NAME' },
             },
           }),
         ),
         tap(result => expect(maskAll(result)).toMatchSnapshot()),
         // Check if the updated variant is really updated, not a new one by
         // comparing the id-s
-        tap(result =>
-          expect(result?.variants?.[0]?.id).toEqual(testedVariantId),
+        tap(result => expect(result?.id).toEqual(testedVariantId)),
+        // Check duplication - a simple update should not duplicate the variants
+        switchMap(() =>
+          sdk.UpdateUnitProduct({
+            input: {
+              id: productId ?? 'wtf',
+              isVisible: false,
+            },
+          }),
         ),
+        delay(3000),
+        switchMap(() => sdk.GetUnitProduct({ id: productId ?? 'wtf' })),
+        tap(result => expect(result?.variants?.length).toEqual(1)),
         switchMap(cleanup),
       )
       .toPromise();
-  }, 10000);
+  }, 20000);
 
   test('GetUnitProduct with API call', async () => {
     await sdk

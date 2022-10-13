@@ -33,7 +33,7 @@ Object {
       "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "product_variants_MASKED ID",
+      "unitProductVariantsId": "product_variants_MASKED ID",
       "pack": null,
       "position": 1,
       "price": 10,
@@ -57,7 +57,7 @@ Array [
     "id": "MASKED ID",
     "isAvailable": true,
     "netPackagingFee": null,
-    "ownerProduct": "product_variants_c93e2c8e-b088-4885-993e-7d48d9f9d252",
+    "unitProductVariantsId": "product_variants_c93e2c8e-b088-4885-993e-7d48d9f9d252",
     "pack": null,
     "position": 1,
     "price": 10,
@@ -81,7 +81,7 @@ Array [
     "id": "MASKED ID",
     "isAvailable": true,
     "netPackagingFee": null,
-    "ownerProduct": "product_variants_c93e2c8e-b088-4885-993e-7d48d9f9d252",
+    "unitProductVariantsId": "product_variants_c93e2c8e-b088-4885-993e-7d48d9f9d252",
     "pack": null,
     "position": 1,
     "price": 10,
@@ -129,7 +129,7 @@ Object {
       "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "product_variants_MASKED ID",
+      "unitProductVariantsId": "product_variants_MASKED ID",
       "pack": null,
       "position": 1,
       "price": 10,
@@ -146,7 +146,7 @@ Object {
       "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "product_variants_MASKED ID",
+      "unitProductVariantsId": "product_variants_MASKED ID",
       "pack": null,
       "position": 1,
       "price": 10,
@@ -194,7 +194,7 @@ Object {
       "id": "MASKED ID",
       "isAvailable": true,
       "netPackagingFee": null,
-      "ownerProduct": "product_variants_MASKED ID",
+      "unitProductVariantsId": "product_variants_MASKED ID",
       "pack": null,
       "position": 1,
       "price": 10,
@@ -207,4 +207,28 @@ Object {
     },
   ],
 }
+`;
+
+exports[`Product variants resolver tests UpdateUnitProduct with resolver call 1`] = `
+Array [
+  Object {
+    "availabilities": null,
+    "createdAt": "MASKED DATE",
+    "externalId": null,
+    "id": "MASKED ID",
+    "isAvailable": true,
+    "netPackagingFee": null,
+    "unitProductVariantsId": "product_variants_MASKED ID",
+    "pack": null,
+    "position": 1,
+    "price": 10,
+    "soldOut": null,
+    "updatedAt": "MASKED DATE",
+    "variantName": Object {
+      "de": null,
+      "en": "NEW VARIANT NAME",
+      "hu": null,
+    },
+  },
+]
 `;

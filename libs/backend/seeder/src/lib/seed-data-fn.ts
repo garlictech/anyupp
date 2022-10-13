@@ -3,8 +3,8 @@ import {
   unitFixture,
   getProductComponent,
   getComponentSet,
-  freiRkeeperUsername,
-  freiRkeeperPassword,
+  freiUnitId,
+  freiUnit,
 } from '@bgap/shared/fixtures';
 import { RequiredId } from '@bgap/shared/types';
 import { CognitoIdentityServiceProvider } from 'aws-sdk';
@@ -17,8 +17,6 @@ import {
   CreateProductComponentSetInput,
   CreateUnitProductInput,
   CreateUserInput,
-  OrderMode,
-  PosType,
   ProductType,
   ServingMode,
 } from '@bgap/domain';
@@ -351,32 +349,11 @@ export const createComponentSets = (deps: SeederDependencies) => {
 export const seedFreiRKeeperUnit = (deps: SeederDependencies) =>
   forkJoin([
     deleteCreate(
-      () => deps.crudSdk.DeleteUnit({ input: { id: 'frei-rkeeper-unit' } }),
+      () => deps.crudSdk.DeleteUnit({ input: { id: freiUnitId } }),
       () =>
         deps.crudSdk
           .CreateUnit({
-            input: {
-              ...unitFixture.createRkeeperUnit,
-              id: 'frei-rkeeper-unit',
-              name: `frei RKEEPER unit`,
-              supportedOrderModes: [OrderMode.pickup, OrderMode.instant],
-              supportedServingModes: [
-                ServingMode.takeaway,
-                ServingMode.inplace,
-              ],
-              externalId: '109150001',
-              canCallWaiter: true,
-              pos: {
-                type: PosType.rkeeper,
-                rkeeper: {
-                  endpointUri: 'https://testendpoint.ucs.hu/wp-json/vendor/v1',
-                  rkeeperUsername: freiRkeeperUsername,
-                  rkeeperPassword: freiRkeeperPassword,
-                  anyuppPassword: 'foobar',
-                  anyuppUsername: 'foobar',
-                },
-              },
-            },
+            input: freiUnit,
           })
           .pipe(
             switchMap(unit =>

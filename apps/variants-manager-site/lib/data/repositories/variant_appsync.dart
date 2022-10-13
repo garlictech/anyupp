@@ -11,7 +11,7 @@ class VariantRepositoryAppsync implements VariantRepository {
   setNewOwnerProduct(Product owner, Variant variant) async {
     String gqlDocumentGroupProd = ''' 
         mutation SetOwner {
-          updateVariant(input: {id: "${variant.id}", ownerProduct: "${owner.id}"}) {
+          updateVariant(input: {id: "${variant.id}", unitProductVariantsId: "${owner.id}"}) {
             id
           }
         }

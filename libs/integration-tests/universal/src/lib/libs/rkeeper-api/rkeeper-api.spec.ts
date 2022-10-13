@@ -1,6 +1,6 @@
 import {
   callWaiter,
-  searchExternalVariant,
+  searchProductOfVariant,
   sendRkeeperOrder,
 } from '@bgap/rkeeper-api';
 import * as R from 'ramda';
@@ -31,8 +31,9 @@ import {
   defaultProductCategoryId,
   handleProducts,
   menusyncHandler,
+  RkeeperFixtures,
 } from '@bgap/rkeeper-api';
-import { from, of, defer, forkJoin } from 'rxjs';
+import { from, of, defer, forkJoin, throwError, iif } from 'rxjs';
 import { ES_DELAY, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
@@ -44,7 +45,7 @@ import {
   commonStackConfig,
   anyuppStackConfig,
 } from '@bgap/shared/config';
-import { maskAll, maskV4UuidIds } from '@bgap/shared/fixtures';
+import { freiUnitId, maskAll, maskV4UuidIds } from '@bgap/shared/fixtures';
 import {
   Maybe,
   ProductComponent,
@@ -79,8 +80,8 @@ describe('Test the rkeeper api basic functionality', () => {
       tap(items => console.log(`Deleted ${items} items in unit ${unitId}`)),
     );
 
-  const cleanup$ = from([fixtures.rkeeperUnit.id, fixtures.freiUnit.id]).pipe(
-    concatMap(id => deleteTestProducts(id)),
+  const cleanup$ = from([fixtures.rkeeperUnit.id]).pipe(
+    //concatMap(id => deleteTestProducts(id)),
     takeLast(1),
     switchMap(() =>
       crudSdk.DeleteProductCategory({
@@ -99,16 +100,6 @@ describe('Test the rkeeper api basic functionality', () => {
     takeLast(1),
   );
 
-  beforeAll(done => {
-    crudSdk
-      .DeleteUnit({ input: { id: fixtures.freiUnit.id } })
-      .pipe(
-        switchMap(() => crudSdk.CreateUnit({ input: fixtures.freiUnit })),
-        delay(ES_DELAY),
-      )
-      .subscribe(() => done());
-  }, 20000);
-
   beforeEach(done => {
     jest.resetModules();
 
@@ -120,7 +111,7 @@ describe('Test the rkeeper api basic functionality', () => {
         switchMapTo(
           from([fixtures.rkeeperUnitProduct, fixtures.rkeeperUnitProduct2]),
         ),
-        concatMap(input => crudSdk.CreateUnitProduct({ input })),
+        //concatMap(input => crudSdk.CreateUnitProduct({ input })),
         takeLast(1),
         switchMap(() =>
           forkJoin([crudSdk.CreateUnit({ input: fixtures.rkeeperUnit })]),
@@ -141,12 +132,14 @@ describe('Test the rkeeper api basic functionality', () => {
   }, 60000);
 
   test('It shouls be able to search for external variant', done => {
-    searchExternalVariant(crudSdk)(fixtures.rkeeperProductGuid)
+    searchProductOfVariant(crudSdk)(fixtures.rkeeperProductGuid)
       .pipe(
         tap(res =>
           expect(res?.id).toMatchSnapshot('existing external product'),
         ),
-        switchMap(() => searchExternalVariant(crudSdk)('NOT EXISTING PRODUCT')),
+        switchMap(() =>
+          searchProductOfVariant(crudSdk)('NOT EXISTING PRODUCT'),
+        ),
         tap(res =>
           expect(res).toMatchSnapshot('NOT existing external product'),
         ),
@@ -285,7 +278,7 @@ describe('Test the rkeeper api basic functionality', () => {
         from(products).pipe(
           concatMap(product =>
             crudSdk.SearchVariants({
-              filter: { ownerProduct: { eq: product.id } },
+              filter: { unitProductVariantsId: { eq: product.id } },
             }),
           ),
           filterNullishGraphqlListWithDefault<Variant>([]),
@@ -318,10 +311,89 @@ describe('Test the rkeeper api basic functionality', () => {
       });
   }, 30000);
 
+  test.only('Should not duplicate products and variants', done => {
+    const rawDataFixture = {
+      data: {
+        dishes: [
+          {
+            ...RkeeperFixtures.dish,
+            id: 1234567,
+          },
+        ],
+      },
+    };
+
+    let unitProduct: UnitProduct | undefined | null;
+    let startUnitProductNum: number;
+
+    crudSdk
+      .SearchUnitProducts({
+        filter: {
+          unitId: {
+            eq: fixtures.rkeeperUnit.id,
+          },
+        },
+      })
+      .pipe(
+        tap(res => (startUnitProductNum = res?.items?.length ?? 0)),
+        switchMap(() =>
+          handleRkeeperProducts(crudSdk)(
+            fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
+          )(rawDataFixture),
+        ),
+        delay(ES_DELAY),
+        switchMap(() =>
+          handleRkeeperProducts(crudSdk)(
+            fixtures.rkeeperUnit?.externalId ?? 'Something is wrong',
+          )(rawDataFixture),
+        ),
+        delay(ES_DELAY),
+        switchMap(() =>
+          crudSdk.SearchUnitProducts({
+            filter: {
+              unitId: {
+                eq: fixtures.rkeeperUnit.id,
+              },
+            },
+          }),
+        ),
+        tap(unitProducts => {
+          expect(unitProducts?.items.length).toEqual(startUnitProductNum + 1);
+          unitProduct = unitProducts?.items[0];
+          console.log('*****44', JSON.stringify(unitProduct, null, 2));
+          expect(unitProduct?.variants?.length).toEqual(1);
+          expect(unitProduct?.variants?.[0]?.externalId).toEqual(
+            RkeeperFixtures.dish.id.toString(),
+          );
+        }),
+        switchMap(() =>
+          crudSdk.SearchVariants({
+            filter: {
+              externalId: {
+                eq: RkeeperFixtures.dish.id.toString(),
+              },
+            },
+          }),
+        ),
+        tap(variants => {
+          expect(variants?.items.length).toEqual(1);
+          expect(variants?.items[0]?.externalId).toEqual(
+            RkeeperFixtures.dish.id.toString(),
+          );
+        }),
+        switchMap(() =>
+          !!unitProduct
+            ? deleteUnitProductWithVariants(unitProduct!, crudSdk)
+            : of({}),
+        ),
+      )
+      .subscribe(() => done());
+  }, 15000);
+
   // We skip this extremely long-running test by default
   test.skip('Test full rkeeper product handling - the use case with lots of records', done => {
     const rawData = JSON.parse(
-      fs.readFileSync(__dirname + '/menu-data.json').toString(),
+      fs.readFileSync(__dirname + '/menu-data-frei.json').toString(),
     );
 
     handleRkeeperProducts(crudSdk)(fixtures.freiRestaurantId)(
@@ -422,7 +494,7 @@ describe('Test the rkeeper api basic functionality', () => {
           seat: 'SEAT',
           table: 'TABLE',
         },
-        unitId: fixtures.freiUnit.id,
+        unitId: freiUnitId,
       },
     })
       .pipe(
@@ -443,7 +515,7 @@ describe('Test the rkeeper api basic functionality', () => {
     crudSdk
       .CallWaiter({
         input: {
-          unitId: fixtures.freiUnit.id,
+          unitId: freiUnitId,
           place: {
             seat: '1',
             table: '2',
@@ -491,15 +563,22 @@ describe('Test the communication between anyupp/rkeeper', () => {
   }, 60000);
 
   test('send order to rkeeper by sendRkeeperOrder', done => {
-    sendRkeeperOrder({
-      axiosInstance: axios,
-      currentTimeISOString: () => new Date('2040.01.01').toISOString(),
-      uuidGenerator: () => 'UUID',
-    })(fixtures.freiUnit, {
-      ...fixtures.orderInput,
-      userId: 'cf4d2382-3dfe-11ed-be1a-09435bd2f6b6',
-    })
+    crudSdk
+      .GetUnit({ id: freiUnitId })
       .pipe(
+        switchMap(unit =>
+          unit
+            ? sendRkeeperOrder({
+                axiosInstance: axios,
+                currentTimeISOString: () =>
+                  new Date('2040.01.01').toISOString(),
+                uuidGenerator: () => 'UUID',
+              })(unit, {
+                ...fixtures.orderInput,
+                userId: 'cf4d2382-3dfe-11ed-be1a-09435bd2f6b6',
+              })
+            : throwError('Frei rkeeper unit noit found'),
+        ),
         tap(result => {
           expect(result.externalId).toEqual('UUID');
           expect(!!result.visitId).toBeTruthy();
@@ -516,20 +595,27 @@ describe('Test the communication between anyupp/rkeeper', () => {
   }, 10000);
 
   test('call waiter by callWaiter', done => {
-    callWaiter({
-      axiosInstance: axios,
-      currentTimeISOString: () => new Date('2040.01.01').toISOString(),
-      uuidGenerator: () => 'UUID',
-    })(fixtures.freiUnit, {
-      guestLabel: 'GUEST_LABEL',
-      info: 'WAITER INFO',
-      place: {
-        seat: 'SEAT',
-        table: 'TABLE',
-      },
-      unitId: 'UNIT_ID',
-    })
+    crudSdk
+      .GetUnit({ id: freiUnitId })
       .pipe(
+        switchMap(unit =>
+          unit
+            ? callWaiter({
+                axiosInstance: axios,
+                currentTimeISOString: () =>
+                  new Date('2040.01.01').toISOString(),
+                uuidGenerator: () => 'UUID',
+              })(unit, {
+                guestLabel: 'GUEST_LABEL',
+                info: 'WAITER INFO',
+                place: {
+                  seat: 'SEAT',
+                  table: 'TABLE',
+                },
+                unitId: 'UNIT_ID',
+              })
+            : throwError('Frei rkeeper unit noit found'),
+        ),
         tap(result => {
           expect(
             (result as Right<{ externalId: string }>).right.externalId,

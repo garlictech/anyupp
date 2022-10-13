@@ -43,6 +43,7 @@ import {
   catchError,
   mapTo,
   shareReplay,
+  delay,
 } from 'rxjs/operators';
 import {
   from,
@@ -190,11 +191,11 @@ export const processDishes = (rawData: any): Observable<Dish[]> =>
     map(
       flow(
         x => R.filter(R.complement(R.isNil), x) as Dish[],
-        x => R.reject((dish: Dish) => dish.variation != undefined, x),
         R.map(normalizeDish),
+        x => R.take(3, x),
       ),
     ),
-    tap(() => console.warn('DISHES PROCESSED')),
+    tap(x => console.warn(`${x.length} DISHES PROCESSED`)),
   );
 
 export interface WaiterCallerData {
@@ -254,7 +255,7 @@ const getFirstFoundItem = <T>(): UnaryFunction<
     tap(items => {
       if (items.length > 1) {
         console.warn(
-          `Found multiple items with the same clientid! ${JSON.stringify(
+          `Found multiple items with the same externalId! ${JSON.stringify(
             items,
             null,
             2,
@@ -265,22 +266,22 @@ const getFirstFoundItem = <T>(): UnaryFunction<
     map(items => items?.[0] ?? null),
   );
 
-export const searchExternalVariant =
+export const searchProductOfVariant =
   (sdk: CrudSdk) =>
-  (rkeeperProductGuid: string): Observable<Maybe<UnitProduct> | undefined> =>
+  (externalId: string): Observable<Maybe<UnitProduct> | undefined> =>
     sdk
       .SearchVariants({
         filter: {
           externalId: {
-            eq: externalProductIdMaker(rkeeperProductGuid),
+            eq: externalProductIdMaker(externalId),
           },
         },
       })
       .pipe(
         getFirstFoundItem(),
         switchMap(variant =>
-          variant?.ownerProduct
-            ? sdk.GetUnitProduct({ id: variant.ownerProduct })
+          variant?.unitProductVariantsId
+            ? sdk.GetUnitProduct({ id: variant.unitProductVariantsId })
             : of(null),
         ),
       );
@@ -359,41 +360,71 @@ export const updateRkeeperProduct =
     configSets: ProductConfigSet[] | null,
   ) =>
     forkJoin([
-      sdk.UpdateUnitProduct({
-        input: {
+      sdk
+        .GetUnitProduct({
           id: foundUnitProduct.id,
-          configSets,
-        },
-      }),
+        })
+        .pipe(
+          tap(x => console.log('***51', x)),
+          switchMap(() =>
+            sdk.UpdateUnitProduct({
+              input: {
+                id: foundUnitProduct.id,
+                configSets,
+                variants: foundUnitProduct.variants,
+              },
+            }),
+          ),
+          delay(3000),
+          switchMap(() =>
+            sdk.GetUnitProduct({
+              id: foundUnitProduct.id,
+            }),
+          ),
+
+          tap(x => console.log('***52', x)),
+        ),
       pipe(
         foundUnitProduct.variants || [],
         R.reject(variant => R.isNil(variant)),
         R.find(variant => variant!.externalId === dish.id.toString()),
-        variant =>
+        of,
+        /* variant =>
           variant?.id
-            ? sdk.UpdateVariant({
-                input: {
-                  id: variant!.id,
-                  variantName: {
-                    hu: dish.name,
-                  },
-                  isAvailable: dish.active,
-                  price: dish.price,
-                  availabilities: [
-                    {
-                      type: 'A',
-                      price: dish.price,
+            ? sdk
+                .UpdateVariant({
+                  input: {
+                    id: variant!.id,
+                    variantName: {
+                      hu: dish.name,
                     },
-                  ],
-                },
-              })
+                    isAvailable: dish.active,
+                    price: dish.price,
+                    availabilities: [
+                      {
+                        type: 'A',
+                        price: dish.price,
+                      },
+                    ],
+                  },
+                })
+                .pipe(
+                  delay(3000),
+                  switchMap(() =>
+                    sdk.GetUnitProduct({
+                      id: foundUnitProduct.id,
+                    }),
+                  ),
+
+                  tap(x => console.log('***6', x)),
+                )
             : of(false).pipe(
                 tap(() =>
                   console.warn(
                     `The variant with external id ${dish.id} cannot be found. It should exist!`,
                   ),
                 ),
-              ),
+              ),*/
       ),
     ]);
 
@@ -496,8 +527,9 @@ export const handleRkeeperProducts =
                 )(dish).pipe(
                   map(O.getOrElse<ProductConfigSet[] | null>(() => null)),
                 ),
-                searchExternalVariant(sdk)(dish.id.toString()),
+                searchProductOfVariant(sdk)(dish.id.toString()),
               ]).pipe(
+                tap(x => console.log('***1', JSON.stringify(x, null, 2))),
                 switchMap(([configSets, unitProduct]) =>
                   R.isNil(unitProduct)
                     ? createRkeeperProduct(sdk)(

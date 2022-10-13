@@ -10,7 +10,11 @@ import {
   UnitFormService,
 } from '@bgap/admin/refactor';
 
-import { testIdPrefix, unitFixture } from '@bgap/shared/fixtures';
+import {
+  createRkeeperUnit,
+  testIdPrefix,
+  unitFixture,
+} from '@bgap/shared/fixtures';
 import { UpsertResponse } from '@bgap/shared/types';
 import { NbDialogService } from '@nebular/theme';
 import {
@@ -182,7 +186,7 @@ describe('UnitFormService', () => {
       .pipe(
         switchMap(() =>
           service.createUnit$({
-            ...unitFixture.createRkeeperUnit,
+            ...createRkeeperUnit,
             id: unitId,
           }),
         ),
@@ -237,7 +241,7 @@ describe('UnitFormService', () => {
       .pipe(
         switchMap(() =>
           service.createUnit$({
-            ...unitFixture.createRkeeperUnit,
+            ...createRkeeperUnit,
             id: unitId,
           }),
         ),

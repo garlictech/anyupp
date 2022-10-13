@@ -6,7 +6,6 @@ ENVNAME=$1
 APPNAME=${ENVNAME}-anyupp-backend
 EDITORNAME=${EDITORNAME:-vim}
 AWS_PROFILE=${AWS_PROFILE:-default}
-STAGE=dev
 
 AWSCLOUDFORMATION="{\
 \"configLevel\":\"project\",\

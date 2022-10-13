@@ -5,13 +5,13 @@ import {
 } from '@bgap/rkeeper-api';
 import { RequiredId } from '@bgap/shared/types';
 import {
-  unitFixture,
   rkeeperEndpoint,
   freiRestaurantId,
   freiRkeeperUsername,
   freiRkeeperPassword,
   createProductFixture,
-  freiRkeeperWaiterProductId,
+  freiUnitId,
+  createRkeeperUnit,
 } from '@bgap/shared/fixtures';
 import {
   CreateOrderInput,
@@ -21,9 +21,7 @@ import {
   OrderStatus,
   PaymentMethod,
   PaymentType,
-  RKeeper,
   ServingMode,
-  Unit,
 } from '@bgap/domain';
 
 const testIdPrefix = `rkeeper-cf0d1110-a2ce-45cf-aa69-6782bbc44cad`;
@@ -53,7 +51,7 @@ const productFixture = createProductFixture(
 );
 
 export const rkeeperUnit: RequiredId<CreateUnitInput> = {
-  ...unitFixture.createRkeeperUnit,
+  ...createRkeeperUnit,
   id: unitId,
   externalId: 'EXTERNAL-RESTAURANT-ID',
 };
@@ -123,26 +121,9 @@ export const rkeeperOrder = {
   ],
 };
 
-export const freiUnit = {
-  ...rkeeperUnit,
-  id: 'test-freiunit-id',
-  externalId: freiRestaurantId,
-  canCallWaiter: true,
-  pos: {
-    ...rkeeperUnit.pos,
-    rkeeper: {
-      ...(rkeeperUnit?.pos?.rkeeper || {}),
-      rkeeperUsername: freiRkeeperUsername,
-      rkeeperPassword: freiRkeeperPassword,
-      endpointUri: rkeeperEndpoint,
-      waiterOrderId: freiRkeeperWaiterProductId,
-    } as RKeeper,
-  },
-} as Unit;
-
 export const orderInput: CreateOrderInput = {
   userId: 'USER_ID',
-  unitId: freiUnit.id,
+  unitId: freiUnitId,
   items: [
     {
       quantity: 5,
