@@ -39,6 +39,20 @@
         </div>
       </div>
 
+      <div class="row">
+        <button
+          nbButton
+          type="button"
+          shape="round"
+          size="tiny"
+          class="float-right"
+          (click)="deleteVariant(i)"
+        >
+          <nb-icon icon="delete" pack="material-icons"></nb-icon>
+          {{ 'common.deleteVariant' | translate }}
+        </button>
+      </div>
+
       <div class="clearfix"></div>
 
       <div class="row">

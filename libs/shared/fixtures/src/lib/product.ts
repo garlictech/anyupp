@@ -1,6 +1,7 @@
 import {
   Allergen,
   CreateUnitProductInput,
+  CreateVariantInput,
   ProductType,
   ServingMode,
 } from '@bgap/domain';
@@ -38,26 +39,25 @@ export const createProductFixture = (
     Allergen.fish,
     Allergen.sesame,
   ],
+  configSets: [],
   description: {
     de: 'laktató szendvics',
     en: 'laktató szendvics',
     hu: 'laktató szendvics',
   },
-  variants: [
-    {
-      id: uuid(),
-      isAvailable: true,
-      price: 150,
-      position: 1,
-      pack: {
-        size: 1,
-        unit: 'db',
-      },
-      variantName: {
-        en: 'piece',
-        hu: 'darab',
-      },
-    },
-  ],
-  configSets: [],
+});
+
+export const createVariantFixture = (): CreateVariantInput => ({
+  id: uuid(),
+  isAvailable: true,
+  price: 150,
+  position: 1,
+  pack: {
+    size: 1,
+    unit: 'db',
+  },
+  variantName: {
+    en: 'piece',
+    hu: 'darab',
+  },
 });

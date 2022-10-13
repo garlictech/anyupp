@@ -1,21 +1,16 @@
 import { CrudSdk } from '../sdk';
-import { CreateUnitProductInput } from '@bgap/domain';
-import { RequiredId } from '@bgap/shared/types';
+import { UnitProduct } from '@bgap/domain';
 import { forkJoin, of } from 'rxjs';
 import { switchMap, delay, catchError } from 'rxjs/operators';
 
 export const deleteUnitProductWithVariants = (
-  product: {
-    id: RequiredId<CreateUnitProductInput>['id'];
-    variants?: RequiredId<CreateUnitProductInput>['variants'];
-  },
+  product: UnitProduct,
   crudSdk: CrudSdk,
 ) =>
-  crudSdk.UpdateUnitProduct({ input: { id: product.id, variants: [] } }).pipe(
-    switchMap(() => crudSdk.DeleteUnitProduct({ input: { id: product.id } })),
+  crudSdk.DeleteUnitProduct({ input: { id: product.id } }).pipe(
     switchMap(() =>
       forkJoin([
-        ...(product.variants?.map(variant => {
+        ...(product.variants?.items?.map(variant => {
           const obs = variant?.id
             ? crudSdk.DeleteVariant({ input: { id: variant.id } })
             : of({});

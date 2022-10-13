@@ -18,7 +18,7 @@ export class FormsService {
 
   public createProductVariantFormGroup = (): FormGroup => {
     const groupConfig = {
-      id: [uuidV1()],
+      id: '',
       variantName: this._formBuilder.group(
         {
           hu: [''],

@@ -9,20 +9,22 @@ const useCases = [
     sdk: {
       GetUnitProduct: jest.fn().mockReturnValue(
         of({
-          variants: [
-            {
-              id: 'VARIANTID',
-              netPackagingFee: 1,
-            },
-            {
-              id: 'OTHER_VARIANTID',
-              netPackagingFee: 2,
-            },
-            {
-              id: 'UNUSED_VARIANTID',
-              netPackagingFee: 3,
-            },
-          ],
+          variants: {
+            items: [
+              {
+                id: 'VARIANTID',
+                netPackagingFee: 1,
+              },
+              {
+                id: 'OTHER_VARIANTID',
+                netPackagingFee: 2,
+              },
+              {
+                id: 'UNUSED_VARIANTID',
+                netPackagingFee: 3,
+              },
+            ],
+          },
           configSets: [
             {
               productSetId: 'PRODUCTSETID1',
@@ -53,16 +55,18 @@ const useCases = [
     sdk: {
       GetUnitProduct: jest.fn().mockReturnValue(
         of({
-          variants: [
-            {
-              id: 'OTHER_VARIANTID',
-              netPackagingFee: 2,
-            },
-            {
-              id: 'UNUSED_VARIANTID',
-              netPackagingFee: 3,
-            },
-          ],
+          variants: {
+            items: [
+              {
+                id: 'OTHER_VARIANTID',
+                netPackagingFee: 2,
+              },
+              {
+                id: 'UNUSED_VARIANTID',
+                netPackagingFee: 3,
+              },
+            ],
+          },
           configSets: [
             {
               productSetId: 'PRODUCTSETID1',
@@ -93,14 +97,16 @@ const useCases = [
     sdk: {
       GetUnitProduct: jest.fn().mockReturnValue(
         of({
-          variants: [
-            {
-              id: 'VARIANTID',
-            },
-            {
-              id: 'OTHER_VARIANTID',
-            },
-          ],
+          variants: {
+            items: [
+              {
+                id: 'VARIANTID',
+              },
+              {
+                id: 'OTHER_VARIANTID',
+              },
+            ],
+          },
           configSets: [
             {
               productSetId: 'PRODUCTSETID1',
@@ -121,14 +127,16 @@ const useCases = [
     sdk: {
       GetUnitProduct: jest.fn().mockReturnValue(
         of({
-          variants: [
-            {
-              id: 'VARIANTID',
-            },
-            {
-              id: 'OTHER_VARIANTID',
-            },
-          ],
+          variants: {
+            items: [
+              {
+                id: 'VARIANTID',
+              },
+              {
+                id: 'OTHER_VARIANTID',
+              },
+            ],
+          },
           configSets: [
             {
               productSetId: 'PRODUCTSETID_OTHER',
@@ -149,14 +157,16 @@ const useCases = [
     sdk: {
       GetUnitProduct: jest.fn().mockReturnValue(
         of({
-          variants: [
-            {
-              id: 'VARIANTID',
-            },
-            {
-              id: 'OTHER_VARIANTID',
-            },
-          ],
+          variants: {
+            items: [
+              {
+                id: 'VARIANTID',
+              },
+              {
+                id: 'OTHER_VARIANTID',
+              },
+            ],
+          },
           configSets: [
             {
               productSetId: 'PRODUCTSETID1',
@@ -177,14 +187,16 @@ const useCases = [
     sdk: {
       GetUnitProduct: jest.fn().mockReturnValue(
         of({
-          variants: [
-            {
-              id: 'VARIANTID',
-            },
-            {
-              id: 'OTHER_VARIANTID',
-            },
-          ],
+          variants: {
+            items: [
+              {
+                id: 'VARIANTID',
+              },
+              {
+                id: 'OTHER_VARIANTID',
+              },
+            ],
+          },
         }),
       ),
     },

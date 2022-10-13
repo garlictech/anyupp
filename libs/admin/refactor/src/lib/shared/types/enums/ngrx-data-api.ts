@@ -7,4 +7,5 @@ export enum ENTITY_NAME {
   PRODUCT_COMPONENT_SET = 'ProductComponentSet',
   ORDER = 'Order',
   ORDER_HISTORY = 'OrderHistory',
+  VARIANT = 'Variant',
 }

@@ -43,7 +43,6 @@ import {
   catchError,
   mapTo,
   shareReplay,
-  delay,
 } from 'rxjs/operators';
 import {
   from,
@@ -314,43 +313,49 @@ export const createRkeeperProduct =
     dish: Dish,
     configSets: ProductConfigSet[] | null,
   ) =>
-    sdk.CreateUnitProduct({
-      input: {
-        unitId: businessEntity.unitId,
-        name: {
-          hu: dish.name,
-        },
-        productType: ProductType.dish,
-        productCategoryId: defaultProductCategoryId(businessEntity),
-        isVisible: true,
-        position: -1,
-        supportedServingModes: [ServingMode.inplace],
-        variants: [
-          {
-            variantName: {
-              hu: dish.name,
-            },
-            isAvailable: dish.active,
-            price: dish.price,
-            position: -1,
-            availabilities: [
-              {
-                type: 'A',
-                price: dish.price,
-              },
-            ],
-            pack: {
-              size: 1,
-              unit: 'zsák',
-            },
-            externalId: externalProductIdMaker(dish.id.toString()),
+    sdk
+      .CreateUnitProduct({
+        input: {
+          unitId: businessEntity.unitId,
+          name: {
+            hu: dish.name,
           },
-        ],
-        dirty: true,
-        configSets,
-        tax: -1,
-      },
-    });
+          productType: ProductType.dish,
+          productCategoryId: defaultProductCategoryId(businessEntity),
+          isVisible: true,
+          position: -1,
+          supportedServingModes: [ServingMode.inplace],
+          dirty: true,
+          configSets,
+          tax: -1,
+        },
+      })
+      .pipe(
+        switchMap(product =>
+          sdk.CreateVariant({
+            input: {
+              unitProductVariantsId: product?.id ?? 'wtf',
+              variantName: {
+                hu: dish.name,
+              },
+              isAvailable: dish.active,
+              price: dish.price,
+              position: -1,
+              availabilities: [
+                {
+                  type: 'A',
+                  price: dish.price,
+                },
+              ],
+              pack: {
+                size: 1,
+                unit: 'zsák',
+              },
+              externalId: externalProductIdMaker(dish.id.toString()),
+            },
+          }),
+        ),
+      );
 
 export const updateRkeeperProduct =
   (sdk: CrudSdk) =>
@@ -360,71 +365,41 @@ export const updateRkeeperProduct =
     configSets: ProductConfigSet[] | null,
   ) =>
     forkJoin([
-      sdk
-        .GetUnitProduct({
+      sdk.UpdateUnitProduct({
+        input: {
           id: foundUnitProduct.id,
-        })
-        .pipe(
-          tap(x => console.log('***51', x)),
-          switchMap(() =>
-            sdk.UpdateUnitProduct({
-              input: {
-                id: foundUnitProduct.id,
-                configSets,
-                variants: foundUnitProduct.variants,
-              },
-            }),
-          ),
-          delay(3000),
-          switchMap(() =>
-            sdk.GetUnitProduct({
-              id: foundUnitProduct.id,
-            }),
-          ),
-
-          tap(x => console.log('***52', x)),
-        ),
+          configSets,
+        },
+      }),
       pipe(
-        foundUnitProduct.variants || [],
+        foundUnitProduct.variants?.items || [],
         R.reject(variant => R.isNil(variant)),
         R.find(variant => variant!.externalId === dish.id.toString()),
-        of,
-        /* variant =>
+        variant =>
           variant?.id
-            ? sdk
-                .UpdateVariant({
-                  input: {
-                    id: variant!.id,
-                    variantName: {
-                      hu: dish.name,
-                    },
-                    isAvailable: dish.active,
-                    price: dish.price,
-                    availabilities: [
-                      {
-                        type: 'A',
-                        price: dish.price,
-                      },
-                    ],
+            ? sdk.UpdateVariant({
+                input: {
+                  id: variant!.id,
+                  variantName: {
+                    hu: dish.name,
                   },
-                })
-                .pipe(
-                  delay(3000),
-                  switchMap(() =>
-                    sdk.GetUnitProduct({
-                      id: foundUnitProduct.id,
-                    }),
-                  ),
-
-                  tap(x => console.log('***6', x)),
-                )
+                  isAvailable: dish.active,
+                  price: dish.price,
+                  availabilities: [
+                    {
+                      type: 'A',
+                      price: dish.price,
+                    },
+                  ],
+                },
+              })
             : of(false).pipe(
                 tap(() =>
                   console.warn(
                     `The variant with external id ${dish.id} cannot be found. It should exist!`,
                   ),
                 ),
-              ),*/
+              ),
       ),
     ]);
 

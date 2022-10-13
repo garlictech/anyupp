@@ -7,7 +7,12 @@ import {
 import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
-import { Availability, ProductVariant, ServiceFeePolicy } from '@bgap/domain';
+import { Availability, Variant, ServiceFeePolicy } from '@bgap/domain';
+import { VariantCollectionService } from '../../../../store/products/services/variant-collection.service';
+import { of } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { CrudSdkService } from '../../../data-access/sdk';
+import * as R from 'ramda';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,6 +29,7 @@ export class FormProductVariantsComponent {
   constructor(
     private _formsService: FormsService,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _crudSdk: CrudSdkService,
   ) {
     this.allowAddVariant = true;
   }
@@ -36,6 +42,18 @@ export class FormProductVariantsComponent {
     this._changeDetectorRef.detectChanges();
   }
 
+  public deleteVariant(i: number) {
+    const variant = (<FormArray>this.variantFormArray).at(i).value;
+
+    console.log('****FAVF', variant);
+    if (!R.isEmpty(variant.id)) {
+      this._crudSdk.sdk
+        .DeleteVariant({ input: { id: variant.id } })
+        .subscribe();
+    }
+    this.variantFormArray?.removeAt(i);
+  }
+
   public move(idx: number, change: number) {
     const arr = this.variantFormArray?.value;
     const movingItem = arr[idx];
@@ -46,7 +64,7 @@ export class FormProductVariantsComponent {
     ) {
       arr.splice(idx, 1);
       arr.splice(idx + change, 0, movingItem);
-      arr.forEach((variant: ProductVariant, pos: number) => {
+      arr.forEach((variant: Variant, pos: number) => {
         variant.position = pos + 1;
       });
 

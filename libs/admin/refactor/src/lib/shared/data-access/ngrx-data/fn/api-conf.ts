@@ -62,6 +62,14 @@ export const getApiConf = <T>(
       add: crudSdk.sdk.CreateOrder,
       update: crudSdk.sdk.UpdateOrder,
     },
+    [ENTITY_NAME.VARIANT]: {
+      // list: crudSdk.sdk.ListVariants,
+      listIds: crudSdk.sdk.SearchVariants,
+      get: crudSdk.sdk.GetVariant,
+      add: crudSdk.sdk.CreateVariant,
+      update: crudSdk.sdk.UpdateVariant,
+      delete: crudSdk.sdk.DeleteVariant,
+    },
   };
 
   return <ApiConf<T>>confMap[entityName];

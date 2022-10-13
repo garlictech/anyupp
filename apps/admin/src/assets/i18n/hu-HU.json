@@ -1,6 +1,7 @@
 {
   "appTitle": "AnyUpp",
   "common": {
+    "deleteVariant": "Variáns törlése",
     "name": "Név",
     "nameEN": "Név (EN)",
     "nameDE": "Név (DE)",

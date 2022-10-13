@@ -27,7 +27,6 @@ const { createConnector } = require('aws-elasticsearch-js');
 import { Client } from '@elastic/elasticsearch';
 import { CrudApiConfig } from '@bgap/crud-gql/api';
 import { searchByRadiusResolver } from '@bgap/backend/search';
-import { productVariantsResolver } from '@bgap/backend/products';
 import {
   waiterCallerResolver,
   WaiterCallerResolverDeps,
@@ -142,9 +141,6 @@ export const anyuppResolverHandler: Handler<AnyuppRequest, unknown> = (
       listStripeCards: stripeRequestHandlers.listStripeCards,
       getUnitsNearLocation: unitRequestHandlers.getUnitsNearLocation,
       searchByRadius: searchByRadiusResolver(searchDeps),
-    },
-    UnitProduct: {
-      variants: productVariantsResolver({ crudSdk }),
     },
   };
 

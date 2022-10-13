@@ -19,7 +19,7 @@ const getNetPackagingFeeOfOrderItem =
   (item: OrderItemInput): Observable<number> =>
     pipe(
       getUnitProduct(sdk)(item.productId),
-      map(genProd => genProd?.variants || []),
+      map(genProd => genProd?.variants?.items || []),
       map(R.find(variant => variant?.id === item.variantId)),
       throwIfEmptyValue(`Variant not found: ${item.variantId}`),
       map(variant => variant.netPackagingFee || 0),

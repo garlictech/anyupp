@@ -1,6 +1,7 @@
 {
   "appTitle": "AnyUpp",
   "common": {
+    "deleteVariant": "Delete variant",
     "name": "Name",
     "nameEN": "Name (EN)",
     "nameDE": "Name (DE)",

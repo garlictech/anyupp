@@ -1,4 +1,5 @@
 import * as fp from 'lodash/fp';
+import * as R from 'ramda';
 
 import {
   ChangeDetectionStrategy,
@@ -45,7 +46,15 @@ export class ProductListItemComponent {
   public editProduct() {
     const dialog = this._nbDialogService.open(ProductFormComponent);
     dialog.componentRef.instance.currency = this.currency;
-    dialog.componentRef.instance.product = fp.cloneDeep(this.product);
+    dialog.componentRef.instance.product = fp.cloneDeep({
+      ...this.product,
+      variants: {
+        items: R.sortBy(
+          variant => (variant as any).position,
+          (this.product as any).variants.items,
+        ),
+      },
+    });
   }
 
   public async duplicateProduct(id: string) {

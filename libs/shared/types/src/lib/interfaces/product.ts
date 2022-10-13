@@ -1,7 +1,7 @@
 import {
   ProductComponent,
   ProductComponentSet,
-  ProductVariant,
+  Variant,
   UnitProduct,
 } from '@bgap/domain';
 
@@ -15,8 +15,8 @@ export interface ProductOrderChangeEvent {
   productId: string;
 }
 
-export type ProductVariantWithPrice = Omit<ProductVariant, 'price'> &
-  Required<Pick<ProductVariant, 'price'>>;
+export type ProductVariantWithPrice = Omit<Variant, 'price'> &
+  Required<Pick<Variant, 'price'>>;
 
 export type MergedProductWithPrices = Omit<UnitProduct, 'variants'> & {
   variants: ProductVariantWithPrice[];

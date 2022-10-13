@@ -8,6 +8,7 @@ import {
   ProductComponentSetType,
   ProductType,
   ServingMode,
+  Variant,
 } from '@bgap/domain';
 import { seededIdPrefix, testIdPrefix } from './common';
 import { getOrderStatusLog } from './order-utils';
@@ -15,7 +16,10 @@ import { unitFixture } from './unit';
 
 const order_seeded_01_id = `${seededIdPrefix}order_1_id`;
 
-const orderItemInputBase = (productFixture: CreateUnitProductInput) => ({
+const orderItemInputBase = (
+  productFixture: CreateUnitProductInput,
+  variants: Variant[],
+) => ({
   quantity: 5,
   productId: productFixture.id || '',
   statusLog: [
@@ -42,8 +46,8 @@ const orderItemInputBase = (productFixture: CreateUnitProductInput) => ({
     priceSum: 1500,
     pricePerUnit: 300,
   },
-  variantId: productFixture.variants?.[0]?.id || '',
-  variantName: productFixture.variants?.[0]?.variantName || {
+  variantId: variants[0]?.id || '',
+  variantName: variants[0]?.variantName || {
     en: 'unused',
     hu: 'unused',
     de: 'unused',

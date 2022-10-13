@@ -1,10 +1,10 @@
 import * as R from 'ramda';
-import { pipe } from 'fp-ts/lib/function';
 import { partition } from 'lodash/fp';
 import {
   combineLatest,
   defer,
   EMPTY,
+  forkJoin,
   iif,
   Observable,
   of,
@@ -21,13 +21,11 @@ import {
   tap,
   catchError,
 } from 'rxjs/operators';
-
 import { Injectable } from '@angular/core';
 import { ProductOrderChangeEvent } from '@bgap/shared/types';
 import { customNumberCompare, filterNullish } from '@bgap/shared/utils';
 import { NbDialogService } from '@nebular/theme';
 import { Store } from '@ngrx/store';
-
 import { ConfirmDialogComponent } from '../../../shared/components';
 import { PAGINATION_LIMIT } from '../../../shared/data-access/ngrx-data';
 import { CrudSdkService } from '../../../shared/data-access/sdk';
@@ -39,6 +37,8 @@ import {
 } from '../../../store/products';
 import { foundIn } from '../fn';
 import { ToasterService } from '../../../shared/utils';
+import { Variant } from '@bgap/domain';
+import { pipe } from 'fp-ts/lib/function';
 
 interface CGU<T> {
   unit?: T;
@@ -218,27 +218,27 @@ export class ProductListService {
               })
               .pipe(
                 switchMap(newProduct =>
-                  newProduct
-                    ? this._crudSdk.sdk.UpdateUnitProduct({
-                        input: {
-                          id: newProduct.id,
-                          variants: pipe(
-                            product.variants ?? [],
-                            R.filter(variant => !!variant),
-                            R.map(variant => ({
-                              ...variant,
-                              id: undefined,
-                              unitProductVariantsId: newProduct.id,
-                              isAvailable: variant?.isAvailable || false,
-                              position: variant?.position || 0,
-                              variantName: variant?.variantName || {
-                                en: 'VARIANT NAME',
+                  !!newProduct
+                    ? forkJoin(
+                        pipe(
+                          product.variants?.items ?? [],
+                          R.reject(R.isNil),
+                          R.map((variant: Variant) =>
+                            this._crudSdk.sdk.CreateVariant({
+                              input: {
+                                ...variant,
+                                unitProductVariantsId: newProduct.id,
+                                isAvailable: variant?.isAvailable || false,
+                                position: variant?.position || 0,
+                                variantName: variant?.variantName || {
+                                  en: 'VARIANT NAME',
+                                },
+                                price: variant?.price || 0,
                               },
-                              price: variant?.price || 0,
-                            })),
+                            }),
                           ),
-                        },
-                      })
+                        ),
+                      )
                     : throwError('Cannot duplicte product'),
                 ),
               )

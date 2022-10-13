@@ -11,8 +11,7 @@ import {
   ProductConfigComponentInput,
   ProductConfigSet,
   ProductConfigSetInput,
-  ProductVariant,
-  ProductVariantInput,
+  Variant,
   UnitProduct,
 } from '@bgap/domain';
 import { DateTime } from 'luxon';
@@ -36,7 +35,7 @@ export const calculateActualPricesAndCheckActivity = ({
   }
 
   const variantsWithActualPrices = calculateActualPriceForEachVariant({
-    variants: product.variants,
+    variants: product.variants.items,
     atTimeISO,
     inTimeZone,
   });
@@ -58,10 +57,10 @@ export const isProductVisibleAndHasAnyAvailableVariant = (
     throw new Error('HANDLE ME: product.variants cannot be nullish');
   }
 
-  return product.isVisible && !!isAnyVariantAvailable(product.variants);
+  return product.isVisible && !!isAnyVariantAvailable(product.variants.items);
 };
 
-const isAnyVariantAvailable = (variants: Maybe<ProductVariant>[]) => {
+const isAnyVariantAvailable = (variants: Maybe<Variant>[]) => {
   if (!variants) {
     return false;
   }
@@ -78,7 +77,7 @@ const calculateActualPriceForEachVariant = ({
   atTimeISO,
   inTimeZone,
 }: {
-  variants: Maybe<ProductVariant>[];
+  variants: Maybe<Variant>[];
   atTimeISO: string;
   inTimeZone: string;
 }): ProductVariantWithPrice[] => {
@@ -97,25 +96,6 @@ const calculateActualPriceForEachVariant = ({
 
     return [...activeVariants, { ...variant, price: variantPrice }];
   }, <ProductVariantWithPrice[]>[]);
-};
-
-const toProductVariantInputType = (
-  variant: ProductVariantWithPrice,
-): ProductVariantInput => {
-  if (!variant?.pack) {
-    throw new Error('HANDLE ME: variant.pack expected to be an object');
-  }
-
-  return {
-    id: variant.id,
-    variantName: variant.variantName,
-    position: variant.position,
-    pack: variant.pack,
-    price: variant.price,
-    netPackagingFee: variant.netPackagingFee,
-    soldOut: variant.soldOut,
-    isAvailable: variant.isAvailable,
-  };
 };
 
 export const toCreateProductInputType = ({
@@ -162,7 +142,6 @@ export const toCreateProductInputType = ({
         productComponentMap,
       }),
     ),
-    variants: product.variants.map(toProductVariantInputType),
     supportedServingModes:
       product.supportedServingModes && product.supportedServingModes.length > 0
         ? product.supportedServingModes

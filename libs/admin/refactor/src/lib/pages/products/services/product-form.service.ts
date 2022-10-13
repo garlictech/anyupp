@@ -1,7 +1,8 @@
+import * as R from 'ramda';
 import { pipe } from 'fp-ts/lib/function';
 import * as fp from 'lodash/fp';
-import { iif, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { forkJoin, iif, Observable, of } from 'rxjs';
+import { map, mapTo, switchMap, tap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
@@ -10,12 +11,13 @@ import {
   Maybe,
   ProductCategory,
   ProductConfigSet,
-  ProductVariant,
+  Variant,
   UpdateUnitProductInput,
+  CreateVariantInput,
+  UpdateVariantInput,
 } from '@bgap/domain';
 import { KeyValue, UpsertResponse } from '@bgap/shared/types';
 import { cleanObject, customNumberCompare } from '@bgap/shared/utils';
-import { Store } from '@ngrx/store';
 
 import { FormsService } from '../../../shared/forms';
 import {
@@ -23,17 +25,17 @@ import {
   notEmptyArray,
   optionalValueValidator,
 } from '../../../shared/utils';
-import { catchGqlError } from '../../../store/app-core';
 import { ProductCategoryCollectionService } from '../../../store/product-categories';
 import { UnitProductCollectionService } from '../../../store/products';
+import { VariantCollectionService } from '../../../store/products/services/variant-collection.service';
 
 @Injectable({ providedIn: 'root' })
 export class ProductFormService {
   constructor(
     private _formBuilder: FormBuilder,
     private _formsService: FormsService,
-    private _store: Store,
     private _unitProductCollectionService: UnitProductCollectionService,
+    private _variantCollectionService: VariantCollectionService,
     private _productCategoryCollectionService: ProductCategoryCollectionService,
   ) {}
 
@@ -94,31 +96,15 @@ export class ProductFormService {
     return dialogForm;
   }
 
-  public patchProductVariants(
-    productVariants: Maybe<ProductVariant>[],
-    variantsArray: FormArray,
-  ) {
-    (productVariants || []).forEach(variant => {
-      const variantGroup = this._formsService.createProductVariantFormGroup();
-
-      if (!variant) {
-        throw new Error('HANDLE ME: variant cannot be NULL');
-      }
-      variantGroup.patchValue(cleanObject(variant));
-
-      variantsArray.push(variantGroup);
-    });
-  }
-
-  public patchExtendedProductVariants(
-    productVariants: Maybe<ProductVariant>[],
+  public patchVariants(
+    productVariants: Maybe<Variant>[],
     variantsArray: FormArray,
   ) {
     pipe(
       [...(productVariants || [])],
-      fp.filter<ProductVariant>(x => !!x),
+      fp.filter<Variant>(x => !!x),
       x => x.sort(customNumberCompare('position')),
-      fp.forEach<ProductVariant>(variant => {
+      fp.forEach<Variant>(variant => {
         const variantGroup = this._formsService.createProductVariantFormGroup();
         variantGroup.patchValue(cleanObject(variant));
 
@@ -170,40 +156,81 @@ export class ProductFormService {
     });
   }
 
-  public saveUnitForm$(
-    formValue: CreateUnitProductInput | UpdateUnitProductInput,
-    id?: string,
-  ) {
+  public saveUnitForm$(formValue: any, id?: string) {
     return iif(
       () => !id,
       this.createUnitProduct$({
-        ...(<CreateUnitProductInput>formValue),
+        ...R.omit(['variants'], <CreateUnitProductInput>formValue),
         position: -1,
       }),
       this.updateUnitProduct$({
-        ...formValue,
+        ...R.omit(['variants'], formValue),
         // see 4 lines above
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         id: id!,
       }),
+    ).pipe(
+      switchMap(product =>
+        (R.isEmpty(formValue.variants)
+          ? of([])
+          : forkJoin(
+              R.map(
+                variant =>
+                  variant?.id !== ''
+                    ? this.updateVariant$(variant)
+                    : this.createVariant$(variant, (product.data as any).id),
+                formValue.variants,
+              ),
+            )
+        ).pipe(
+          tap(() =>
+            this._unitProductCollectionService.removeOneFromCache(
+              product.data as any,
+            ),
+          ),
+          switchMap(() =>
+            this._unitProductCollectionService.getByKey$(
+              (product.data as any).id,
+            ),
+          ),
+          mapTo(product),
+        ),
+      ),
     );
   }
 
+  public createVariant$(
+    input: CreateVariantInput,
+    unitProductVariantsId: string,
+  ): Observable<UpsertResponse<unknown>> {
+    return this._variantCollectionService
+      .add$({
+        ...R.omit(['id'], input),
+        unitProductVariantsId,
+      })
+      .pipe(map(data => ({ data, type: 'insert' })));
+  }
+
+  public updateVariant$(
+    input: UpdateVariantInput,
+  ): Observable<UpsertResponse<unknown>> {
+    return this._variantCollectionService
+      .update$(input)
+      .pipe(map(data => ({ data, type: 'update' })));
+  }
   public createUnitProduct$(
     input: CreateUnitProductInput,
   ): Observable<UpsertResponse<unknown>> {
-    return this._unitProductCollectionService.add$(input).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'insert' })),
-    );
+    return this._unitProductCollectionService
+      .add$(input)
+      .pipe(map(data => ({ data, type: 'insert' })));
   }
 
   public updateUnitProduct$(
     input: UpdateUnitProductInput,
   ): Observable<UpsertResponse<unknown>> {
-    return this._unitProductCollectionService.update$(input).pipe(
-      catchGqlError(this._store),
-      map(data => ({ data, type: 'update' })),
-    );
+    return this._unitProductCollectionService
+      .update$(input)
+      .pipe(map(data => ({ data, type: 'update' })));
   }
 }

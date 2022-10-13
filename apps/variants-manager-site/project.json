@@ -21,7 +21,7 @@
       "options": {
         "parallel": false,
         "commands": [
-          "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build web --release",
+          "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x-variants:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter build web --release",
           "mkdir -p ../../dist/apps/variants-manager",
           "cp -r build/web/* ../../dist/apps/variants-manager"
         ],
@@ -60,7 +60,7 @@
     "unit-test-ci": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test",
+        "command": "docker run --platform linux/amd64 --rm -v ${PWD}:/build -v /tmp/x-variants:/root/.pub-cache --workdir /build ${AWS_ACCOUNT}.dkr.ecr.eu-west-1.amazonaws.com/anyupp-flutter flutter test",
         "cwd": "apps/variants-manager-site"
       }
     },

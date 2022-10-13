@@ -94,8 +94,8 @@ export class ProductFormComponent
         omit(['variants', 'configSets'], cleanObject(this.product)),
       );
 
-      this._productFormService.patchProductVariants(
-        this.product.variants || [],
+      this._productFormService.patchVariants(
+        this.product.variants?.items || [],
         this.dialogForm?.controls['variants'] as FormArray,
       );
 

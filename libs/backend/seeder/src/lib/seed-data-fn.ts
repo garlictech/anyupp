@@ -17,6 +17,7 @@ import {
   CreateProductComponentSetInput,
   CreateUnitProductInput,
   CreateUserInput,
+  CreateVariantInput,
   ProductType,
   ServingMode,
 } from '@bgap/domain';
@@ -141,23 +142,23 @@ export const seedDebrecenUnit = (deps: SeederDependencies) => {
       en: 'Ezt idd',
       hu: 'Ezt idd',
     },
-    variants: [
-      {
-        id: 'civis_product_beer_variant',
-        isAvailable: true,
-        price: 150,
-        position: 1,
-        pack: {
-          size: 1,
-          unit: 'adag',
-        },
-        variantName: {
-          en: 'piece',
-          hu: 'adag',
-        },
-      },
-    ],
     configSets: [],
+  };
+
+  const variant = {
+    id: 'civis_product_beer_variant',
+    isAvailable: true,
+    price: 150,
+    position: 1,
+    pack: {
+      size: 1,
+      unit: 'adag',
+    },
+    variantName: {
+      en: 'piece',
+      hu: 'adag',
+    },
+    unitProductVariantsId: product.id,
   };
 
   return deleteCreate(
@@ -189,6 +190,20 @@ export const seedDebrecenUnit = (deps: SeederDependencies) => {
         () =>
           deps.crudSdk.CreateUnitProduct({
             input: product,
+          }),
+      ),
+    ),
+    switchMap(() =>
+      deleteCreate(
+        () =>
+          deps.crudSdk.DeleteVariant({
+            input: {
+              id: variant.id,
+            },
+          }),
+        () =>
+          deps.crudSdk.CreateVariant({
+            input: variant,
           }),
       ),
     ),
@@ -273,28 +288,35 @@ export const createTestUnitProduct =
         en: 'laktató szendvics',
         hu: 'laktató szendvics',
       },
-      variants: [
-        {
-          id: 'kesdobalo_product_hambi_variant',
-          isAvailable: true,
-          price: 150,
-          position: 1,
-          pack: {
-            size: 1,
-            unit: 'db',
-          },
-          variantName: {
-            en: 'piece',
-            hu: 'darab',
-          },
-        },
-      ],
       configSets: [],
     };
-    return deleteCreate(
-      () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id ?? '' } }),
-      () => deps.crudSdk.CreateUnitProduct({ input }),
-    );
+
+    const variant: DeletableInput<CreateVariantInput> = {
+      id: 'kesdobalo_product_hambi_variant',
+      unitProductVariantsId: input.id,
+      isAvailable: true,
+      price: 150,
+      position: 1,
+      pack: {
+        size: 1,
+        unit: 'db',
+      },
+      variantName: {
+        en: 'piece',
+        hu: 'darab',
+      },
+    };
+
+    return forkJoin([
+      deleteCreate(
+        () => deps.crudSdk.DeleteUnitProduct({ input: { id: input.id ?? '' } }),
+        () => deps.crudSdk.CreateUnitProduct({ input }),
+      ),
+      deleteCreate(
+        () => deps.crudSdk.DeleteVariant({ input: { id: variant.id ?? '' } }),
+        () => deps.crudSdk.CreateVariant({ input: variant }),
+      ),
+    ]);
   };
 
 export const createComponentSets = (deps: SeederDependencies) => {

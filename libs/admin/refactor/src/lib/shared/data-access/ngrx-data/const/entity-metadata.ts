@@ -6,6 +6,7 @@ import {
   ProductComponentSet,
   Unit,
   UnitProduct,
+  Variant,
 } from '@bgap/domain';
 import { EntityMetadataMap } from '@ngrx/data';
 
@@ -30,6 +31,20 @@ const entityMetadata: EntityMetadataMap = {
   [ENTITY_NAME.UNIT_PRODUCT]: {
     filterFn: (entities: UnitProduct[], { unitId }: Partial<UnitProduct>) =>
       entities.filter(simpleFilter<UnitProduct>('unitId', false, unitId)),
+  },
+  [ENTITY_NAME.VARIANT]: {
+    filterFn: (
+      entities: Variant[],
+      { unitProductVariantsId }: Partial<Variant>,
+    ) =>
+      entities.filter(
+        simpleFilter<Variant>(
+          'unitProductVariantsId',
+          false,
+
+          unitProductVariantsId,
+        ),
+      ),
   },
   [ENTITY_NAME.PRODUCT_CATEGORY]: {
     filterFn: (

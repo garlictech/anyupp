@@ -10,7 +10,7 @@ import {
   Allergen,
   ProductComponentSetType,
   ProductType,
-  ProductVariant,
+  Variant,
   ServingMode,
   UnitProduct,
 } from '@bgap/domain';
@@ -37,28 +37,32 @@ describe('calculatePricesAndCheckActivity method', () => {
     isVisible: true,
     allergens: [Allergen.peanut, Allergen.egg],
     supportedServingModes: [ServingMode.inplace, ServingMode.takeaway],
-    variants: [
-      {
-        id: `VARIANT_ID_01`,
-        variantName: { en: `VARIANT_NAME_01` },
-        isAvailable: true,
-        pack: { size: 1, unit: 'UNIT' },
-        price: 1,
-        availabilities: [
-          {
-            dayFrom: '',
-            dayTo: '',
-            price: 1 * 1.5,
-            timeFrom: '',
-            timeTo: '',
-            type: EVariantAvailabilityType.ALWAYS,
-          },
-        ],
-        position: 1,
-        soldOut: false,
-        netPackagingFee: 30,
-      },
-    ],
+    variants: {
+      items: [
+        {
+          id: `VARIANT_ID_01`,
+          variantName: { en: `VARIANT_NAME_01` },
+          isAvailable: true,
+          pack: { size: 1, unit: 'UNIT' },
+          price: 1,
+          availabilities: [
+            {
+              dayFrom: '',
+              dayTo: '',
+              price: 1 * 1.5,
+              timeFrom: '',
+              timeTo: '',
+              type: EVariantAvailabilityType.ALWAYS,
+            },
+          ],
+          position: 1,
+          soldOut: false,
+          netPackagingFee: 30,
+          createdAt: 'CREATEDAT',
+          updatedAt: 'UPDATEDAT',
+        },
+      ],
+    },
     configSets: [
       {
         productSetId: 'PRODUCT_SET_01',
@@ -126,12 +130,12 @@ describe('calculatePricesAndCheckActivity method', () => {
   const timezone01 = 'Europe/London';
 
   it('should return a minimal representation of the product in the correct format', () => {
-    if (!baseProduct?.variants?.[0]) {
+    if (!baseProduct?.variants?.items?.[0]) {
       throw new Error('wrong data');
     }
 
-    const notActiveVariant: ProductVariant = {
-      ...baseProduct.variants[0],
+    const notActiveVariant: Variant = {
+      ...baseProduct.variants.items[0],
       availabilities: [
         {
           dayFrom: '2020-07-17',
@@ -143,17 +147,19 @@ describe('calculatePricesAndCheckActivity method', () => {
         },
       ],
     };
-    const anotherActiveVariant: ProductVariant = {
-      ...baseProduct.variants[0],
+    const anotherActiveVariant: Variant = {
+      ...baseProduct.variants.items[0],
       position: 100,
     };
     const product: UnitProduct = {
       ...baseProduct,
-      variants: [
-        baseProduct.variants[0],
-        notActiveVariant,
-        anotherActiveVariant,
-      ],
+      variants: {
+        items: [
+          baseProduct.variants.items[0],
+          notActiveVariant,
+          anotherActiveVariant,
+        ],
+      },
       createdAt: '12',
       updatedAt: '13',
     };
@@ -183,11 +189,11 @@ describe('calculatePricesAndCheckActivity method', () => {
     expect(result.variants[activeVariantIdx]).toHaveProperty('price');
     expect(result.variants[activeVariantIdx]).toHaveProperty(
       'position',
-      product?.variants?.[activeVariantIdx]?.position,
+      product?.variants?.items[activeVariantIdx]?.position,
     );
-    expect(result?.variants?.[activeVariantIdx]).toHaveProperty('pack', {
-      size: product?.variants?.[activeVariantIdx]?.pack?.size,
-      unit: product?.variants?.[activeVariantIdx]?.pack?.unit,
+    expect(result.variants?.[activeVariantIdx]).toHaveProperty('pack', {
+      size: product?.variants?.items[activeVariantIdx]?.pack?.size,
+      unit: product?.variants?.items[activeVariantIdx]?.pack?.unit,
     });
     // It still has availabilities because only the toCreateProductInputType will remove it
     expect(result?.variants?.[activeVariantIdx]).toHaveProperty(
@@ -249,7 +255,7 @@ describe('calculatePricesAndCheckActivity method', () => {
       });
 
       it('should remove the variant in case it is not Available', () => {
-        const variant: ProductVariant = {
+        const variant: Variant = {
           id: 'VAR_ID',
           variantName: { en: 'variantName' },
           pack: { size: 1, unit: 'unit' },
@@ -266,10 +272,14 @@ describe('calculatePricesAndCheckActivity method', () => {
             },
           ],
           position: 999,
+          createdAt: 'CREATEDAT',
+          updatedAt: 'UPDATEDAT',
         };
         const input = {
           ...baseProduct,
-          variants: [variant, { ...variant, position: 2, isAvailable: false }],
+          variants: {
+            items: [variant, { ...variant, position: 2, isAvailable: false }],
+          },
         };
 
         const result = calculateActualPricesAndCheckActivity({
@@ -285,7 +295,7 @@ describe('calculatePricesAndCheckActivity method', () => {
     });
 
     describe('calculate actual variant price for each variants', () => {
-      const variant: ProductVariant = {
+      const variant: Variant = {
         id: 'VAR_ID',
         variantName: { en: 'variantName' },
         price: 14,
@@ -294,6 +304,8 @@ describe('calculatePricesAndCheckActivity method', () => {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         availabilities: [] as any,
         position: 1,
+        createdAt: 'CREATEDAT',
+        updatedAt: 'UPDATEDAT',
       };
       const minimalProductWithSingleActiveVariant: Partial<UnitProduct> = {
         id: 'PROD_ID',
@@ -305,7 +317,7 @@ describe('calculatePricesAndCheckActivity method', () => {
         image: 'image',
         tax: 0,
         position: 2,
-        variants: [{ ...variant }, { ...variant }],
+        variants: { items: [{ ...variant }, { ...variant }] },
         unitId: 'foobar',
         createdAt: '1',
         updatedAt: '2',
@@ -330,11 +342,11 @@ describe('calculatePricesAndCheckActivity method', () => {
           ...minimalProductWithSingleActiveVariant,
         };
 
-        if (!input?.variants?.[0] || !input?.variants?.[1]) {
+        if (!input?.variants?.items[0] || !input?.variants?.items[1]) {
           throw new Error('Wrong data');
         }
 
-        input.variants[0].availabilities = [
+        input.variants.items[0].availabilities = [
           {
             dayFrom: '',
             dayTo: '',
@@ -345,7 +357,7 @@ describe('calculatePricesAndCheckActivity method', () => {
           },
         ];
 
-        input.variants[1].availabilities = [
+        input.variants.items[1].availabilities = [
           {
             dayFrom: '',
             dayTo: '',

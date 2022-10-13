@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import '../../domain/repositories/product.dart';
@@ -23,9 +25,11 @@ class ProductRepositoryAppsync implements ProductRepository {
               hu
             }
             variants {
-              id
-              variantName {
-                hu
+              items {
+                id
+                variantName {
+                  hu
+                }
               }
             }
           }
@@ -34,9 +38,13 @@ class ProductRepositoryAppsync implements ProductRepository {
     ''';
 
     final result = await _amplifyApi.execute(gqlDocument);
-
     final items = result['searchUnitProducts']['items'];
 
-    return items.map<Product>((item) => Product.fromJson(item)).toList();
+    return items
+        .map((item) => jsonDecode(
+            jsonEncode({...item, "variants": item["variants"]["items"]})))
+        .map<Product>((item) {
+      return Product.fromJson(item);
+    }).toList();
   }
 }

@@ -60,6 +60,7 @@ Object {
           "type": "A",
         },
       ],
+      "createdAt": "CREATEDAT",
       "id": "VARIANT_ID_01",
       "isAvailable": true,
       "netPackagingFee": 30,
@@ -70,6 +71,7 @@ Object {
       "position": 1,
       "price": 1.5,
       "soldOut": false,
+      "updatedAt": "UPDATEDAT",
       "variantName": Object {
         "en": "VARIANT_NAME_01",
       },
@@ -85,6 +87,7 @@ Object {
           "type": "A",
         },
       ],
+      "createdAt": "CREATEDAT",
       "id": "VARIANT_ID_01",
       "isAvailable": true,
       "netPackagingFee": 30,
@@ -95,6 +98,7 @@ Object {
       "position": 100,
       "price": 1.5,
       "soldOut": false,
+      "updatedAt": "UPDATEDAT",
       "variantName": Object {
         "en": "VARIANT_NAME_01",
       },
@@ -148,37 +152,5 @@ Object {
   "takeawayTax": 23,
   "tax": 11,
   "unitId": "UNIT_ID",
-  "variants": Array [
-    Object {
-      "id": "VARIANT_ID_01",
-      "isAvailable": true,
-      "netPackagingFee": 30,
-      "pack": Object {
-        "size": 1,
-        "unit": "UNIT",
-      },
-      "position": 1,
-      "price": 1.5,
-      "soldOut": false,
-      "variantName": Object {
-        "en": "VARIANT_NAME_01",
-      },
-    },
-    Object {
-      "id": "VARIANT_ID_01",
-      "isAvailable": true,
-      "netPackagingFee": 30,
-      "pack": Object {
-        "size": 1,
-        "unit": "UNIT",
-      },
-      "position": 100,
-      "price": 1.5,
-      "soldOut": false,
-      "variantName": Object {
-        "en": "VARIANT_NAME_01",
-      },
-    },
-  ],
 }
 `;
