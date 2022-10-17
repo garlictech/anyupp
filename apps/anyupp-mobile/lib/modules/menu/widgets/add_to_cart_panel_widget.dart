@@ -180,7 +180,7 @@ class _AddToCartPanelWidgetState extends State<AddToCartPanelWidget> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: ' x ',
+                  text: '  x  ',
                   style: Fonts.satoshi(
                     color: theme.secondary40,
                     fontSize: 16.0,

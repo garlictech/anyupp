@@ -118,7 +118,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   ),
                 ),
                 SizedBox(
-                  height: 48.0,
+                  height: 28.0,
                 ),
                 OrderDetailsInfoTable(
                   order: _order,
@@ -167,7 +167,7 @@ class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
             ),
             children: <TextSpan>[
               TextSpan(
-                text: ' x ',
+                text: '  x  ',
                 style: Fonts.satoshi(
                   color: theme.secondary40,
                   fontSize: 14,
@@ -221,7 +221,7 @@ class OrderDetailsPackagingFeeWidget extends StatelessWidget {
             ),
             children: <TextSpan>[
               TextSpan(
-                text: ' x ',
+                text: '  x  ',
                 style: Fonts.satoshi(
                   color: theme.secondary40,
                   fontSize: 14,
@@ -504,6 +504,9 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(
+            height: 28.0,
+          ),
           Text(
             trans(context, 'orders.details.paymentDetails'),
             style: Fonts.satoshi(
@@ -513,7 +516,7 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 20.0,
+            height: 17.0,
           ),
           Row(
             children: [
@@ -638,9 +641,7 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                   //     ? trans(context, 'orders.details.orderDetailsWithNum',
                   //         [order.orderNum])
                   //     : trans(context, 'orders.details.orderDetails'),
-                  style: Fonts.satoshi(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.w700,
+                  style: Fonts.hH1(
                     color: theme.secondary,
                   ),
                 ),
@@ -802,7 +803,7 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
                 ),
                 children: <TextSpan>[
                   TextSpan(
-                    text: ' x ',
+                    text: '  x  ',
                     style: Fonts.satoshi(
                       color: theme.secondary40,
                       fontSize: 14,
@@ -1069,7 +1070,8 @@ class OrderStatusTimelineWidget extends StatelessWidget {
         children: [
           Text(
             orderNum != null
-                ? trans(context, 'orders.details.orderStateWithNum', [orderNum])
+                //? trans(context, 'orders.details.orderStateWithNum', [orderNum])
+                ? trans(context, 'orders.details.orderState')
                 : trans(context, 'orders.details.orderState'),
             // trans(context, 'orders.details.orderState'),
             style: Fonts.satoshi(
@@ -1078,8 +1080,21 @@ class OrderStatusTimelineWidget extends StatelessWidget {
               color: theme.secondary,
             ),
           ),
+          if (orderNum != null) SizedBox(
+            height: 8.0,
+          ),
+          if (orderNum != null) Center(
+            child: Text(
+              "$orderNum",
+              style: Fonts.satoshi(
+                fontSize: 64.0,
+                fontWeight: FontWeight.w700,
+                color: theme.highlight,
+              ),
+            ),
+          ),
           SizedBox(
-            height: 24.0,
+            height: 8.0,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -1108,7 +1123,7 @@ class OrderStatusTimelineWidget extends StatelessWidget {
             ],
           ),
           SizedBox(
-            height: 48.0,
+            height: 38.0,
           )
         ],
       ),
@@ -1263,7 +1278,7 @@ class OrderDetailsInfoTable extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 20.0,
+            height: 14.0,
           ),
           ListView.builder(
             shrinkWrap: true,

@@ -50,10 +50,8 @@ class PaymentInvoiceFormWidget extends StatelessWidget {
                   child: Text(
                     trans(
                         context, 'payment.paymentInfo.invoicing.want_invoice'),
-                    style: Fonts.satoshi(
-                      fontSize: 16,
+                    style: Fonts.hH5(
                       color: theme.secondary,
-                      fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.left,
                   ),

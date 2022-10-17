@@ -67,18 +67,14 @@ class PaymentMethodListItemWidget extends StatelessWidget {
                     children: [
                       Text(
                         trans(context, titleKey),
-                        style: Fonts.satoshi(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w600,
+                        style: Fonts.hH5(
                           color: theme.secondary,
                         ),
                       ),
                       if (descriptionKey != null)
                         Text(
                           trans(context, descriptionKey!),
-                          style: Fonts.satoshi(
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w400,
+                          style: Fonts.pP3(
                             color: theme.secondary40,
                           ),
                         ),

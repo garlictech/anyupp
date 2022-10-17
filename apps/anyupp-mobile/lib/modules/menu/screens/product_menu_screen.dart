@@ -298,8 +298,8 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                 pinned: true,
                 floating: true,
                 delegate: SliverAppBarDelegate(
-                  minHeight: 58.0 + (hasAnySubCategories ? 64.0 : 0.0),
-                  maxHeight: 58.0 + (hasAnySubCategories ? 64.0 : 0.0),
+                  minHeight: 58.0 + (hasAnySubCategories ? 46.0 : 0.0),
+                  maxHeight: 58.0 + (hasAnySubCategories ? 46.0 : 0.0),
                   child: Material(
                     elevation: 1.0,
                     shadowColor: theme.secondary12,
@@ -308,7 +308,7 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                       // margin: const EdgeInsets.only(top: 4.0, bottom: 8.0),
                       color: theme.secondary0,
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [

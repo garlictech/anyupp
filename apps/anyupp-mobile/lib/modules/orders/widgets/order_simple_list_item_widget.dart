@@ -37,7 +37,7 @@ class OrderSimpleListItemWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${getLocalizedText(context, orderItem.variantName)} x ${orderItem.quantity}',
+                  '${getLocalizedText(context, orderItem.variantName)}  x  ${orderItem.quantity}',
                   style: Fonts.satoshi(
                     fontSize: 14,
                     color: theme.secondary,

@@ -43,7 +43,7 @@ class _StripePaymentMethodsScreenState
       appBar: _loading
           ? null
           : CustomAppBar(
-              title: trans('payment.title'),
+              title: trans('payment.stripe.title'),
               elevation: 4.0,
             ),
       body: SmartRefresher(

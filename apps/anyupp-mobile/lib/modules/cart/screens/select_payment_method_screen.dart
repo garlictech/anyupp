@@ -235,7 +235,7 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                 ),
                 child: BackButtonWidget(
                   color: theme.secondary,
-                  showBorder: true,
+                  showBorder: false,
                   icon: Icons.arrow_back_outlined,
                 ),
               ),
@@ -371,10 +371,8 @@ class _SelectPaymentMethodScreenState extends State<SelectPaymentMethodScreen> {
                     ),
                     child: Text(
                       trans('payment.paymentInfo.invoicing.title'),
-                      style: Fonts.satoshi(
-                        fontSize: 16,
+                      style: Fonts.hH4(
                         color: theme.secondary,
-                        fontWeight: FontWeight.w700,
                       ),
                       textAlign: TextAlign.center,
                     ),

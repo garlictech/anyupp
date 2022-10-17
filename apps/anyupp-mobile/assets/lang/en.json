@@ -181,9 +181,9 @@
     },
     "details": {
       "orderState": "Order status",
-      "orderStateWithNum": "Order(#{{0}}) status",
+      "orderStateWithNum": "Order({{0}}) status",
       "orderDetails": "Order details",
-      "orderDetailsWithNum": "Order(#{{0}}) details",
+      "orderDetailsWithNum": "Order({{0}}) details",
       "paymentDetails": "Payment details",
       "otherDetails": "More details",
       "tipDetails": "Tip",
@@ -309,17 +309,17 @@
       },
       "ready": {
         "title": "Your order is served",
-        "message": "Your order #{{0}} has been served"
+        "message": "Your order {{0}} has been served"
       }
     },
     "simplified": {
       "processing": {
         "title": "We are placing your order",
-        "message": "Your order #{{0}} is being processed and will be served soon"
+        "message": "Your order {{0}} is being processed and will be served soon"
       },
       "ready": {
         "title": "Your order is served",
-        "message": "Your order #{{0}} has been served"
+        "message": "Your order {{0}} has been served"
       }
     }
   },
@@ -480,22 +480,22 @@
     "checkAllOnMap": "Check them all on the map",
     "scanQR": "Click & scan your table to order",
     "qrConnected": "Connected to",
-    "chair": "Chair #{{1}} at Table #{{0}}",
-    "table": "Table #{{0}}",
+    "chair": "Chair {{1}} at Table {{0}}",
+    "table": "Table {{0}}",
     "findingSeat": "finding table and chair ...",
     "findingTable": "finding table ...",
     "findingSeatLoading": "This may take a few seconds. Please do not close this window!",
     "seatReserved": {
       "title": "New Seat Reserved!",
-      "description": "Seat #{{1}} reserved Table #{{0}}"
+      "description": "Seat {{1}} reserved Table {{0}}"
     },
     "tableReserved": {
       "title": "New Table Reserved!",
-      "description": "Table #{{0}} reserved"
+      "description": "Table {{0}} reserved"
     },
     "tableFound": {
-      "seat": "Chair: #{{0}}",
-      "table": "Table: #{{0}}",
+      "seat": "Chair: {{0}}",
+      "table": "Table: {{0}}",
       "description": "The connection has been made. You can continue to order!"
     },
     "qrCodeError": {
