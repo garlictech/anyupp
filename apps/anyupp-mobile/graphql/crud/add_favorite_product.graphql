@@ -29,42 +29,31 @@ mutation CreateFavoriteProduct($userId: ID!, $unitId: ID!, $productId: ID!) {
       tax
       allergens
       variants {
-        id
-        position
-        price
-        pack {
-          size
-          unit
-        }
-        variantName {
-          de
-          en
-          hu
-        }
-        netPackagingFee
-      }
-      configSets {
-        type
-        productSetId
-        position
-        name {
-          de
-          en
-          hu
-        }
-        maxSelection
-        supportedServingModes
         items {
-          allergens
-          name {
+          id
+          position
+          price
+          pack {
+            size
+            unit
+          }
+          variantName {
             de
             en
             hu
           }
+          netPackagingFee
+        }
+      }
+      configSets {
+        productSetId
+        position
+        items {
           position
           price
           netPackagingFee
           productComponentId
+          soldOut
         }
       }
       supportedServingModes

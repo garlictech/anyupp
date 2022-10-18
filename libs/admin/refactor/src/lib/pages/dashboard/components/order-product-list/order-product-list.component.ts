@@ -8,7 +8,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ProductCategory, UnitProduct } from '@bgap/crud-gql/api';
-import { GeneratedProduct, Order } from '@bgap/domain';
+import { Order } from '@bgap/domain';
 import { EDashboardSize, ENebularButtonSize } from '@bgap/shared/types';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Store } from '@ngrx/store';
@@ -78,7 +78,7 @@ export class OrderProductListComponent implements OnInit {
     this.selectedProductCategoryId = productCategoryId;
   }
 
-  public addProductVariant(product: GeneratedProduct, variantId: string) {
+  public addProductVariant(product: UnitProduct, variantId: string) {
     console.error('TODO addProductVariant', product, variantId);
     /* TODO variant object refactor
     const existingVariantOrderIdx = this.selectedOrder?.items.findIndex(

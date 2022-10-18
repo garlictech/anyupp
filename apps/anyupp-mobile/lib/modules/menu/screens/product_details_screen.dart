@@ -408,7 +408,7 @@ class ProductImageAndInfoWidget extends StatelessWidget {
                       fontSize: 14,
                     ),
                   ),
-                  if (item.variants.length == 1)
+                  if (item.variants.items.length == 1)
                     Text(
                       _getProductPackInfo(context),
                       textAlign: TextAlign.left,
@@ -428,8 +428,8 @@ class ProductImageAndInfoWidget extends StatelessWidget {
   }
 
   String _getProductPackInfo(BuildContext context) {
-    if (item.variants.length == 1) {
-      var variant = item.variants[0];
+    if (item.variants.items.length == 1) {
+      var variant = item.variants.items[0];
       double size = variant.pack?.size ?? 0;
       String sizeText = formatPackNumber(size);
       return '\n${trans(context, 'product.size')} ${sizeText} ${variant.pack?.unit ?? ""} / ${getLocalizedText(context, variant.variantName)}';

@@ -1,3 +1,5 @@
+import 'package:anyupp/models/ProductComponent.dart';
+
 import '/core/core.dart';
 import '/core/theme/theme.dart';
 import '/models.dart';
@@ -14,6 +16,9 @@ class ProductMenuItemWidget extends StatelessWidget {
   final Product item;
   final ProductItemDisplayState displayState;
   final ServingMode servingMode;
+  final List<ProductComponent> components;
+  final List<ProductComponentSet> componentSets;
+
 
   final double _disabled_opacity = 0.5;
 
@@ -23,6 +28,8 @@ class ProductMenuItemWidget extends StatelessWidget {
     required this.unit,
     required this.displayState,
     required this.servingMode,
+    required this.components,
+    required this.componentSets
   }) : super(key: key);
 
   @override
@@ -48,6 +55,8 @@ class ProductMenuItemWidget extends StatelessWidget {
                       item: item,
                       displayState: displayState,
                       servingMode: servingMode,
+                      components: components, 
+                      componentSets: componentSets
                     ),
                     duration: Duration(milliseconds: 400),
                     animationType: NavAnim.SLIDEIN_DOWN,
@@ -114,7 +123,7 @@ class ProductMenuItemWidget extends StatelessWidget {
                             child: isDisabled
                                 ? _buildNotAvailableInfo(context)
                                 : _buildVariantsInfo(context, theme,
-                                    item.variants, unit.currency),
+                                    item.variants.items, unit.currency),
                           ),
                         ],
                       ),

@@ -695,7 +695,7 @@ type FavoriteProduct
   id: ID!
   userId: ID! @index(name: "favoritesByUserAndUnit", sortKeyFields: ["unitId"])
   unitId: ID!
-  product: GeneratedProduct!
+  product: UnitProduct!
 }
 
 type Tip {

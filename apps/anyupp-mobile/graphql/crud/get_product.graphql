@@ -4,28 +4,29 @@ query GetProduct($productId: ID!) {
     unitId
     position
     variants {
-      id
-      position
-      price
-      pack {
-        size
-        unit
-      }
-      variantName {
-        de
-        en
-        hu
-      }
-      netPackagingFee
-      soldOut
-      isAvailable
-      availabilities {
-        dayTo
-        dayFrom
+      items {
+        position
         price
-        timeFrom
-        timeTo
-        type
+        pack {
+          size
+          unit
+        }
+        variantName {
+          de
+          en
+          hu
+        }
+        netPackagingFee
+        soldOut
+        isAvailable
+        availabilities {
+          dayTo
+          dayFrom
+          price
+          timeFrom
+          timeTo
+          type
+        }
       }
     }
     configSets {

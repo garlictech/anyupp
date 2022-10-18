@@ -1,3 +1,5 @@
+import 'package:anyupp/models/ProductComponent.dart';
+
 import '/core/core.dart';
 import '/core/theme/theme.dart';
 import '/models.dart';
@@ -15,8 +17,13 @@ class CartListItemWidget extends StatefulWidget {
   final Unit unit;
   final OrderItem order;
   final ServingMode servingMode;
+  final List<ProductComponent> productComponents;
+
   CartListItemWidget(
-      {required this.unit, required this.order, required this.servingMode});
+      {required this.productComponents,
+      required this.unit,
+      required this.order,
+      required this.servingMode});
 
   @override
   _CartListItemWidgetState createState() => _CartListItemWidgetState();
@@ -200,10 +207,14 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
     List<Widget> children = [];
     if (widget.order.selectedConfigMap != null) {
       widget.order.selectedConfigMap!.forEach((key, value) {
-        for (ProductConfigComponent generatedProductConfigComponent
-            in value) {
+        for (ProductConfigComponent generatedProductConfigComponent in value) {
+          final name = widget.productComponents
+              .firstWhere((component) =>
+                  component.id ==
+                  generatedProductConfigComponent.productComponentId)
+              .name;
           children.add(Text(
-            '+ ${getLocalizedText(context, generatedProductConfigComponent.name)}',
+            '+ ${getLocalizedText(context, name)}',
             textAlign: TextAlign.left,
             style: Fonts.satoshi(
               color: theme.secondary,

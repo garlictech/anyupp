@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:anyupp/models/ProductComponent.dart';
+
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
 import '/graphql/utils/graphql_coercers.dart';
@@ -17,9 +19,14 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 class OrderDetailsScreen extends StatefulWidget {
   final Order order;
+  final List<ProductComponent> productComponents;
   // final Unit unit;
 
-  const OrderDetailsScreen({Key? key, required this.order}) : super(key: key);
+  const OrderDetailsScreen({
+    Key? key,
+    required this.order,
+    required this.productComponents,
+  }) : super(key: key);
 
   @override
   State<OrderDetailsScreen> createState() => _OrderDetailsScreenState(order);
@@ -105,8 +112,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                       )
                     : Container(),
                 OrderDetailsInfoTextWidget(
-                  order: _order,
-                ),
+                    order: _order, productComponents: widget.productComponents),
                 OrderDetailsRatingAndTipWidget(order: _order),
                 OrderDetailsTipAndServingFeeWidget(
                   order: _order,
@@ -134,10 +140,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
 
 class OrderDetailsServiceFeePriceWidget extends StatelessWidget {
   final Order order;
+  final List<ProductComponent> productComponents;
 
   const OrderDetailsServiceFeePriceWidget({
     Key? key,
     required this.order,
+    required this.productComponents,
   }) : super(key: key);
 
   @override
@@ -595,9 +603,13 @@ class OrderDetailsPaymentInfoWidget extends StatelessWidget {
 
 class OrderDetailsInfoTextWidget extends StatelessWidget {
   final Order order;
+  final List<ProductComponent> productComponents;
 
-  const OrderDetailsInfoTextWidget({Key? key, required this.order})
-      : super(key: key);
+  const OrderDetailsInfoTextWidget({
+    Key? key,
+    required this.order,
+    required this.productComponents,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -662,9 +674,9 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   OrderDetailsInfoTextItemWidget(
-                                    order: order,
-                                    item: order.items[index],
-                                  ),
+                                      order: order,
+                                      item: order.items[index],
+                                      productComponents: productComponents),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 16.0),
                                     // child: OrderDetailsServiceFeeWidget(
@@ -678,7 +690,8 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                                           )
                                         : OrderDetailsServiceFeePriceWidget(
                                             order: order,
-                                          ),
+                                            productComponents:
+                                                productComponents),
                                   ),
                                 ],
                               )
@@ -689,9 +702,9 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       OrderDetailsInfoTextItemWidget(
-                                        order: order,
-                                        item: order.items[index],
-                                      ),
+                                          order: order,
+                                          item: order.items[index],
+                                          productComponents: productComponents),
                                       Padding(
                                         padding:
                                             const EdgeInsets.only(top: 16.0),
@@ -705,16 +718,16 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
                                     padding: EdgeInsets.only(
                                         top: index > 0 ? 32 : 0),
                                     child: OrderDetailsInfoTextItemWidget(
-                                      order: order,
-                                      item: order.items[index],
-                                    ),
+                                        order: order,
+                                        item: order.items[index],
+                                        productComponents: productComponents),
                                   )
                         : Container(
                             padding: EdgeInsets.only(top: index > 0 ? 32 : 0),
                             child: OrderDetailsInfoTextItemWidget(
-                              order: order,
-                              item: order.items[index],
-                            ),
+                                order: order,
+                                item: order.items[index],
+                                productComponents: productComponents),
                           );
                   },
                 ),
@@ -767,9 +780,11 @@ class OrderDetailsInfoTextWidget extends StatelessWidget {
 class OrderDetailsInfoTextItemWidget extends StatelessWidget {
   final Order order;
   final OrderItem item;
+  final List<ProductComponent> productComponents;
 
   const OrderDetailsInfoTextItemWidget({
     Key? key,
+    required this.productComponents,
     required this.order,
     required this.item,
   }) : super(key: key);
@@ -860,8 +875,12 @@ class OrderDetailsInfoTextItemWidget extends StatelessWidget {
     if (item.selectedConfigMap != null) {
       item.selectedConfigMap!.forEach((key, value) {
         for (ProductConfigComponent generatedProductConfigComponent in value) {
-          extraNames.add(
-              getLocalizedText(context, generatedProductConfigComponent.name));
+          final name = productComponents
+              .firstWhere((component) =>
+                  component.id ==
+                  generatedProductConfigComponent.productComponentId)
+              .name;
+          extraNames.add(getLocalizedText(context, name));
         }
       });
     }
@@ -1080,19 +1099,21 @@ class OrderStatusTimelineWidget extends StatelessWidget {
               color: theme.secondary,
             ),
           ),
-          if (orderNum != null) SizedBox(
-            height: 8.0,
-          ),
-          if (orderNum != null) Center(
-            child: Text(
-              "$orderNum",
-              style: Fonts.satoshi(
-                fontSize: 64.0,
-                fontWeight: FontWeight.w700,
-                color: theme.highlight,
+          if (orderNum != null)
+            SizedBox(
+              height: 8.0,
+            ),
+          if (orderNum != null)
+            Center(
+              child: Text(
+                "$orderNum",
+                style: Fonts.satoshi(
+                  fontSize: 64.0,
+                  fontWeight: FontWeight.w700,
+                  color: theme.highlight,
+                ),
               ),
             ),
-          ),
           SizedBox(
             height: 8.0,
           ),

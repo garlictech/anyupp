@@ -1,5 +1,6 @@
 import 'package:anyupp/domain/repositories/repositories.dart';
 import 'package:anyupp/models/ProductComponent.dart';
+import 'package:anyupp/models/ProductComponentSet.dart';
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
 import '/graphql/graphql.dart';
@@ -37,5 +38,26 @@ class ProductComponentRepositoryAmplify implements ProductComponentRepository {
               .toList() ??
           const [];
     } while (nextToken != null);
+  }
+
+  @override
+  getProductComponentSet(String id) async {
+    final result = await GQL.amplify.execute(GetProductComponentSetQuery(
+      variables: GetProductComponentSetArguments(id: id),
+    ));
+
+    if (result.hasErrors) {
+      log.d(
+          '***** ProductRepositoryAmplify.getProductComponentSet error=${result.errors}');
+      throw GraphQLException.fromGraphQLError(
+          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+    }
+
+    if (result.data?.getProductComponentSet == null) {
+      throw "ProductComponentSet $id is not in the database";
+    }
+
+    return ProductComponentSet.fromJson(
+        result.data!.getProductComponentSet!.toJson());
   }
 }

@@ -1,3 +1,5 @@
+import 'package:anyupp/models/ProductComponent.dart';
+
 import '/models.dart';
 import '/shared/locale.dart';
 import '/core/theme/theme.dart';
@@ -12,8 +14,10 @@ import '/graphql/generated/crud-api.dart';
 
 class OrderHistoryCard extends StatelessWidget {
   final Order order;
+  final List<ProductComponent> productComponents;
 
   const OrderHistoryCard({
+    required this.productComponents,
     required this.order,
   });
 
@@ -118,7 +122,8 @@ class OrderHistoryCard extends StatelessWidget {
     for (var i = 0; i < order.items.length; i++) {
       OrderItem orderItem = order.items[i];
       results.add(
-        OrderSimpleListItemWidget(orderItem: orderItem),
+        OrderSimpleListItemWidget(
+            orderItem: orderItem, productComponents: productComponents),
       );
 
       if (i < order.items.length - 1) {

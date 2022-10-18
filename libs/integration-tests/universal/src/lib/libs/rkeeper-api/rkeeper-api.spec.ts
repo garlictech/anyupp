@@ -18,9 +18,9 @@ import {
   toArray,
   take,
   map,
-  count,
   catchError,
   concatMap,
+  mergeMap,
 } from 'rxjs/operators';
 import {
   createRkeeperProduct,
@@ -33,12 +33,11 @@ import {
   menusyncHandler,
   RkeeperFixtures,
 } from '@bgap/rkeeper-api';
-import { from, of, defer, forkJoin, throwError, iif } from 'rxjs';
+import { from, of, defer, forkJoin, throwError } from 'rxjs';
 import { ES_DELAY, dateMatcher } from '../../../utils';
 import { filterNullishGraphqlListWithDefault } from '@bgap/shared/utils';
 import { pipe } from 'fp-ts/lib/function';
 import * as fixtures from './fixtures';
-import { getAllPaginatedData } from '@bgap/gql-sdk';
 import { v1 as uuidV1 } from 'uuid';
 import {
   config,
@@ -62,26 +61,8 @@ const commonBackendName = 'common-backend2-anyupp';
 const crudSdk = createIamCrudSdk();
 
 describe('Test the rkeeper api basic functionality', () => {
-  const deleteTestProducts = (unitId: String) =>
-    getAllPaginatedData(crudSdk.SearchUnitProducts, {
-      query: { filter: { unitId: { eq: unitId } } },
-    }).pipe(
-      filterNullishGraphqlListWithDefault<UnitProduct>([]),
-      tap(items =>
-        console.log(
-          `Found ${items.length} products do delete in unit ${unitId}`,
-        ),
-      ),
-      switchMap(from),
-      concatMap((item: UnitProduct) =>
-        deleteUnitProductWithVariants(item, crudSdk),
-      ),
-      count(),
-      tap(items => console.log(`Deleted ${items} items in unit ${unitId}`)),
-    );
-
   const cleanup$ = from([fixtures.rkeeperUnit.id]).pipe(
-    //concatMap(id => deleteTestProducts(id)),
+    mergeMap(id => crudSdk.DeleteUnit({ input: { id } })),
     takeLast(1),
     switchMap(() =>
       crudSdk.DeleteProductCategory({
@@ -92,12 +73,20 @@ describe('Test the rkeeper api basic functionality', () => {
         },
       }),
     ),
-    switchMap(() =>
-      forkJoin([
-        crudSdk.DeleteUnit({ input: { id: fixtures.rkeeperUnit.id } }),
-      ]),
+    switchMapTo(
+      from([fixtures.rkeeperVariantFixture, fixtures.rkeeperVariantFixture2]),
     ),
+    mergeMap(input => crudSdk.DeleteVariant({ input: { id: input.id } })),
     takeLast(1),
+    switchMapTo(
+      from([fixtures.rkeeperUnitProduct, fixtures.rkeeperUnitProduct2]),
+    ),
+    mergeMap(input => crudSdk.DeleteUnitProduct({ input: { id: input.id } })),
+    takeLast(1),
+    catchError(err => {
+      console.warn('Potential error: ', err);
+      return of({});
+    }),
   );
 
   beforeEach(done => {
@@ -105,20 +94,32 @@ describe('Test the rkeeper api basic functionality', () => {
 
     of(1)
       .pipe(
-        delay(ES_DELAY),
         switchMap(() => cleanup$),
-        delay(ES_DELAY),
         switchMapTo(
           from([fixtures.rkeeperUnitProduct, fixtures.rkeeperUnitProduct2]),
         ),
-        //concatMap(input => crudSdk.CreateUnitProduct({ input })),
+        mergeMap(input => crudSdk.CreateUnitProduct({ input })),
         takeLast(1),
         switchMap(() =>
           forkJoin([crudSdk.CreateUnit({ input: fixtures.rkeeperUnit })]),
         ),
+        switchMapTo(
+          from([
+            fixtures.rkeeperVariantFixture,
+            fixtures.rkeeperVariantFixture2,
+          ]),
+        ),
+        mergeMap(input => crudSdk.CreateVariant({ input })),
+        takeLast(1),
         delay(ES_DELAY),
       )
-      .subscribe(() => done());
+      .subscribe(
+        () => done(),
+        error => {
+          console.error(JSON.stringify(error, null, 2));
+          done();
+        },
+      );
   }, 65000);
 
   afterAll(done => {
@@ -127,6 +128,10 @@ describe('Test the rkeeper api basic functionality', () => {
         switchMap(() =>
           crudSdk.DeleteUnit({ input: { id: fixtures.freiRestaurantId } }),
         ),
+        catchError(err => {
+          console.warn('Potential error: ', err);
+          return of({});
+        }),
       )
       .subscribe(() => done());
   }, 60000);
@@ -312,12 +317,13 @@ describe('Test the rkeeper api basic functionality', () => {
   }, 30000);
 
   test.only('Should not duplicate products and variants', done => {
+    const dishId = 1234567;
     const rawDataFixture = {
       data: {
         dishes: [
           {
             ...RkeeperFixtures.dish,
-            id: 1234567,
+            id: dishId,
           },
         ],
       },
@@ -359,27 +365,19 @@ describe('Test the rkeeper api basic functionality', () => {
         ),
         tap(unitProducts => {
           expect(unitProducts?.items.length).toEqual(startUnitProductNum + 1);
-          unitProduct = unitProducts?.items[0];
-          console.log('*****44', JSON.stringify(unitProduct, null, 2));
-          expect(unitProduct?.variants?.length).toEqual(1);
-          expect(unitProduct?.variants?.[0]?.externalId).toEqual(
-            RkeeperFixtures.dish.id.toString(),
-          );
         }),
         switchMap(() =>
           crudSdk.SearchVariants({
             filter: {
               externalId: {
-                eq: RkeeperFixtures.dish.id.toString(),
+                eq: dishId.toString(),
               },
             },
           }),
         ),
         tap(variants => {
           expect(variants?.items.length).toEqual(1);
-          expect(variants?.items[0]?.externalId).toEqual(
-            RkeeperFixtures.dish.id.toString(),
-          );
+          expect(variants?.items[0]?.externalId).toEqual(dishId.toString());
         }),
         switchMap(() =>
           !!unitProduct

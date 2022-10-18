@@ -44,9 +44,9 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
   void initState() {
     // log.d(
     //     '******* ProductConfiguratorWidget.initState().widget=${widget.product}');
-    _productVariant = widget.product.variants.firstWhere(
+    _productVariant = widget.product.variants.items.firstWhere(
         (variant) => variant.soldOut != true,
-        orElse: () => widget.product.variants.first);
+        orElse: () => widget.product.variants.items.first);
     widget.product.configSets?.forEach((element) {
       if (element.items.isNotEmpty) {
         _selectedModifiers[element.productSetId] =
@@ -61,12 +61,13 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     User? user = await getIt<IAuthProvider>().getAuthenticatedUserProfile();
     var configSets = getSelectedComponentMap();
     OrderItem orderItem = getIt<CartRepository>().getOrderItem(
-      user!.id,
-      widget.unit,
-      widget.product,
-      _productVariant,
-      configSets,
-    );
+        user!.id,
+        widget.unit,
+        widget.product,
+        _productVariant,
+        configSets,
+        widget.components,
+        widget.componentSets);
     // .copyWith(
     //   selectedConfigMap: configSets,
     // );
@@ -83,7 +84,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
       return SizedBox();
     }
 
-    List<ProductVariant> variants = widget.product.variants;
+    List<ProductVariant> variants = widget.product.variants.items;
     bool buildVariants = !widget.product.isAllVariantsSoldOut;
     if (variants.isEmpty || !buildVariants) {
       return SizedBox();
@@ -189,7 +190,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     Map<ProductConfigSet, List<ProductConfigComponent>> selectedConfigMap = {};
     _selectedModifiers.forEach((key, value) {
       ProductComponentSet? modifier =
-          getModifierComponentSetById(key, widget.componentSets ?? []);
+          getModifierComponentSetById(key, widget.componentSets);
       ProductConfigSet? configSet = widget.product.configSets
           ?.firstWhere((set) => set.productSetId == modifier?.id);
 
@@ -201,7 +202,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     });
     _selectedExtras.forEach((key, value) {
       ProductComponentSet? modifier =
-          getExtraComponentSetById(key, widget.componentSets ?? []);
+          getExtraComponentSetById(key, widget.componentSets);
 
       ProductConfigSet? configSet = widget.product.configSets
           ?.firstWhere((set) => set.productSetId == modifier?.id);
@@ -246,7 +247,7 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     //--- calculate modifier price
     _selectedModifiers.forEach((key, value) {
       ProductComponentSet? modifier =
-          getModifierComponentSetById(key, widget.componentSets ?? []);
+          getModifierComponentSetById(key, widget.componentSets);
 
       ProductConfigSet? configSet = widget.product.configSets
           ?.firstWhere((set) => set.productSetId == modifier?.id);
@@ -257,21 +258,12 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
       ProductComponent component = widget.components.firstWhere(
           (component) => component.id == configComponent?.productComponentId);
 
-      if (component != null) {
-        component.allergens?.forEach((allergen) => allergeens.add(allergen));
-      }
+      component.allergens?.forEach((allergen) => allergeens.add(allergen));
     });
 
     _selectedExtras.forEach((setId, setMap) {
       setMap.forEach((componentId, selected) {
         if (selected == true) {
-          ProductConfigComponent? component = getExtraComponentByIdAndSetId(
-            setId,
-            componentId,
-            widget.product.configSets ?? [],
-            widget.componentSets,
-            widget.servingMode,
-          );
           ProductComponent productComponent = widget.components
               .firstWhere((component) => component.id == component.id);
 
@@ -284,13 +276,12 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
 
     _allergeens = allergeens;
     _modifierTotalPrice = calculateTotalPrice(
-      widget.product,
-      widget.servingMode,
-      _productVariant,
-      _selectedExtras,
-      _selectedModifiers,
-      widget.componentSets
-    );
+        widget.product,
+        widget.servingMode,
+        _productVariant,
+        _selectedExtras,
+        _selectedModifiers,
+        widget.componentSets);
     setButton();
   }
 

@@ -18,7 +18,7 @@ abstract class $Product {
   int get tax;
   int get position;
   String? get image;
-  List<ProductVariant> get variants;
+  VariantItems get variants;
   List<Allergen>? get allergens;
   List<ProductConfigSet>? get configSets;
   List<ServingMode> get supportedServingModes;
@@ -34,7 +34,7 @@ abstract class $Product {
     int? tax,
     int? position,
     String? image,
-    List<ProductVariant>? variants,
+    VariantItems? variants,
     List<Allergen>? allergens,
     List<ProductConfigSet>? configSets,
     List<ServingMode>? supportedServingModes,
@@ -167,7 +167,7 @@ class Product$Change {
   int tax;
   int position;
   String? image;
-  List<ProductVariant> variants;
+  VariantItems variants;
   List<Allergen>? allergens;
   List<ProductConfigSet>? configSets;
   List<ServingMode> supportedServingModes;
@@ -227,7 +227,7 @@ class Product$ {
     (imageContainer, image) => imageContainer.copyWith(image: image),
   );
 
-  static final variants = Lens<Product, List<ProductVariant>>(
+  static final variants = Lens<Product, VariantItems>(
     (variantsContainer) => variantsContainer.variants,
     (variantsContainer, variants) =>
         variantsContainer.copyWith(variants: variants),
@@ -271,18 +271,20 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       description: json['description'] == null
           ? null
           : LocalizedItem.fromJson(json['description'] as Map<String, dynamic>),
-      productType: json['productType'],
+      productType: $enumDecode(_$ProductTypeEnumMap, json['productType']),
       tax: json['tax'] as int,
       position: json['position'] as int,
       image: json['image'] as String?,
-      variants: (json['variants'] as List<dynamic>)
-          .map((e) => ProductVariant.fromJson(e as Map<String, dynamic>))
+      variants: VariantItems.fromJson(json['variants'] as Map<String, dynamic>),
+      allergens: (json['allergens'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$AllergenEnumMap, e))
           .toList(),
-      allergens: json['allergens'] as List<dynamic>?,
       configSets: (json['configSets'] as List<dynamic>?)
           ?.map((e) => ProductConfigSet.fromJson(e as Map<String, dynamic>))
           .toList(),
-      supportedServingModes: json['supportedServingModes'] as List<dynamic>,
+      supportedServingModes: (json['supportedServingModes'] as List<dynamic>)
+          .map((e) => $enumDecode(_$ServingModeEnumMap, e))
+          .toList(),
       soldOut: json['soldOut'] as bool? ?? false,
     );
 
@@ -301,15 +303,50 @@ Map<String, dynamic> _$ProductToJson(Product instance) {
   }
 
   writeNotNull('description', instance.description?.toJson());
-  writeNotNull('productType', instance.productType);
+  val['productType'] = _$ProductTypeEnumMap[instance.productType]!;
   val['tax'] = instance.tax;
   val['position'] = instance.position;
   writeNotNull('image', instance.image);
-  val['variants'] = instance.variants.map((e) => e.toJson()).toList();
-  writeNotNull('allergens', instance.allergens);
+  val['variants'] = instance.variants.toJson();
+  writeNotNull('allergens',
+      instance.allergens?.map((e) => _$AllergenEnumMap[e]!).toList());
   writeNotNull(
       'configSets', instance.configSets?.map((e) => e.toJson()).toList());
-  val['supportedServingModes'] = instance.supportedServingModes;
+  val['supportedServingModes'] = instance.supportedServingModes
+      .map((e) => _$ServingModeEnumMap[e]!)
+      .toList();
   val['soldOut'] = instance.soldOut;
   return val;
 }
+
+const _$ProductTypeEnumMap = {
+  ProductType.drink: 'drink',
+  ProductType.food: 'food',
+  ProductType.dish: 'dish',
+  ProductType.other: 'other',
+  ProductType.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+const _$AllergenEnumMap = {
+  Allergen.celery: 'celery',
+  Allergen.crustaceans: 'crustaceans',
+  Allergen.egg: 'egg',
+  Allergen.fish: 'fish',
+  Allergen.gluten: 'gluten',
+  Allergen.lupin: 'lupin',
+  Allergen.milk: 'milk',
+  Allergen.molluscs: 'molluscs',
+  Allergen.mustard: 'mustard',
+  Allergen.peanut: 'peanut',
+  Allergen.sesame: 'sesame',
+  Allergen.soya: 'soya',
+  Allergen.sulphites: 'sulphites',
+  Allergen.treenuts: 'treenuts',
+  Allergen.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+const _$ServingModeEnumMap = {
+  ServingMode.inPlace: 'inPlace',
+  ServingMode.takeAway: 'takeAway',
+  ServingMode.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};

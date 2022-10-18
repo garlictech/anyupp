@@ -1,3 +1,6 @@
+import 'package:anyupp/providers/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '/core/core.dart';
 import '/models.dart';
 import '/modules/main/main.dart';
@@ -77,7 +80,7 @@ class _OrderStatusListWidgetState extends State<OrderStatusListWidget> {
   }
 }
 
-class OrderAfterPayWidget extends StatelessWidget {
+class OrderAfterPayWidget extends ConsumerWidget {
   final Unit unit;
   final List<Order> orders;
   late final Order aggregatedOrder;
@@ -88,8 +91,14 @@ class OrderAfterPayWidget extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
+  Widget build(BuildContext context, WidgetRef ref) {
+    AsyncValue productComponents = ref.watch(productComponentsOfAnOrderProvider(aggregatedOrder)); 
+    final theme = ref.watch(themeProvider);
+
+    return productComponents.when(
+loading: () => Container(),
+error: (err, stack) => Container(),
+      data: (data) => Container(
       decoration: BoxDecoration(
         color: theme.secondary0.withOpacity(0.8),
         borderRadius: const BorderRadius.all(
@@ -120,6 +129,7 @@ class OrderAfterPayWidget extends StatelessWidget {
               onTap: () => Nav.to(
                 OrderDetailsScreen(
                   order: aggregatedOrder,
+                  productComponents: data
                 ),
               ),
               child: OrderAfterPayHeaderWidget(
@@ -141,6 +151,7 @@ class OrderAfterPayWidget extends StatelessWidget {
                 onTap: () => Nav.to(
                   OrderDetailsScreen(
                     order: orders[index],
+                  productComponents: data
                   ),
                 ),
                 child: OrderAfterPayItemWidget(
@@ -156,8 +167,8 @@ class OrderAfterPayWidget extends StatelessWidget {
           )
         ],
       ),
-    );
-  }
+      ));}
+  
 }
 
 class OrderAfterPayItemWidget extends StatelessWidget {

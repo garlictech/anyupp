@@ -19,4 +19,9 @@ class ProductConfigComponent extends $ProductConfigComponent {
     this.netPackagingFee,
     this.soldOut = false,
   });
+
+  factory ProductConfigComponent.fromJson(Map<String, dynamic> json) => 
+      _$ProductConfigComponentFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProductConfigComponentToJson(this);
 }

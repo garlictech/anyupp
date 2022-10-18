@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:anyupp/models/ProductComponent.dart';
 import 'package:collection/collection.dart';
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
@@ -179,12 +180,13 @@ class CartRepository implements ICartProvider {
   }
 
   OrderItem getOrderItem(
-    String userId,
-    Unit unit,
-    Product product,
-    ProductVariant variant,
-    Map<ProductConfigSet, List<ProductConfigComponent>> configSets,
-  ) {
+      String userId,
+      Unit unit,
+      Product product,
+      ProductVariant variant,
+      Map<ProductConfigSet, List<ProductConfigComponent>> configSets,
+      List<ProductComponent> components,
+      List<ProductComponentSet> componentSets) {
     return OrderItem(
       productType: product.productType,
       serviceFee: getServiceFee(
@@ -227,31 +229,39 @@ class CartRepository implements ICartProvider {
       quantity: 1,
       netPackagingFee: variant.netPackagingFee,
       selectedConfigMap: configSets,
-      configSets: _getConfigSets(configSets),
+      configSets: _getConfigSets(configSets, components, componentSets),
     );
   }
 
   List<OrderItemConfigSet>? _getConfigSets(
-      Map<ProductConfigSet, List<ProductConfigComponent>> configSets) {
+      Map<ProductConfigSet, List<ProductConfigComponent>> configSets,
+      List<ProductComponent> components,
+      List<ProductComponentSet> componentSets) {
     if (configSets.isEmpty) {
       return null;
     }
 
     List<OrderItemConfigSet> result = [];
     configSets.forEach((key, value) {
+      final componentSet =
+          componentSets.firstWhere((set) => set.id == key.productSetId);
+
       result.add(OrderItemConfigSet(
-        name: key.name,
+        name: componentSet.name,
         productSetId: key.productSetId,
-        type: key.type,
-        items: value
-            .map((item) => OrderItemConfigComponent(
-                  name: item.name,
-                  price: item.price,
-                  productComponentId: item.productComponentId,
-                  netPackagingFee: item.netPackagingFee,
-                  allergens: item.allergens,
-                ))
-            .toList(),
+        type: componentSet.type,
+        items: value.map((item) {
+          final component =
+              components.firstWhere((cmp) => cmp.id == item.productComponentId);
+
+          return OrderItemConfigComponent(
+            name: component.name,
+            price: item.price,
+            productComponentId: item.productComponentId,
+            netPackagingFee: item.netPackagingFee,
+            allergens: component.allergens,
+          );
+        }).toList(),
       ));
     });
     return result;

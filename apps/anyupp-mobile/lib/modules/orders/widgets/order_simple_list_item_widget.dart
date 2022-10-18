@@ -1,3 +1,5 @@
+import 'package:anyupp/models/ProductComponent.dart';
+
 import '/core/theme/theme.dart';
 import '/models.dart';
 import '/shared/locale.dart';
@@ -6,8 +8,10 @@ import 'package:flutter/material.dart';
 
 class OrderSimpleListItemWidget extends StatelessWidget {
   final OrderItem orderItem;
+  final List<ProductComponent> productComponents;
 
   const OrderSimpleListItemWidget({
+    required this.productComponents,
     required this.orderItem,
   });
 
@@ -48,7 +52,8 @@ class OrderSimpleListItemWidget extends StatelessWidget {
             ),
           ),
           Text(
-            formatCurrency(orderItem.sumPriceShown.priceSum, orderItem.priceShown.currency),
+            formatCurrency(orderItem.sumPriceShown.priceSum,
+                orderItem.priceShown.currency),
             style: Fonts.satoshi(
               fontSize: 14,
               color: theme.secondary,
@@ -64,8 +69,13 @@ class OrderSimpleListItemWidget extends StatelessWidget {
     if (orderItem.selectedConfigMap != null) {
       orderItem.selectedConfigMap!.forEach((key, value) {
         for (ProductConfigComponent generatedProductConfigComponent in value) {
+          final name = productComponents
+              .firstWhere((component) =>
+                  component.id ==
+                  generatedProductConfigComponent.productComponentId)
+              .name;
           children.add(Text(
-            getLocalizedText(context, generatedProductConfigComponent.name),
+            getLocalizedText(context, name),
             textAlign: TextAlign.left,
             style: Fonts.satoshi(
               color: theme.secondary,

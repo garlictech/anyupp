@@ -149,15 +149,20 @@ ProductComponentSet _$ProductComponentSetFromJson(Map<String, dynamic> json) =>
     ProductComponentSet(
       id: json['id'] as String,
       name: LocalizedItem.fromJson(json['name'] as Map<String, dynamic>),
-      type: json['type'],
+      type: $enumDecode(_$ProductComponentSetTypeEnumMap, json['type']),
       maxSelection: json['maxSelection'] as int?,
       items: (json['items'] as List<dynamic>).map((e) => e as String).toList(),
-      supportedServingModes: json['supportedServingModes'] as List<dynamic>?,
+      supportedServingModes: (json['supportedServingModes'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$ServingModeEnumMap, e))
+          .toList(),
     );
 
 Map<String, dynamic> _$ProductComponentSetToJson(ProductComponentSet instance) {
   final val = <String, dynamic>{
     'id': instance.id,
+    'type': _$ProductComponentSetTypeEnumMap[instance.type]!,
+    'name': instance.name.toJson(),
+    'items': instance.items,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -166,10 +171,24 @@ Map<String, dynamic> _$ProductComponentSetToJson(ProductComponentSet instance) {
     }
   }
 
-  writeNotNull('type', instance.type);
-  val['name'] = instance.name.toJson();
-  val['items'] = instance.items;
   writeNotNull('maxSelection', instance.maxSelection);
-  writeNotNull('supportedServingModes', instance.supportedServingModes);
+  writeNotNull(
+      'supportedServingModes',
+      instance.supportedServingModes
+          ?.map((e) => _$ServingModeEnumMap[e]!)
+          .toList());
   return val;
 }
+
+const _$ProductComponentSetTypeEnumMap = {
+  ProductComponentSetType.modifier: 'modifier',
+  ProductComponentSetType.extras: 'extras',
+  ProductComponentSetType.rkeeper: 'rkeeper',
+  ProductComponentSetType.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+const _$ServingModeEnumMap = {
+  ServingMode.inPlace: 'inPlace',
+  ServingMode.takeAway: 'takeAway',
+  ServingMode.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};

@@ -1,3 +1,7 @@
+import 'package:anyupp/models/ProductComponent.dart';
+import 'package:anyupp/providers/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '/core/dependency_indjection/dependency_injection.dart';
 import '/core/theme/theme.dart';
 import '/core/units/units.dart';
@@ -22,12 +26,12 @@ import '/core/logger.dart';
 
 import 'select_payment_method_screen.dart';
 
-class CartScreen extends StatefulWidget {
+class CartScreen extends ConsumerStatefulWidget {
   @override
-  State<CartScreen> createState() => _CartScreenState();
+  createState() => _CartScreenState();
 }
 
-class _CartScreenState extends State<CartScreen> {
+class _CartScreenState extends ConsumerState<CartScreen> {
   final ScrollController _controller = ScrollController();
 
   bool _loading = false;
@@ -35,202 +39,232 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<CartBloc, BaseCartState>(
-      listener: (context, state) {
-        if (state is EmptyCartState) {
-          setState(() {
-            _loading = false;
-            _orderCreationSuccess = true;
-          });
-        }
-        if (state is CartErrorState) {
-          setState(() {
-            _loading = false;
-            // _orderCreationSuccess = false;
-          });
-        }
-      },
-      child: Scaffold(
-        appBar: _loading
-            ? null
-            : AppBar(
-                backgroundColor: theme.secondary0,
-                centerTitle: true,
-                elevation: 3.0,
-                shadowColor: theme.secondary.withOpacity(0.1),
-                leading: Padding(
-                  padding: const EdgeInsets.only(
-                    top: 8.0,
-                    bottom: 8.0,
-                    left: 15.0,
+    return Consumer(builder: (c, ref, child) {
+      return BlocListener<CartBloc, BaseCartState>(
+        listener: (context, state) {
+          if (state is EmptyCartState) {
+            setState(() {
+              _loading = false;
+              _orderCreationSuccess = true;
+            });
+          }
+          if (state is CartErrorState) {
+            setState(() {
+              _loading = false;
+              // _orderCreationSuccess = false;
+            });
+          }
+        },
+        child: Scaffold(
+          appBar: _loading
+              ? null
+              : AppBar(
+                  backgroundColor: theme.secondary0,
+                  centerTitle: true,
+                  elevation: 3.0,
+                  shadowColor: theme.secondary.withOpacity(0.1),
+                  leading: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      bottom: 8.0,
+                      left: 15.0,
+                    ),
+                    child: BackButtonWidget(
+                      color: theme.secondary,
+                      showBorder: false,
+                      icon: Icons.arrow_back,
+                    ),
                   ),
-                  child: BackButtonWidget(
-                    color: theme.secondary,
-                    showBorder: false,
-                    icon: Icons.arrow_back,
-                  ),
-                ),
-                actions: [
-                  BlocBuilder<TakeAwayBloc, TakeAwayState>(
-                      builder: (context, state) {
-                    if (state is ServingModeSelectedState) {
-                      Cart? cart = getIt.get<CartRepository>().cart;
+                  actions: [
+                    BlocBuilder<TakeAwayBloc, TakeAwayState>(
+                        builder: (context, state) {
+                      if (state is ServingModeSelectedState) {
+                        Cart? cart = getIt.get<CartRepository>().cart;
 
-                      return Container(
-                        margin: EdgeInsets.only(
-                            top: 12.0, bottom: 12.0, right: 16.0),
-                        child: InkWell(
-                          onTap: () async {
-                            await showSelectServingModeSheetWithDeleteConfirm(
-                              context,
-                              cart,
-                              state.servingMode,
-                              initialPosition:
-                                  state.servingMode == ServingMode.inPlace
-                                      ? 0
-                                      : 1,
-                              pop: true,
-                            );
-                            // Nav.pop();
-                          },
-                          child: TakeawayStatusWidget(
-                            servingMode: state.servingMode,
-                          ),
-                        ),
-                      );
-                    }
-                    return Container();
-                  }),
-                ],
-                // Only dev and qa builds are show the table and seat in the top right corner
-                title: BlocBuilder<UnitSelectBloc, UnitSelectState>(
-                  builder: (context, state) {
-                    if (state is UnitSelected) {
-                      return StreamBuilder<Cart?>(
-                        stream: getIt<CartRepository>()
-                            .getCurrentCartStream(state.unit.id),
-                        builder: (context, AsyncSnapshot<Cart?> snapshot) {
-                          Place? place = snapshot.data?.place;
-                          if (snapshot.hasData) {
-                            bool show = place?.isNotEmpty == true && isDev;
-
-                            if (!show) {
-                              return Text(
-                                trans('main.menu.cart').toUpperCase(),
-                                style: Fonts.satoshi(
-                                  color: theme.secondary,
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                        return Container(
+                          margin: EdgeInsets.only(
+                              top: 12.0, bottom: 12.0, right: 16.0),
+                          child: InkWell(
+                            onTap: () async {
+                              await showSelectServingModeSheetWithDeleteConfirm(
+                                context,
+                                cart,
+                                state.servingMode,
+                                initialPosition:
+                                    state.servingMode == ServingMode.inPlace
+                                        ? 0
+                                        : 1,
+                                pop: true,
                               );
-                            }
+                              // Nav.pop();
+                            },
+                            child: TakeawayStatusWidget(
+                              servingMode: state.servingMode,
+                            ),
+                          ),
+                        );
+                      }
+                      return Container();
+                    }),
+                  ],
+                  // Only dev and qa builds are show the table and seat in the top right corner
+                  title: BlocBuilder<UnitSelectBloc, UnitSelectState>(
+                    builder: (context, state) {
+                      if (state is UnitSelected) {
+                        return StreamBuilder<Cart?>(
+                          stream: getIt<CartRepository>()
+                              .getCurrentCartStream(state.unit.id),
+                          builder: (context, AsyncSnapshot<Cart?> snapshot) {
+                            Place? place = snapshot.data?.place;
+                            if (snapshot.hasData) {
+                              bool show = place?.isNotEmpty == true && isDev;
 
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  trans('main.menu.cart'),
+                              if (!show) {
+                                return Text(
+                                  trans('main.menu.cart').toUpperCase(),
                                   style: Fonts.satoshi(
                                     color: theme.secondary,
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w600,
                                   ),
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/table-icon.svg',
-                                      width: 20,
-                                      height: 20,
-                                      color: theme.icon,
-                                    ),
-                                    Text(
-                                      ' ${snapshot.data?.place?.table ?? "-"}',
-                                      style: Fonts.satoshi(
-                                        color: theme.secondary,
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    SvgPicture.asset(
-                                      'assets/icons/chair-icon.svg',
-                                      width: 20,
-                                      height: 20,
-                                      color: theme.icon,
-                                    ),
-                                    Text(
-                                      '${snapshot.data?.place?.seat ?? "-"}',
-                                      style: Fonts.satoshi(
-                                        color: theme.secondary,
-                                        fontSize: 14.0,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            );
-                          }
-
-                          return Container();
-                        },
-                      );
-                    }
-                    return Container();
-                  },
-                ),
-              ),
-        body: _orderCreationSuccess == true
-            ? PaymentSuccessWidget()
-            : _orderCreationSuccess == false
-                ? CommonErrorWidget(
-                    error: 'orders.sendOrderError.title',
-                    description: 'orders.sendOrderError.description',
-                    onPressed: () {
-                      Nav.pop();
-                      _orderCreationSuccess = null;
-                    },
-                  )
-                : Container(
-                    color: theme.secondary0,
-                    child: _loading
-                        ? CenterLoadingWidget()
-                        : BlocBuilder<UnitSelectBloc, UnitSelectState>(
-                            builder: (context, state) {
-                              if (state is UnitSelected) {
-                                return StreamBuilder<Cart?>(
-                                  stream: getIt<CartRepository>()
-                                      .getCurrentCartStream(state.unit.id),
-                                  builder:
-                                      (context, AsyncSnapshot<Cart?> snapshot) {
-                                    if (snapshot.connectionState !=
-                                            ConnectionState.waiting ||
-                                        snapshot.hasData) {
-                                      if (snapshot.data?.items.isNotEmpty ==
-                                          true) {
-                                        return _buildCartListAndTotal(context,
-                                            state.unit, snapshot.data!);
-                                      }
-                                      return EmptyWidget(
-                                        messageKey: 'cart.emptyCartLine1',
-                                        descriptionKey: 'cart.emptyCartLine2',
-                                      );
-                                    }
-
-                                    return CenterLoadingWidget();
-                                  },
                                 );
                               }
-                              return CenterLoadingWidget();
-                            },
-                          ),
+
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    trans('main.menu.cart'),
+                                    style: Fonts.satoshi(
+                                      color: theme.secondary,
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/icons/table-icon.svg',
+                                        width: 20,
+                                        height: 20,
+                                        color: theme.icon,
+                                      ),
+                                      Text(
+                                        ' ${snapshot.data?.place?.table ?? "-"}',
+                                        style: Fonts.satoshi(
+                                          color: theme.secondary,
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ),
+                                      SvgPicture.asset(
+                                        'assets/icons/chair-icon.svg',
+                                        width: 20,
+                                        height: 20,
+                                        color: theme.icon,
+                                      ),
+                                      Text(
+                                        '${snapshot.data?.place?.seat ?? "-"}',
+                                        style: Fonts.satoshi(
+                                          color: theme.secondary,
+                                          fontSize: 14.0,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              );
+                            }
+
+                            return Container();
+                          },
+                        );
+                      }
+                      return Container();
+                    },
                   ),
-      ),
-    );
+                ),
+          body: _orderCreationSuccess == true
+              ? PaymentSuccessWidget()
+              : _orderCreationSuccess == false
+                  ? CommonErrorWidget(
+                      error: 'orders.sendOrderError.title',
+                      description: 'orders.sendOrderError.description',
+                      onPressed: () {
+                        Nav.pop();
+                        _orderCreationSuccess = null;
+                      },
+                    )
+                  : Container(
+                      color: theme.secondary0,
+                      child: _loading
+                          ? CenterLoadingWidget()
+                          : BlocBuilder<UnitSelectBloc, UnitSelectState>(
+                              builder: (context, state) {
+                                if (state is UnitSelected) {
+                                  return StreamBuilder<Cart?>(
+                                    stream: getIt<CartRepository>()
+                                        .getCurrentCartStream(state.unit.id),
+                                    builder: (context,
+                                        AsyncSnapshot<Cart?> snapshot) {
+                                      if (snapshot.connectionState !=
+                                              ConnectionState.waiting ||
+                                          snapshot.hasData) {
+                                        if (snapshot.data?.items.isNotEmpty ==
+                                            true) {
+                                          return Consumer(
+                                              builder: (c, ref, child) {
+                                            final cart = snapshot.data;
+                                            if (cart != null) {
+                                              final components = ref.watch(
+                                                  productComponentsOfACartProvider(
+                                                          cart)
+                                                      .future);
+
+                                              return FutureBuilder<
+                                                      List<ProductComponent>>(
+                                                  future: components,
+                                                  builder: (BuildContext
+                                                          context,
+                                                      AsyncSnapshot<
+                                                              List<
+                                                                  ProductComponent>>
+                                                          snapshot) {
+                                                    return _buildCartListAndTotal(
+                                                        context,
+                                                        state.unit,
+                                                        cart,
+                                                        snapshot.data ?? []);
+                                                  });
+                                            } else {
+                                              return Container();
+                                            }
+                                          });
+                                        }
+                                        return EmptyWidget(
+                                          messageKey: 'cart.emptyCartLine1',
+                                          descriptionKey: 'cart.emptyCartLine2',
+                                        );
+                                      }
+
+                                      return CenterLoadingWidget();
+                                    },
+                                  );
+                                }
+                                return CenterLoadingWidget();
+                              },
+                            ),
+                    ),
+        ),
+      );
+    });
   }
 
-  Widget _buildCartListAndTotal(BuildContext context, Unit unit, Cart cart) {
+  Widget _buildCartListAndTotal(BuildContext context, Unit unit, Cart cart,
+      List<ProductComponent> components) {
     // log.d('_buildCartListAndTotal()=${cart.servingMode}');
     Map<int, Allergen> cartAllergens = {};
     for (OrderItem item in cart.items) {
@@ -242,8 +276,11 @@ class _CartScreenState extends State<CartScreen> {
       if (item.selectedConfigMap != null) {
         item.selectedConfigMap!.forEach((key, value) {
           for (ProductConfigComponent component in value) {
-            if (component.allergens != null) {
-              for (Allergen allergen in component.allergens!) {
+            final productComponent = components
+                .firstWhere((cmp) => cmp.id == component.productComponentId);
+
+            if (productComponent.allergens != null) {
+              for (Allergen allergen in productComponent.allergens!) {
                 cartAllergens[allergenMap[allergen]!] = allergen;
               }
             }
@@ -299,7 +336,7 @@ class _CartScreenState extends State<CartScreen> {
                     position: position,
                     duration: const Duration(milliseconds: 200),
                     child:
-                        _buildCartItem(context, unit, order, cart.servingMode),
+                        _buildCartItem(context, unit, order, cart.servingMode, components),
                   );
                 },
               ),
@@ -565,7 +602,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _buildCartItem(BuildContext context, Unit unit, OrderItem order,
-      ServingMode servingMode) {
+      ServingMode servingMode, List<ProductComponent> productComponents) {
     // log.d('_buildCartItem()=$order');
     return SlideAnimation(
       verticalOffset: 50.0,
@@ -578,6 +615,7 @@ class _CartScreenState extends State<CartScreen> {
                 unit: unit,
                 order: order,
                 servingMode: servingMode,
+                productComponents: productComponents
               ),
             ),
             Divider(

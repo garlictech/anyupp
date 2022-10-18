@@ -275,7 +275,6 @@ export interface CreateCartInput {
 
 export interface CreateFavoriteProductInput {
   id?: InputMaybe<Scalars['ID']>;
-  productId: Scalars['String'];
   unitId: Scalars['ID'];
   userId: Scalars['ID'];
 }
@@ -595,7 +594,7 @@ export interface FcmTokenInput {
 export interface FavoriteProduct {
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
-  productId: Scalars['String'];
+  product: UnitProduct;
   unitId: Scalars['ID'];
   updatedAt: Scalars['AWSDateTime'];
   userId: Scalars['ID'];
@@ -851,7 +850,6 @@ export interface ModelFavoriteProductConditionInput {
   and?: InputMaybe<Array<InputMaybe<ModelFavoriteProductConditionInput>>>;
   not?: InputMaybe<ModelFavoriteProductConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelFavoriteProductConditionInput>>>;
-  productId?: InputMaybe<ModelStringInput>;
   unitId?: InputMaybe<ModelIdInput>;
   userId?: InputMaybe<ModelIdInput>;
 }
@@ -866,7 +864,6 @@ export interface ModelFavoriteProductFilterInput {
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelFavoriteProductFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelFavoriteProductFilterInput>>>;
-  productId?: InputMaybe<ModelStringInput>;
   unitId?: InputMaybe<ModelIdInput>;
   userId?: InputMaybe<ModelIdInput>;
 }
@@ -2819,7 +2816,6 @@ export enum SearchableCartSortableFields {
 export enum SearchableFavoriteProductAggregateField {
   createdat = 'createdAt',
   id = 'id',
-  productid = 'productId',
   unitid = 'unitId',
   updatedat = 'updatedAt',
   userid = 'userId'
@@ -2844,7 +2840,6 @@ export interface SearchableFavoriteProductFilterInput {
   id?: InputMaybe<SearchableIdFilterInput>;
   not?: InputMaybe<SearchableFavoriteProductFilterInput>;
   or?: InputMaybe<Array<InputMaybe<SearchableFavoriteProductFilterInput>>>;
-  productId?: InputMaybe<SearchableStringFilterInput>;
   unitId?: InputMaybe<SearchableIdFilterInput>;
   updatedAt?: InputMaybe<SearchableStringFilterInput>;
   userId?: InputMaybe<SearchableIdFilterInput>;
@@ -2858,7 +2853,6 @@ export interface SearchableFavoriteProductSortInput {
 export enum SearchableFavoriteProductSortableFields {
   createdat = 'createdAt',
   id = 'id',
-  productid = 'productId',
   unitid = 'unitId',
   updatedat = 'updatedAt',
   userid = 'userId'
@@ -4028,7 +4022,6 @@ export interface UpdateCartInput {
 
 export interface UpdateFavoriteProductInput {
   id: Scalars['ID'];
-  productId?: InputMaybe<Scalars['String']>;
   unitId?: InputMaybe<Scalars['ID']>;
   userId?: InputMaybe<Scalars['ID']>;
 }
@@ -4660,7 +4653,7 @@ export type CreateFavoriteProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateFavoriteProductMutation = { createFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
+export type CreateFavoriteProductMutation = { createFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } } | null };
 
 export type UpdateFavoriteProductMutationVariables = Exact<{
   input: UpdateFavoriteProductInput;
@@ -4668,7 +4661,7 @@ export type UpdateFavoriteProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateFavoriteProductMutation = { updateFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
+export type UpdateFavoriteProductMutation = { updateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } } | null };
 
 export type DeleteFavoriteProductMutationVariables = Exact<{
   input: DeleteFavoriteProductInput;
@@ -4676,7 +4669,7 @@ export type DeleteFavoriteProductMutationVariables = Exact<{
 }>;
 
 
-export type DeleteFavoriteProductMutation = { deleteFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
+export type DeleteFavoriteProductMutation = { deleteFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } } | null };
 
 export type DeleteUnitMutationVariables = Exact<{
   input: DeleteUnitInput;
@@ -5026,7 +5019,7 @@ export type GetFavoriteProductQueryVariables = Exact<{
 }>;
 
 
-export type GetFavoriteProductQuery = { getFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
+export type GetFavoriteProductQuery = { getFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } } | null };
 
 export type ListFavoriteProductsQueryVariables = Exact<{
   filter?: InputMaybe<ModelFavoriteProductFilterInput>;
@@ -5035,7 +5028,7 @@ export type ListFavoriteProductsQueryVariables = Exact<{
 }>;
 
 
-export type ListFavoriteProductsQuery = { listFavoriteProducts?: { nextToken?: string | null, items: Array<{ id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null> } | null };
+export type ListFavoriteProductsQuery = { listFavoriteProducts?: { nextToken?: string | null, items: Array<{ id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } } | null> } | null };
 
 export type SearchFavoriteProductsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableFavoriteProductFilterInput>;
@@ -5047,7 +5040,7 @@ export type SearchFavoriteProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchFavoriteProductsQuery = { searchFavoriteProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchFavoriteProductsQuery = { searchFavoriteProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetUnitQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -5377,17 +5370,17 @@ export type OnDeleteProductComponentSetSubscription = { onDeleteProductComponent
 export type OnCreateFavoriteProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateFavoriteProductSubscription = { onCreateFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
+export type OnCreateFavoriteProductSubscription = { onCreateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } } | null };
 
 export type OnUpdateFavoriteProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateFavoriteProductSubscription = { onUpdateFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
+export type OnUpdateFavoriteProductSubscription = { onUpdateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } } | null };
 
 export type OnDeleteFavoriteProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteFavoriteProductSubscription = { onDeleteFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
+export type OnDeleteFavoriteProductSubscription = { onDeleteFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, isVisible: boolean, takeaway?: boolean | null, laneId?: string | null, position: number, supportedServingModes?: Array<ServingMode> | null, dirty?: boolean | null, deletedAt?: string | null, tax: number, takeawayTax?: number | null, productCategoryId: string, productType: ProductType, image?: string | null, allergens?: Array<Allergen | null> | null, createdAt: string, updatedAt: string, configSets?: Array<{ productSetId: string, position: number, items: Array<{ productComponentId: string, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null }> } | null> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants?: { nextToken?: string | null, items: Array<{ id: string, isAvailable: boolean, price: number, position: number, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, createdAt: string, updatedAt: string, unitProductVariantsId?: string | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null, availabilities?: Array<{ type: string, dayFrom?: string | null, dayTo?: string | null, timeFrom?: string | null, timeTo?: string | null, price: number } | null> | null } | null> } | null } } | null };
 
 export type OnDeleteUnitSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -7846,7 +7839,78 @@ export const CreateFavoriteProductDocument = gql`
     id
     userId
     unitId
-    productId
+    product {
+      id
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          price
+          position
+          netPackagingFee
+          soldOut
+        }
+        position
+      }
+      supportedServingModes
+      dirty
+      deletedAt
+      tax
+      takeawayTax
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      image
+      allergens
+      variants {
+        items {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          externalId
+          createdAt
+          updatedAt
+          unitProductVariantsId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -7858,7 +7922,78 @@ export const UpdateFavoriteProductDocument = gql`
     id
     userId
     unitId
-    productId
+    product {
+      id
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          price
+          position
+          netPackagingFee
+          soldOut
+        }
+        position
+      }
+      supportedServingModes
+      dirty
+      deletedAt
+      tax
+      takeawayTax
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      image
+      allergens
+      variants {
+        items {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          externalId
+          createdAt
+          updatedAt
+          unitProductVariantsId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -7870,7 +8005,78 @@ export const DeleteFavoriteProductDocument = gql`
     id
     userId
     unitId
-    productId
+    product {
+      id
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          price
+          position
+          netPackagingFee
+          soldOut
+        }
+        position
+      }
+      supportedServingModes
+      dirty
+      deletedAt
+      tax
+      takeawayTax
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      image
+      allergens
+      variants {
+        items {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          externalId
+          createdAt
+          updatedAt
+          unitProductVariantsId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -10827,7 +11033,78 @@ export const GetFavoriteProductDocument = gql`
     id
     userId
     unitId
-    productId
+    product {
+      id
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          price
+          position
+          netPackagingFee
+          soldOut
+        }
+        position
+      }
+      supportedServingModes
+      dirty
+      deletedAt
+      tax
+      takeawayTax
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      image
+      allergens
+      variants {
+        items {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          externalId
+          createdAt
+          updatedAt
+          unitProductVariantsId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -10840,7 +11117,78 @@ export const ListFavoriteProductsDocument = gql`
       id
       userId
       unitId
-      productId
+      product {
+        id
+        unitId
+        isVisible
+        takeaway
+        laneId
+        position
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            price
+            position
+            netPackagingFee
+            soldOut
+          }
+          position
+        }
+        supportedServingModes
+        dirty
+        deletedAt
+        tax
+        takeawayTax
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        image
+        allergens
+        variants {
+          items {
+            id
+            variantName {
+              en
+              de
+              hu
+            }
+            pack {
+              size
+              unit
+            }
+            isAvailable
+            price
+            availabilities {
+              type
+              dayFrom
+              dayTo
+              timeFrom
+              timeTo
+              price
+            }
+            position
+            netPackagingFee
+            soldOut
+            externalId
+            createdAt
+            updatedAt
+            unitProductVariantsId
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -10862,7 +11210,78 @@ export const SearchFavoriteProductsDocument = gql`
       id
       userId
       unitId
-      productId
+      product {
+        id
+        unitId
+        isVisible
+        takeaway
+        laneId
+        position
+        configSets {
+          productSetId
+          items {
+            productComponentId
+            price
+            position
+            netPackagingFee
+            soldOut
+          }
+          position
+        }
+        supportedServingModes
+        dirty
+        deletedAt
+        tax
+        takeawayTax
+        name {
+          en
+          de
+          hu
+        }
+        description {
+          en
+          de
+          hu
+        }
+        productCategoryId
+        productType
+        image
+        allergens
+        variants {
+          items {
+            id
+            variantName {
+              en
+              de
+              hu
+            }
+            pack {
+              size
+              unit
+            }
+            isAvailable
+            price
+            availabilities {
+              type
+              dayFrom
+              dayTo
+              timeFrom
+              timeTo
+              price
+            }
+            position
+            netPackagingFee
+            soldOut
+            externalId
+            createdAt
+            updatedAt
+            unitProductVariantsId
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
@@ -14939,7 +15358,78 @@ export const OnCreateFavoriteProductDocument = gql`
     id
     userId
     unitId
-    productId
+    product {
+      id
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          price
+          position
+          netPackagingFee
+          soldOut
+        }
+        position
+      }
+      supportedServingModes
+      dirty
+      deletedAt
+      tax
+      takeawayTax
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      image
+      allergens
+      variants {
+        items {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          externalId
+          createdAt
+          updatedAt
+          unitProductVariantsId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -14951,7 +15441,78 @@ export const OnUpdateFavoriteProductDocument = gql`
     id
     userId
     unitId
-    productId
+    product {
+      id
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          price
+          position
+          netPackagingFee
+          soldOut
+        }
+        position
+      }
+      supportedServingModes
+      dirty
+      deletedAt
+      tax
+      takeawayTax
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      image
+      allergens
+      variants {
+        items {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          externalId
+          createdAt
+          updatedAt
+          unitProductVariantsId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }
@@ -14963,7 +15524,78 @@ export const OnDeleteFavoriteProductDocument = gql`
     id
     userId
     unitId
-    productId
+    product {
+      id
+      unitId
+      isVisible
+      takeaway
+      laneId
+      position
+      configSets {
+        productSetId
+        items {
+          productComponentId
+          price
+          position
+          netPackagingFee
+          soldOut
+        }
+        position
+      }
+      supportedServingModes
+      dirty
+      deletedAt
+      tax
+      takeawayTax
+      name {
+        en
+        de
+        hu
+      }
+      description {
+        en
+        de
+        hu
+      }
+      productCategoryId
+      productType
+      image
+      allergens
+      variants {
+        items {
+          id
+          variantName {
+            en
+            de
+            hu
+          }
+          pack {
+            size
+            unit
+          }
+          isAvailable
+          price
+          availabilities {
+            type
+            dayFrom
+            dayTo
+            timeFrom
+            timeTo
+            price
+          }
+          position
+          netPackagingFee
+          soldOut
+          externalId
+          createdAt
+          updatedAt
+          unitProductVariantsId
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
     createdAt
     updatedAt
   }

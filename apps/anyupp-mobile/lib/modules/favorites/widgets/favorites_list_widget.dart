@@ -1,3 +1,8 @@
+import 'package:anyupp/models/ProductComponent.dart';
+import 'package:anyupp/providers/providers.dart';
+import 'package:dartz/dartz.dart' as dartz;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
 import '/models.dart';
@@ -9,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class FavoritesListWidget extends StatefulWidget {
+class FavoritesListWidget extends ConsumerStatefulWidget {
   final Unit unit;
   final ServingMode mode;
 
@@ -20,7 +25,7 @@ class FavoritesListWidget extends StatefulWidget {
   _FavoritesListWidgetState createState() => _FavoritesListWidgetState();
 }
 
-class _FavoritesListWidgetState extends State<FavoritesListWidget> {
+class _FavoritesListWidgetState extends ConsumerState<FavoritesListWidget> {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -45,7 +50,17 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
         builder: (context, state) {
       if (state is FavoriteListLoaded) {
         if (state.favorites != null && state.favorites!.isNotEmpty) {
-          return _buildList(widget.unit, state.favorites!);
+          final componentData = ref.watch(
+              productComponentDataOfFavoriteProductsProvider(
+                      state.favorites ?? [])
+                  .future);
+          return FutureBuilder<
+                  dartz.Tuple2<List<ProductComponent>, List<ProductComponentSet>>>(
+              future: componentData,
+              builder: (context, snapshot) {
+                return _buildList(widget.unit, state.favorites!,
+                    snapshot.data?.value1 ?? [], snapshot.data?.value2 ?? []);
+              });
         } else {
           return EmptyWidget(
             icon: 'assets/icons/empty-category.png',
@@ -63,7 +78,11 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
     });
   }
 
-  Widget _buildList(Unit unit, List<FavoriteProduct> list) {
+  Widget _buildList(
+      Unit unit,
+      List<FavoriteProduct> list,
+      List<ProductComponent> components,
+      List<ProductComponentSet> componentSets) {
     return AnimationLimiter(
       child: SmartRefresher(
         enablePullDown: true,
@@ -95,11 +114,12 @@ class _FavoritesListWidgetState extends State<FavoritesListWidget> {
                 verticalOffset: 50.0,
                 child: FadeInAnimation(
                   child: ProductMenuItemWidget(
-                    displayState: displayState,
-                    unit: unit,
-                    item: list[position].product,
-                    servingMode: widget.mode,
-                  ),
+                      displayState: displayState,
+                      unit: unit,
+                      item: list[position].product,
+                      servingMode: widget.mode,
+                      components: components,
+                      componentSets: componentSets),
                 ),
               ),
             );

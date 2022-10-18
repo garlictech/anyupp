@@ -118,7 +118,9 @@ ProductComponent _$ProductComponentFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       name: LocalizedItem.fromJson(json['name'] as Map<String, dynamic>),
       ownerEntity: json['ownerEntity'] as String,
-      allergens: json['allergens'] as List<dynamic>?,
+      allergens: (json['allergens'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$AllergenEnumMap, e))
+          .toList(),
     );
 
 Map<String, dynamic> _$ProductComponentToJson(ProductComponent instance) {
@@ -134,6 +136,25 @@ Map<String, dynamic> _$ProductComponentToJson(ProductComponent instance) {
     }
   }
 
-  writeNotNull('allergens', instance.allergens);
+  writeNotNull('allergens',
+      instance.allergens?.map((e) => _$AllergenEnumMap[e]!).toList());
   return val;
 }
+
+const _$AllergenEnumMap = {
+  Allergen.celery: 'celery',
+  Allergen.crustaceans: 'crustaceans',
+  Allergen.egg: 'egg',
+  Allergen.fish: 'fish',
+  Allergen.gluten: 'gluten',
+  Allergen.lupin: 'lupin',
+  Allergen.milk: 'milk',
+  Allergen.molluscs: 'molluscs',
+  Allergen.mustard: 'mustard',
+  Allergen.peanut: 'peanut',
+  Allergen.sesame: 'sesame',
+  Allergen.soya: 'soya',
+  Allergen.sulphites: 'sulphites',
+  Allergen.treenuts: 'treenuts',
+  Allergen.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};

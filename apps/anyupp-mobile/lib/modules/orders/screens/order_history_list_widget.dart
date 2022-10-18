@@ -1,3 +1,6 @@
+import 'package:anyupp/providers/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '/core/core.dart';
 import '/models.dart';
 import '/modules/orders/orders.dart';
@@ -8,14 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class OrderHistoryListWidget extends StatefulWidget {
+class OrderHistoryListWidget extends ConsumerStatefulWidget {
   const OrderHistoryListWidget();
 
   @override
   _OrderHistoryListWidgetState createState() => _OrderHistoryListWidgetState();
 }
 
-class _OrderHistoryListWidgetState extends State<OrderHistoryListWidget> {
+class _OrderHistoryListWidgetState
+    extends ConsumerState<OrderHistoryListWidget> {
   bool _hasMoreItems = false;
   String? _nextToken;
 
@@ -98,9 +102,22 @@ class _OrderHistoryListWidgetState extends State<OrderHistoryListWidget> {
                   child: SlideAnimation(
                     verticalOffset: 50.0,
                     child: FadeInAnimation(
-                      child: CurrentOrderCardWidget(
-                        order: list[position],
-                      ),
+                      child: Consumer(builder: (context, ref, c) {
+                        final productIds = list[position]
+                            .items
+                            .map((item) => item.productId)
+                            .toList();
+
+                        final AsyncValue components = ref.watch(
+                            componentsOfProductsByIdsProvider(productIds));
+
+                        return components.when(
+                            loading: () => Container(),
+                            error: (err, stack) => Container(),
+                            data: (data) => CurrentOrderCardWidget(
+                                  order: list[position],
+                                ));
+                      }),
                     ),
                   ),
                 );

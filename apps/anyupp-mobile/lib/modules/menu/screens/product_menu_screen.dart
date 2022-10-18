@@ -1,11 +1,15 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:anyupp/models/ProductComponent.dart';
+import 'package:anyupp/providers/providers.dart';
 import 'package:anyupp/shared/utils/buildcontext_extension.dart';
 import 'package:anyupp/shared/utils/rect_extension.dart';
 import 'package:anyupp/shared/widgets.dart';
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '/core/core.dart';
 import '/graphql/generated/crud-api.dart';
@@ -235,13 +239,26 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
             if (state is ProductListLoaded) {
               if (state.productCategories != null &&
                   state.productCategories?.isNotEmpty == true) {
-                return _buildMainMenu(
-                  context,
-                  unit,
-                  state.productCategories!,
-                  state.products,
-                  state.favorites,
-                );
+                return Consumer(builder: (c, ref, child) {
+                  final componentData = ref.watch(
+                      productComponentDataOfProductsProvider(state.products)
+                          .future);
+                  return FutureBuilder<
+                          dartz.Tuple2<List<ProductComponent>,
+                              List<ProductComponentSet>>>(
+                      future: componentData,
+                      builder: (context, snapshot) {
+                        return _buildMainMenu(
+                          context,
+                          unit,
+                          state.productCategories!,
+                          state.products,
+                          state.favorites,
+                          snapshot.data?.value1 ?? [],
+                          snapshot.data?.value2 ?? [],
+                        );
+                      });
+                });
               } else {
                 return const NoProductCategoriesWidget();
               }
@@ -254,19 +271,21 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   }
 
   Widget _buildMainMenu(
-    BuildContext context,
-    Unit unit,
-    List<ProductCategory> productCategories,
-    List<Product> products,
-    List<FavoriteProduct>? favorites,
-  ) {
+      BuildContext context,
+      Unit unit,
+      List<ProductCategory> productCategories,
+      List<Product> products,
+      List<FavoriteProduct>? favorites,
+      List<ProductComponent> components,
+      List<ProductComponentSet> componentSets) {
     _initProductList(
-      context: context,
-      unit: unit,
-      productCategories: productCategories,
-      products: products,
-      favorites: favorites,
-    );
+        context: context,
+        unit: unit,
+        productCategories: productCategories,
+        products: products,
+        favorites: favorites,
+        components: components,
+        componentSets: componentSets);
 
     // has any category sub categories?
     bool hasAnySubCategories = false;
@@ -326,11 +345,14 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                                 builder: (BuildContext context,
                                     StateSetter setState) {
                                   // calculate cur category
-                                  List<ProductCategory>? subCategories = getCurrentSubcategories(_tabController!.index);
+                                  List<ProductCategory>? subCategories =
+                                      getCurrentSubcategories(
+                                          _tabController!.index);
                                   return Column(
                                     children: [
                                       // Subcategory tabBar
-                                      if (subCategories != null && subCategories.isNotEmpty)
+                                      if (subCategories != null &&
+                                          subCategories.isNotEmpty)
                                         IndexedStack(index: 0, children: [
                                           SubCategoryTabBarWidget(
                                             controller: _subTabController!,
@@ -339,7 +361,8 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                                                 context, index),
                                           ),
                                         ]),
-                                      if (subCategories == null || subCategories.isEmpty)
+                                      if (subCategories == null ||
+                                          subCategories.isEmpty)
                                         Container(
                                           height: 50,
                                         ),
@@ -438,7 +461,8 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
   List<ProductCategory>? getCurrentSubcategories(int index) {
     ProductCategory? category;
     List<ProductCategory>? subCategories = [];
-    if (widgetsMenu.categories.isNotEmpty && widgetsMenu.categories.length > index) {
+    if (widgetsMenu.categories.isNotEmpty &&
+        widgetsMenu.categories.length > index) {
       category = widgetsMenu.categories[index];
       if (widgetsMenu.subCategoriesMap != null) {
         subCategories = widgetsMenu.subCategoriesMap![category.id!];
@@ -447,13 +471,14 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     return subCategories;
   }
 
-  void _initProductList({
-    required BuildContext context,
-    required Unit unit,
-    required List<ProductCategory> productCategories,
-    required List<Product> products,
-    List<FavoriteProduct>? favorites,
-  }) {
+  void _initProductList(
+      {required BuildContext context,
+      required Unit unit,
+      required List<ProductCategory> productCategories,
+      required List<Product> products,
+      List<FavoriteProduct>? favorites,
+      required List<ProductComponent> components,
+      required List<ProductComponentSet> componentSets}) {
     _favoritesIndex = favorites?.isNotEmpty == true ? 1 : 0;
 
     _selectedTab = _favoritesIndex;
@@ -478,10 +503,11 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     // Add favorites tab
     if (_favoritesIndex > 0) {
       List<Widget> items = _getWidgetsFromMenuItems(
-        menu.categoryMenuItemsMap!['favorites']!,
-        unit,
-        servingMode,
-      );
+          menu.categoryMenuItemsMap!['favorites']!,
+          unit,
+          servingMode,
+          components,
+          componentSets);
       mainCategoryWidgetsMap['favorites'] = items;
     }
 
@@ -489,10 +515,11 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     for (int i = 0; i < menu.categories.length; i++) {
       ProductCategory category = menu.categories[i];
       List<Widget> items = _getWidgetsFromMenuItems(
-        menu.categoryMenuItemsMap![category.id]!,
-        unit,
-        servingMode,
-      );
+          menu.categoryMenuItemsMap![category.id]!,
+          unit,
+          servingMode,
+          components,
+          componentSets);
       mainCategoryWidgetsMap[category.id] = items;
     }
 
@@ -511,7 +538,6 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
     );
 
     initSubTabControllerForTabIndex(0);
-
   }
 
   void initSubTabControllerForTabIndex(int index) {
@@ -597,8 +623,9 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
               }
               print("pos: $pos");
               _isScrollNotificationEnabled = false;
-              scrollable!.position.animateTo(pos,
-                  duration: Duration(milliseconds: 500), curve: Curves.ease)
+              scrollable!.position
+                  .animateTo(pos,
+                      duration: Duration(milliseconds: 500), curve: Curves.ease)
                   .then((value) => _isScrollNotificationEnabled = true);
               //scrollable!.position.jumpTo(-10);
             }
@@ -652,14 +679,14 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
         }
       }
     }*/
-
   }
 
   List<Widget> _getWidgetsFromMenuItems(
-    List<MenuListItem> menuItems,
-    Unit unit,
-    ServingMode servingMode,
-  ) {
+      List<MenuListItem> menuItems,
+      Unit unit,
+      ServingMode servingMode,
+      List<ProductComponent> components,
+      List<ProductComponentSet> componentSets) {
     List<Widget> results = [];
     for (int i = 0; i < menuItems.length; i++) {
       MenuListItem item = menuItems[i];
@@ -673,22 +700,24 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
         continue;
       } else if (item is MenuItemFavorite) {
         results.add(ProductMenuItemWidget(
-          key: GlobalKey(),
-          displayState: item.displayState,
-          unit: unit,
-          item: item.product,
-          servingMode: servingMode,
-        ));
+            key: GlobalKey(),
+            displayState: item.displayState,
+            unit: unit,
+            item: item.product,
+            servingMode: servingMode,
+            components: components,
+            componentSets: componentSets));
         continue;
       } else if (item is MenuItemProduct) {
         //
         results.add(ProductMenuItemWidget(
-          key: GlobalKey(),
-          displayState: item.displayState,
-          unit: unit,
-          item: item.product,
-          servingMode: servingMode,
-        ));
+            key: GlobalKey(),
+            displayState: item.displayState,
+            unit: unit,
+            item: item.product,
+            servingMode: servingMode,
+            components: components,
+            componentSets: componentSets));
         continue;
       } else if (item is MenuItemAdBanner) {
         if (!_adBannerHidden) {

@@ -1,0 +1,14 @@
+query GetProductComponentSet($id: ID!) {
+  getProductComponentSet(id: $id) {
+    id
+    type
+    name {
+      en
+      de
+      hu
+    }
+    items
+    maxSelection
+    supportedServingModes
+  }
+}

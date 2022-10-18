@@ -188,7 +188,7 @@ type Variant @aws_iam @aws_cognito_user_pools {
   unitProductVariantsId: ID
 }
 
-type ProductVariantPack @aws_iam @aws_cognito_user_pools @aws_api_key {
+type ProductVariantPack @aws_iam @aws_cognito_user_pools {
   size: Float!
   unit: String!
 }
@@ -682,7 +682,7 @@ type FavoriteProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   userId: ID!
   unitId: ID!
-  productId: String!
+  product: UnitProduct!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2269,7 +2269,6 @@ input ModelFavoriteProductFilterInput {
   id: ModelIDInput
   userId: ModelIDInput
   unitId: ModelIDInput
-  productId: ModelStringInput
   and: [ModelFavoriteProductFilterInput]
   or: [ModelFavoriteProductFilterInput]
   not: ModelFavoriteProductFilterInput
@@ -2278,7 +2277,6 @@ input ModelFavoriteProductFilterInput {
 input ModelFavoriteProductConditionInput {
   userId: ModelIDInput
   unitId: ModelIDInput
-  productId: ModelStringInput
   and: [ModelFavoriteProductConditionInput]
   or: [ModelFavoriteProductConditionInput]
   not: ModelFavoriteProductConditionInput
@@ -2288,14 +2286,12 @@ input CreateFavoriteProductInput {
   id: ID
   userId: ID!
   unitId: ID!
-  productId: String!
 }
 
 input UpdateFavoriteProductInput {
   id: ID!
   userId: ID
   unitId: ID
-  productId: String
 }
 
 input DeleteFavoriteProductInput {
@@ -3227,7 +3223,6 @@ input SearchableFavoriteProductFilterInput {
   id: SearchableIDFilterInput
   userId: SearchableIDFilterInput
   unitId: SearchableIDFilterInput
-  productId: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   and: [SearchableFavoriteProductFilterInput]
@@ -3239,7 +3234,6 @@ enum SearchableFavoriteProductSortableFields {
   id
   userId
   unitId
-  productId
   createdAt
   updatedAt
 }
@@ -3253,7 +3247,6 @@ enum SearchableFavoriteProductAggregateField {
   id
   userId
   unitId
-  productId
   createdAt
   updatedAt
 }

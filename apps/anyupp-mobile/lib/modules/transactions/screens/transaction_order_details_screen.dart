@@ -1,3 +1,7 @@
+import 'package:anyupp/models/ProductComponent.dart';
+import 'package:anyupp/providers/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '/core/core.dart';
 import '/models.dart';
 import '/modules/orders/orders.dart';
@@ -7,7 +11,7 @@ import '/shared/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TransactionOrderDetailsScreen extends StatefulWidget {
+class TransactionOrderDetailsScreen extends ConsumerStatefulWidget {
   final String orderId;
   const TransactionOrderDetailsScreen({
     Key? key,
@@ -15,12 +19,11 @@ class TransactionOrderDetailsScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TransactionOrderDetailsScreenState createState() =>
-      _TransactionOrderDetailsScreenState();
+  createState() => _TransactionOrderDetailsScreenState();
 }
 
 class _TransactionOrderDetailsScreenState
-    extends State<TransactionOrderDetailsScreen> {
+    extends ConsumerState<TransactionOrderDetailsScreen> {
   Order? _order;
   bool? empty;
   @override
@@ -111,10 +114,16 @@ class _TransactionOrderDetailsScreenState
             );
           }
           if (_order != null) {
-            return OrderDetailsScreen(
-              key: UniqueKey(),
-              order: _order!,
-            );
+            final componentsOfProducts =
+                ref.watch(productComponentsOfAnOrderProvider(_order!).future);
+            return FutureBuilder<List<ProductComponent>>(
+                future: componentsOfProducts,
+                builder: (context, snapshot) {
+                  return OrderDetailsScreen(
+                      key: UniqueKey(),
+                      order: _order!,
+                      productComponents: snapshot.data ?? []);
+                });
           }
 
           return Scaffold(

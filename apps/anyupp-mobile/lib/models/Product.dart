@@ -5,6 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'LocalizedItem.dart';
 import 'ProductConfigSet.dart';
 import 'ProductVariant.dart';
+import 'VariantItems.dart';
 
 part 'Product.g.dart';
 
@@ -30,7 +31,7 @@ class Product extends $Product {
   @override
   final String? image;
   @override
-  final List<ProductVariant> variants;
+  final VariantItems variants;
   @override
   final List<Allergen>? allergens;
   @override

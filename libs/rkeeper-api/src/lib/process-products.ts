@@ -191,7 +191,6 @@ export const processDishes = (rawData: any): Observable<Dish[]> =>
       flow(
         x => R.filter(R.complement(R.isNil), x) as Dish[],
         R.map(normalizeDish),
-        x => R.take(3, x),
       ),
     ),
     tap(x => console.warn(`${x.length} DISHES PROCESSED`)),
@@ -504,7 +503,6 @@ export const handleRkeeperProducts =
                 ),
                 searchProductOfVariant(sdk)(dish.id.toString()),
               ]).pipe(
-                tap(x => console.log('***1', JSON.stringify(x, null, 2))),
                 switchMap(([configSets, unitProduct]) =>
                   R.isNil(unitProduct)
                     ? createRkeeperProduct(sdk)(

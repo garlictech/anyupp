@@ -49,7 +49,6 @@ export class UnitFloorMapComponent
   }
 
   public submit() {
-    console.log('****11', mapRawData);
     this._dataService
       .updateUnit$({ id: this.unit.id, floorMap: mapRawData })
       .toPromise()
