@@ -136,5 +136,9 @@ query GetUnitById($unitId: ID!) {
       id
       parentId
     }
+    adBannersEnabled
+    adBanners {
+      imageUrl
+    }
   }
 }

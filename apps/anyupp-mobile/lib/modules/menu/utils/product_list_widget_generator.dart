@@ -89,6 +89,18 @@ class ProductListWidgetGenerator {
     productsMap.removeWhere((key, value) => value.isEmpty);
     Map<String, List<MenuListItem>> categoryMenuItemsMap = {};
 
+    // sort input categories by index number of unit.categoryOrders
+    if (unit.categoryOrders != null) {
+      categories.sort((ProductCategory a, ProductCategory b) {
+        int aIndex = unit.categoryOrders!
+            .indexWhere((nestedSortItem) => nestedSortItem.id == a.id);
+        int bIndex = unit.categoryOrders!
+            .indexWhere((nestedSortItem) => nestedSortItem.id == b.id);
+        return aIndex.compareTo(bIndex);
+      });
+    }
+    // sort products by positions
+
     // Add favorites section if any
     if (favorites?.isNotEmpty == true) {
       List<MenuListItem> favoriteItems = List<MenuListItem>.from(favorites!.map(
@@ -103,10 +115,11 @@ class ProductListWidgetGenerator {
         },
       ));
 
+      /*
       MenuListItem? banner = _getBanner(unit);
       if (banner != null) {
         favoriteItems.add(banner);
-      }
+      }*/
       categoryMenuItemsMap['favorites'] = favoriteItems;
     }
 
@@ -124,6 +137,13 @@ class ProductListWidgetGenerator {
 
         // products of this category
         List<Product> entries = productsMap[category.id] ?? [];
+        entries.sort((a, b) {
+          if (a.position == -1) {
+            return getLocalizedText(context, a.name)
+                .compareTo(getLocalizedText(context, b.name));
+          }
+          return a.position.compareTo(b.position);
+        });
         // add menuItems to menuItems of this category
         // add products too
         List<MenuListItem> productMenuItems =
@@ -139,11 +159,6 @@ class ProductListWidgetGenerator {
             );
           },
         ));
-        // add a banner if possible
-        MenuListItem? banner = _getBanner(unit);
-        if (banner != null) {
-          productMenuItems.add(banner);
-        }
 
         // collect main categories
         filteredCategories.add(category);
@@ -164,6 +179,13 @@ class ProductListWidgetGenerator {
 
         // products of this category
         List<Product> entries = productsMap[category.id] ?? [];
+        entries.sort((a, b) {
+          if (a.position == -1) {
+            return getLocalizedText(context, a.name)
+                .compareTo(getLocalizedText(context, b.name));
+          }
+          return a.position.compareTo(b.position);
+        });
 
         // add menuItems to menuItems of parent category
         List<MenuListItem> productMenuItems =
@@ -185,15 +207,9 @@ class ProductListWidgetGenerator {
             );
           },
         )));
-        // add a banner if possible
-        MenuListItem? banner = _getBanner(unit);
-        if (banner != null) {
-          productMenuItems.add(banner);
-        }
 
         // collect subcategories for category ids
-        List<ProductCategory> subCategories =
-            subCategoriesMap[parentId] ?? [];
+        List<ProductCategory> subCategories = subCategoriesMap[parentId] ?? [];
         subCategories.add(category);
         subCategoriesMap[parentId!] = subCategories;
 
@@ -203,7 +219,26 @@ class ProductListWidgetGenerator {
     }
 
     // delete categories without products
-    filteredCategories.removeWhere((category) => categoryMenuItemsMap[category.id] == null || categoryMenuItemsMap[category.id]!.isEmpty);
+    filteredCategories.removeWhere((category) =>
+        categoryMenuItemsMap[category.id] == null ||
+        categoryMenuItemsMap[category.id]!.isEmpty);
+    categoryMenuItemsMap.removeWhere((key, value) => value.isEmpty);
+
+    // add banners at the end of menuItemLists if possible
+    List<ImageAsset>? banners = [];
+    if (unit.adBanners != null) {
+      banners.addAll(unit.adBanners!);
+    }
+    categoryMenuItemsMap.forEach((_, menuItemList) {
+      MenuListItem? banner = _getBanner(
+        unit: unit,
+        banners: banners,
+        removeSelectedBanner: true,
+      );
+      if (banner != null) {
+        menuItemList.add(banner);
+      }
+    });
 
     return GeneratedMenu(
       categories: filteredCategories,
@@ -213,14 +248,23 @@ class ProductListWidgetGenerator {
     );
   }
 
-  MenuListItem? _getBanner(
-    Unit unit,
-  ) {
+  MenuListItem? _getBanner({
+    required Unit unit,
+    List<ImageAsset>? banners,
+    bool removeSelectedBanner = false,
+  }) {
+    banners ??= unit.adBanners;
     if (unit.adBannersEnabled == true) {
-      ImageAsset? banner = getRandomBanner(banners: unit.adBanners);
-      return MenuItemAdBanner(
-        adBanner: banner ?? ImageAsset(imageUrl: 'assets/images/test_1.png'),
-      );
+      ImageAsset? banner = getRandomBanner(banners: banners);
+      if (banner != null) {
+        if (removeSelectedBanner) {
+          banners?.remove(banner);
+        }
+        return MenuItemAdBanner(
+          adBanner: banner,
+          //adBanner: banner ?? ImageAsset(imageUrl: 'assets/images/test_1.png'),
+        );
+      }
     }
     return null;
   }
