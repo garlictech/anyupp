@@ -181,9 +181,9 @@
     },
     "details": {
       "orderState": "Rendelés állapota",
-      "orderStateWithNum": "Rendelés(#{{0}}) állapota",
+      "orderStateWithNum": "Rendelés({{0}}) állapota",
       "orderDetails": "Rendelés részletei",
-      "orderDetailsWithNum": "Rendelés(#{{0}}) részletei",
+      "orderDetailsWithNum": "Rendelés({{0}}) részletei",
       "paymentDetails": "Fizetés részletei",
       "otherDetails": "További részletek",
       "tipDetails": "Borravaló",
@@ -304,26 +304,26 @@
     "full": {
       "processing": {
         "title": "Készítjük a rendelésed",
-        "message": "A #{{0}} számú rendelésedet készítjük, hamarosan felszolgáljuk"
+        "message": "A {{0}} számú rendelésedet készítjük, hamarosan felszolgáljuk"
       },
       "ready": {
         "title": "Elkészült a rendelésed",
-        "message": "A #{{0}} számú rendelésed elkészült"
+        "message": "A {{0}} számú rendelésed elkészült"
       }
     },
     "simplified": {
       "processing": {
         "title": "Készítjük a rendelésed",
-        "message": "A #{{0}} számú rendelésedet készítjük, hamarosan felszolgáljuk"
+        "message": "A {{0}} számú rendelésedet készítjük, hamarosan felszolgáljuk"
       },
       "ready": {
         "title": "Elkészült a rendelésed",
-        "message": "A #{{0}} számú rendelésed elkészült"
+        "message": "A {{0}} számú rendelésed elkészült"
       }
     }
   },
   "payment": {
-    "title": "FIZETÉSI MÓDOK",
+    "title": "FIZETÉSI MÓD",
     "choose": "Kérlek válassz fizetési módot",
     "delete": {
       "title": "Törlöd a bankkártyát?",
@@ -479,22 +479,22 @@
     "checkAllOnMap": "Térkép használata",
     "scanQR": "Csatlakozás asztalhoz",
     "qrConnected": "Helyválasztás",
-    "chair": "szék #{{1}} asztalszám #{{0}}",
-    "table": "Asztalszám #{{0}}",
+    "chair": "szék {{1}} asztalszám {{0}}",
+    "table": "Asztalszám {{0}}",
     "findingTable": "Asztal kiválasztása...",
     "findingSeat": "Asztal és szék kiválasztása...",
     "findingSeatLoading": "Ez eltarthat néhány másodpercig. Kérjük, ne zárd be az ablakot!",
     "seatReserved": {
       "title": "Hely kiválasztva!",
-      "description": "Hely sikeresen kiválasztva. Asztal: #{{0}}, Szék: #{{1}}"
+      "description": "Hely sikeresen kiválasztva. Asztal: {{0}}, Szék: {{1}}"
     },
     "tableReserved": {
       "title": "Hely kiválasztva!",
-      "description": "Hely sikeresen kiválasztva. Asztal: #{{0}}"
+      "description": "Hely sikeresen kiválasztva. Asztal: {{0}}"
     },
     "tableFound": {
-      "seat": "Szék: #{{0}}",
-      "table": "Asztal: #{{0}}",
+      "seat": "Szék: {{0}}",
+      "table": "Asztal: {{0}}",
       "description": "A kapcsolódás megtörtént. Folytathatod a rendelést!"
     },
     "qrCodeError": {

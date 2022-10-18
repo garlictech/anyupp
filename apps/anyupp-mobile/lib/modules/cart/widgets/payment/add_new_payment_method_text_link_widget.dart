@@ -23,9 +23,8 @@ class AddNewPaymentMethodTextLinkWidget extends StatelessWidget {
           children: [
             Text(
               trans(context, 'payment.method.addNewCard'),
-              style: Fonts.satoshi(
+              style: Fonts.hH5(
                 color: theme.highlight,
-                fontSize: 16.0,
               ),
             ),
           ],

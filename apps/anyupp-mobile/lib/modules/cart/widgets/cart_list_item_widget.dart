@@ -75,19 +75,15 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                             getLocalizedText(context,
                                 widget.order.productName), // .toUpperCase(),
                             textAlign: TextAlign.left,
-                            style: Fonts.satoshi(
+                            style: Fonts.hH3(
                               color: theme.secondary,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
                             ),
                           ),
                           Text(
                             "${getLocalizedText(context, widget.order.variantName)}",
                             textAlign: TextAlign.left,
-                            style: Fonts.satoshi(
+                            style: Fonts.pP1(
                               color: theme.secondary,
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14,
                             ),
                           ),
                           ..._getExtraNames(context),
@@ -109,7 +105,7 @@ class _CartListItemWidgetState extends State<CartListItemWidget> {
                                   ),
                                   children: <TextSpan>[
                                     TextSpan(
-                                      text: ' x ',
+                                      text: '  x  ',
                                       style: Fonts.satoshi(
                                         color: theme.secondary40,
                                         fontSize: 14,

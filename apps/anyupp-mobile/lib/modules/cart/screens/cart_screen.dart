@@ -66,7 +66,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   child: BackButtonWidget(
                     color: theme.secondary,
-                    showBorder: true,
+                    showBorder: false,
                     icon: Icons.arrow_back,
                   ),
                 ),
@@ -116,7 +116,7 @@ class _CartScreenState extends State<CartScreen> {
 
                             if (!show) {
                               return Text(
-                                trans('main.menu.cart'),
+                                trans('main.menu.cart').toUpperCase(),
                                 style: Fonts.satoshi(
                                   color: theme.secondary,
                                   fontSize: 16.0,
@@ -269,10 +269,10 @@ class _CartScreenState extends State<CartScreen> {
               radius: Radius.circular(20),
               thumbVisibility: true,
               thickness: 4,
-              child: ListView.separated(
-                separatorBuilder: (context, index) => Divider(
+              child: ListView.builder(
+                /*separatorBuilder: (context, index) => Divider(
                   color: theme.secondary64.withOpacity(0.3),
-                ),
+                ),*/
                 controller: _controller,
                 shrinkWrap: true,
                 physics: BouncingScrollPhysics(),
@@ -570,13 +570,21 @@ class _CartScreenState extends State<CartScreen> {
     return SlideAnimation(
       verticalOffset: 50.0,
       child: FadeInAnimation(
-        child: Container(
-          margin: EdgeInsets.only(right: 4.0),
-          child: CartListItemWidget(
-            unit: unit,
-            order: order,
-            servingMode: servingMode,
-          ),
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(right: 4.0, bottom: 16.0),
+              child: CartListItemWidget(
+                unit: unit,
+                order: order,
+                servingMode: servingMode,
+              ),
+            ),
+            Divider(
+              height: 10,
+              color: theme.secondary64.withOpacity(0.3),
+            ),
+          ],
         ),
       ),
     );
