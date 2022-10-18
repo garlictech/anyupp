@@ -1,3 +1,4 @@
+import 'package:anyupp/models/ProductComponent.dart';
 import 'package:expandable/expandable.dart';
 import '/core/theme/theme.dart';
 import '/models.dart';
@@ -17,13 +18,16 @@ class ProductConfigModifiersWidget extends StatefulWidget {
   final Unit unit;
   final OnModifiersSelected onModifiersSelected;
   final ProductItemDisplayState displayState;
+  final List<ProductComponentSet> componentSets;
+  final List<ProductComponent> components;
 
-  const ProductConfigModifiersWidget({
-    required this.product,
-    required this.unit,
-    required this.onModifiersSelected,
-    required this.displayState,
-  });
+  const ProductConfigModifiersWidget(
+      {required this.product,
+      required this.unit,
+      required this.onModifiersSelected,
+      required this.displayState,
+      required this.componentSets,
+      required this.components});
 
   @override
   _ProductConfigModifiersWidgetState createState() =>
@@ -45,13 +49,14 @@ class _ProductConfigModifiersWidgetState
   void _initDefaultSelections() {
     ServingMode? mode = takeAwayMode;
 
-    widget.product.configSets?.forEach((modifier) {
+    widget.componentSets.forEach((modifier) {
+      final configSet = (widget.product.configSets ?? [])
+          .firstWhere((set) => set.productSetId == modifier.id);
       if (modifier.type == ProductComponentSetType.modifier &&
-          modifier.supportedServingModes.contains(mode)) {
-        if (_shouldDisplayConfigSet(modifier)) {
-          _selectedModifier[modifier.productSetId] =
-              modifier.items.first.productComponentId;
-          _expandableModifierController[modifier.productSetId] =
+          (modifier.supportedServingModes?.contains(mode) ?? false)) {
+        if (_shouldDisplayConfigSet(configSet)) {
+          _selectedModifier[modifier.id] = modifier.items.first;
+          _expandableModifierController[modifier.id] =
               ExpandableController(initialExpanded: false);
         }
       }
@@ -64,16 +69,15 @@ class _ProductConfigModifiersWidgetState
       int visibleItemCount = configSet.items.fold(
           0,
           (previousValue, component) =>
-              previousValue + (component.soldOut ? 0 : 1));
+              previousValue + ((component.soldOut ?? false) ? 0 : 1));
       display = display && visibleItemCount > 0;
     }
     return display;
   }
 
-  bool _shouldDisplayConfigComponent(
-      ProductConfigComponent component) {
+  bool _shouldDisplayConfigComponent(ProductConfigComponent component) {
     return widget.unit.soldOutVisibilityPolicy != null
-        ? !component.soldOut
+        ? !(component.soldOut ?? false)
         : true;
   }
 
@@ -97,9 +101,12 @@ class _ProductConfigModifiersWidgetState
     List<Widget> widgets = [];
     ServingMode? mode = takeAwayMode;
     sets?.forEach((modifier) {
+      final componentSet = widget.componentSets
+          .firstWhere((set) => set.id == modifier.productSetId);
+
       if (_shouldDisplayConfigSet(modifier) &&
-          modifier.type == ProductComponentSetType.modifier &&
-          modifier.supportedServingModes.contains(mode)) {
+          componentSet.type == ProductComponentSetType.modifier &&
+          (componentSet.supportedServingModes?.contains(mode) ?? false)) {
         widgets.add(_buildSingleModifier(modifier));
       }
     });
@@ -108,6 +115,9 @@ class _ProductConfigModifiersWidgetState
   }
 
   Widget _buildSingleModifier(ProductConfigSet modifier) {
+    final ProductComponentSet componentSet = widget.componentSets
+        .firstWhere((set) => set.id == modifier.productSetId);
+
     return Container(
       margin: EdgeInsets.only(bottom: 16.0),
       decoration: BoxDecoration(
@@ -133,7 +143,7 @@ class _ProductConfigModifiersWidgetState
             Padding(
               padding: const EdgeInsets.only(left: 16),
               child: Text(
-                getLocalizedText(context, modifier.name),
+                getLocalizedText(context, componentSet.name),
                 style: Fonts.satoshi(
                   color: theme.highlight,
                   fontSize: 14,
@@ -175,8 +185,11 @@ class _ProductConfigModifiersWidgetState
     bool last,
   ) {
     Set<String> allergenNames = {};
-    if (item.allergens != null) {
-      for (Allergen allergen in item.allergens!) {
+    final ProductComponent component = widget.components
+        .firstWhere((cmp) => cmp.id == item.productComponentId);
+
+    if (component.allergens != null) {
+      for (Allergen allergen in component.allergens!) {
         allergenNames.add(allergen.toString().split('.').last);
       }
     }
@@ -204,7 +217,7 @@ class _ProductConfigModifiersWidgetState
                   children: [
                     Expanded(
                       child: Text(
-                        getLocalizedText(context, item.name),
+                        getLocalizedText(context, component.name),
                         style: Fonts.satoshi(
                           color: theme.secondary,
                           fontSize: 16.0,

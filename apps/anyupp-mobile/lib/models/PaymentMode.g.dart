@@ -130,9 +130,9 @@ class PaymentMode$ {
 
 PaymentMode _$PaymentModeFromJson(Map<String, dynamic> json) => PaymentMode(
       id: json['id'] as String?,
-      type: $enumDecode(_$PaymentTypeEnumMap, json['type']),
+      type: json['type'],
       caption: json['caption'] as String?,
-      method: $enumDecode(_$PaymentMethodEnumMap, json['method']),
+      method: json['method'],
       geoPaymentModePaymentModesId:
           json['geoPaymentModePaymentModesId'] as String?,
     );
@@ -147,27 +147,10 @@ Map<String, dynamic> _$PaymentModeToJson(PaymentMode instance) {
   }
 
   writeNotNull('id', instance.id);
-  val['type'] = _$PaymentTypeEnumMap[instance.type]!;
+  writeNotNull('type', instance.type);
   writeNotNull('caption', instance.caption);
-  val['method'] = _$PaymentMethodEnumMap[instance.method]!;
+  writeNotNull('method', instance.method);
   writeNotNull(
       'geoPaymentModePaymentModesId', instance.geoPaymentModePaymentModesId);
   return val;
 }
-
-const _$PaymentTypeEnumMap = {
-  PaymentType.card: 'card',
-  PaymentType.cash: 'cash',
-  PaymentType.simple: 'simple',
-  PaymentType.stripe: 'stripe',
-  PaymentType.applepay: 'applepay',
-  PaymentType.googlepay: 'googlepay',
-  PaymentType.artemisUnknown: 'ARTEMIS_UNKNOWN',
-};
-
-const _$PaymentMethodEnumMap = {
-  PaymentMethod.cash: 'cash',
-  PaymentMethod.card: 'card',
-  PaymentMethod.inapp: 'inapp',
-  PaymentMethod.artemisUnknown: 'ARTEMIS_UNKNOWN',
-};

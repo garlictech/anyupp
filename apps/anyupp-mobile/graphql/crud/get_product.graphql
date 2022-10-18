@@ -1,0 +1,65 @@
+query GetProduct($productId: ID!) {
+  getUnitProduct(id: $productId) {
+    id
+    unitId
+    position
+    variants {
+      id
+      position
+      price
+      pack {
+        size
+        unit
+      }
+      variantName {
+        de
+        en
+        hu
+      }
+      netPackagingFee
+      soldOut
+      isAvailable
+      availabilities {
+        dayTo
+        dayFrom
+        price
+        timeFrom
+        timeTo
+        type
+      }
+    }
+    configSets {
+      productSetId
+      position
+      items {
+        position
+        price
+        netPackagingFee
+        productComponentId
+        soldOut
+      }
+    }
+    supportedServingModes
+    dirty
+    isVisible
+    tax
+    takeawayTax
+    name {
+      de
+      en
+      hu
+    }
+    description {
+      de
+      en
+      hu
+    }
+    productCategoryId
+    productType
+    image
+    allergens
+    createdAt
+    deletedAt
+    updatedAt
+  }
+}

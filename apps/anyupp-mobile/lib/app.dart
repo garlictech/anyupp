@@ -23,7 +23,7 @@ import 'package:in_app_update/in_app_update.dart';
 import 'package:uni_links2/uni_links.dart';
 import 'package:upgrader/upgrader.dart';
 
-import 'data/repositories/fcm-token-repository.dart';
+import 'data/repositories/fcm_token_repository.dart';
 import 'modules/cart/cart.dart';
 import 'modules/favorites/favorites.dart';
 import 'modules/main/main.dart';

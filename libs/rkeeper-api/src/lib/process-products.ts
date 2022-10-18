@@ -374,12 +374,12 @@ export const updateRkeeperProduct =
       pipe(
         foundUnitProduct.variants?.items || [],
         R.reject(variant => R.isNil(variant)),
-        R.find(variant => variant!.externalId === dish.id.toString()),
+        R.find(variant => variant?.externalId === dish.id.toString()),
         variant =>
           variant?.id
             ? sdk.UpdateVariant({
                 input: {
-                  id: variant!.id,
+                  id: variant?.id,
                   variantName: {
                     hu: dish.name,
                   },

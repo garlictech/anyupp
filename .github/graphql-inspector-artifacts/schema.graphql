@@ -678,69 +678,11 @@ type ProductComponentSet @aws_iam @aws_cognito_user_pools {
   updatedAt: AWSDateTime!
 }
 
-type GeneratedProductConfigComponent @aws_iam @aws_cognito_user_pools {
-  productComponentId: ID!
-  price: Float!
-  position: Int!
-  name: LocalizedItem!
-  allergens: [Allergen]
-  netPackagingFee: Float
-  soldOut: Boolean
-  externalId: String
-}
-
-type GeneratedProductConfigSet @aws_iam @aws_cognito_user_pools {
-  productSetId: ID!
-  name: LocalizedItem!
-  position: Int!
-  type: ProductComponentSetType!
-  maxSelection: Int
-  items: [GeneratedProductConfigComponent!]!
-  supportedServingModes: [ServingMode!]
-}
-
-type GeneratedProductCategory {
-  id: ID!
-  unitId: ID!
-  productNum: Int!
-  productCategoryId: ID!
-  productCategory: ProductCategory!
-  position: Int
-}
-
-type GeneratedProduct @aws_iam @aws_cognito_user_pools {
-  id: ID!
-  unitId: ID!
-  productCategoryId: ID!
-  name: LocalizedItem!
-  description: LocalizedItem
-  productType: ProductType!
-  tax: Int!
-  takeawayTax: Int
-  position: Int!
-  image: String
-  variants: [GeneratedProductVariant!]!
-  allergens: [Allergen]
-  configSets: [GeneratedProductConfigSet]
-  supportedServingModes: [ServingMode!]
-  soldOut: Boolean
-}
-
-type GeneratedProductVariant @aws_iam @aws_cognito_user_pools {
-  id: ID!
-  variantName: LocalizedItem!
-  pack: ProductVariantPack
-  price: Float!
-  netPackagingFee: Float
-  position: Int!
-  soldOut: Boolean
-}
-
 type FavoriteProduct @aws_iam @aws_cognito_user_pools {
   id: ID!
   userId: ID!
   unitId: ID!
-  product: GeneratedProduct!
+  productId: String!
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -2318,55 +2260,6 @@ input DeleteProductComponentSetInput {
   id: ID!
 }
 
-input GeneratedProductInput {
-  id: ID
-  unitId: ID!
-  productCategoryId: ID!
-  name: LocalizedItemInput!
-  description: LocalizedItemInput
-  productType: ProductType!
-  tax: Int!
-  takeawayTax: Int
-  position: Int!
-  image: String
-  variants: [GeneratedProductVariantInput!]!
-  allergens: [Allergen]
-  configSets: [GeneratedProductConfigSetInput]
-  supportedServingModes: [ServingMode!]
-  soldOut: Boolean
-}
-
-input GeneratedProductVariantInput {
-  id: ID
-  variantName: LocalizedItemInput!
-  pack: ProductVariantPackInput
-  price: Float!
-  netPackagingFee: Float
-  position: Int!
-  soldOut: Boolean
-}
-
-input GeneratedProductConfigSetInput {
-  productSetId: ID!
-  name: LocalizedItemInput!
-  position: Int!
-  type: ProductComponentSetType!
-  maxSelection: Int
-  items: [GeneratedProductConfigComponentInput!]!
-  supportedServingModes: [ServingMode!]
-}
-
-input GeneratedProductConfigComponentInput {
-  productComponentId: ID!
-  price: Float!
-  position: Int!
-  name: LocalizedItemInput!
-  allergens: [Allergen]
-  netPackagingFee: Float
-  soldOut: Boolean
-  externalId: String
-}
-
 type ModelFavoriteProductConnection @aws_iam @aws_cognito_user_pools {
   items: [FavoriteProduct]!
   nextToken: String
@@ -2376,6 +2269,7 @@ input ModelFavoriteProductFilterInput {
   id: ModelIDInput
   userId: ModelIDInput
   unitId: ModelIDInput
+  productId: ModelStringInput
   and: [ModelFavoriteProductFilterInput]
   or: [ModelFavoriteProductFilterInput]
   not: ModelFavoriteProductFilterInput
@@ -2384,6 +2278,7 @@ input ModelFavoriteProductFilterInput {
 input ModelFavoriteProductConditionInput {
   userId: ModelIDInput
   unitId: ModelIDInput
+  productId: ModelStringInput
   and: [ModelFavoriteProductConditionInput]
   or: [ModelFavoriteProductConditionInput]
   not: ModelFavoriteProductConditionInput
@@ -2393,14 +2288,14 @@ input CreateFavoriteProductInput {
   id: ID
   userId: ID!
   unitId: ID!
-  product: GeneratedProductInput!
+  productId: String!
 }
 
 input UpdateFavoriteProductInput {
   id: ID!
   userId: ID
   unitId: ID
-  product: GeneratedProductInput
+  productId: String
 }
 
 input DeleteFavoriteProductInput {
@@ -3332,6 +3227,7 @@ input SearchableFavoriteProductFilterInput {
   id: SearchableIDFilterInput
   userId: SearchableIDFilterInput
   unitId: SearchableIDFilterInput
+  productId: SearchableStringFilterInput
   createdAt: SearchableStringFilterInput
   updatedAt: SearchableStringFilterInput
   and: [SearchableFavoriteProductFilterInput]
@@ -3343,6 +3239,7 @@ enum SearchableFavoriteProductSortableFields {
   id
   userId
   unitId
+  productId
   createdAt
   updatedAt
 }
@@ -3356,6 +3253,7 @@ enum SearchableFavoriteProductAggregateField {
   id
   userId
   unitId
+  productId
   createdAt
   updatedAt
 }

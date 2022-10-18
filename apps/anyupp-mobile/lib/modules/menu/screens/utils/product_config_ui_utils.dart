@@ -7,8 +7,7 @@ import '/graphql/generated/crud-api.dart';
 //   static const String EXTRA = 'extras';
 // }
 
-String getModifierItemsTotalPrice(
-    ProductConfigSet modifier, String currency) {
+String getModifierItemsTotalPrice(ProductConfigSet modifier, String currency) {
   double price = 0;
   modifier.items.forEach((item) {
     price += item.price;
@@ -20,24 +19,23 @@ String formatCurrencyWithSignal(double price, String currency) {
   return (price >= 0 ? '+' : '-') + formatCurrency(price, currency);
 }
 
-ProductConfigSet? getModifierConfigSetById(
-    String productSetId, List<ProductConfigSet> sets) {
-  // log.d('getModifierConfigSetById()=$productSetId');
+ProductComponentSet? getModifierComponentSetById(
+    String productSetId, List<ProductComponentSet> sets) {
   int index = sets.indexWhere((configSet) =>
       configSet.type == ProductComponentSetType.modifier &&
-      configSet.productSetId == productSetId);
-  // log.d('getModifierConfigSetById().indec=$index');
+      configSet.id == productSetId);
+
   if (index != -1) {
     return sets[index];
   }
   return null;
 }
 
-ProductConfigSet? getExtraConfigSetById(
-    String extraSetId, List<ProductConfigSet> sets) {
+ProductComponentSet? getExtraComponentSetById(
+    String extraSetId, List<ProductComponentSet> sets) {
   int index = sets.indexWhere((configSet) =>
       configSet.type == ProductComponentSetType.extras &&
-      configSet.productSetId == extraSetId);
+      configSet.id == extraSetId);
   if (index != -1) {
     return sets[index];
   }
@@ -47,13 +45,28 @@ ProductConfigSet? getExtraConfigSetById(
 ProductConfigComponent? getComponentByIdFromSet(
   String componentId,
   ProductConfigSet? configSet,
+  ProductComponentSet? componentSet,
   ServingMode? mode,
 ) {
-  if (configSet != null && configSet.items.isNotEmpty) {
+  if (configSet != null && componentSet != null && configSet.items.isNotEmpty) {
     int index = configSet.items
         .indexWhere((item) => item.productComponentId == componentId);
-    if (index != -1 && configSet.supportedServingModes.contains(mode)) {
+    if (index != -1 &&
+        (componentSet.supportedServingModes?.contains(mode) ?? false)) {
       return configSet.items[index];
+    }
+  }
+  return null;
+}
+
+ProductConfigSet? getConfigSetById(
+  String componentId,
+  List<ProductConfigSet>? sets,
+) {
+  if (sets != null) {
+    int index = sets.indexWhere((item) => item.productSetId == componentId);
+    if (index != -1) {
+      return sets[index];
     }
   }
   return null;
@@ -63,14 +76,26 @@ ProductConfigComponent? getExtraComponentByIdAndSetId(
   String extraSetId,
   String componentId,
   List<ProductConfigSet> configSets,
+  List<ProductComponentSet> componentSets,
   ServingMode? mode,
 ) {
-  ProductConfigSet? configSet =
-      getExtraConfigSetById(extraSetId, configSets);
-  if (configSet != null && configSet.supportedServingModes.contains(mode)) {
-    return getComponentByIdFromSet(componentId, configSet, mode);
+  ProductComponentSet? componentSet =
+      getExtraComponentSetById(extraSetId, componentSets);
+
+  try {
+    ProductConfigSet? configSet =
+        configSets.firstWhere((set) => set.productSetId == componentId);
+
+    if (componentSet != null &&
+        (componentSet.supportedServingModes?.contains(mode) ?? false)) {
+      return getComponentByIdFromSet(
+          componentId, configSet, componentSet, mode);
+    }
+
+    return null;
+  } catch (_) {
+    return null;
   }
-  return null;
 }
 
 class CalculatePriceInput {
@@ -90,20 +115,25 @@ double calculateTotalPrice(
   ProductVariant? _productVariant,
   Map<String, Map<String, bool>> selectedExtras,
   Map<String, String> selectedModifiers,
+  List<ProductComponentSet> componentSets,
 ) {
   double price = _productVariant?.price ?? 0;
 
   //--- calculate modifier price
   selectedModifiers.forEach((key, value) {
-    ProductConfigSet? modifier =
-        getModifierConfigSetById(key, product.configSets ?? []);
+    ProductComponentSet? modifier =
+        getModifierComponentSetById(key, componentSets);
+
+    ProductConfigSet? configSet = getConfigSetById(key, product.configSets);
+
     ProductConfigComponent? component = getComponentByIdFromSet(
       value,
+      configSet,
       modifier,
       servingMode,
     );
     bool isSupported =
-        modifier?.supportedServingModes.contains(servingMode) ?? false;
+        modifier?.supportedServingModes?.contains(servingMode) ?? false;
 
     if (isSupported) {
       price += component?.price ?? 0;
@@ -113,11 +143,11 @@ double calculateTotalPrice(
   selectedExtras.forEach((setId, setMap) {
     setMap.forEach((componentId, selected) {
       if (selected == true) {
-        ProductConfigComponent? component =
-            getExtraComponentByIdAndSetId(
+        ProductConfigComponent? component = getExtraComponentByIdAndSetId(
           setId,
           componentId,
           product.configSets ?? [],
+          componentSets,
           servingMode,
         );
         if (component != null) {

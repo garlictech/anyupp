@@ -8,6 +8,7 @@ export 'models/FavoriteProduct.dart';
 export 'models/Product.dart';
 export 'models/ProductCategory.dart';
 export 'models/ProductConfigComponent.dart';
+export 'models/ProductComponentSet.dart';
 export 'models/ProductConfigSet.dart';
 export 'models/Unit.dart';
 export 'models/ImageAsset.dart';

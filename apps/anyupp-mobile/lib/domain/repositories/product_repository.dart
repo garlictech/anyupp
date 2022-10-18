@@ -1,7 +1,7 @@
 import '/models.dart';
 import '/shared/pagination/pagination.dart';
 
-abstract class IProductProvider {
+abstract class ProductRepository {
   Future<PageResponse<ProductCategory>> getProductCategoryList(
       String ownerEntity,
       [String? nextToken]);
@@ -10,4 +10,6 @@ abstract class IProductProvider {
     required String unitId,
     String? nextToken,
   });
+
+  Future<Product> getProduct(String productId);
 }

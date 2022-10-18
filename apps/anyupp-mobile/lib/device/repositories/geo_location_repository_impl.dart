@@ -1,4 +1,4 @@
-import 'package:anyupp/domain/repositories/geo-location-repository.dart';
+import 'package:anyupp/domain/repositories/repositories.dart';
 import 'package:geolocator/geolocator.dart';
 
 class GeoLocationRepositoryImpl implements GeoLocationRepository {

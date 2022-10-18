@@ -1,3 +1,6 @@
+import 'package:anyupp/data/repositories/repositories.dart';
+import 'package:anyupp/domain/repositories/product_repository.dart';
+
 import '/app-config.dart';
 import '/core/core.dart';
 import '/graphql/graphql.dart';
@@ -64,7 +67,7 @@ void _initProviders() {
       () => AwsCartMemoryProvider(getIt<IAuthProvider>()));
   getIt.registerFactory<IOrdersProvider>(
       () => AwsOrderProvider(getIt<IAuthProvider>()));
-  getIt.registerLazySingleton<IProductProvider>(() => AwsProductProvider());
+  getIt.registerLazySingleton<ProductRepository>(() => ProductRepositoryAmplify());
   getIt.registerLazySingleton<IUnitProvider>(() => AwsUnitProvider());
   getIt.registerLazySingleton<IStripePaymentProvider>(() =>
       GraphQLStripePaymentProvider(getIt<Stripe>(), getIt<ICartProvider>()));
@@ -104,8 +107,6 @@ void _initRepositories() {
         getIt<ISocialLoginProvider>(),
         getIt<IEmailLoginProvider>(),
       ));
-  getIt.registerLazySingleton<ProductRepository>(
-      () => ProductRepository(getIt<IProductProvider>()));
   getIt.registerFactory<OrderRepository>(
       () => OrderRepository(getIt<IOrdersProvider>()));
   getIt.registerLazySingleton<UnitRepository>(

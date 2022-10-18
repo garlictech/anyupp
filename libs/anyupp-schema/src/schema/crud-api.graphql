@@ -688,64 +688,6 @@ type ProductComponentSet
   deletedAt: AWSDateTime
 }
 
-type GeneratedProductConfigComponent {
-  productComponentId: ID!
-  price: Float! # UnitProduct.configSets.items.price
-  position: Int! # UnitProduct.configSets.items.position
-  name: LocalizedItem! # (query for UnitProduct.configSets.items.productComponentId).name
-  allergens: [Allergen] # (query for UnitProduct.configSets.items.productComponentId).allergens
-  netPackagingFee: Float # UnitProduct.configSets.items.netPackagingFee
-  soldOut: Boolean # (query for UnitProduct.configSets.items.productComponentId).soldOut
-  externalId: String
-}
-
-type GeneratedProductConfigSet {
-  productSetId: ID!
-  name: LocalizedItem! # (query for UnitProduct.configSets.productSetId).name
-  position: Int! # UnitProduct.configSets.productSet.position
-  type: ProductComponentSetType! # (query for UnitProduct.configSets.productSetId).type
-  maxSelection: Int # (query for UnitProduct.configSets.productSetId).maxSelection
-  items: [GeneratedProductConfigComponent!]! # UnitProduct.configSets
-  supportedServingModes: [ServingMode!] # (query for UnitProduct.configSets.productSetId).supportedServingModes
-}
-
-type GeneratedProductCategory {
-  id: ID!
-  unitId: ID!
-  productNum: Int!
-  productCategoryId: ID!
-  productCategory: ProductCategory!
-  position: Int # use this instead of the connected ProductCategory.position
-}
-
-type GeneratedProduct {
-  id: ID!
-  unitId: ID! # From UnitProduct
-  productCategoryId: ID! # From ChainProduct
-  name: LocalizedItem! # From ChainProduct
-  description: LocalizedItem # From ChainProduct
-  productType: ProductType! # From ChainProduct
-  tax: Int! # From GroupProduct
-  takeawayTax: Int # From GroupProduct
-  position: Int! # From UnitProduct
-  image: String # From ChainProduct
-  variants: [GeneratedProductVariant!]!
-  allergens: [Allergen] # From ChainProduct
-  configSets: [GeneratedProductConfigSet]
-  supportedServingModes: [ServingMode!] # From UnitProduct
-  soldOut: Boolean # Unused shit
-}
-
-type GeneratedProductVariant {
-  id: ID!
-  variantName: LocalizedItem! # UnitProduct.variant
-  pack: ProductVariantPack # # UnitProduct.variant
-  price: Float! # UnitProduct.variant
-  netPackagingFee: Float # UnitProduct.variant
-  position: Int! # UnitProduct.variant
-  soldOut: Boolean # UnitProduct.variant
-}
-
 type FavoriteProduct
   @model
   @searchable

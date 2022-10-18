@@ -258,3 +258,58 @@ class Product$ {
     (soldOutContainer, soldOut) => soldOutContainer.copyWith(soldOut: soldOut),
   );
 }
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Product _$ProductFromJson(Map<String, dynamic> json) => Product(
+      id: json['id'] as String,
+      unitId: json['unitId'] as String,
+      productCategoryId: json['productCategoryId'] as String,
+      name: LocalizedItem.fromJson(json['name'] as Map<String, dynamic>),
+      description: json['description'] == null
+          ? null
+          : LocalizedItem.fromJson(json['description'] as Map<String, dynamic>),
+      productType: json['productType'],
+      tax: json['tax'] as int,
+      position: json['position'] as int,
+      image: json['image'] as String?,
+      variants: (json['variants'] as List<dynamic>)
+          .map((e) => ProductVariant.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      allergens: json['allergens'] as List<dynamic>?,
+      configSets: (json['configSets'] as List<dynamic>?)
+          ?.map((e) => ProductConfigSet.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      supportedServingModes: json['supportedServingModes'] as List<dynamic>,
+      soldOut: json['soldOut'] as bool? ?? false,
+    );
+
+Map<String, dynamic> _$ProductToJson(Product instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+    'unitId': instance.unitId,
+    'productCategoryId': instance.productCategoryId,
+    'name': instance.name.toJson(),
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('description', instance.description?.toJson());
+  writeNotNull('productType', instance.productType);
+  val['tax'] = instance.tax;
+  val['position'] = instance.position;
+  writeNotNull('image', instance.image);
+  val['variants'] = instance.variants.map((e) => e.toJson()).toList();
+  writeNotNull('allergens', instance.allergens);
+  writeNotNull(
+      'configSets', instance.configSets?.map((e) => e.toJson()).toList());
+  val['supportedServingModes'] = instance.supportedServingModes;
+  val['soldOut'] = instance.soldOut;
+  return val;
+}

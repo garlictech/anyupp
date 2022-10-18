@@ -9,10 +9,6 @@ query ListProductComponentSets($chainId: ID!, $nextToken: String, $limit: Int) {
     limit: $limit
   ) {
     items {
-      ownerEntity
-      createdAt
-      deletedAt
-      description
       id
       items
       maxSelection
@@ -23,7 +19,6 @@ query ListProductComponentSets($chainId: ID!, $nextToken: String, $limit: Int) {
       }
       supportedServingModes
       type
-      updatedAt
     }
     nextToken
     total

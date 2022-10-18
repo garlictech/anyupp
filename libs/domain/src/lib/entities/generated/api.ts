@@ -275,7 +275,7 @@ export interface CreateCartInput {
 
 export interface CreateFavoriteProductInput {
   id?: InputMaybe<Scalars['ID']>;
-  product: GeneratedProductInput;
+  productId: Scalars['String'];
   unitId: Scalars['ID'];
   userId: Scalars['ID'];
 }
@@ -595,7 +595,7 @@ export interface FcmTokenInput {
 export interface FavoriteProduct {
   createdAt: Scalars['AWSDateTime'];
   id: Scalars['ID'];
-  product: GeneratedProduct;
+  productId: Scalars['String'];
   unitId: Scalars['ID'];
   updatedAt: Scalars['AWSDateTime'];
   userId: Scalars['ID'];
@@ -639,113 +639,6 @@ export interface FloorMapDataObjectInput {
   w?: InputMaybe<Scalars['Int']>;
   x: Scalars['Int'];
   y: Scalars['Int'];
-}
-
-export interface GeneratedProduct {
-  allergens?: Maybe<Array<Maybe<Allergen>>>;
-  configSets?: Maybe<Array<Maybe<GeneratedProductConfigSet>>>;
-  description?: Maybe<LocalizedItem>;
-  id: Scalars['ID'];
-  image?: Maybe<Scalars['String']>;
-  name: LocalizedItem;
-  position: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
-  productType: ProductType;
-  soldOut?: Maybe<Scalars['Boolean']>;
-  supportedServingModes?: Maybe<Array<ServingMode>>;
-  takeawayTax?: Maybe<Scalars['Int']>;
-  tax: Scalars['Int'];
-  unitId: Scalars['ID'];
-  variants: Array<GeneratedProductVariant>;
-}
-
-export interface GeneratedProductCategory {
-  id: Scalars['ID'];
-  position?: Maybe<Scalars['Int']>;
-  productCategory: ProductCategory;
-  productCategoryId: Scalars['ID'];
-  productNum: Scalars['Int'];
-  unitId: Scalars['ID'];
-}
-
-export interface GeneratedProductConfigComponent {
-  allergens?: Maybe<Array<Maybe<Allergen>>>;
-  externalId?: Maybe<Scalars['String']>;
-  name: LocalizedItem;
-  netPackagingFee?: Maybe<Scalars['Float']>;
-  position: Scalars['Int'];
-  price: Scalars['Float'];
-  productComponentId: Scalars['ID'];
-  soldOut?: Maybe<Scalars['Boolean']>;
-}
-
-export interface GeneratedProductConfigComponentInput {
-  allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
-  externalId?: InputMaybe<Scalars['String']>;
-  name: LocalizedItemInput;
-  netPackagingFee?: InputMaybe<Scalars['Float']>;
-  position: Scalars['Int'];
-  price: Scalars['Float'];
-  productComponentId: Scalars['ID'];
-  soldOut?: InputMaybe<Scalars['Boolean']>;
-}
-
-export interface GeneratedProductConfigSet {
-  items: Array<GeneratedProductConfigComponent>;
-  maxSelection?: Maybe<Scalars['Int']>;
-  name: LocalizedItem;
-  position: Scalars['Int'];
-  productSetId: Scalars['ID'];
-  supportedServingModes?: Maybe<Array<ServingMode>>;
-  type: ProductComponentSetType;
-}
-
-export interface GeneratedProductConfigSetInput {
-  items: Array<GeneratedProductConfigComponentInput>;
-  maxSelection?: InputMaybe<Scalars['Int']>;
-  name: LocalizedItemInput;
-  position: Scalars['Int'];
-  productSetId: Scalars['ID'];
-  supportedServingModes?: InputMaybe<Array<ServingMode>>;
-  type: ProductComponentSetType;
-}
-
-export interface GeneratedProductInput {
-  allergens?: InputMaybe<Array<InputMaybe<Allergen>>>;
-  configSets?: InputMaybe<Array<InputMaybe<GeneratedProductConfigSetInput>>>;
-  description?: InputMaybe<LocalizedItemInput>;
-  id?: InputMaybe<Scalars['ID']>;
-  image?: InputMaybe<Scalars['String']>;
-  name: LocalizedItemInput;
-  position: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
-  productType: ProductType;
-  soldOut?: InputMaybe<Scalars['Boolean']>;
-  supportedServingModes?: InputMaybe<Array<ServingMode>>;
-  takeawayTax?: InputMaybe<Scalars['Int']>;
-  tax: Scalars['Int'];
-  unitId: Scalars['ID'];
-  variants: Array<GeneratedProductVariantInput>;
-}
-
-export interface GeneratedProductVariant {
-  id: Scalars['ID'];
-  netPackagingFee?: Maybe<Scalars['Float']>;
-  pack?: Maybe<ProductVariantPack>;
-  position: Scalars['Int'];
-  price: Scalars['Float'];
-  soldOut?: Maybe<Scalars['Boolean']>;
-  variantName: LocalizedItem;
-}
-
-export interface GeneratedProductVariantInput {
-  id?: InputMaybe<Scalars['ID']>;
-  netPackagingFee?: InputMaybe<Scalars['Float']>;
-  pack?: InputMaybe<ProductVariantPackInput>;
-  position: Scalars['Int'];
-  price: Scalars['Float'];
-  soldOut?: InputMaybe<Scalars['Boolean']>;
-  variantName: LocalizedItemInput;
 }
 
 export interface GeoSearchConnection {
@@ -958,6 +851,7 @@ export interface ModelFavoriteProductConditionInput {
   and?: InputMaybe<Array<InputMaybe<ModelFavoriteProductConditionInput>>>;
   not?: InputMaybe<ModelFavoriteProductConditionInput>;
   or?: InputMaybe<Array<InputMaybe<ModelFavoriteProductConditionInput>>>;
+  productId?: InputMaybe<ModelStringInput>;
   unitId?: InputMaybe<ModelIdInput>;
   userId?: InputMaybe<ModelIdInput>;
 }
@@ -972,6 +866,7 @@ export interface ModelFavoriteProductFilterInput {
   id?: InputMaybe<ModelIdInput>;
   not?: InputMaybe<ModelFavoriteProductFilterInput>;
   or?: InputMaybe<Array<InputMaybe<ModelFavoriteProductFilterInput>>>;
+  productId?: InputMaybe<ModelStringInput>;
   unitId?: InputMaybe<ModelIdInput>;
   userId?: InputMaybe<ModelIdInput>;
 }
@@ -2924,6 +2819,7 @@ export enum SearchableCartSortableFields {
 export enum SearchableFavoriteProductAggregateField {
   createdat = 'createdAt',
   id = 'id',
+  productid = 'productId',
   unitid = 'unitId',
   updatedat = 'updatedAt',
   userid = 'userId'
@@ -2948,6 +2844,7 @@ export interface SearchableFavoriteProductFilterInput {
   id?: InputMaybe<SearchableIdFilterInput>;
   not?: InputMaybe<SearchableFavoriteProductFilterInput>;
   or?: InputMaybe<Array<InputMaybe<SearchableFavoriteProductFilterInput>>>;
+  productId?: InputMaybe<SearchableStringFilterInput>;
   unitId?: InputMaybe<SearchableIdFilterInput>;
   updatedAt?: InputMaybe<SearchableStringFilterInput>;
   userId?: InputMaybe<SearchableIdFilterInput>;
@@ -2961,6 +2858,7 @@ export interface SearchableFavoriteProductSortInput {
 export enum SearchableFavoriteProductSortableFields {
   createdat = 'createdAt',
   id = 'id',
+  productid = 'productId',
   unitid = 'unitId',
   updatedat = 'updatedAt',
   userid = 'userId'
@@ -4130,7 +4028,7 @@ export interface UpdateCartInput {
 
 export interface UpdateFavoriteProductInput {
   id: Scalars['ID'];
-  product?: InputMaybe<GeneratedProductInput>;
+  productId?: InputMaybe<Scalars['String']>;
   unitId?: InputMaybe<Scalars['ID']>;
   userId?: InputMaybe<Scalars['ID']>;
 }
@@ -4762,7 +4660,7 @@ export type CreateFavoriteProductMutationVariables = Exact<{
 }>;
 
 
-export type CreateFavoriteProductMutation = { createFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type CreateFavoriteProductMutation = { createFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
 
 export type UpdateFavoriteProductMutationVariables = Exact<{
   input: UpdateFavoriteProductInput;
@@ -4770,7 +4668,7 @@ export type UpdateFavoriteProductMutationVariables = Exact<{
 }>;
 
 
-export type UpdateFavoriteProductMutation = { updateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type UpdateFavoriteProductMutation = { updateFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
 
 export type DeleteFavoriteProductMutationVariables = Exact<{
   input: DeleteFavoriteProductInput;
@@ -4778,7 +4676,7 @@ export type DeleteFavoriteProductMutationVariables = Exact<{
 }>;
 
 
-export type DeleteFavoriteProductMutation = { deleteFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type DeleteFavoriteProductMutation = { deleteFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
 
 export type DeleteUnitMutationVariables = Exact<{
   input: DeleteUnitInput;
@@ -5128,7 +5026,7 @@ export type GetFavoriteProductQueryVariables = Exact<{
 }>;
 
 
-export type GetFavoriteProductQuery = { getFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type GetFavoriteProductQuery = { getFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
 
 export type ListFavoriteProductsQueryVariables = Exact<{
   filter?: InputMaybe<ModelFavoriteProductFilterInput>;
@@ -5137,7 +5035,7 @@ export type ListFavoriteProductsQueryVariables = Exact<{
 }>;
 
 
-export type ListFavoriteProductsQuery = { listFavoriteProducts?: { nextToken?: string | null, items: Array<{ id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null> } | null };
+export type ListFavoriteProductsQuery = { listFavoriteProducts?: { nextToken?: string | null, items: Array<{ id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null> } | null };
 
 export type SearchFavoriteProductsQueryVariables = Exact<{
   filter?: InputMaybe<SearchableFavoriteProductFilterInput>;
@@ -5149,7 +5047,7 @@ export type SearchFavoriteProductsQueryVariables = Exact<{
 }>;
 
 
-export type SearchFavoriteProductsQuery = { searchFavoriteProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
+export type SearchFavoriteProductsQuery = { searchFavoriteProducts?: { nextToken?: string | null, total?: number | null, items: Array<{ id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null>, aggregateItems: Array<{ name: string, result?: { buckets?: Array<{ key: string, doc_count: number } | null> | null } | { value: number } | null } | null> } | null };
 
 export type GetUnitQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -5479,17 +5377,17 @@ export type OnDeleteProductComponentSetSubscription = { onDeleteProductComponent
 export type OnCreateFavoriteProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnCreateFavoriteProductSubscription = { onCreateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type OnCreateFavoriteProductSubscription = { onCreateFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
 
 export type OnUpdateFavoriteProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnUpdateFavoriteProductSubscription = { onUpdateFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type OnUpdateFavoriteProductSubscription = { onUpdateFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
 
 export type OnDeleteFavoriteProductSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 
-export type OnDeleteFavoriteProductSubscription = { onDeleteFavoriteProduct?: { id: string, userId: string, unitId: string, createdAt: string, updatedAt: string, product: { id: string, unitId: string, productCategoryId: string, productType: ProductType, tax: number, takeawayTax?: number | null, position: number, image?: string | null, allergens?: Array<Allergen | null> | null, supportedServingModes?: Array<ServingMode> | null, soldOut?: boolean | null, name: { en?: string | null, de?: string | null, hu?: string | null }, description?: { en?: string | null, de?: string | null, hu?: string | null } | null, variants: Array<{ id: string, price: number, netPackagingFee?: number | null, position: number, soldOut?: boolean | null, variantName: { en?: string | null, de?: string | null, hu?: string | null }, pack?: { size: number, unit: string } | null }>, configSets?: Array<{ productSetId: string, position: number, type: ProductComponentSetType, maxSelection?: number | null, supportedServingModes?: Array<ServingMode> | null, name: { en?: string | null, de?: string | null, hu?: string | null }, items: Array<{ productComponentId: string, price: number, position: number, allergens?: Array<Allergen | null> | null, netPackagingFee?: number | null, soldOut?: boolean | null, externalId?: string | null, name: { en?: string | null, de?: string | null, hu?: string | null } }> } | null> | null } } | null };
+export type OnDeleteFavoriteProductSubscription = { onDeleteFavoriteProduct?: { id: string, userId: string, unitId: string, productId: string, createdAt: string, updatedAt: string } | null };
 
 export type OnDeleteUnitSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
@@ -7948,71 +7846,7 @@ export const CreateFavoriteProductDocument = gql`
     id
     userId
     unitId
-    product {
-      id
-      unitId
-      productCategoryId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productType
-      tax
-      takeawayTax
-      position
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        price
-        netPackagingFee
-        position
-        soldOut
-      }
-      allergens
-      configSets {
-        productSetId
-        name {
-          en
-          de
-          hu
-        }
-        position
-        type
-        maxSelection
-        items {
-          productComponentId
-          price
-          position
-          name {
-            en
-            de
-            hu
-          }
-          allergens
-          netPackagingFee
-          soldOut
-          externalId
-        }
-        supportedServingModes
-      }
-      supportedServingModes
-      soldOut
-    }
+    productId
     createdAt
     updatedAt
   }
@@ -8024,71 +7858,7 @@ export const UpdateFavoriteProductDocument = gql`
     id
     userId
     unitId
-    product {
-      id
-      unitId
-      productCategoryId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productType
-      tax
-      takeawayTax
-      position
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        price
-        netPackagingFee
-        position
-        soldOut
-      }
-      allergens
-      configSets {
-        productSetId
-        name {
-          en
-          de
-          hu
-        }
-        position
-        type
-        maxSelection
-        items {
-          productComponentId
-          price
-          position
-          name {
-            en
-            de
-            hu
-          }
-          allergens
-          netPackagingFee
-          soldOut
-          externalId
-        }
-        supportedServingModes
-      }
-      supportedServingModes
-      soldOut
-    }
+    productId
     createdAt
     updatedAt
   }
@@ -8100,71 +7870,7 @@ export const DeleteFavoriteProductDocument = gql`
     id
     userId
     unitId
-    product {
-      id
-      unitId
-      productCategoryId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productType
-      tax
-      takeawayTax
-      position
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        price
-        netPackagingFee
-        position
-        soldOut
-      }
-      allergens
-      configSets {
-        productSetId
-        name {
-          en
-          de
-          hu
-        }
-        position
-        type
-        maxSelection
-        items {
-          productComponentId
-          price
-          position
-          name {
-            en
-            de
-            hu
-          }
-          allergens
-          netPackagingFee
-          soldOut
-          externalId
-        }
-        supportedServingModes
-      }
-      supportedServingModes
-      soldOut
-    }
+    productId
     createdAt
     updatedAt
   }
@@ -11121,71 +10827,7 @@ export const GetFavoriteProductDocument = gql`
     id
     userId
     unitId
-    product {
-      id
-      unitId
-      productCategoryId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productType
-      tax
-      takeawayTax
-      position
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        price
-        netPackagingFee
-        position
-        soldOut
-      }
-      allergens
-      configSets {
-        productSetId
-        name {
-          en
-          de
-          hu
-        }
-        position
-        type
-        maxSelection
-        items {
-          productComponentId
-          price
-          position
-          name {
-            en
-            de
-            hu
-          }
-          allergens
-          netPackagingFee
-          soldOut
-          externalId
-        }
-        supportedServingModes
-      }
-      supportedServingModes
-      soldOut
-    }
+    productId
     createdAt
     updatedAt
   }
@@ -11198,71 +10840,7 @@ export const ListFavoriteProductsDocument = gql`
       id
       userId
       unitId
-      product {
-        id
-        unitId
-        productCategoryId
-        name {
-          en
-          de
-          hu
-        }
-        description {
-          en
-          de
-          hu
-        }
-        productType
-        tax
-        takeawayTax
-        position
-        image
-        variants {
-          id
-          variantName {
-            en
-            de
-            hu
-          }
-          pack {
-            size
-            unit
-          }
-          price
-          netPackagingFee
-          position
-          soldOut
-        }
-        allergens
-        configSets {
-          productSetId
-          name {
-            en
-            de
-            hu
-          }
-          position
-          type
-          maxSelection
-          items {
-            productComponentId
-            price
-            position
-            name {
-              en
-              de
-              hu
-            }
-            allergens
-            netPackagingFee
-            soldOut
-            externalId
-          }
-          supportedServingModes
-        }
-        supportedServingModes
-        soldOut
-      }
+      productId
       createdAt
       updatedAt
     }
@@ -11284,71 +10862,7 @@ export const SearchFavoriteProductsDocument = gql`
       id
       userId
       unitId
-      product {
-        id
-        unitId
-        productCategoryId
-        name {
-          en
-          de
-          hu
-        }
-        description {
-          en
-          de
-          hu
-        }
-        productType
-        tax
-        takeawayTax
-        position
-        image
-        variants {
-          id
-          variantName {
-            en
-            de
-            hu
-          }
-          pack {
-            size
-            unit
-          }
-          price
-          netPackagingFee
-          position
-          soldOut
-        }
-        allergens
-        configSets {
-          productSetId
-          name {
-            en
-            de
-            hu
-          }
-          position
-          type
-          maxSelection
-          items {
-            productComponentId
-            price
-            position
-            name {
-              en
-              de
-              hu
-            }
-            allergens
-            netPackagingFee
-            soldOut
-            externalId
-          }
-          supportedServingModes
-        }
-        supportedServingModes
-        soldOut
-      }
+      productId
       createdAt
       updatedAt
     }
@@ -15425,71 +14939,7 @@ export const OnCreateFavoriteProductDocument = gql`
     id
     userId
     unitId
-    product {
-      id
-      unitId
-      productCategoryId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productType
-      tax
-      takeawayTax
-      position
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        price
-        netPackagingFee
-        position
-        soldOut
-      }
-      allergens
-      configSets {
-        productSetId
-        name {
-          en
-          de
-          hu
-        }
-        position
-        type
-        maxSelection
-        items {
-          productComponentId
-          price
-          position
-          name {
-            en
-            de
-            hu
-          }
-          allergens
-          netPackagingFee
-          soldOut
-          externalId
-        }
-        supportedServingModes
-      }
-      supportedServingModes
-      soldOut
-    }
+    productId
     createdAt
     updatedAt
   }
@@ -15501,71 +14951,7 @@ export const OnUpdateFavoriteProductDocument = gql`
     id
     userId
     unitId
-    product {
-      id
-      unitId
-      productCategoryId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productType
-      tax
-      takeawayTax
-      position
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        price
-        netPackagingFee
-        position
-        soldOut
-      }
-      allergens
-      configSets {
-        productSetId
-        name {
-          en
-          de
-          hu
-        }
-        position
-        type
-        maxSelection
-        items {
-          productComponentId
-          price
-          position
-          name {
-            en
-            de
-            hu
-          }
-          allergens
-          netPackagingFee
-          soldOut
-          externalId
-        }
-        supportedServingModes
-      }
-      supportedServingModes
-      soldOut
-    }
+    productId
     createdAt
     updatedAt
   }
@@ -15577,71 +14963,7 @@ export const OnDeleteFavoriteProductDocument = gql`
     id
     userId
     unitId
-    product {
-      id
-      unitId
-      productCategoryId
-      name {
-        en
-        de
-        hu
-      }
-      description {
-        en
-        de
-        hu
-      }
-      productType
-      tax
-      takeawayTax
-      position
-      image
-      variants {
-        id
-        variantName {
-          en
-          de
-          hu
-        }
-        pack {
-          size
-          unit
-        }
-        price
-        netPackagingFee
-        position
-        soldOut
-      }
-      allergens
-      configSets {
-        productSetId
-        name {
-          en
-          de
-          hu
-        }
-        position
-        type
-        maxSelection
-        items {
-          productComponentId
-          price
-          position
-          name {
-            en
-            de
-            hu
-          }
-          allergens
-          netPackagingFee
-          soldOut
-          externalId
-        }
-        supportedServingModes
-      }
-      supportedServingModes
-      soldOut
-    }
+    productId
     createdAt
     updatedAt
   }
