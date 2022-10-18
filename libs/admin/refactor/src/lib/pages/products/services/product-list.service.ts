@@ -218,7 +218,7 @@ export class ProductListService {
               })
               .pipe(
                 switchMap(newProduct =>
-                  !!newProduct
+                  newProduct
                     ? forkJoin(
                         pipe(
                           product.variants?.items ?? [],
@@ -226,7 +226,10 @@ export class ProductListService {
                           R.map((variant: Variant) =>
                             this._crudSdk.sdk.CreateVariant({
                               input: {
-                                ...variant,
+                                ...R.omit(
+                                  ['createdAt', 'updatedAt', 'id'],
+                                  variant,
+                                ),
                                 unitProductVariantsId: newProduct.id,
                                 isAvailable: variant?.isAvailable || false,
                                 position: variant?.position || 0,

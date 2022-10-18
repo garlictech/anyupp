@@ -67,28 +67,10 @@ Object {
     "tax": 27,
     "unitId": "UNIT_ID",
     "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "externalId": null,
-        "id": "MASKED ID",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "unitProductVariantsId": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
-        "pack": Object {
-          "size": 1,
-          "unit": "db",
-        },
-        "position": 1,
-        "price": 150,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "piece",
-          "hu": "darab",
-        },
-      },
-    ],
+    "variants": Object {
+      "items": Array [],
+      "nextToken": null,
+    },
   },
   "type": "insert",
 }
@@ -137,28 +119,10 @@ Object {
     "tax": 27,
     "unitId": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
     "updatedAt": "MASKED DATE",
-    "variants": Array [
-      Object {
-        "availabilities": null,
-        "externalId": null,
-        "id": "MASKED ID",
-        "isAvailable": true,
-        "netPackagingFee": null,
-        "unitProductVariantsId": "test_ADMIN_PRODUCT_IT_UNIT_PRODUCT_ID_01",
-        "pack": Object {
-          "size": 1,
-          "unit": "db",
-        },
-        "position": 1,
-        "price": 150,
-        "soldOut": null,
-        "variantName": Object {
-          "de": null,
-          "en": "piece",
-          "hu": "darab",
-        },
-      },
-    ],
+    "variants": Object {
+      "items": Array [],
+      "nextToken": null,
+    },
   },
   "type": "update",
 }

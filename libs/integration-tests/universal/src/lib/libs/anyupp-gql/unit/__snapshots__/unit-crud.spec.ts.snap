@@ -24,7 +24,7 @@ Object {
   "categoryOrders": null,
   "coverBanners": null,
   "createdAt": Any<String>,
-  "currency": "EUR",
+  "currency": "HUF",
   "description": Object {
     "de": null,
     "en": "Test unit",
@@ -164,7 +164,7 @@ Object {
   "categoryOrders": null,
   "coverBanners": null,
   "createdAt": Any<String>,
-  "currency": "EUR",
+  "currency": "HUF",
   "description": Object {
     "de": null,
     "en": "Test unit",
@@ -306,7 +306,7 @@ Object {
   "categoryOrders": null,
   "coverBanners": null,
   "createdAt": Any<String>,
-  "currency": "EUR",
+  "currency": "HUF",
   "description": Object {
     "de": null,
     "en": "Test unit",
@@ -446,7 +446,7 @@ Object {
   "categoryOrders": null,
   "coverBanners": null,
   "createdAt": Any<String>,
-  "currency": "EUR",
+  "currency": "HUF",
   "description": Object {
     "de": null,
     "en": "Test unit",

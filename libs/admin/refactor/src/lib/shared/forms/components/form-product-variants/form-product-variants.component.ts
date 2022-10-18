@@ -8,9 +8,6 @@ import { AbstractControl, FormArray } from '@angular/forms';
 import { FormsService } from '../../services/forms/forms.service';
 import { customNumberCompare } from '@bgap/shared/utils';
 import { Availability, Variant, ServiceFeePolicy } from '@bgap/domain';
-import { VariantCollectionService } from '../../../../store/products/services/variant-collection.service';
-import { of } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { CrudSdkService } from '../../../data-access/sdk';
 import * as R from 'ramda';
 

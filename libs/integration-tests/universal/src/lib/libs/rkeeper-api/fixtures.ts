@@ -17,6 +17,7 @@ import {
   CreateOrderInput,
   CreateUnitInput,
   CreateUnitProductInput,
+  CreateVariantInput,
   OrderMode,
   OrderStatus,
   PaymentMethod,
@@ -59,31 +60,31 @@ export const rkeeperUnit: RequiredId<CreateUnitInput> = {
 export const rkeeperUnitProduct: RequiredId<CreateUnitProductInput> = {
   ...productFixture,
   id: `${testIdPrefix}-unitproduct`,
-  variants: [
-    {
-      id: `${testIdPrefix}UnitProductVariant_id_1`,
-      variantName: { en: `VARIANT_NAME_1` },
-      isAvailable: true,
-      price: 30,
-      externalId: rkeeperProductGuid,
-      position: -1,
-    },
-  ],
+};
+
+export const rkeeperVariantFixture: RequiredId<CreateVariantInput> = {
+  id: `${testIdPrefix}UnitProductVariant_id_1`,
+  variantName: { en: `VARIANT_NAME_1` },
+  isAvailable: true,
+  price: 30,
+  externalId: rkeeperProductGuid,
+  position: -1,
+  unitProductVariantsId: rkeeperUnitProduct.id,
 };
 
 export const rkeeperUnitProduct2: RequiredId<CreateUnitProductInput> = {
   ...productFixture,
   id: `${testIdPrefix}-unitproduct2`,
-  variants: [
-    {
-      id: `${testIdPrefix}UnitProductVariant_id_2`,
-      variantName: { en: `VARIANT_NAME_2` },
-      isAvailable: true,
-      price: 30,
-      externalId: `${rkeeperProductGuid}-2`,
-      position: -1,
-    },
-  ],
+};
+
+export const rkeeperVariantFixture2: RequiredId<CreateVariantInput> = {
+  id: `${testIdPrefix}UnitProductVariant_id_2`,
+  variantName: { en: `VARIANT_NAME_2` },
+  isAvailable: true,
+  price: 30,
+  externalId: `${rkeeperProductGuid}-2`,
+  position: -1,
+  unitProductVariantsId: rkeeperUnitProduct2.id,
 };
 
 export const processedDish: Dish = {
