@@ -96,8 +96,8 @@ class OrderAfterPayWidget extends ConsumerWidget {
     final theme = ref.watch(themeProvider);
 
     return productComponents.when(
-loading: () => Container(),
-error: (err, stack) => Container(),
+      loading: () => Container(),
+      error: (err, stack) => Container(),
       data: (data) => Container(
       decoration: BoxDecoration(
         color: theme.secondary0.withOpacity(0.8),

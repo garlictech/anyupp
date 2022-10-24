@@ -241,23 +241,20 @@ class _MenuScreenInnerState extends State<MenuScreenInner>
                   state.productCategories?.isNotEmpty == true) {
                 return Consumer(builder: (c, ref, child) {
                   final componentData = ref.watch(
-                      productComponentDataOfProductsProvider(state.products)
-                          .future);
-                  return FutureBuilder<
-                          dartz.Tuple2<List<ProductComponent>,
-                              List<ProductComponentSet>>>(
-                      future: componentData,
-                      builder: (context, snapshot) {
+                      productComponentDataOfProductsProvider(state.products));
+
+                  return componentData.when(
+                      loading: () => Container(),
+                      error: (err, stack) => Container(),
+                      data: (data) {
                         return _buildMainMenu(
                           context,
                           unit,
                           state.productCategories!,
                           state.products,
                           state.favorites,
-                          snapshot.data?.value1 ?? [],
-                          snapshot.data?.value2 ?? [],
-                        );
-                      });
+                          data.value1,
+                          data.value2);});
                 });
               } else {
                 return const NoProductCategoriesWidget();

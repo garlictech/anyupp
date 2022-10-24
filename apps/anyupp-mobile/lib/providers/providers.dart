@@ -1,12 +1,15 @@
+import 'package:anyupp/core/theme/utils/color_utils.dart';
+import 'package:anyupp/domain/repositories/unit_repository.dart';
 import 'package:anyupp/domain/services/services.dart';
 import 'package:anyupp/models/ProductComponent.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rxdart/rxdart.dart';
+import '../core/theme/model/theme_chain_data.dart';
 import '/data/repositories/repositories.dart';
 import '/device/repositories/repositories.dart';
 import '/domain/repositories/repositories.dart';
 import '/domain/usecases/usecases.dart';
-import '/core/core.dart';
 import '/models.dart';
 import 'package:dartz/dartz.dart' as dartz;
 
@@ -23,6 +26,9 @@ final productRepositoryProvider =
 final productComponentRepositoryProvider = Provider<ProductComponentRepository>(
     (ref) => ProductComponentRepositoryAmplify());
 
+final unitRepositoryProvider = Provider<UnitRepository>(
+    (ref) => UnitRepositoryAmplify());
+
 // domain/usecases
 final callWaiterUsecaseProvider =
     StateNotifierProvider<CallWaiterUsecase, CallWaiterState>((ref) {
@@ -30,6 +36,12 @@ final callWaiterUsecaseProvider =
 });
 
 // domain/services
+final unitProvider =
+    FutureProvider.family<Unit, String>((ref, unitId) {
+  final unitRepository = ref.read(unitRepositoryProvider);
+  return unitRepository.getUnit(unitId);
+});
+
 final productProvider =
     FutureProvider.family<Product, String>((ref, productId) {
   final productRepository = ref.read(productRepositoryProvider);
@@ -69,6 +81,9 @@ final productComponentDataOfProductsProvider = FutureProvider.family<
       await ref.watch(componentsOfProductsProvider(products).future);
   final componentSets =
       await ref.watch(componentSetsOfProductsProvider(products).future);
+
+debugPrint("********************************** $components");
+debugPrint("********************************** $componentSets");
 
   return dartz.Tuple2(components, componentSets);
 });
@@ -111,12 +126,17 @@ final componentsOfProductsProvider =
     FutureProvider.family<List<ProductComponent>, List<Product>>(
         (ref, products) async {
   final items = products
-      .map((item) => Stream.fromFuture(
-          ref.read(productComponentsOfAProductProvider(item.id).future)))
+      .map((product) => product.configSets)
+      .whereType<List<ProductConfigSet>>()
+      .map((sets) => sets.map((set) => set.items))
+      .expand((i) => i)
+      .expand((i) => i)
+      .map((configComponent) => configComponent.productComponentId)
+      .map((componentId) => Stream.fromFuture(ref
+          .read(productComponentRepositoryProvider)
+          .getProductComponent(componentId)))
       .toList();
-  return ConcatStream(items)
-      .toList()
-      .then((lists) => lists.expand((i) => i).toList());
+  return ConcatStream(items).toList();
 });
 
 final componentsOfProductsByIdsProvider =
@@ -142,6 +162,7 @@ final componentSetsOfProductsProvider =
       .toList()
       .then((lists) => lists.expand((i) => i).toList());
 });
+
 // ui
 final themeProvider = Provider<ThemeChainData>((ref) {
   return defaultTheme();

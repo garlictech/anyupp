@@ -225,7 +225,7 @@ class ProductDetailsWidget extends StatelessWidget {
                       components: components,
                       componentSets: componentSets
                     ),
-                    if (disabled && item.allergens != null)
+                    if (!disabled && item.allergens != null)
                       Container(
                         color: theme.secondary12,
                         child: _buildAllergensListWidget(

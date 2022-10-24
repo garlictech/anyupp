@@ -248,7 +248,8 @@ class _ProductConfiguratorWidgetState extends State<ProductConfiguratorWidget> {
     _selectedModifiers.forEach((key, value) {
       ProductComponentSet? modifier =
           getModifierComponentSetById(key, widget.componentSets);
-
+      debugPrint("*************************** 55 $modifier");
+      debugPrint("*************************** 56 ${widget.product.configSets}");
       ProductConfigSet? configSet = widget.product.configSets
           ?.firstWhere((set) => set.productSetId == modifier?.id);
 

@@ -60,4 +60,25 @@ class ProductComponentRepositoryAmplify implements ProductComponentRepository {
     return ProductComponentSet.fromJson(
         result.data!.getProductComponentSet!.toJson());
   }
+  
+  @override
+  getProductComponent(String id) async {
+    final result = await GQL.amplify.execute(GetProductComponentQuery(
+      variables: GetProductComponentArguments(id: id),
+    ));
+
+    if (result.hasErrors) {
+      log.d(
+          '***** ProductRepositoryAmplify.getProductComponent error=${result.errors}');
+      throw GraphQLException.fromGraphQLError(
+          GraphQLException.CODE_QUERY_EXCEPTION, result.errors);
+    }
+
+    if (result.data?.getProductComponent == null) {
+      throw "ProductComponent $id is not in the database";
+    }
+
+    return ProductComponent.fromJson(
+        result.data!.getProductComponent!.toJson());
+  }
 }

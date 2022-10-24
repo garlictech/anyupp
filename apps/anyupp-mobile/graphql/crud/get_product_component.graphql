@@ -1,0 +1,12 @@
+query GetProductComponent($id: ID!) {
+  getProductComponent(id: $id) {
+    id
+    ownerEntity
+    name {
+      en
+      hu
+      de
+    }
+    allergens
+  }
+}

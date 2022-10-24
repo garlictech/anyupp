@@ -45,8 +45,7 @@ const cleanUserPool = (UserPoolId: string) =>
     ),
   );
 
-/*combineLatest([
-  cleanUserPool(config.AdminUserPoolId),
+combineLatest([
+  //  cleanUserPool(config.AdminUserPoolId),
   cleanUserPool(config.ConsumerUserPoolId),
 ]).subscribe();
-*/
